@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://addons/umbral360/export_profile.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+scene_path = "res://scenes/Main.tscn"
+camera_path = NodePath("Player/Camera3D")
+width = "4096"
+face_size = 2048
+fps = "30"
+duration = 12.0
+crf = 16
+frame_writer = "fast_png"

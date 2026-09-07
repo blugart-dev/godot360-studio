@@ -1,0 +1,9 @@
+.godot/
+*.tmp
+.umbral360/
+renders/
+dist/
+__pycache__/
+*.py[cod]
+.agents/
+.codex/

@@ -1,0 +1,22 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/gaze_target.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/props/right_signal.gd" id="2"]
+
+[sub_resource type="SphereShape3D" id="Shape"]
+radius = 1.2
+
+[node name="RightSignal" type="Area3D"]
+collision_layer = 2
+collision_mask = 0
+monitoring = false
+script = ExtResource("1")
+display_name = "THE ECHO"
+activate_once = false
+accent_color = Color(0.73, 0.76, 1, 1)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("Shape")
+
+[node name="Visual" type="Node3D" parent="."]
+script = ExtResource("2")
