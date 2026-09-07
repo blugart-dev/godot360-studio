@@ -34,6 +34,8 @@ func _run() -> void:
 	panel.test_button.pressed.emit()
 	await _wait_job()
 	check(_delivered(panel.folder), "Documented 2K calibration sample passes all thirteen delivery checks")
+	var calibration_folder: String = panel.folder
+	check(panel.recent_exports.paths[0] == calibration_folder and panel.recent_exports.picker.get_item_text(0).contains("Test · Complete"), "An actual completed sample appears in recent exports")
 	check(panel.planning_label.text.contains("Estimated export:"), "Calibration sample provides an export estimate")
 	check(panel.preview_material != null, "Installed addon displays its spherical still preview")
 	if panel.preview_material == null:
@@ -101,6 +103,15 @@ func _run() -> void:
 		await create_timer(0.1).timeout
 	check(not panel.playback.proxy_path.is_empty() and panel.playback.last_error.is_empty(), "The actual verified Motion Lab export opens in native spherical playback")
 	check(FileAccess.get_sha256(panel.folder.path_join("video-360.mp4")) == delivery_hash, "Native playback preserves the verified delivery MP4")
+	panel.playback.player.paused = true
+	var motion_folder: String = panel.folder
+	panel._open_job(calibration_folder)
+	panel.recent_exports.picker.select(panel.recent_exports.paths.find(motion_folder))
+	panel.recent_exports.picker.item_selected.emit(panel.recent_exports.picker.selected)
+	panel.recent_exports.open_button.pressed.emit()
+	check(panel.folder == motion_folder and panel.recent_exports.paths[0] == motion_folder and panel.status.text.begins_with("Complete"), "Recent exports reopens the actual Motion Lab delivery after reviewing another job")
+	panel.playback.play_button.pressed.emit()
+	check(panel.playback.proxy_path != "" and panel.playback.phase.is_empty(), "A delivery reopened from history reuses its native playback cache")
 	panel.playback.player.paused = true
 	var scroll: ScrollContainer = panel.get_child(0).get_child(0)
 	scroll.scroll_vertical = 385

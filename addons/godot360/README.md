@@ -91,8 +91,10 @@ working headroom for images and audio plus a 256 MiB reserve; metadata checks th
 the second MP4 copy will fit. A low-space or required checkpoint-write failure
 stops the job and retains its sources. Read the [storage guide](STORAGE.md).
 
-The panel reopens its last saved job at startup. Use **Open saved job…** to inspect
-another export. A running 0.6.3 coordinator must answer a fresh request before the
+The panel reopens its last saved job at startup. **Recent exports** remembers up
+to 12 launched or opened jobs; choose an entry and click **Open** to review it.
+**Forget** removes only the list entry. Use **Open saved job…** to locate another
+export. A running 0.6.3 coordinator must answer a fresh request before the
 panel reconnects and enables cancellation. Completed captures offer **Re-encode
 this capture**, using the current CRF/audio settings and a fresh output folder.
 Unconfirmed jobs show their last saved stage and available recovery action.

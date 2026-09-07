@@ -19,8 +19,10 @@ This work follows the historical 0.8 candidate; it is not a new published releas
 On 2026-09-08 the user authorized continued experimental development and delegated
 the next priorities. The current pass adds native spherical playback with seeking
 and sound from a cached review copy, plus visible capture-effect notes. See
-[playback](../addons/godot360/PLAYBACK.md). A recent-export view remains subsequent
-work. Test the first-export and review workflow with an independent Godot creator and use observed
+[playback](../addons/godot360/PLAYBACK.md). A subsequent 2026-09-08 increment adds
+project-local recent exports with saved-state details and direct reopening through
+the existing playback/recovery flow. Test this first-export and review workflow
+with an independent Godot creator and use observed
 dead ends to choose subsequent changes. Historical release gates below retain
 their original scope and evidence.
 

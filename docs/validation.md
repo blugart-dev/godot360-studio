@@ -1,5 +1,48 @@
 # Validation record — updated 2026-09-08
 
+## Recent exports — 2026-09-08
+
+The unreleased panel remembers up to 12 launched/opened export folders, displays
+job type, saved state and scene/video details, and opens selections through the
+existing recovery/playback flow. Forget removes only the history entry. Listing
+reads at most 1 MiB per job/status/report file and never scans capture frames or
+contacts coordinators. No capture, renderer, encoding or playback implementation
+changed. See the [quick start](../addons/godot360/QUICKSTART.md).
+
+**201 focused checks pass** on Windows / RTX 3060 Ti:
+
+| Scope | Checks | Evidence under `.godot360/recent-validation/` |
+| --- | ---: | --- |
+| Godot 4.5.1 / 4.6.3 headless history, clean imports of frozen ZIP | 33 each | `package-engines/review.json` |
+| Godot 4.7.2 headless history and separate graphical history | 33 each | `dev4/review.json` |
+| Godot 4.7.2 existing graphical first-export usability | 37 | `dev4/review.json` |
+| Godot 4.7.2 actual calibration/Motion Lab export, review and diagnostics workflow | 32 | `dev4/review.json` |
+
+History cases cover migration, persistence, bounded/deduplicated paths, Windows
+case/slash aliases, spaces/Unicode, missing drives, malformed/oversized metadata,
+unconfirmed progress, missing delivery artifacts, active-job/session guards,
+selection stability, and forgotten entries remaining forgotten after restart.
+The real workflow verifies a completed sample appears in history and a reopened
+Motion Lab delivery reuses its native playback cache. The expanded 1100×600 panel
+screenshot under `dev4/4.7.2/.godot360/recent-*/recent-panel.png` was inspected.
+Both review reports confirm source project/settings hashes remain unchanged.
+
+`candidate.zip` has 121 members, 241,298 bytes, SHA-256
+`38426a27f628268d49b9ba00e673413a09882a06793b5d521443fe11e32f04b8`.
+It verifies against current source and rebuilds byte-for-byte from a fresh
+unpacked copy using Python 3.14. `summary.json` records exact equivalence of all
+93 packaged Godot code/resource files with the already-tested 4.7.2 copy, avoiding
+duplicate renders. Python packaging/reviewer syntax and Git whitespace checks pass.
+
+Early development caught an unsupported numeric format and corrected it before
+acceptance. Import uses isolated editor-data directories; the known sandbox root
+certificate-store message is excluded from runtime failure detection. Earlier
+development attempts are not counted. The accepted 1,800-check playback matrix
+below remains backend regression evidence; this was not another full matrix run.
+No new Linux/macOS, renderer endurance, YouTube or independent beta evidence was
+gathered. Glow/auto-exposure seams and arbitrary capture resume remain unresolved.
+No release was published. Subsequent root documentation edits require no rerun.
+
 ## Native playback and scene notes — 2026-09-08
 
 The current unreleased addon plays a completed delivery through a cached native

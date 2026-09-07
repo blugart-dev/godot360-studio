@@ -136,6 +136,16 @@ rendering does not establish GPU compatibility or production render performance.
 
 ## First-export workflow
 
+`tests/recent_exports_checks.gd` exercises project-local history migration and
+persistence, bounded metadata reads, stale/missing/malformed jobs, recipe and
+file preservation, and active-job guards. Run with
+`godot --headless --path . --script res://tests/recent_exports_checks.gd`;
+omit `--headless` to also save a 1100×600 expanded-history screenshot in its
+`.godot360/recent-*` fixture folder. No FFmpeg or new render is needed for these
+metadata fixtures. The suite restores settings and runs in package reviews.
+The release workflow additionally checks real launch/completion history and
+reopening a delivery with native playback cache reuse.
+
 `tests/playback_checks.gd` creates a real six-second MP4, prepares and probes its
 review copy, checks native seeking/pause/replay/audio, cache reuse, cancellation,
 source preservation and scene notes. Run it with the same FFmpeg/FFprobe arguments

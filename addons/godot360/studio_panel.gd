@@ -76,10 +76,13 @@ var inspected_stamp := 0
 var playback: Control
 var effects_label: Label
 var effects_scroll: ScrollContainer
+var recent_exports: VBoxContainer
 
 
 func _ready() -> void:
 	Layout.build(self)
+	recent_exports.open_requested.connect(_open_job)
+	recent_exports.history_changed.connect(_save_settings)
 	setup_checker = Setup.new()
 	add_child(setup_checker)
 	_load_settings()
@@ -522,6 +525,8 @@ func _launch(recipe: Dictionary) -> void:
 	if DirAccess.make_dir_recursive_absolute(folder) != OK or not IO.write_json(folder.path_join("job.json"), recipe):
 		status.text = "Cannot write to the output folder."
 		return
+	recent_exports.remember(folder)
+	_save_settings()
 	output_button.disabled = false
 	process_id = OS.create_process(OS.get_executable_path(), ["--headless", "--path", ProjectSettings.globalize_path("res://"),
 		"--log-file", folder.path_join("pipeline.log"), "--script", "res://addons/godot360/pipeline.gd", "--", "--job=" + folder.path_join("job.json")])
@@ -588,13 +593,14 @@ func _cancel() -> void:
 
 
 func _set_busy(busy: bool) -> void:
+	recent_exports.set_busy(busy)
 	for button in [render_button, test_button, reencode_button, open_job_button]:
 		button.disabled = busy
 	reuse_button.disabled = busy or recovery_source.is_empty()
 	cancel_button.disabled = not busy
 
 
-func _open_job(path: String) -> void:
+func _open_job(path: String, remember: bool = true) -> void:
 	if process_id > 0 or not pending_session.is_empty():
 		return
 	var record := Session.review(path)
@@ -610,6 +616,8 @@ func _open_job(path: String) -> void:
 	preview.material = null
 	preview_material = null
 	preview_empty.show()
+	if remember:
+		recent_exports.remember(path)
 	_save_settings()
 	if record.terminal or record.delivered:
 		_finish_saved_job(record)
@@ -692,6 +700,7 @@ func _finish_saved_job(record: Dictionary) -> void:
 		status.text = "No live coordinator confirmed. Saved stage: %s.\n%s\nThe exporter may still be working. Reopen this job to check again." % [str(state.get("stage", "Unknown")), str(recovery.get("next_step", ""))]
 	if not record.get("delivered", false):
 		sections.jobs.toggle.button_pressed = true
+	recent_exports.refresh()
 
 
 func _show_preview() -> void:
@@ -814,6 +823,7 @@ func _save_settings() -> void:
 	config.set_value("export", "output", output.text)
 	config.set_value("export", "last_folder", folder)
 	config.set_value("export", "sample_folder", sample_record.get("folder", ""))
+	config.set_value("export", "recent_folders", recent_exports.paths)
 	for key in ["crf", "random_seed", "warmup_frames", "frame_writer", "rendering_method", "rendering_driver"]:
 		config.set_value("advanced", key, profile.get(key))
 	for key in Audio.DEFAULTS:
@@ -843,8 +853,10 @@ func _load_settings() -> void:
 	driver_control.select(Renderer.DRIVERS.find(profile.rendering_driver))
 	sample_record = Planner.load_sample(str(config.get_value("export", "sample_folder", "")))
 	folder = str(config.get_value("export", "last_folder", ""))
+	# Migrate the previous single-job preference only when history is absent.
+	recent_exports.restore(config.get_value("export", "recent_folders", [folder]))
 	if not folder.is_empty():
-		_open_job(folder)
+		_open_job(folder, false)
 
 
 func _duration_label(seconds: float) -> String:

@@ -1,5 +1,16 @@
 # Changelog
 
+## Unreleased — recent exports
+
+- Add a project-local list of the last 12 launched or opened jobs, with scene,
+  video settings, saved state and folder details. Open through the existing
+  playback/recovery flow; Forget removes the entry without deleting files.
+- Migrate the previous last-job preference, deduplicate normalized paths, retain
+  unavailable folders, and recheck files when opening. Listing reads bounded
+  metadata only; saved progress does not establish coordinator liveness.
+- Keep job switching disabled during exports and coordinator checks. Add focused
+  persistence, malformed-input, layout and actual export/playback workflow checks.
+
 ## Unreleased — native playback and scene notes
 
 - Play completed exports in the editor with spherical navigation, pause, seeking,

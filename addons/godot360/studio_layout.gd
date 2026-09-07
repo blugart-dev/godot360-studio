@@ -22,6 +22,9 @@ static func build(panel: Control) -> void:
 	title.text = "GODOT360 STUDIO   /   0.8.0"
 	title.add_theme_font_size_override("font_size", 19)
 	settings.add_child(title)
+	var recent := foldout(panel, settings, "recent", "Recent exports")
+	panel.recent_exports = preload("recent_exports.gd").new()
+	recent.add_child(panel.recent_exports)
 	_scene(panel, settings)
 	_export(panel, settings)
 	panel._build_audio_controls(settings)

@@ -2,6 +2,32 @@
 
 ## Current pass — 2026-09-08
 
+The user authorized another autonomous increment, verification, commit and push
+to `origin/main`, without publishing a release. Starting tree was clean at
+`a037209`. The chosen increment is **Recent exports**: a project-local history
+of up to 12 launched/opened jobs, with saved state, scene/video details, Open and
+Forget. `recent_exports.gd` owns the list and bounded metadata reads; the panel
+persists it in settings and uses the existing playback/recovery flow when opening.
+The previous last-folder preference migrates once. Forget never deletes files or
+resurrects an entry on startup. See the [quick start](../addons/godot360/QUICKSTART.md).
+
+Focused validation passes **201 checks**: 33 history checks on each Windows
+engine (4.5.1/4.6.3/4.7.2), another 33 in graphical 4.7.2, 37 existing usability
+checks and 32 actual export/playback workflow checks. The 4.7.2 tested runtime
+matches the frozen package byte-for-byte; its fresh unpacked source rebuilds the
+same ZIP. See `.godot360/recent-validation/summary.json` and the new entry in
+[validation](validation.md). The user's project, Main / 4K / 12-second settings
+and saved planning sample remain unchanged. Full pipeline checks reuse the
+accepted 1,800-check playback baseline below; they were not rerun for this UI change.
+
+History does not scan older export folders, relocate moved jobs, confirm live
+coordinators while browsing, or resume partial capture. Independent beta feedback,
+native Mac/Linux hardware validation, glow/exposure seams and representative
+Forward+/Mobile endurance remain open. This pass adds no renderer, platform or
+YouTube evidence and retains the unreleased 0.8 version baseline.
+
+## Previous pass — native playback, 2026-09-08
+
 The user authorized continued experimental work and delegated the next priorities.
 Native spherical video playback and visible scene notes are the chosen increment.
 `playback_review.gd` owns cancellable local review-copy preparation, cache reuse,

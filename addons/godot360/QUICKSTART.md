@@ -108,6 +108,18 @@ around, as described in [VideoLAN's 360° guide](https://docs.videolan.me/vlc-us
 The in-editor video copy is limited to 2K / 30 FPS; use the delivery MP4 for final detail.
 
 Keep the capture folder if you may want to change quality or audio later.
+Expand **Recent exports** near the top of the panel to choose from the last 12
+launched or opened jobs, then click **Open**. The list shows render/test/re-encode
+type and saved state; the selection shows scene, video settings and folder.
+Browsing the list keeps your current job and recipe selected until you click Open.
+**Forget** removes only the history entry, keeping its files and any current preview.
+
+History is local to this project in `.godot360/settings.cfg`. The previous last
+job is added on first upgrade; other older exports enter the list when opened.
+Unavailable folders stay listed so an offline drive can be reconnected. Use
+**Open saved job…** to locate a moved folder. **Unconfirmed** means saved progress
+alone cannot establish whether the coordinator is running; Open checks it normally.
+
 Under **Saved exports and recovery**, **Re-encode this capture** uses retained
 frames without rendering again. **Open saved job…** opens an earlier job, and
 **Save diagnostics…** collects its reports and logs for troubleshooting.
