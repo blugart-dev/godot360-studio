@@ -2,12 +2,14 @@ extends RefCounted
 const IO = preload("job_io.gd")
 const Audio = preload("audio_plan.gd")
 const Storage = preload("storage_guard.gd")
+const Renderer = preload("renderer_policy.gd")
 const MATCH_KEYS = ["scene_path", "camera_path", "width", "height", "face_size", "fps",
 	"random_seed", "warmup_frames", "frame_writer", "crf", "ffmpeg", "ffprobe"]
 
 
 static func test_job(recipe: Dictionary) -> Dictionary:
 	var job := recipe.duplicate(true)
+	Renderer.stamp(job)
 	job.mode = "test"
 	job.target_frames = int(recipe.frames)
 	job.frames = mini(int(recipe.frames), int(recipe.fps))
@@ -35,6 +37,9 @@ static func file_size(path: String) -> int:
 
 
 static func matches(sample: Dictionary, target: Dictionary) -> bool:
+	# Old samples predate project-renderer capture and cannot predict this pipeline.
+	if str(sample.get("rendering_signature", "")) != Renderer.signature(target):
+		return false
 	for key in MATCH_KEYS:
 		if str(sample.get(key, "")) != str(target.get(key, "")):
 			# JSON numbers may be floats while an editor recipe contains integers.
@@ -90,6 +95,9 @@ static func resolve_reencode(request: Dictionary) -> Dictionary:
 	var capture := IO.read_json(source.path_join("capture-result.json"))
 	if recipe.is_empty() or not capture.get("ok", false) or not DirAccess.dir_exists_absolute(source.path_join("frames")):
 		return {"error": "Select an original capture folder with completed PNG frames and WAV audio."}
+	for key in ["rendering_method", "rendering_driver"]:
+		if request.has(key) and str(request[key]) != str(recipe.get(key, "project")):
+			return {"error": "Re-encoding preserves the captured renderer and pixels. Start a new render to change the renderer or graphics driver."}
 	var destination: String = str(request.get("output_dir", ""))
 	var normalized_source := source.replace("\\", "/").simplify_path().trim_suffix("/").to_lower()
 	var normalized_output := destination.replace("\\", "/").simplify_path().trim_suffix("/").to_lower()

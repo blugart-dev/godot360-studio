@@ -19,12 +19,13 @@ static func write_json(path: String, value: Dictionary) -> bool:
 	if not written:
 		return false
 	# Windows readers can briefly prevent replacing an open status file. Retry
-	# the atomic rename for at most 50 ms rather than losing the terminal status.
-	for attempt in range(11):
+	# the atomic rename for at most 500 ms. Concurrent native renderer reviews
+	# exposed a reader/share lock lasting beyond the old 50 ms window.
+	for attempt in range(51):
 		if DirAccess.rename_absolute(path + ".tmp", path) == OK:
 			return true
-		if attempt < 10:
-			OS.delay_msec(5)
+		if attempt < 50:
+			OS.delay_msec(10)
 	return false
 
 
@@ -64,6 +65,10 @@ static func validate(job: Dictionary) -> String:
 		return "CRF must be between 12 and 28."
 	if not str(job.get("frame_writer", "png")) in ["png", "fast_png"]:
 		return "Choose fast_png or png for frame storage."
+	if job.get("mode") != "reencode":
+		var renderer_error := preload("renderer_policy.gd").validate(job)
+		if not renderer_error.is_empty():
+			return renderer_error
 	if not str(job.output_dir).is_absolute_path():
 		return "Output directory must be absolute."
 	if job.get("mode") == "test" and (int(job.get("target_frames", 0)) < int(job.frames) or int(job.get("target_frames", 0)) > int(job.fps) * 3600 or int(job.frames) > int(job.fps)):

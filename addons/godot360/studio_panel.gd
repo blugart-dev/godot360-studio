@@ -11,6 +11,9 @@ const Layout = preload("studio_layout.gd")
 const Inspector = preload("scene_inspector.gd")
 const Setup = preload("setup_check.gd")
 const StorageGuard = preload("storage_guard.gd")
+const Renderer = preload("renderer_policy.gd")
+var renderer_control: OptionButton
+var driver_control: OptionButton
 const AUDIO_MODES = ["scene", "soundtrack", "mix"]
 const SETTINGS_PATH = "res://.godot360/settings.cfg"
 var profile: Resource = Profile.new()
@@ -204,6 +207,8 @@ func _refresh_fields() -> void:
 		storage.select(0 if profile.frame_writer == "fast_png" else 1)
 	if crf_control != null:
 		crf_control.set_value_no_signal(profile.crf)
+	renderer_control.select(Renderer.METHODS.find(profile.rendering_method))
+	driver_control.select(Renderer.DRIVERS.find(profile.rendering_driver))
 	_refresh_audio_fields()
 	_refresh_quality_hint()
 	_refresh_scene_cameras(false)
@@ -232,7 +237,7 @@ func _use_current_scene() -> void:
 		return
 	var scene: Node = current_scene_provider.call()
 	if scene == null or scene.scene_file_path.is_empty():
-		status.text = "Save your scene in Godot first (Ctrl+S), then choose Use current scene."
+		status.text = "Save your scene in Godot first (%s), then choose Use current scene." % ("Cmd+S" if OS.get_name() == "macOS" else "Ctrl+S")
 		return
 	if not _save_editor_scene(scene.scene_file_path):
 		return
@@ -443,11 +448,11 @@ func _refresh_readiness() -> void:
 			issues.append("Output: available disk space could not be read. Check drive access.")
 	elif writable_output == destination and output_error.is_empty():
 		issues.append("Output folder is no longer accessible. Check setup again.")
-	var renderer := str(ProjectSettings.get_setting("rendering/renderer/rendering_method", "gl_compatibility"))
-	if renderer != "gl_compatibility":
-		notes.append("%s has not been validated. Initial support covers Compatibility; review a short test carefully." % renderer)
+	var renderer := Renderer.resolve(profile.to_dictionary())
+	var renderer_name: String = {"forward_plus": "Forward+", "mobile": "Mobile", "gl_compatibility": "Compatibility"}.get(renderer.resolved_method, renderer.resolved_method)
+	var renderer_note := "Capture: %s / %s · unexpected fallback stops the job." % [renderer_name, renderer.resolved_driver]
 	var heading_text := "Ready for a 1-second test · scene, tools and output checked." if issues.is_empty() else "Before your first render"
-	readiness_label.text = heading_text + "\n" + "\n".join(issues + notes)
+	readiness_label.text = heading_text + "\n" + renderer_note + "\n" + "\n".join(issues + notes)
 
 
 func _render(test_run: bool = false) -> void:
@@ -663,6 +668,14 @@ func _finish_saved_job(record: Dictionary) -> void:
 			status.text = "Test complete · Review the sample and estimate before rendering the full video."
 		elif active_job.get("mode") == "reencode":
 			status.text = "Re-encode complete · Original capture preserved. The new video and report are ready."
+		var report := IO.read_json(folder.path_join("report.json"))
+		var captured: Dictionary = report.get("capture_settings", {})
+		if not captured.is_empty():
+			status.text += "\nCaptured with %s / %s." % [captured.get("renderer", "unknown"), captured.get("rendering_driver", "unknown")]
+		else:
+			status.text += "\nLegacy capture: renderer evidence is in the original capture-settings.json or capture.log."
+		if not report.get("scene_checks", {}).get("warnings", []).is_empty():
+			status.text += " Scene effect notes are in scene-checks.json; inspect motion and seams."
 	elif record.get("terminal", false):
 		status.text = str(state.get("stage", "Stopped")) + " · " + str(state.get("error", ""))
 		if state.get("stage") == "Complete":
@@ -776,7 +789,7 @@ func _save_settings() -> void:
 	config.set_value("export", "output", output.text)
 	config.set_value("export", "last_folder", folder)
 	config.set_value("export", "sample_folder", sample_record.get("folder", ""))
-	for key in ["crf", "random_seed", "warmup_frames", "frame_writer"]:
+	for key in ["crf", "random_seed", "warmup_frames", "frame_writer", "rendering_method", "rendering_driver"]:
 		config.set_value("advanced", key, profile.get(key))
 	for key in Audio.DEFAULTS:
 		config.set_value("audio", key, profile.get(key))
@@ -794,13 +807,15 @@ func _load_settings() -> void:
 	output.text = str(config.get_value("export", "output", output.text))
 	for key in recipe_fields:
 		recipe_fields[key].text = str(config.get_value("recipe", key, recipe_fields[key].text))
-	for key in ["crf", "random_seed", "warmup_frames", "frame_writer"]:
+	for key in ["crf", "random_seed", "warmup_frames", "frame_writer", "rendering_method", "rendering_driver"]:
 		profile.set(key, config.get_value("advanced", key, profile.get(key)))
 	for key in Audio.DEFAULTS:
 		profile.set(key, config.get_value("audio", key, profile.get(key)))
 	_refresh_audio_fields()
 	storage.select(0 if profile.frame_writer == "fast_png" else 1)
 	crf_control.set_value_no_signal(profile.crf)
+	renderer_control.select(Renderer.METHODS.find(profile.rendering_method))
+	driver_control.select(Renderer.DRIVERS.find(profile.rendering_driver))
 	sample_record = Planner.load_sample(str(config.get_value("export", "sample_folder", "")))
 	folder = str(config.get_value("export", "last_folder", ""))
 	if not folder.is_empty():
@@ -831,7 +846,7 @@ func _refresh_plan() -> void:
 	var folder_changed: bool = str(sample_record.folder).get_base_dir().replace("\\", "/").simplify_path() != output.text.strip_edges().replace("\\", "/").simplify_path()
 	var estimate := Planner.estimate(sample, sample_record.report, sample_record.storage, target)
 	if estimate.is_empty() or scene_changed or folder_changed:
-		planning_label.text = "Settings, soundtrack, saved scene, or output folder changed. Run Test 1 second again for a current estimate."
+		planning_label.text = "Settings, renderer, engine, soundtrack, saved project/scene, or output folder changed. Run Test 1 second again for a current estimate."
 		return
 	var available: int = -1
 	var directory := DirAccess.open(output.text.strip_edges())

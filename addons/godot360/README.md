@@ -6,19 +6,40 @@ write spherical metadata, and inspect the validation report from one editor pane
 
 **Version 0.8.0 — beta baseline with unreleased usability changes.** The addon has passed isolated project checks on
 Windows with Godot 4.5.1, 4.6.3 and 4.7.2, Compatibility, and an NVIDIA RTX 3060 Ti.
-Other engines, operating systems and renderers have not been validated. Read the
+Linux and macOS preparation and evidence are listed in [Platform setup](PLATFORMS.md).
+Forward+ and Mobile have actual rendered evidence; see [renderers and scene appearance](RENDERERS.md).
+Native Mac exports remain unvalidated. Read the
 [compatibility and beta guide](BETA.md) for the exact coverage and a clean-project
 check. No custom engine or .NET runtime is needed.
 
 ## Install
 
+### Downloads
+
+**[Platform setup](PLATFORMS.md)** has complete download and installation steps:
+
+- **Godot:** [4.7.2 Standard, official archive](https://godotengine.org/download/archive/4.7.2-stable/), choosing Windows, Linux or macOS for your machine. Keep your project's renderer.
+- **Windows FFmpeg/FFprobe:** [gyan.dev release essentials ZIP](https://www.gyan.dev/ffmpeg/builds/); extract both executables from its `bin` folder.
+- **Linux FFmpeg/FFprobe:** Ubuntu/Debian `sudo apt install ffmpeg`; [Linux instructions](PLATFORMS.md#linux).
+- **macOS FFmpeg/FFprobe:** [Install Homebrew](https://docs.brew.sh/Installation), then [`brew install ffmpeg`](https://formulae.brew.sh/formula/ffmpeg); [Mac instructions](PLATFORMS.md#macos).
+- **VLC, optional:** [VideoLAN download](https://www.videolan.org/vlc/) for [360° playback](https://docs.videolan.me/vlc-user/desktop/3.0/en/advanced/player/360_video.html).
+
+No Python, compiler, .NET runtime or Godot export templates are needed by the addon.
+Native macOS export validation remains pending. Check setup and render a short test
+after installing or changing tools.
+
+### Enable the addon
+
 1. Copy `addons/godot360` into a Godot project at the same path.
 2. Enable **Godot360 Studio** under **Project > Project Settings > Plugins**.
 3. Open the **Godot360** bottom panel.
-4. Expand **Tool setup** to select FFmpeg and FFprobe if they were not found on PATH.
+4. Expand **Tool setup** and choose **Find installed tools**, or use **FFmpeg…**
+   to select the executable (`ffmpeg.exe` on Windows, `ffmpeg` on Linux/macOS).
+   FFprobe is filled in when installed beside it;
+   otherwise select it with **FFprobe…**. Selecting these files is enough; PATH
+   configuration is optional. Click **Check setup** after choosing an output folder.
    FFmpeg must include **libx264**, **AAC**, `scale`, and `colorspace`.
    **Fast PNG** storage additionally requires its **PNG** encoder.
-   Builds are linked from [FFmpeg's download page](https://ffmpeg.org/download.html).
 
 FFmpeg is an external codec dependency. The addon does not bundle or silently
 download executables. Selecting FFmpeg also locates FFprobe in the same directory
@@ -47,7 +68,7 @@ The panel's **Quick start** button opens that guide locally.
    for `video-360.mp4` and `report.json`; review full motion in a spherical player.
 
 **Advanced capture and encoding** contains the manual camera path, dimensions,
-PNG storage and H.264 CRF. **Audio timing and levels** contains offsets, trim and
+renderer/driver overrides, PNG storage and H.264 CRF. **Audio timing and levels** contains offsets, trim and
 gain. **Recipes and examples** contains recipe loading/saving and both examples.
 **Saved exports and recovery** contains job reopening, re-encoding and diagnostics.
 
@@ -105,7 +126,7 @@ adds 25% plus 64 MiB of headroom; it does not reserve space or guarantee complet
 Available space is shown when the operating system can report it.
 
 Changing duration rescales the estimate. Changing capture/encoding settings, tool
-paths, the saved scene's modification time, or the output parent marks it stale.
+paths, renderer/driver, engine, OS, saved project configuration, the saved scene's modification time, or the output parent marks it stale.
 Changes to referenced scripts, textures, or other assets are not detected: re-test
 after editing them. Later scene complexity, startup costs, and compression can
 differ from the first second. Treat these figures as planning estimates.
@@ -161,8 +182,10 @@ scene base, absolute frame sampling, editable Path3D example, and motion/audio c
 
 Choose a saved `.tscn` and select its `Camera3D` from the camera picker. For a runtime-created camera, enter its path relative to the scene root under **Advanced capture and encoding**.
 The rig follows that camera's position and orientation. FOV is replaced by six
-square 90° views; near/far planes, cull mask, environment, and camera attributes
-are copied. Keep the source camera's scale uniform. Avoid abrupt rotations and
+square 90° views; near/far planes, cull mask, environment, camera attributes,
+offsets and camera compositor follow the source each frame. See [renderer details](RENDERERS.md)
+for viewport settings and effects that use independent face histories.
+Keep the source camera's scale uniform. Avoid abrupt rotations and
 translations when authoring a comfortable seated experience.
 
 The capture worker hides the scene's CanvasLayers. Place titles in the world as
@@ -244,7 +267,7 @@ and CLI fields.
 
 - `video-360.mp4`: fast-start final video with equivalent Spherical Video V1/V2 metadata.
 - `report.json`: pass/fail checks, engine version, and scene/quality warnings.
-- `capture-settings.json`: actual capture dimensions, MSAA mode, renderer, and timeline sampling mode.
+- `capture-settings.json`: requested/resolved/actual renderer and graphics driver, GPU/OS/engine, capture dimensions, viewport/camera settings, SDR contract and timeline sampling mode. Also included in `report.json`.
 - `capture-timings.json`: capture elapsed time and per-frame readback/storage times.
 - `frame-writer.log`: Fast PNG encoder diagnostics, empty on a successful quiet run.
 - `quality-checks.json`: sampling estimates and resolution warnings.
@@ -308,6 +331,8 @@ Save an absolute-path job JSON with these fields:
 {
   "scene_path": "res://addons/godot360/examples/calibration.tscn",
   "camera_path": "Camera3D",
+  "rendering_method": "project",
+  "rendering_driver": "project",
   "width": 2048,
   "height": 1024,
   "face_size": 512,

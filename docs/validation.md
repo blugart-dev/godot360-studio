@@ -1,5 +1,181 @@
 # Validation record — updated 2026-09-07
 
+## Project renderer preservation — 2026-09-07
+
+The old worker always forced Compatibility. The current worker uses the saved
+project renderer/driver or explicit recipe overrides, records requested/resolved
+and actual selection, and refuses a fallback before submitting frame zero.
+Camera offset, animated clipping/cull/environment/attributes and camera compositor
+now follow the source; AA, scaling, LOD, occlusion and shadow-atlas settings are
+copied to the faces. The SDR sRGB PNG / BT.709 limited-range MP4 contract is retained.
+See [the packaged renderer guide](../addons/godot360/RENDERERS.md) for user guidance.
+
+### Accepted complete-package matrix
+
+All seven engine/renderer combinations passed clean package import, contracts,
+actual calibration and Motion Lab exports, audio/re-encoding, cancellation,
+worker/encoder failure, recovery, storage-fault and editor-panel workflows.
+These **3,662 checks** are separate from the appearance, motion and lock probes
+below. Reports live under `.godot360/renderer-review/`:
+
+| Host | Godot / renderer / backend | Checks | Report folder |
+| --- | --- | ---: | --- |
+| Windows 11 / RTX 3060 Ti | 4.5.1 / Forward+ / Vulkan | 522 | `final-forward/` |
+| Same Windows host | 4.6.3 / Forward+ / Vulkan | 522 | `final-forward/` |
+| Same Windows host | 4.7.2 / Forward+ / Vulkan | 522 | `final-forward/` |
+| Same Windows host | 4.7.2 / Mobile / Vulkan | 522 | `final-mobile/` |
+| Same Windows host | 4.7.2 / Compatibility / OpenGL 3 | 522 | `final-compatibility/` |
+| Ubuntu / WSLg / llvmpipe | 4.7.2 / Forward+ / software Vulkan | 526 | `linux-final-forward_plus/` |
+| Same Linux host | 4.7.2 / Mobile / software Vulkan | 526 | `linux-mobile-confirmed/` |
+
+Every `package-review.json` above has `ok: true`, verified manifest, identical
+rebuild and unchanged unpacked payload/package. Linux has four additional Unix
+platform checks. The first six combinations use `final-candidate.zip`, SHA-256
+`034915faa5d40d36721f7e75a65adae23771f0b36d1af2b9709a48f8692037da`.
+Linux Mobile uses `documented-candidate.zip`, SHA-256
+`858f08bbb480fdfdc653df16fad821e0d63953b456acf967423f649e4595e04c`:
+the same addon runtime, with documentation updates and the lifecycle assertion
+accepting the exact broken-pipe failure described below. Later documentation
+edits do not imply another complete matrix run; source/package equivalence is
+recorded in `summary.json`. These are local unreleased snapshots, not published
+release artifacts.
+
+### Native appearance evidence
+
+All appearance exports below use Godot 4.7.2, 1024×512 output, 512-pixel faces,
+30 delivered frames and eight warmup frames. Every successful export passes the
+13 delivery checks. Three times (0, 15 and 29) have independent ordinary 90°
+perspective renders plus six retained faces. Python maps panorama pixels back to
+those faces and compares smooth regions to distinguish sampling/gamma errors
+from the renderer's own view-dependent effects.
+
+| Native host/backend | Cases and evidence under `.godot360/renderer-review/` |
+| --- | --- |
+| Windows 11, NVIDIA RTX 3060 Ti, Vulkan | `forward-vulkan/`: 12 cases; `mobile-vulkan/`: eight. Color patches, Filmic tone mapping, exposure, lighting/shadows, PBR, alpha transparency, glow, fog, physical camera attributes and compute compositors. Forward+ additionally exercises volumetric fog, combined SSAO/SSIL/SSR, SDFGI and TAA. |
+| Same Windows host, D3D12 | `forward-d3d12/`: six cases; `mobile-d3d12/`: four. Actual driver identity recorded in every capture. |
+| Same Windows host, ANGLE/D3D11 | `compatibility-angle/`: two color/lighting appearance exports with actual `opengl3_angle` identity. |
+| Ubuntu 26.04, WSLg/X11, llvmpipe LLVM 21.1.8, Vulkan | `linux-forward_plus/` and `linux-mobile/`: four cases each, including glow and a compute compositor. Native Linux Godot and FFmpeg; hardware GPU/Wayland performance remains untested. |
+| HDR reference comparison | `hdr-comparison/`: lit/glow compared to a native HDR 2D viewport; floating-point reference pixels receive independent sRGB transfer before comparison. |
+| Additional GI/exposure fixture | `gi-exposure/`: matching darker-room SDFGI off/on captures and an auto-exposure capture. |
+
+These are **45 appearance exports**, separate from repeated development jobs and
+motion/package checks. Most SDR native/front-face pairs are exactly equal.
+SDFGI's maximum measured native/front mean channel error is below 0.004/255;
+HDR-reference lit/glow mean error is below 0.014/255 with 99th-percentile error
+of one code value. Smooth-region panorama reconstruction has 99th-percentile
+error at or below the three-code-value acceptance limit. `feature-differences.json`
+also proves enabled effects change pixels; the darker GI room changes 99,478
+pixels by more than three levels compared to its matching GI-off scene.
+
+Images and motion strips were inspected, including Linux contact sheets.
+`edge-motion.png` visibly shows glow halos cut off at cube boundaries. Auto
+exposure produces large brightness changes between faces, visible in
+`gi-exposure/auto_exposure/preview.png`. These artifacts are already in the
+native face images; sampling/gamma fixes cannot supply off-face screen data or
+shared exposure metering. They remain limitations of the current six 90° views.
+TAA showed no large trailing artifact in the inspected simple motion sequence;
+particles, skinned meshes, camera cuts and FSR reconstruction remain untested.
+
+### Complete motion, sound and retained pixels
+
+`forward-motion/motion/motion-review.json` and
+`mobile-motion/motion/motion-review.json` pass every source and decoded frame:
+180 PNGs plus 180 decoded MP4 frames per renderer, at 2048×1024, 1024-pixel faces,
+30 FPS, six seconds and two warmup frames. Analytic markers cross cube edges,
+the rear seam and both poles; flash frames match exactly. All three audio cues
+are within 0.71 ms of their expected time in source/decoded audio, with no
+unexpected loud intervals. This is fixture evidence, not universal scene sync.
+
+`storage-override-review.json` verifies a real Forward+/Vulkan override from this
+Compatibility project, identical decoded Fast/Compact PNG pixels, source hashes
+unchanged after re-encoding at another CRF, original renderer evidence retained,
+no capture child for re-encoding, and unchanged project/studio settings.
+`startup-review.json` contains actual worker method/driver mismatches: both stop
+at zero submitted frames with specific fallback diagnostics.
+
+The renderer contracts add 21 checks for default/explicit selection, fallback,
+stale estimates, camera offsets, animated settings, compositor propagation and
+90° physical-camera projection. Two planning checks reject renderer relabeling
+on re-encode. A new lifecycle case rejects a scene that instantiates with a broken
+script, invalidating its misleading complete PNG count before delivery.
+
+### Reliability findings and remaining scope
+
+A concurrent Windows run hit a progress-JSON replacement failure beyond the old
+50 ms retry window. `job_io.gd` now retries for roughly 500 ms, retaining the
+previous complete file on failure. `json-lock/json-lock-review.json` verifies a
+real native delete-sharing lock: a 180 ms transient lock recovered in 189 ms;
+a permanent lock failed in 546 ms with the original JSON unchanged. Scheduling
+can extend elapsed time slightly beyond the nominal retry delays.
+
+Development package failures are retained, not counted as accepted evidence:
+an old audio test expected pre-renderer estimates to remain usable; another
+asserted every diagnostics renderer was Compatibility. Linux inherited the
+intentional malformed-script stderr; the harness now recognizes that specific
+fixture only. A killed Linux encoder can report either process exit or broken
+pipe depending on timing; both require terminal failure and no final video.
+An initial appearance fixture had a GDScript type error, and one ANGLE attempt
+selected FFprobe as FFmpeg. Those failed attempts establish no renderer support.
+
+No native Mac/Metal, Linux hardware GPU, Linux ARM, Windows Mobile 4.5.1/4.6.3,
+baked LightmapGI/VoxelGI, stateful compositor histories or new Forward+/Mobile
+4K/8K endurance result is claimed. CI adds Linux software-Vulkan appearance
+exports and still separates Mac headless contracts; actionlint 1.7.12 passes,
+but hosted Actions were not run. No release or commit was published.
+
+The previous uncommitted portability/onboarding changes remain in the working
+tree. A baseline patch is saved locally at `renderer-review/baseline.patch` under
+`.godot360`; the original project configuration, scene selection, saved recipe
+and existing captures were preserved.
+
+## Desktop platforms — 2026-09-07
+
+The same frozen addon ZIP passed **1,968 checks** across Windows and Linux:
+
+| Host | Godot | Checks | Export coverage |
+| --- | --- | --- | --- |
+| Windows 11 x86_64, RTX 3060 Ti, FFmpeg/FFprobe 9.0.1 | 4.5.1 | 491 passed | Complete package review |
+| Same Windows host | 4.6.3 | 491 passed | Complete package review |
+| Same Windows host | 4.7.2 | 491 passed | Complete package review |
+| Ubuntu 26.04 x86_64, WSL2/WSLg, Mesa 26.0.3 llvmpipe, FFmpeg/FFprobe 8.0.1 | 4.7.2 | 495 passed | Complete package review on a case-sensitive Linux filesystem |
+
+Each full run includes fresh editor import, all contracts, actual calibration and
+Motion Lab capture, audio mixing and re-encoding, interrupted capture cleanup,
+reopening/recovery, storage failures, diagnostics and preview directions. All
+thirteen delivery checks pass on completed outputs. The new platform suite checks
+native child exit codes, literal arguments, Unicode paths/output and discovery;
+Linux additionally checks execute permissions, symlinks and filename case.
+
+Both platforms verify the ZIP manifest, reproduce identical ZIP bytes and leave
+the package, extracted payload, source project and saved settings unchanged.
+The Linux preview was visually inspected. Package evidence stays local:
+
+- `.godot360/platform-review/candidate.zip`: **106 members, 198,494 bytes**;
+  SHA-256 `be93e21515594d4613176da5846841b14587b3ade80fafa829eebce44e680359`.
+- `.godot360/platform-review/windows/package-review.json` and its
+  `engines/compatibility-review.json`: all three Windows engine results.
+- `.godot360/platform-review/linux/package-review.json` and its
+  `engines/compatibility-review.json`: copied Linux reports; corresponding logs
+  and preview screenshots are preserved under the same directory.
+- Original Linux projects and retained captures remain under
+  `/var/tmp/godot360-platform-w0t720ix/package-review` in the existing Ubuntu WSL
+  distribution. They use the native Linux Godot executable and `/usr/bin/ffmpeg`.
+- A separate Linux `--headless-only` package run passed **408 checks** under
+  `/var/tmp/godot360-platform-w0t720ix/headless-review`. Its report explicitly says
+  `headless contracts only; no rendered export`. These repeated checks are not
+  included in the 1,968 total and do not constitute Mac validation.
+
+The [CI workflow](../.github/workflows/platforms.yml) passes **actionlint 1.7.12**.
+It prepares a Linux/Xvfb/Mesa full-review lane and a macOS 15 headless lane. Hosted
+runs have not been executed in this pass. Documentation checks found no broken
+local file/heading links across the five setup/testing guides (58 checked).
+
+Linux results establish functional exports with software rendering under WSLg.
+They do not establish Linux hardware-GPU performance, standalone Wayland behavior,
+ARM support or new Linux 4K/8K endurance evidence. **Native macOS editor/capture
+validation remains pending on Apple Silicon and Intel.** Independent beta feedback
+is still separate from these local automated checks. No release was published.
+
 ## First-export usability pass — 2026-09-07
 
 The exact working-source package passed **1,443 checks: 481 per engine** on Godot
@@ -241,7 +417,7 @@ with failure reports; only jobs whose `report.json` says `ok: true` are validate
   play the upload or verify its quality setting.
 - The user described the sharper 8K replacement as looking amazing. Its local
   checks pass; independent playback after YouTube transcoding remains unverified.
-- Only Windows and Compatibility have been exercised. Addon-only checks now cover
+- At this historical milestone, only Windows and Compatibility had been exercised. Addon-only checks covered
   Godot 4.5.1/4.6.3/4.7.2; detailed 4K/8K and motion image/audio evidence remains
   specific to 4.7.2 and the listed GPU.
 - The original 4K smoke test verifies dimensions and format, not long-duration stability.

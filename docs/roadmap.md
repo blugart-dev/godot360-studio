@@ -84,12 +84,17 @@ read the [audio guide](../addons/godot360/AUDIO.md).
 
 ## Revised route to 1.0 — 2026-09-07
 
-Freeze feature scope around mono equirectangular video, SDR BT.709, stereo audio,
-portable recipes and recoverable jobs. The initial support target is Windows with
-Godot 4.5.1/4.6.3/4.7.2 and Compatibility, external FFmpeg/FFprobe, and local storage.
-These engine versions have evidence; this is not a claim about every later patch.
-Linux/macOS, other renderers, stereo ODS, ambisonics, uploads, arbitrary capture
-resume and a native backend are outside the first release's support claim.
+Keep feature scope around mono equirectangular video, SDR BT.709, stereo audio,
+portable recipes and recoverable jobs. The user expanded platform work to Linux
+and ideally macOS on 2026-09-07, superseding the original Windows-only boundary.
+Windows retains Godot 4.5.1/4.6.3/4.7.2 evidence; Linux now has native 4.7.2 workflow
+checks under Ubuntu/WSLg. macOS setup and a headless CI lane are prepared; native
+Mac exports still need validation. See [platform status](../addons/godot360/PLATFORMS.md).
+Project renderer preservation, external FFmpeg/FFprobe and local storage are the
+target. Forward+/Mobile now have native visual evidence; remaining priorities are
+Mac hardware validation, representative user scenes, GI/temporal effects and
+high-resolution VRAM/endurance measurements. Stereo ODS, ambisonics, uploads, arbitrary capture resume and a
+native backend are outside the first release's support claim.
 
 | Gate | Acceptance evidence | State |
 | --- | --- | --- |
@@ -115,7 +120,8 @@ fails, fix and repeat the affected case before expanding duration or hardware.
 Do local implementation and tests before requesting user verification. Independent
 beta feedback and YouTube review can proceed alongside development, but cannot be
 replaced by another local unit test. Do not add features solely to fill version
-numbers, or postpone a Windows release until unclaimed operating systems are tested.
+numbers. Promote each platform's support claim only after its native workflow
+passes; partial/headless checks are useful evidence with a narrower scope.
 
 ## GDExtension decision
 

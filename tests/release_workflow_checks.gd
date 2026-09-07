@@ -71,7 +71,7 @@ func _run() -> void:
 	reader.open(bundle)
 	check(JSON.parse_string(reader.read_file("job/report.json").get_string_from_utf8()).get("ok", false), "Saved bundle contains the real successful export report")
 	var environment = JSON.parse_string(reader.read_file("environment.json").get_string_from_utf8())
-	check(environment.get("renderer") == "gl_compatibility" and not str(environment.get("video_adapter", "")).is_empty(), "Panel diagnostics records actual renderer and GPU")
+	check(environment.get("renderer") == RenderingServer.get_current_rendering_method() and not str(environment.get("video_adapter", "")).is_empty(), "Panel diagnostics records actual renderer and GPU")
 	reader.close()
 	panel._save_diagnostics(bundle)
 	check(panel.diagnostics_result.text.contains("already exists") and panel.status.text == status_before, "Failed diagnostics save leaves job completion visible")

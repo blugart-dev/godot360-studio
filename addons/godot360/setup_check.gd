@@ -2,29 +2,13 @@
 extends Node
 ## Bounded asynchronous tool checks; the editor keeps responding throughout.
 const Runner = preload("process_runner.gd")
+const Tools = preload("tool_paths.gd")
 var runner: RefCounted
 var busy := false
 
 
 static func find_executable(command: String) -> String:
-	var selected := command.strip_edges().trim_prefix('"').trim_suffix('"')
-	if selected.is_empty():
-		return ""
-	if selected.is_absolute_path():
-		return selected if FileAccess.file_exists(selected) else ""
-	# Bare command names only. Relative filesystem paths are ambiguous in a worker.
-	if selected.contains("/") or selected.contains("\\"):
-		return ""
-	var names := [selected]
-	if OS.get_name() == "Windows" and not selected.to_lower().ends_with(".exe"):
-		names.push_front(selected + ".exe")
-	for entry in OS.get_environment("PATH").split(";" if OS.get_name() == "Windows" else ":", false):
-		var directory := entry.strip_edges().trim_prefix('"').trim_suffix('"')
-		for name in names:
-			var path := directory.path_join(name)
-			if directory.is_absolute_path() and FileAccess.file_exists(path):
-				return path
-	return ""
+	return Tools.find_executable(command)
 
 
 func check_tools(ffmpeg: String, ffprobe: String) -> Dictionary:
@@ -35,7 +19,7 @@ func check_tools(ffmpeg: String, ffprobe: String) -> Dictionary:
 	var encoder := find_executable(ffmpeg)
 	var probe := find_executable(ffprobe)
 	if encoder.is_empty() or probe.is_empty():
-		result.error = "Locate FFmpeg and FFprobe in Tool setup, then check again."
+		result.error = Tools.missing_message("FFmpeg" if encoder.is_empty() else "FFprobe")
 	else:
 		var folder := ProjectSettings.globalize_path("res://.godot360/setup-" + str(Time.get_ticks_usec()))
 		if DirAccess.make_dir_recursive_absolute(folder) != OK:

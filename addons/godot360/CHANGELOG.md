@@ -1,5 +1,35 @@
 # Changelog
 
+## Unreleased — renderer preservation
+
+- Default capture to the saved project renderer/driver; explicit recipe/UI/CLI
+  overrides, actual GPU/backend evidence and a fail-on-fallback worker handshake.
+- Preserve camera offsets, animated camera settings and compositors; copy viewport
+  AA, scaling, LOD, occlusion and shadow-atlas configuration. Keep SDR sRGB assembly
+  and existing BT.709 delivery, with explicit HDR readback rejection.
+- Invalidate old and renderer/engine/project-dependent estimates; preserve original
+  renderer evidence on re-encode. Reject scene script errors before delivery.
+- Add native renderer fixtures, perspective/panorama comparisons, motion review,
+  renderer-selectable package tests and a Linux software-Vulkan CI lane.
+- Retry transient JSON replacement locks for roughly 500 ms; preserve the previous
+  complete checkpoint on permanent failure. Verify both with native Windows locks.
+- Document measured renderer/backend combinations and visible glow/auto-exposure
+  seams, distinguishing native face effects from panorama sampling defects.
+
+## Unreleased — desktop platforms
+
+- Add Windows, Linux and macOS dependency downloads, install steps and a shared
+  Platform setup guide, available from the editor's Tool setup section.
+- Resolve tool names to absolute paths for setup, capture and encoding; search
+  Homebrew/MacPorts locations when the editor has a limited PATH. Check Unix
+  execute bits and explain missing permissions/native builds.
+- Release the panel during plugin shutdown while editor services are still alive.
+  Use Cmd+S in macOS scene-save guidance.
+- Add real native-process, Unicode-path, Unix permission and symlink checks.
+  Record OS, architecture, tool versions and rendered/headless coverage in reviews.
+- Prepare Linux rendered-export and macOS headless CI lanes. Keep Mac capture
+  support provisional until native validation; see [platform status](PLATFORMS.md).
+
 ## Unreleased — first-export workflow
 
 - Add Use current scene with a save boundary, saved-scene camera discovery and a

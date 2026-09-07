@@ -5,7 +5,34 @@ for installation and export, [AUTHORING.md](AUTHORING.md) for timelines, and
 [AUDIO.md](AUDIO.md) for music and synchronization. This package has not been
 published to a community registry.
 
-## Tested environment
+## Current platform work
+
+The renderer pass supersedes the old forced-Compatibility capture behavior.
+Captures now preserve the saved project renderer/driver by default. Windows has
+native Vulkan and D3D12 Forward+/Mobile visual exports; Linux/WSLg has software
+Vulkan visual exports. [Renderers and scene appearance](RENDERERS.md) records
+precise combinations, preservation behavior and observed six-face limitations.
+The repository's `docs/validation.md` holds dated workflow counts and evidence.
+The historical Compatibility tables below remain historical; they do not certify
+all features or all GPUs of another renderer.
+
+The same addon now targets Windows and Linux, with macOS prepared for native
+validation. See [Platform setup](PLATFORMS.md) for downloads and installation.
+
+Linux source workflows passed **495 checks** on Godot 4.7.2, Ubuntu 26.04 x86_64
+under WSL2/WSLg, Mesa 26.0.3 llvmpipe software OpenGL, FFmpeg/FFprobe 8.0.1.
+This includes real calibration and Motion Lab exports, audio mixing/re-encoding,
+capture failure cleanup, reopening/recovery, storage failures and diagnostics.
+Tests ran on a case-sensitive Linux filesystem. These are functional checks;
+they do not establish Linux 4K/8K speed, bare-metal GPU compatibility or Wayland
+coverage. The repository's validation record tracks exact-package reruns separately.
+
+macOS has native tool resolution and Homebrew setup instructions. Its CI lane
+checks headless contracts; even a passing lane does not establish rendered export
+support. Native Mac editor/capture/recovery and Intel/Apple Silicon validation
+remain pending. CI is configured in source; no hosted run is claimed here.
+
+## Historical Windows environment
 
 All rows below use Windows, an NVIDIA RTX 3060 Ti, Compatibility/OpenGL, and
 FFmpeg/FFprobe 9.0.1. Every engine ran in its own fresh project containing the addon
@@ -42,7 +69,8 @@ A reconnection timeout leaves the job unconfirmed and preserves its
 original status. Source hashes and the original project/settings remain unchanged.
 These short captures establish basic compatibility, not performance equivalence.
 Detailed 4K/8K and frame-by-frame motion evidence remains specific to Godot 4.7.2.
-Linux, macOS, other GPUs and Forward+/Mobile renderers have not been tested.
+That historical run did not test Linux, macOS, other GPUs or Forward+/Mobile.
+Current Linux and renderer evidence is recorded above; Mac and other GPU gaps remain.
 
 Version 0.6.1 fixes the Motion Lab example's library binding on 4.5.1. Its saved
 `libraries` dictionary is supported by the tested engines; the newer `libraries/`

@@ -97,6 +97,25 @@ static func _advanced(panel: Control, parent: Control) -> void:
 	panel.recipe_fields.fps.hide()
 	grid.get_child(grid.get_child_count() - 2).hide()
 	_note(section, "Manual camera paths are relative to the scene root. Use this for cameras created by scripts at runtime.")
+	var renderer_grid := _grid(section)
+	_label(renderer_grid, "Capture renderer")
+	panel.renderer_control = OptionButton.new()
+	for name in ["Project renderer (default)", "Forward+", "Mobile", "Compatibility"]:
+		panel.renderer_control.add_item(name)
+	renderer_grid.add_child(panel.renderer_control)
+	panel.renderer_control.item_selected.connect(func(index: int):
+		panel.profile.rendering_method = panel.Renderer.METHODS[index]
+		panel._refresh_plan())
+	_label(renderer_grid, "Graphics driver")
+	panel.driver_control = OptionButton.new()
+	for name in ["Project driver (default)", "Vulkan", "Direct3D 12", "Metal", "OpenGL 3", "OpenGL via ANGLE", "OpenGL ES"]:
+		panel.driver_control.add_item(name)
+	renderer_grid.add_child(panel.driver_control)
+	panel.driver_control.item_selected.connect(func(index: int):
+		panel.profile.rendering_driver = panel.Renderer.DRIVERS[index]
+		panel._refresh_plan())
+	_note(section, "Project preserves the saved project's renderer. Overrides affect new captures; re-encoding keeps the original pixels. A fallback stops capture with a diagnostic.")
+	panel._button(section, "Renderer support and scene effects", func(): OS.shell_open(ProjectSettings.globalize_path("res://addons/godot360/RENDERERS.md")))
 	var row := HBoxContainer.new()
 	section.add_child(row)
 	_label(row, "Frame storage")
@@ -124,7 +143,7 @@ static func _advanced(panel: Control, parent: Control) -> void:
 
 static func _tools(panel: Control, parent: Control) -> void:
 	var section := foldout(panel, parent, "tools", "Tool setup")
-	_note(section, "FFmpeg encodes the video; FFprobe verifies it. Select FFmpeg to find FFprobe beside it, or use tools on PATH.")
+	_note(section, "FFmpeg encodes the video; FFprobe verifies it. Select their files or find installed tools. Platform setup has download and installation steps.")
 	var grid := _grid(section)
 	panel.ffmpeg = panel._field(grid, "FFmpeg", "ffmpeg")
 	panel.ffprobe = panel._field(grid, "FFprobe", "ffprobe")
@@ -132,8 +151,8 @@ static func _tools(panel: Control, parent: Control) -> void:
 	section.add_child(actions)
 	panel._button(actions, "FFmpeg…", panel._browse.bind("ffmpeg"))
 	panel._button(actions, "FFprobe…", panel._browse.bind("ffprobe"))
-	panel._button(actions, "Find on PATH", panel._detect_tools)
-	panel._button(actions, "Download help", func(): OS.shell_open("https://ffmpeg.org/download.html"))
+	panel._button(actions, "Find installed tools", panel._detect_tools)
+	panel._button(actions, "Platform setup", func(): OS.shell_open(ProjectSettings.globalize_path("res://addons/godot360/PLATFORMS.md")))
 
 
 static func _saved(panel: Control, parent: Control) -> void:

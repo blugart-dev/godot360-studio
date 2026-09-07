@@ -6,6 +6,11 @@ const DIRECTIONS: Array[Vector3] = [Vector3.RIGHT, Vector3.LEFT, Vector3.UP,
 const UP_VECTORS: Array[Vector3] = [Vector3.UP, Vector3.UP, Vector3.BACK,
 	Vector3.FORWARD, Vector3.UP, Vector3.UP]
 const FACE_NAMES: Array[String] = ["right", "left", "up", "down", "front", "back"]
+const VIEWPORT_SETTINGS = ["msaa_3d", "screen_space_aa", "use_taa", "use_debanding",
+	"scaling_3d_mode", "scaling_3d_scale", "fsr_sharpness", "texture_mipmap_bias",
+	"mesh_lod_threshold", "use_occlusion_culling", "positional_shadow_atlas_size",
+	"positional_shadow_atlas_16_bits", "positional_shadow_atlas_quad_0",
+	"positional_shadow_atlas_quad_1", "positional_shadow_atlas_quad_2", "positional_shadow_atlas_quad_3"]
 var source: Camera3D
 var cameras: Array[Camera3D] = []
 var material: ShaderMaterial
@@ -23,15 +28,13 @@ func build(camera: Camera3D, face_size: int, output_size: Vector2i) -> void:
 		viewport.world_3d = source.get_world_3d()
 		viewport.audio_listener_enable_3d = false
 		viewport.render_target_update_mode = SubViewport.UPDATE_ALWAYS
-		viewport.msaa_3d = source.get_viewport().msaa_3d
+		# Faces end in Godot's tone-mapped SDR/sRGB target. The assembler is
+		# also SDR 2D: sampling must not decode sRGB or apply tone mapping again.
+		viewport.use_hdr_2d = false
+		for property in VIEWPORT_SETTINGS:
+			viewport.set(property, source.get_viewport().get(property))
 		add_child(viewport)
 		var view := Camera3D.new()
-		view.fov = 90.0
-		view.near = source.near
-		view.far = source.far
-		view.cull_mask = source.cull_mask
-		view.environment = source.environment
-		view.attributes = source.attributes
 		viewport.add_child(view)
 		view.current = true
 		cameras.append(view)
@@ -58,6 +61,19 @@ func sync_camera() -> void:
 	if not is_instance_valid(source):
 		return
 	for i in range(cameras.size()):
+		var view := cameras[i]
+		view.environment = source.environment
+		view.attributes = source.attributes
+		view.compositor = source.compositor
+		view.cull_mask = source.cull_mask
+		view.set_perspective(90.0, source.near, source.far)
 		var local_basis := Basis.looking_at(DIRECTIONS[i], UP_VECTORS[i])
-		cameras[i].global_transform = Transform3D(source.global_basis.orthonormalized() * local_basis,
-			source.global_position)
+		var transform := source.get_camera_transform()
+		view.global_transform = Transform3D(transform.basis.orthonormalized() * local_basis, transform.origin)
+
+
+func settings() -> Dictionary:
+	var result := {}
+	for property in VIEWPORT_SETTINGS:
+		result[property] = cameras[0].get_viewport().get(property)
+	return result

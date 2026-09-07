@@ -8,6 +8,8 @@ const Planner = preload("job_planner.gd")
 const Audio = preload("audio_plan.gd")
 const Session = preload("job_session.gd")
 const Storage = preload("storage_guard.gd")
+const Tools = preload("tool_paths.gd")
+const Renderer = preload("renderer_policy.gd")
 var storage: RefCounted
 var job_error := ""
 var storage_stage := ""
@@ -72,6 +74,7 @@ func _run() -> void:
 		return
 	if job.get("mode") != "reencode":
 		job.scene_modified_time = FileAccess.get_modified_time(str(job.scene_path))
+		Renderer.stamp(job)
 	if Audio.uses_soundtrack(job):
 		job.soundtrack_resolved_path = Audio.resolved_path(job)
 	job.audio_signature = Audio.signature(job)
@@ -81,6 +84,15 @@ func _run() -> void:
 		_fail(job_error)
 		return
 	_status("Checking tools", 0.0)
+	for key in ["ffmpeg", "ffprobe"]:
+		var executable := Tools.find_executable(str(job[key]))
+		if executable.is_empty():
+			_fail(Tools.missing_message("FFmpeg" if key == "ffmpeg" else "FFprobe"))
+			return
+		job[key] = executable
+	if not _required_json("job.json", job):
+		_fail(job_error)
+		return
 	var preflight := await _execute(str(job.ffmpeg), ["-hide_banner", "-encoders"], "ffmpeg-check.log")
 	if _cancelled():
 		return
@@ -181,6 +193,7 @@ func _run() -> void:
 		"scene_checks": IO.read_json(source_folder.path_join("scene-checks.json")),
 		"quality_checks": IO.read_json(folder.path_join("quality-checks.json")),
 		"capture_timings": IO.read_json(source_folder.path_join("capture-timings.json")),
+		"capture_settings": IO.read_json(source_folder.path_join("capture-settings.json")),
 		"capture_reused": job.get("mode") == "reencode", "capture_source": source_folder,
 		"audio": {"settings": Audio.settings(job), "soundtrack_source": soundtrack_info,
 			"legacy_scene_audio": audio_plan.legacy, "mix_limiter": "0.95 peak, latency compensated" if job.get("audio_mode") == "mix" else "none",
@@ -235,7 +248,8 @@ func _capture() -> bool:
 		_fail(job_error)
 		return false
 	var arguments := PackedStringArray(["--path", ProjectSettings.globalize_path("res://"),
-		"--rendering-method", "gl_compatibility", "--fixed-fps", str(int(job.fps)),
+		"--rendering-method", str(job.renderer_selection.resolved_method),
+		"--rendering-driver", str(job.renderer_selection.resolved_driver), "--fixed-fps", str(int(job.fps)),
 		"--quit-after", str(int(job.frames) + int(job.get("warmup_frames", 2))),
 		"--write-movie", folder.path_join("movie/audio.png"), "--disable-vsync",
 		"--log-file", folder.path_join("capture.log"),
@@ -259,6 +273,13 @@ func _capture() -> bool:
 	if _cancelled():
 		return false
 	var capture := IO.read_json(folder.path_join("capture-result.json"))
+	# A PackedScene can instantiate even when its attached script fails to parse.
+	# Such a render is missing authored behavior, despite a complete PNG count.
+	var capture_log := FileAccess.get_file_as_string(folder.path_join("capture.log"))
+	if capture.get("ok", false) and capture_log.contains("SCRIPT ERROR:"):
+		capture.ok = false
+		capture.error = "Scene script failed during capture. See SCRIPT ERROR in capture.log; fix the scene and start a new render."
+		_required_json("capture-result.json", capture)
 	if not capture.get("ok", false):
 		_fail(str(capture.get("error", "Rendering worker exited (exit %d) before completing capture. See capture.log." % worker_exit)))
 		return false

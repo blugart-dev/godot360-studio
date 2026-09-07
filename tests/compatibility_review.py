@@ -6,6 +6,7 @@ gets its own import cache, settings, generated cues, logs and capture folders.
 """
 import argparse
 import json
+import platform
 import re
 import shutil
 import subprocess
@@ -14,7 +15,7 @@ from pathlib import Path
 
 from audio_review import run, sha, snapshot, tones, write_wav
 
-CONTRACTS = ("export_checks", "planning_checks", "metadata_checks", "timeline_checks", "audio_checks", "frame_writer_checks", "storage_checks", "diagnostics_checks", "usability_checks")
+CONTRACTS = ("export_checks", "planning_checks", "metadata_checks", "timeline_checks", "audio_checks", "frame_writer_checks", "storage_checks", "diagnostics_checks", "usability_checks", "platform_checks", "renderer_checks")
 
 
 def command(args, engine, project, name, options, timeout=120):
@@ -29,7 +30,12 @@ def command(args, engine, project, name, options, timeout=120):
         code = -1
         output += "\nTEST TIMEOUT: coordinator process terminated. Inspect job status/logs before retrying.\n"
     (project / ".godot360" / (name + "-driver.log")).write_text(output, encoding="utf-8")
-    success = code == 0 and "SCRIPT ERROR:" not in output
+    script_errors = re.findall(r"SCRIPT ERROR:[^\n]*(?:\n[^\n]*){0,2}", output)
+    # Unix children inherit the driver's stderr. The lifecycle fixture deliberately
+    # loads this malformed script and asserts that the worker rejects its capture.
+    unexpected_scripts = [error for error in script_errors if not
+                          (name == "capture_lifecycle_checks" and "Parse Error:" in error and "bad-script.gd:" in error)]
+    success = code == 0 and not unexpected_scripts
     match = re.search(r"CHECKS: (\d+) checks, (\d+) failures", output)
     if name in CONTRACTS or name in ("audio_studio_checks", "capture_lifecycle_checks", "recovery_studio_checks", "storage_failure_checks", "release_workflow_checks"):
         success = success and match is not None and int(match.group(2)) == 0
@@ -55,7 +61,7 @@ def review(args):
         project = args.output / (str(index + 1) + "-godot-" + re.sub(r"[^a-zA-Z0-9.-]", "_", version))
         project.mkdir()
         (project / ".godot360").mkdir()
-        (project / "project.godot").write_text('''config_version=5
+        (project / "project.godot").write_text(f'''config_version=5
 [application]
 config/name="Godot360 isolated compatibility check"
 [display]
@@ -64,9 +70,14 @@ window/size/viewport_height=600
 [editor_plugins]
 enabled=PackedStringArray("res://addons/godot360/plugin.cfg")
 [rendering]
-renderer/rendering_method="gl_compatibility"
-renderer/rendering_method.mobile="gl_compatibility"
+renderer/rendering_method="{args.rendering_method}"
+renderer/rendering_method.mobile="{args.rendering_method}"
 ''', encoding="utf-8")
+        if args.rendering_driver != "project":
+            key = "gl_compatibility" if args.rendering_method == "gl_compatibility" else "rendering_device"
+            with (project / "project.godot").open("a", encoding="utf-8") as config:
+                for feature in ("", ".windows", ".linuxbsd", ".macos"):
+                    config.write(f'{key}/driver{feature}="{args.rendering_driver}"\n')
         shutil.copytree(args.project / "addons/godot360", project / "addons/godot360")
         (project / "tests").mkdir()
         shutil.copytree(args.project / "tests/fixtures", project / "tests/fixtures")
@@ -81,9 +92,9 @@ renderer/rendering_method.mobile="gl_compatibility"
                                       "--", "--ffmpeg=" + str(args.ffmpeg), "--ffprobe=" + str(args.ffprobe)])
                 if not checks[name]["ok"]:
                     break
-            if all(check["ok"] for check in checks.values()):
+            if not args.headless_only and all(check["ok"] for check in checks.values()):
                 checks["audio_studio_checks"] = command(args, engine, project, "audio_studio_checks",
-                    ["--rendering-method", "gl_compatibility", "--script", "res://tests/audio_studio_checks.gd", "--",
+                    ["--rendering-method", args.rendering_method, "--script", "res://tests/audio_studio_checks.gd", "--",
                      "--ffmpeg=" + str(args.ffmpeg), "--ffprobe=" + str(args.ffprobe), "--soundtrack=" + str(cue)], timeout=240)
             if args.capture_failures and all(check["ok"] for check in checks.values()):
                 checks["capture_lifecycle_checks"] = command(args, engine, project, "capture_lifecycle_checks",
@@ -92,7 +103,7 @@ renderer/rendering_method.mobile="gl_compatibility"
                      "--ffmpeg=" + str(args.ffmpeg), "--ffprobe=" + str(args.ffprobe)], timeout=240)
             if args.job_recovery and all(check["ok"] for check in checks.values()):
                 checks["recovery_studio_checks"] = command(args, engine, project, "recovery_studio_checks",
-                    ["--rendering-method", "gl_compatibility", "--script", "res://tests/recovery_studio_checks.gd", "--",
+                    ["--rendering-method", args.rendering_method, "--script", "res://tests/recovery_studio_checks.gd", "--",
                      "--output=" + str(project / ".godot360/recovery"),
                      "--ffmpeg=" + str(args.ffmpeg), "--ffprobe=" + str(args.ffprobe)], timeout=240)
             if args.storage_failures and all(check["ok"] for check in checks.values()):
@@ -102,20 +113,25 @@ renderer/rendering_method.mobile="gl_compatibility"
                      "--ffmpeg=" + str(args.ffmpeg), "--ffprobe=" + str(args.ffprobe)], timeout=240)
             if args.release_workflow and all(check["ok"] for check in checks.values()):
                 checks["release_workflow_checks"] = command(args, engine, project, "release_workflow_checks",
-                    ["--rendering-method", "gl_compatibility", "--script", "res://tests/release_workflow_checks.gd", "--",
+                    ["--rendering-method", args.rendering_method, "--script", "res://tests/release_workflow_checks.gd", "--",
                      "--ffmpeg=" + str(args.ffmpeg), "--ffprobe=" + str(args.ffprobe)], timeout=360)
         outputs = []
         for path in sorted((project / "renders").rglob("report.json")):
             report = json.loads(path.read_text())
             assert report["ok"] and len(report["checks"]) == 13 and all(report["checks"].values()), path
-            outputs.append({"report": str(path), "checks": report["checks"], "capture_reused": report["capture_reused"]})
-        complete = len(checks) == len(CONTRACTS) + 2 + int(args.capture_failures) + int(args.job_recovery) + int(args.storage_failures) + int(args.release_workflow) and all(check["ok"] for check in checks.values()) and len(outputs) == 2
+            outputs.append({"report": str(path), "checks": report["checks"], "capture_reused": report["capture_reused"], "capture_settings": report.get("capture_settings", {})})
+        complete = len(checks) == len(CONTRACTS) + 1 + int(not args.headless_only) + int(args.capture_failures) + int(args.job_recovery) + int(args.storage_failures) + int(args.release_workflow) and all(check["ok"] for check in checks.values()) and len(outputs) == (0 if args.headless_only else 2)
         results.append({"godot_version": version, "executable": str(engine), "project": str(project), "ok": complete,
                         "stages": checks, "outputs": outputs})
     assert snapshot(args.project / "addons/godot360") == addon_before
     assert (sha(project_config) if project_config.exists() else None) == project_before
     assert (sha(settings) if settings.exists() else None) == settings_before
     report = {"ok": all(result["ok"] for result in results), "source_addon_unchanged": True,
+              "platform": platform.platform(), "architecture": platform.machine(),
+              "requested_renderer": args.rendering_method, "requested_driver": args.rendering_driver,
+              "coverage": "headless contracts only; no rendered export" if args.headless_only else "contracts and rendered exports",
+              "ffmpeg_version": run([args.ffmpeg, "-version"]).stdout.decode("utf-8", errors="replace").splitlines()[0],
+              "ffprobe_version": run([args.ffprobe, "-version"]).stdout.decode("utf-8", errors="replace").splitlines()[0],
               "source_project_and_settings_unchanged": True, "engines": results}
     (args.output / "compatibility-review.json").write_text(json.dumps(report, indent=2), encoding="utf-8")
     print("COMPATIBILITY REVIEW:", "PASS" if report["ok"] else "FAIL", flush=True)
@@ -129,8 +145,14 @@ if __name__ == "__main__":
     parser.add_argument("--ffmpeg", type=Path, required=True)
     parser.add_argument("--ffprobe", type=Path, required=True)
     parser.add_argument("--capture-failures", action="store_true", help="Also exercise six controlled capture failures in each isolated project")
+    parser.add_argument("--headless-only", action="store_true", help="Contracts without a display; does not establish rendered-export support")
+    parser.add_argument("--rendering-method", default="gl_compatibility", choices=["gl_compatibility", "forward_plus", "mobile"])
+    parser.add_argument("--rendering-driver", default="project")
     parser.add_argument("--job-recovery", action="store_true", help="Also reopen actual jobs after editor/coordinator loss and check stale identity rejection")
     parser.add_argument("--storage-failures", action="store_true", help="Inject low-space and real output-write failures in disposable jobs")
     parser.add_argument("--release-workflow", action="store_true", help="Also exercise documented Draft calibration, six preview directions, diagnostics and full Motion Lab")
     parser.add_argument("--output", type=Path, default=Path(".godot360") / ("compatibility-" + time.strftime("%Y%m%d-%H%M%S")))
-    raise SystemExit(review(parser.parse_args()))
+    args = parser.parse_args()
+    if args.headless_only and (args.job_recovery or args.release_workflow):
+        parser.error("--job-recovery and --release-workflow require a display; omit --headless-only")
+    raise SystemExit(review(args))

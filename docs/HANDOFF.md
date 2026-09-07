@@ -1,9 +1,47 @@
 # Godot360 Studio development handoff
 
-Updated 2026-09-07 for the first-export usability pass, following the rename and private GitHub hosting. A fresh session can begin by
+Updated 2026-09-07 for project renderer preservation and native renderer validation,
+following Linux/macOS preparation, dependency onboarding and first-export usability. A fresh session can begin by
 reading this file, the linked guides, and the relevant current source/tests.
 
 ## Latest product direction
+
+The latest pass implements **project renderer/driver by default**, with explicit
+recipe/UI overrides and strict requested/actual worker checks. Older source
+always forced Compatibility; describing Forward+/Mobile as merely unvalidated
+was misleading. Read [renderer behavior](../addons/godot360/RENDERERS.md) and the
+new top entry in [validation](validation.md) before relying on historical counts.
+`renderer_policy.gd` owns resolution, fallback diagnostics and planning signatures.
+Capture settings are carried into delivery reports and preserved for re-encodes.
+Native Windows Vulkan/D3D12 and Linux software-Vulkan visual tests exist; native
+Mac and Linux hardware GPU validation remain pending. The user's uncommitted
+platform/onboarding work and local scene/recipe/settings have been preserved.
+
+The accepted workflow matrix totals 3,662 checks: Windows Forward+/Vulkan on
+4.5.1/4.6.3/4.7.2, Windows Mobile/Vulkan and Compatibility/OpenGL on 4.7.2, and
+Linux 4.7.2 Forward+/Mobile with WSLg software Vulkan. Separate evidence includes
+45 appearance exports and all 180 source/decoded motion frames per renderer with
+audio onset within 0.71 ms. See `.godot360/renderer-review/summary.json` and the
+validation record for exact frozen packages and limits. A real Windows file-lock
+failure led to a 500 ms JSON replacement retry, verified with transient and
+permanent locks. Failed development packages are retained but not counted.
+
+Visible glow cuts and large auto-exposure differences across faces remain.
+Prioritize shared exposure/guard-band investigation, Mac/Metal and Linux hardware
+GPU validation, then representative Forward+/Mobile 4K/8K endurance, complex
+temporal scenes and stateful compositors. No new GDExtension is justified by these
+results. Runtime changes require appropriate new checks; final documentation-only
+edits do not require repeating the accepted matrix.
+
+Before this renderer pass, the user requested native Linux support and ideally macOS. This
+supersedes the older Windows-only platform boundary below. The same addon now
+resolves native tool paths consistently for setup/coordinator/capture, checks Unix
+execute bits and finds Homebrew/MacPorts installs from GUI-launched editors.
+The README and packaged [Platform setup](../addons/godot360/PLATFORMS.md) cover
+downloads and installation for all three platforms. `tests/platform_checks.gd`
+tests native child processes and Unix filesystem behavior. CI prepares a full Linux
+software-rendered review and a Mac headless lane; hosted runs and Mac captures are
+not yet claimed. See the latest [validation record](validation.md) for exact evidence.
 
 The user chose Godot creators exporting their existing 3D scenes as the initial
 audience and explicitly approved implementing the proposed first usability pass.
@@ -26,7 +64,7 @@ The version remains the 0.8 baseline with unreleased source changes; original
 candidate ZIPs are unchanged. Full spherical playback and a recent-export view
 were discussed as subsequent work; the current preview is still a first frame.
 
-The exact new package passed 1,443 checks (481 per engine) on 4.5.1/4.6.3/4.7.2,
+The earlier usability package passed 1,443 checks (481 per engine) on 4.5.1/4.6.3/4.7.2,
 including clean imports, 37 usability checks, actual exports and full recovery/
 storage workflows. It reproduced byte-for-byte from its own unpacked source.
 See `.godot360/usability-review/review/package-review.json` and the latest
@@ -168,7 +206,9 @@ justified by the measured bottleneck. Read [performance](performance.md),
 - Motion Lab's AudioStreamPlayer uses measured startup compensation. It is an
   example, not a correction to all user audio. Actual tests cover 30 FPS with two
   warmup frames and 24 FPS without warmup; only unit sampling covers 60 FPS.
-- The coordinator is headless; capture needs a GPU/display and Compatibility.
+- The coordinator is headless; capture needs a graphics device/display and uses
+  the saved project renderer/driver unless explicitly overridden. Unexpected
+  renderer/driver fallback fails before capture; headless success proves no pixels.
   Re-encoding requires no GPU scene capture. Only verified output receives the
   final `video-360.mp4` filename. Source PNG/WAV and diagnostics remain on disk.
 - Failure counts describe submitted frames, not necessarily finalized PNGs. A

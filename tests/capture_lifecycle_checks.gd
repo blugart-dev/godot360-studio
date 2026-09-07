@@ -32,6 +32,12 @@ func _run() -> void:
 	var failed := await _job("sample-hook", {"scene_path": ProjectSettings.localize_path(hook_scene), "frames": 120})
 	check(str(failed.capture.get("error", "")).contains("Injected sample hook failure"), "Hook failure survives into capture diagnostics")
 	check(int(failed.capture.get("rendered", -1)) == 14, "Failure records the number of submitted frames, including warmup")
+	var bad_script := folder.path_join("bad-script.gd")
+	FileAccess.open(bad_script, FileAccess.WRITE).store_string("extends Node3D\nfunc broken(:\n")
+	var bad_script_scene := folder.path_join("bad-script.tscn")
+	FileAccess.open(bad_script_scene, FileAccess.WRITE).store_string(FileAccess.get_file_as_string(hook_scene).replace(ProjectSettings.localize_path(hook), ProjectSettings.localize_path(bad_script)))
+	var script_failure := await _job("script-parse", {"scene_path": ProjectSettings.localize_path(bad_script_scene), "frames": 3})
+	check(str(script_failure.capture.get("error", "")).contains("Scene script failed"), "A scene that instantiates without its broken script cannot pass capture")
 	var closing := folder.path_join("close.gd")
 	FileAccess.open(closing, FileAccess.WRITE).store_string("extends Node3D\nfunc sample_360_frame(index: int, _seconds: float, _job: Dictionary) -> String:\n\tif index >= 12:\n\t\tget_tree().quit()\n\treturn \"\"\n")
 	var close_scene := folder.path_join("close.tscn")
@@ -45,7 +51,9 @@ func _run() -> void:
 	check(str(killed.state.get("error", "")).contains("exit"), "Unexpected worker exit is diagnosed explicitly")
 	if IO.argument("writer-check") == "true":
 		var writer := await _job("writer-killed", {}, "kill-writer")
-		check(str(writer.capture.get("error", "")).contains("PNG writer"), "Killed PNG encoder fails through capture diagnostics")
+		var writer_error := str(writer.capture.get("error", ""))
+		# A Unix kill can land between the liveness check and the pipe write.
+		check(writer_error.contains("PNG writer") or writer_error == "Cannot send a frame to FFmpeg. See frame-writer.log.", "Killed PNG encoder fails through capture diagnostics")
 	check(FileAccess.get_sha256("res://.godot360/settings.cfg") == settings_before, "Lifecycle tests preserve studio settings")
 	IO.write_json(folder.path_join("lifecycle-review.json"), {"ok": failures == 0, "checks": checks, "failures": failures, "cases": cases})
 	print("CAPTURE LIFECYCLE CHECKS: %d checks, %d failures" % [checks, failures])

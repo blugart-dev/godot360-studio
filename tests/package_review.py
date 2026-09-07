@@ -55,9 +55,11 @@ def main(args):
                     "--output", str(repeat)], check=True)
     assert repeat.read_bytes() == package.read_bytes(), "Rebuilding extracted package changed ZIP bytes"
     command = [sys.executable, str(extracted / "tests/compatibility_review.py"), "--project", str(extracted),
-               "--capture-failures", "--job-recovery", "--storage-failures", "--release-workflow",
+               "--capture-failures", "--storage-failures",
                "--ffmpeg", str(args.ffmpeg.resolve()), "--ffprobe", str(args.ffprobe.resolve()),
                "--output", str(output / "engines")]
+    command += ["--headless-only"] if args.headless_only else ["--job-recovery", "--release-workflow"]
+    command += ["--rendering-method", args.rendering_method, "--rendering-driver", args.rendering_driver]
     for engine in args.godot:
         command += ["--godot", str(engine.resolve())]
     completed = subprocess.run(command, check=False)
@@ -71,6 +73,8 @@ def main(args):
               "package_unchanged": digest(package.read_bytes()) == before,
               "check_count": sum(stage.get("checks") or 0 for engine in matrix.get("engines", []) for stage in engine["stages"].values()),
               "compatibility_report": str(matrix_path),
+              "platform": matrix.get("platform"), "architecture": matrix.get("architecture"),
+              "coverage": matrix.get("coverage"),
               "independent_beta_feedback": "pending; automated checks use the local machine",
               "youtube_playback": "pending; no upload performed"}
     (output / "package-review.json").write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
@@ -85,4 +89,7 @@ if __name__ == "__main__":
     parser.add_argument("--ffmpeg", type=Path, required=True)
     parser.add_argument("--ffprobe", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--headless-only", action="store_true", help="Check package and contracts without rendered exports; not the full release gate")
+    parser.add_argument("--rendering-method", default="gl_compatibility", choices=["gl_compatibility", "forward_plus", "mobile"])
+    parser.add_argument("--rendering-driver", default="project")
     raise SystemExit(main(parser.parse_args()))

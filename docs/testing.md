@@ -2,6 +2,138 @@
 
 Run these commands from the repository root. For the user workflow, see the [quick start](../addons/godot360/QUICKSTART.md).
 
+## Developer dependencies
+
+Godot, FFmpeg and FFprobe are needed for export checks; follow the
+[README's download and setup steps](../README.md#download-the-dependencies).
+Using the addon in Godot requires no Python installation.
+
+For the Python media reviewers, install [Python 3 for Windows](https://www.python.org/downloads/windows/)
+using the [official Windows installation guide](https://docs.python.org/3/using/windows.html).
+Open a new PowerShell window and confirm `py --version` works. From the repository
+root, create an isolated environment and install [NumPy](https://numpy.org/install/)
+and [Pillow](https://pillow.readthedocs.io/en/stable/installation/basic-installation.html):
+
+```powershell
+py -m venv .godot360/venv
+& .\.godot360\venv\Scripts\python.exe -m pip install numpy pillow
+& .\.godot360\venv\Scripts\python.exe -c "import numpy, PIL; print('Media-review dependencies ready')"
+```
+
+Use that environment's `python.exe` wherever a command below says `python`.
+It lives in the already-ignored `.godot360` folder and requires no activation-script
+or execution-policy changes. `tools/package_addon.py` and `tests/metadata_review.py`
+use Python's standard library; NumPy/Pillow are for the other media reviewers and
+their fixtures. The metadata reviewer also needs FFmpeg/FFprobe.
+
+On **Linux/macOS**, use [Python 3](https://www.python.org/downloads/) and create
+the equivalent virtual environment:
+
+```sh
+python3 -m venv .godot360/venv
+.godot360/venv/bin/python -m pip install numpy pillow
+.godot360/venv/bin/python -c "import numpy, PIL; print('Media-review dependencies ready')"
+```
+
+On Ubuntu/Debian, install `python3-venv` if Python reports that `ensurepip` is
+unavailable. On macOS, the [official Python installer](https://www.python.org/downloads/macos/)
+or Homebrew's `python` package supplies Python 3. Use the environment's `bin/python`
+for commands below. Keep one environment per OS; Windows virtual environments
+cannot be reused on Linux/macOS.
+
+Where commands say `godot`, use your installed editor executable. In PowerShell,
+quote a full path containing spaces and prefix it with `&`, for example
+`& 'C:\Tools\Godot\Godot_v4.7.2-stable_win64_console.exe' --version` (replace the
+example path with yours). See [Godot's command-line guide](https://docs.godotengine.org/en/stable/tutorials/editor/command_line_tutorial.html).
+The Godot script checks do not require Python. Tests that render scenes still need
+a GPU/display; `--headless` only applies to the checks documented that way below.
+
+On macOS the executable is normally `/Applications/Godot.app/Contents/MacOS/Godot`.
+Pass that executable to `--godot`, not the outer `Godot.app` folder. On Linux,
+pass the extracted executable and ensure it has execute permission. Reviewers take
+**absolute executable paths**; `command -v ffmpeg` and `command -v ffprobe` locate
+the installed tools. [Platform setup](../addons/godot360/PLATFORMS.md) covers both.
+
+## Platform verification and CI
+
+### Renderer appearance and motion
+
+The package/compatibility reviewers accept `--rendering-method forward_plus`
+or `--rendering-method mobile`, and `--rendering-driver vulkan` (or a native
+backend such as `d3d12`). The isolated project's saved renderer drives actual
+capture children; tests no longer hardcode Compatibility in their assertions.
+The coordinator remains headless, and re-encoding starts no GPU worker.
+
+For native visual comparisons, run:
+
+```sh
+python tests/renderer_review.py --godot /path/to/godot --ffmpeg /path/to/ffmpeg --ffprobe /path/to/ffprobe --output .godot360/renderer-review-new --method forward_plus --driver vulkan --motion
+```
+
+Use `--method mobile --features color,lit,exposure,glow,fog,physical,compositor,world_compositor`
+for Mobile, or select comma-separated features. `gi_off,gi` provides a darker
+room with GI off/on; `auto_exposure` deliberately exposes separate face metering.
+`--reference-hdr --features lit,glow` compares the SDR capture against a normal
+HDR 2D viewport after an independent floating-point sRGB transfer.
+
+Each one-second fixture exports 1024×512 from 512-pixel faces, 30 FPS and eight
+warmup frames. It retains three native perspective/cube reference snapshots,
+checks six-direction panorama sampling, and writes a contact sheet plus numeric
+error metrics. These checks can pass while face-local effects still show seams:
+the oracle verifies preservation, not a seamless substitute for screen-space data.
+`--motion` additionally checks every PNG and decoded MP4 frame of a six-second,
+2048×1024/1024-face sequence, including analytic poles/seam geometry and audio cues.
+
+The renderer contracts run headlessly in every package review. On Windows,
+`tests/json_lock_review.py --godot /path/to/godot --output .godot360/json-lock-new`
+uses a real delete-sharing lock to check transient checkpoint retries and retention
+of the previous JSON on permanent failure. It requires only Python's standard
+library and Godot. Its output must be inside the chosen `--project`.
+
+The Linux CI lane now also renders Forward+ and Mobile with Mesa software Vulkan,
+including color, lighting, glow and a compute compositor. Its reports and contact
+sheets are retained. Hosted execution remains unclaimed until Actions runs it.
+Native macOS/Metal, Linux hardware GPUs and 4K/8K Forward+ endurance require
+separate machine-specific validation.
+
+`tests/platform_checks.gd` tests real child exit codes, literal arguments containing
+shell punctuation/Unicode, log pipes, paths containing spaces, executable discovery,
+and Unix permissions/symlinks. Linux runs must use a case-sensitive filesystem.
+The compatibility and package reviewers include this suite automatically. Every
+report names the OS, CPU architecture, tool versions and coverage.
+
+For a complete local desktop run, build a fresh ZIP and review that frozen package:
+
+```sh
+python tools/package_addon.py --output .godot360/candidate.zip
+python tests/package_review.py --package .godot360/candidate.zip --godot /path/to/godot --ffmpeg /path/to/ffmpeg --ffprobe /path/to/ffprobe --output .godot360/package-review
+```
+
+Repeat `--godot` for additional engines. Use new destinations on each run. Avoid
+editing source during source-mode reviews: the reviewer intentionally detects any
+addon changes, including documentation. The package reviewer tests a frozen copy.
+
+[Desktop platforms CI](../.github/workflows/platforms.yml) prepares Godot 4.7.2
+on Ubuntu 24.04 and macOS 15, builds a candidate, verifies its manifest/rebuild,
+and retains JSON reports, logs and preview screenshots for 14 days. It runs on
+relevant pushes/PRs and can be started with **Actions → Desktop platforms → Run
+workflow** after the workflow is pushed. It does not publish a release.
+
+- **Linux:** complete package review using Xvfb and Mesa software OpenGL, including
+  calibration/Motion Lab export, audio, re-encoding, recovery and failure paths.
+  For local reproduction, install `xvfb` and Mesa, then prefix the package command
+  with `LIBGL_ALWAYS_SOFTWARE=1 xvfb-run -a -s '-screen 0 1400x900x24'`.
+- **macOS:** `--headless-only` verifies contracts, real FFmpeg processes/PNG pipes,
+  capture failure handling and storage failures without requiring a GPU session.
+  The report explicitly says no rendered export was tested. It is not a release
+  gate for Mac capture; run the full command on a Mac desktop before claiming that.
+- **Windows:** the full local package matrix still covers 4.5.1, 4.6.3 and 4.7.2.
+
+`--headless-only` is also available on the source compatibility reviewer; it rejects
+`--job-recovery` and `--release-workflow` because those need a display. A green
+headless report must not be counted as a successful end-to-end export. CI software
+rendering does not establish GPU compatibility or production render performance.
+
 ## First-export workflow
 
 `tests/usability_checks.gd` exercises saved-scene camera discovery, inheritance and

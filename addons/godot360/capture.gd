@@ -3,6 +3,8 @@ extends SceneTree
 
 const IO = preload("job_io.gd")
 const Storage = preload("storage_guard.gd")
+const Renderer = preload("renderer_policy.gd")
+var capture_settings: Dictionary = {}
 var storage: RefCounted
 var job: Dictionary
 var destination: String
@@ -40,12 +42,29 @@ func _initialize() -> void:
 
 
 func _start() -> void:
+	var selection: Dictionary = job.get("renderer_selection", Renderer.resolve(job))
+	capture_settings = {"renderer_selection": selection,
+		"renderer": RenderingServer.get_current_rendering_method(),
+		"rendering_driver": RenderingServer.get_current_rendering_driver_name(),
+		"display_server": DisplayServer.get_name(), "os": OS.get_name(),
+		"godot_version": Engine.get_version_info().string,
+		"video_adapter": RenderingServer.get_video_adapter_name(),
+		"video_adapter_vendor": RenderingServer.get_video_adapter_vendor()}
+	capture_settings.fallback_error = Renderer.mismatch(selection, capture_settings.renderer, capture_settings.rendering_driver)
+	if not IO.write_json(destination.path_join("capture-settings.json"), capture_settings):
+		_fail("Cannot save capture-settings.json. Check output folder access and disk space.")
+		return
+	if not str(capture_settings.fallback_error).is_empty():
+		_fail(str(capture_settings.fallback_error))
+		return
 	# SceneTree initialization applies project window settings after _initialize.
 	# Set the actual render size here, before the first rendered frame.
 	root.content_scale_size = Vector2i(int(job.width), int(job.height))
 	root.content_scale_mode = Window.CONTENT_SCALE_MODE_VIEWPORT
 	root.content_scale_aspect = Window.CONTENT_SCALE_ASPECT_IGNORE
 	root.size = Vector2i(960, 480)
+	root.use_hdr_2d = false
+	root.transparent_bg = false
 	var packed := load(str(job.scene_path)) as PackedScene
 	if packed == null:
 		_fail("Could not load or instantiate the selected scene. See capture.log.")
@@ -70,6 +89,7 @@ func _start() -> void:
 			return
 	var warnings: Array[String] = []
 	_inspect(scene, warnings)
+	_inspect_camera(camera, warnings)
 	if not IO.write_json(destination.path_join("scene-checks.json"), {"warnings": warnings}):
 		_fail("Cannot save scene-checks.json. Check output folder access and disk space.")
 		return
@@ -83,12 +103,19 @@ func _start() -> void:
 	rig.build(camera, int(job.face_size), Vector2i(int(job.width), int(job.height)))
 	if stopped:
 		return
-	if not IO.write_json(destination.path_join("capture-settings.json"), {
+	capture_settings.merge({
 		"output_width": int(job.width), "output_height": int(job.height),
 		"face_size": int(job.face_size), "msaa_3d": camera.get_viewport().msaa_3d,
-		"renderer": RenderingServer.get_current_rendering_method(),
+		"viewport_settings": rig.settings(), "warnings": warnings,
+		"color": {"source": "tone-mapped SDR sRGB RGB8/RGBA8", "face_hdr_2d": false,
+			"assembly_hdr_2d": false, "delivery": "SDR BT.709 limited-range yuv420p",
+			"tone_mapping": "Godot Environment and CameraAttributes, once per face"},
+		"camera": {"near": camera.near, "far": camera.far, "cull_mask": camera.cull_mask,
+			"attributes": camera.attributes.get_class() if camera.attributes != null else "world/default",
+			"compositor": camera.compositor != null, "face_fov": rig.cameras[0].fov},
 		"frame_writer": str(job.get("frame_writer", "png")),
-		"timeline_sampling": "frame_index / fps" if scene.has_method("sample_360_frame") else "scene processing"}):
+		"timeline_sampling": "frame_index / fps" if scene.has_method("sample_360_frame") else "scene processing"})
+	if not IO.write_json(destination.path_join("capture-settings.json"), capture_settings):
 		_fail("Cannot save capture-settings.json. Check output folder access and disk space.")
 		return
 	writer = preload("frame_writer.gd").new()
@@ -126,6 +153,9 @@ func _after_frame() -> void:
 	# viewport. Save the full-resolution texture ourselves; use its clock/audio.
 	var read_started: int = Time.get_ticks_usec()
 	var frame := root.get_texture().get_image()
+	if frame.get_format() not in [Image.FORMAT_RGB8, Image.FORMAT_RGBA8] or root.use_hdr_2d:
+		_fail("Capture requires SDR RGB8/RGBA8. A scene changed the output viewport's HDR setting; keep HDR 2D off during capture.")
+		return
 	var read_elapsed: int = Time.get_ticks_usec() - read_started
 	readback_usec += read_elapsed
 	if frame.get_size() != Vector2i(int(job.width), int(job.height)):
@@ -173,11 +203,49 @@ func _inspect(node: Node, warnings: Array[String]) -> void:
 	if node is Label3D and node.billboard != BaseMaterial3D.BILLBOARD_DISABLED:
 		warnings.append("Camera-facing label may produce seams: " + str(scene.get_path_to(node)))
 	if node is WorldEnvironment and node.environment != null:
-		var environment: Environment = node.environment
-		if environment.glow_enabled or environment.ssao_enabled or environment.ssr_enabled or environment.ssil_enabled:
-			warnings.append("Screen-space environment effects may differ across cube faces.")
+		_inspect_environment(node.environment, warnings)
+		_inspect_attributes(node.camera_attributes, warnings)
+	if node is WorldEnvironment and node.compositor != null:
+		warnings.append("World compositor runs per face. Custom effects must support multiple viewports and keep history per view.")
 	for child in node.get_children():
 		_inspect(child, warnings)
+
+
+func _inspect_environment(environment: Environment, warnings: Array[String]) -> void:
+	if environment == null:
+		return
+	if environment.glow_enabled or environment.ssao_enabled or environment.ssr_enabled or environment.ssil_enabled:
+		warnings.append("Glow/SSAO/SSR/SSIL use face-local screen data. Bloom and reflections can stop at cube edges; test motion across edges.")
+	if environment.fog_enabled or environment.volumetric_fog_enabled:
+		warnings.append("Depth fog and volumetric fog are evaluated per camera. Density/history may show cube boundaries; review the full sphere.")
+	if environment.sdfgi_enabled:
+		warnings.append("SDFGI converges across rendered frames. Increase warmup and inspect changing light and camera motion.")
+	if RenderingServer.get_current_rendering_method() != "forward_plus" and (environment.ssao_enabled or environment.ssr_enabled or environment.ssil_enabled or environment.sdfgi_enabled or environment.volumetric_fog_enabled):
+		warnings.append("This scene enables Forward+ features (SSAO/SSR/SSIL/SDFGI/volumetric fog) that the selected renderer cannot reproduce. Use Forward+ if these effects are required.")
+
+
+func _inspect_attributes(attributes: CameraAttributes, warnings: Array[String]) -> void:
+	if attributes != null and attributes.auto_exposure_enabled:
+		warnings.append("Auto exposure meters each cube face independently and can create brightness seams. Use authored fixed exposure for consistent 360 delivery.")
+	if attributes is CameraAttributesPhysical or (attributes is CameraAttributesPractical and (attributes.dof_blur_far_enabled or attributes.dof_blur_near_enabled)):
+		warnings.append("Depth of field uses face-camera depth, not spherical distance; blur may differ at cube edges. Physical lens FOV is replaced by 90 degrees.")
+
+
+func _inspect_camera(camera: Camera3D, warnings: Array[String]) -> void:
+	_inspect_environment(camera.environment, warnings)
+	if camera.environment == null and camera.get_world_3d().environment == null:
+		_inspect_environment(camera.get_world_3d().fallback_environment, warnings)
+	_inspect_attributes(camera.attributes, warnings)
+	if camera.compositor != null:
+		warnings.append("Camera compositor is preserved on all six views. Custom effects must support multiple viewports and keep history per view.")
+		if RenderingServer.get_current_rendering_method() == "gl_compatibility":
+			warnings.append("Compatibility does not execute custom compositor effects; choose Forward+ or Mobile if they are required.")
+	if camera.get_viewport().use_taa or camera.get_viewport().scaling_3d_mode == Viewport.SCALING_3D_MODE_FSR2:
+		warnings.append("TAA/FSR2 history is independent per face; moving objects can ghost or change at cube edges. Test motion and allow sufficient warmup.")
+		if RenderingServer.get_current_rendering_method() != "forward_plus":
+			warnings.append("TAA/FSR2 require Forward+; the selected renderer cannot reproduce these settings.")
+	if camera.projection != Camera3D.PROJECTION_PERSPECTIVE or camera.frustum_offset != Vector2.ZERO:
+		warnings.append("360 capture replaces orthographic/frustum projection and lens shift with six square perspective views.")
 
 
 func _fail(message: String) -> void:

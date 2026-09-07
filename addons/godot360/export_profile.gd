@@ -4,6 +4,8 @@ extends Resource
 
 @export_file("*.tscn") var scene_path: String = "res://addons/godot360/examples/calibration.tscn"
 @export var camera_path: NodePath = NodePath("Camera3D")
+@export_enum("project", "forward_plus", "mobile", "gl_compatibility") var rendering_method: String = "project"
+@export_enum("project", "vulkan", "d3d12", "metal", "opengl3", "opengl3_angle", "opengl3_es") var rendering_driver: String = "project"
 @export_enum("2048", "4096", "7680") var width: String = "2048"
 @export_range(128, 4096, 128) var face_size: int = 512
 @export_enum("24", "25", "30", "50", "60") var fps: String = "30"
@@ -39,6 +41,7 @@ func apply_quality_preset(preset: String) -> void:
 
 func to_dictionary() -> Dictionary:
 	return {"scene_path": scene_path, "camera_path": str(camera_path),
+		"rendering_method": rendering_method, "rendering_driver": rendering_driver,
 		"width": int(width), "height": int(width) / 2, "face_size": face_size,
 		"fps": int(fps), "frames": roundi(duration * int(fps)),
 		"random_seed": random_seed, "warmup_frames": warmup_frames, "crf": crf,

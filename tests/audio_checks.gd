@@ -55,8 +55,9 @@ func _run() -> void:
 	var legacy_sample := legacy_profile.duplicate()
 	for key in Audio.DEFAULTS:
 		legacy_sample.erase(key)
-	check(Planner.matches(legacy_sample, legacy_profile), "Saved pre-audio planning samples remain usable with default scene audio")
+	check(not Planner.matches(legacy_sample, legacy_profile), "Pre-renderer planning samples require a new test even with default audio")
 	var sample := job.duplicate(true)
+	preload("res://addons/godot360/renderer_policy.gd").stamp(sample)
 	sample.audio_signature = Audio.signature(job)
 	check(Planner.matches(sample, job), "Matching audio settings reuse a planning sample")
 	check(Planner.matches(JSON.parse_string(JSON.stringify(sample)), job), "Audio planning signature survives JSON number conversion")

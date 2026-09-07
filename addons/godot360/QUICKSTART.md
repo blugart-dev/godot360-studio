@@ -7,25 +7,32 @@ sequence if they should appear in the film.
 
 ## 1. Install and check your tools
 
+Follow **[Platform setup](PLATFORMS.md)** for Windows, Linux or macOS. It links to
+Godot and FFmpeg downloads and covers extraction/package installation, executable
+selection and permissions. Start with **Godot 4.7.2 Standard** and keep your scene's renderer.
+The addon needs no .NET, Python, compiler or Godot export templates.
+
 1. Copy `addons/godot360` into your project. Enable **Godot360 Studio** in
    **Project > Project Settings > Plugins**, then open the **Godot360** bottom panel.
-   In this repository's demo project, the plugin is already enabled.
-2. Expand **Tool setup** if FFmpeg and FFprobe were not found on PATH. Select
-   **FFmpeg…** and locate the executable; FFprobe is filled in when it is beside it.
-   Otherwise select **FFprobe…** separately. **Find on PATH** searches again.
-3. If you need the tools, **Download help** opens
-   [FFmpeg's official download page](https://ffmpeg.org/download.html). On Windows,
-   extract a linked Windows build and locate `bin/ffmpeg.exe` and `bin/ffprobe.exe`.
-   Keep that folder available for future exports. Nothing is downloaded by the addon.
+   The plugin is already enabled in this repository's demo project.
+2. Expand **Tool setup** and choose **Find installed tools**. It searches PATH and
+   standard Linux/macOS install locations, including both Homebrew prefixes.
+3. If needed, select **FFmpeg…** and locate the executable. FFprobe is filled in
+   when beside it; otherwise select **FFprobe…** separately. Files end in `.exe`
+   on Windows and normally have no extension on Linux/macOS. PATH is optional.
+4. Choose a writable output folder, then click **Check setup**. It launches both
+   tools and checks the needed encoders/filters. Repeat after upgrading tools or
+   changing machines. Nothing is downloaded by the addon.
 
-The initial support target is Windows and Godot's **Compatibility** renderer.
-See the [supported versions and validation scope](README.md). Forward+ and Mobile
-show a note because they have not been validated; setup does not change your renderer.
+See [platform validation status](PLATFORMS.md#support-status); macOS export tests
+remain pending. New captures use your saved project's renderer and driver, with
+explicit overrides under Advanced. Unexpected fallback stops capture. Review
+[renderer support and scene effects](RENDERERS.md); a graphical session is required.
 
 ## 2. Select your scene and camera
 
 Open your scene and click **Use current scene**. This saves the named scene before
-selecting it. A new, unnamed scene must first be saved in Godot with **Ctrl+S**.
+selecting it. A new, unnamed scene must first be saved in Godot with **Ctrl+S** (**Cmd+S** on macOS).
 You can also use **Choose scene…** to select another saved `.tscn`.
 
 Pick a **Camera** from the list. The addon selects the only camera automatically,
@@ -89,8 +96,11 @@ partial files. Each job gets a new folder; existing exports are preserved.
 
 Drag the **360° still preview** to check the first frame's orientation. **Open output**
 opens the selected job folder. `video-360.mp4` is the verified delivery file;
-`report.json` records the technical checks. Watch the whole MP4 in a spherical
-video player to check movement and sound. The panel preview is a still image.
+`report.json` records the technical checks. For full playback, you can install
+[VLC for your platform from VideoLAN](https://www.videolan.org/vlc/).
+Use **File/Media → Open File**, then hold the left mouse button and drag to look
+around, as described in [VideoLAN's 360° guide](https://docs.videolan.me/vlc-user/desktop/3.0/en/advanced/player/360_video.html).
+Check movement and sound throughout the clip. The panel preview is a still image.
 
 Keep the capture folder if you may want to change quality or audio later.
 Under **Saved exports and recovery**, **Re-encode this capture** uses retained
@@ -101,7 +111,7 @@ frames without rendering again. **Open saved job…** opens an earlier job, and
 
 | What you see | What to do |
 | --- | --- |
-| Save your scene first | Save the open scene with Ctrl+S, then use it again. |
+| Save your scene first | Save with Ctrl+S (Cmd+S on macOS), then use it again. |
 | Choose a camera | Pick a listed Camera3D; for a generated camera, enter its runtime path under Advanced. |
 | Missing tools or encoders | Select FFmpeg and FFprobe in Tool setup, then Check setup again. |
 | FFmpeg has no PNG encoder | Choose Compact PNG under Advanced, or another FFmpeg build. |

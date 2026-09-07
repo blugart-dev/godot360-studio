@@ -1,0 +1,101 @@
+name: Desktop platforms
+
+on:
+  pull_request:
+    paths: ['addons/godot360/**', 'tests/**', 'tools/**', '.github/workflows/platforms.yml']
+  push:
+    branches: [main]
+    paths: ['addons/godot360/**', 'tests/**', 'tools/**', '.github/workflows/platforms.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: platforms-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  review:
+    name: ${{ matrix.os }} / ${{ matrix.coverage }}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-24.04
+            coverage: rendered exports with Mesa
+          - os: macos-15
+            coverage: headless contracts
+    defaults:
+      run:
+        shell: bash
+    env:
+      GODOT_VERSION: 4.7.2
+      PYTHONUNBUFFERED: '1'
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.13'
+      - name: Install review libraries
+        run: python -m pip install numpy pillow
+      - name: Install Linux tools
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg xvfb libgl1-mesa-dri libglx-mesa0 mesa-vulkan-drivers libxrandr2 libxinerama1 libxcursor1 libxi6
+          mkdir -p .godot360/ci/tools
+          curl --fail --location --retry 3 "https://github.com/godotengine/godot-builds/releases/download/${GODOT_VERSION}-stable/Godot_v${GODOT_VERSION}-stable_linux.x86_64.zip" -o .godot360/ci/tools/godot.zip
+          unzip -q .godot360/ci/tools/godot.zip -d .godot360/ci/tools
+          chmod +x ".godot360/ci/tools/Godot_v${GODOT_VERSION}-stable_linux.x86_64"
+          echo "GODOT=$PWD/.godot360/ci/tools/Godot_v${GODOT_VERSION}-stable_linux.x86_64" >> "$GITHUB_ENV"
+      - name: Install Mac tools
+        if: runner.os == 'macOS'
+        run: |
+          brew install ffmpeg
+          mkdir -p .godot360/ci/tools
+          curl --fail --location --retry 3 "https://github.com/godotengine/godot-builds/releases/download/${GODOT_VERSION}-stable/Godot_v${GODOT_VERSION}-stable_macos.universal.zip" -o .godot360/ci/tools/godot.zip
+          ditto -x -k .godot360/ci/tools/godot.zip .godot360/ci/tools
+          echo "GODOT=$PWD/.godot360/ci/tools/Godot.app/Contents/MacOS/Godot" >> "$GITHUB_ENV"
+      - name: Build candidate
+        run: python tools/package_addon.py --output .godot360/ci/candidate.zip
+      - name: Review Linux package and rendered workflows
+        if: runner.os == 'Linux'
+        env:
+          LIBGL_ALWAYS_SOFTWARE: '1'
+        run: |
+          xvfb-run -a -s '-screen 0 1400x900x24' python tests/package_review.py --package .godot360/ci/candidate.zip --godot "$GODOT" --ffmpeg "$(command -v ffmpeg)" --ffprobe "$(command -v ffprobe)" --output .godot360/ci/review
+      - name: Review Mac package and headless contracts
+        if: runner.os == 'macOS'
+        run: |
+          python tests/package_review.py --headless-only --package .godot360/ci/candidate.zip --godot "$GODOT" --ffmpeg "$(command -v ffmpeg)" --ffprobe "$(command -v ffprobe)" --output .godot360/ci/review
+      - name: Render Forward+ and Mobile with software Vulkan
+        if: runner.os == 'Linux'
+        run: |
+          for icd in /usr/share/vulkan/icd.d/lvp*json; do export VK_DRIVER_FILES="$icd"; break; done
+          test -f "$VK_DRIVER_FILES"
+          for method in forward_plus mobile; do
+            xvfb-run -a -s '-screen 0 1400x900x24' python tests/renderer_review.py --godot "$GODOT" --ffmpeg "$(command -v ffmpeg)" --ffprobe "$(command -v ffprobe)" --output ".godot360/ci/renderers/$method" --method "$method" --driver vulkan --features color,lit,glow,compositor
+          done
+      - name: Retain review evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: platform-review-${{ matrix.os }}
+          retention-days: 14
+          include-hidden-files: true
+          path: |
+            .godot360/ci/candidate.json
+            .godot360/ci/review/**/*.json
+            .godot360/ci/review/**/*.log
+            .godot360/ci/review/**/release-preview-*.png
+            .godot360/ci/review/**/release-panel.png
+            .godot360/ci/review/**/usability-panel.png
+            .godot360/ci/renderers/**/renderer-review.json
+            .godot360/ci/renderers/**/capture-settings.json
+            .godot360/ci/renderers/**/capture.log
+            .godot360/ci/renderers/**/contact-sheet.jpg

@@ -1,6 +1,6 @@
 # Godot360 beta report
 
-Copy this form for one independently tested Windows machine. Review any diagnostics
+Copy this form for one independently tested Windows, Linux or macOS machine. Review any diagnostics
 ZIP before attaching it. Leave untested steps marked **not tested**. Do not report
 automated tests on the development machine as independent hardware feedback.
 
@@ -8,7 +8,9 @@ automated tests on the development machine as independent hardware feedback.
 
 - Addon version and package SHA-256:
 - Godot version:
-- Windows version, GPU and driver:
+- OS/distribution version and CPU architecture (x86_64/arm64):
+- GPU, driver and display/session (X11/Wayland/WSLg, if applicable):
+- Godot install source (official download/package manager/sandboxed package):
 - Renderer (the initial support target is Compatibility):
 - FFmpeg / FFprobe versions:
 - Different tester/machine from the development setup (Windows / RTX 3060 Ti):

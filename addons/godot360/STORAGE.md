@@ -2,7 +2,7 @@
 
 Version 0.7 checks the output drive before starting expensive work, during capture
 and encoding, and while copying spherical metadata. Use local writable storage
-for the initial Windows release target. A one-second planning sample is still the
+for desktop exports. See [platform evidence](PLATFORMS.md#support-status). A one-second planning sample is still the
 best estimate of the full render's file sizes and time.
 
 ## Space needed

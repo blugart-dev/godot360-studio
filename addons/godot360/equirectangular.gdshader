@@ -1,6 +1,9 @@
 shader_type canvas_item;
 render_mode unshaded;
 
+// Both face targets and the output canvas use use_hdr_2d=false. These samples
+// already contain tone-mapped sRGB, so no source_color hint or second gamma pass.
+
 uniform sampler2D face_right : filter_linear, repeat_disable;
 uniform sampler2D face_left : filter_linear, repeat_disable;
 uniform sampler2D face_up : filter_linear, repeat_disable;

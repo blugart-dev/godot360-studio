@@ -57,6 +57,10 @@ func _run() -> void:
 	var resolved := Planner.resolve_reencode(request)
 	check(resolved.error.is_empty(), "Completed capture can be re-encoded after its scene is unavailable")
 	check(resolved.job.width == 256 and resolved.job.fps == 30 and resolved.job.crf == 25, "Re-encoding locks captured dimensions/timing and applies only requested encoding quality")
+	request.rendering_method = "forward_plus"
+	check(Planner.resolve_reencode(request).error.contains("new render"), "Re-encoding cannot relabel captured pixels with a different renderer")
+	request.erase("rendering_method")
+	check(resolved.job.rendering_method == source.rendering_method, "Re-encoding retains the original renderer selection")
 	request.output_dir = capture_folder.path_join("nested-output")
 	check(not Planner.resolve_reencode(request).error.is_empty(), "Re-encode output cannot write inside its source capture")
 	check(not Planner.validate_frames(capture_folder, source).is_empty(), "A missing sequence is rejected")

@@ -14,4 +14,7 @@ func _enter_tree() -> void:
 
 func _exit_tree() -> void:
 	remove_control_from_bottom_panel(panel)
-	panel.queue_free()
+	# Release editor-themed controls while the editor singleton still exists.
+	# Deferring deletion until engine shutdown crashes Linux headless imports.
+	panel.free()
+	panel = null
