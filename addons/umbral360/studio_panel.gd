@@ -6,6 +6,7 @@ const IO = preload("job_io.gd")
 const Planner = preload("job_planner.gd")
 const Audio = preload("audio_plan.gd")
 const Session = preload("job_session.gd")
+const Diagnostics = preload("diagnostics.gd")
 const AUDIO_MODES = ["scene", "soundtrack", "mix"]
 const SETTINGS_PATH = "res://.umbral360/settings.cfg"
 var profile: Resource = Profile.new()
@@ -43,6 +44,7 @@ var session_owner: Dictionary = {}
 var reconnected := false
 var session_started := 0
 var recovery_source := ""
+var diagnostics_result: Label
 
 
 func _ready() -> void:
@@ -61,7 +63,7 @@ func _ready() -> void:
 	settings.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	settings_scroll.add_child(settings)
 	var title := Label.new()
-	title.text = "UMBRAL360 STUDIO   /   0.7.0"
+	title.text = "UMBRAL360 STUDIO   /   0.8.0"
 	title.add_theme_font_size_override("font_size", 19)
 	settings.add_child(title)
 	var hint := Label.new()
@@ -128,6 +130,14 @@ func _ready() -> void:
 	open_job_button.tooltip_text = "Inspect an earlier export or reconnect to its running coordinator."
 	reuse_button = _button(jobs_row, "Re-encode this capture", func(): _reencode(recovery_source))
 	reuse_button.disabled = true
+	var diagnostics_row := VBoxContainer.new()
+	settings.add_child(diagnostics_row)
+	_button(diagnostics_row, "Save diagnostics…", _browse.bind("diagnostics"))
+	diagnostics_result = Label.new()
+	diagnostics_result.text = "Local ZIP of this job's reports and logs. Review before sharing; paths may be included."
+	diagnostics_result.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	diagnostics_result.custom_minimum_size.x = 480
+	diagnostics_row.add_child(diagnostics_result)
 	_build_audio_controls(settings)
 	var actions := HBoxContainer.new()
 	left_column.add_child(actions)
@@ -537,7 +547,12 @@ func _update_preview() -> void:
 func _browse(kind: String) -> void:
 	var dialog := FileDialog.new()
 	dialog.access = FileDialog.ACCESS_RESOURCES if kind in ["scene", "load", "save"] else FileDialog.ACCESS_FILESYSTEM
-	dialog.file_mode = FileDialog.FILE_MODE_OPEN_DIR if kind in ["folder", "reencode", "job"] else FileDialog.FILE_MODE_SAVE_FILE if kind == "save" else FileDialog.FILE_MODE_OPEN_FILE
+	dialog.file_mode = FileDialog.FILE_MODE_OPEN_DIR if kind in ["folder", "reencode", "job"] else FileDialog.FILE_MODE_SAVE_FILE if kind in ["save", "diagnostics"] else FileDialog.FILE_MODE_OPEN_FILE
+	if kind == "diagnostics":
+		dialog.title = "Save local diagnostics ZIP"
+		dialog.add_filter("*.zip", "Diagnostics bundle")
+		dialog.current_dir = ProjectSettings.globalize_path("res://")
+		dialog.current_file = "umbral360-diagnostics-" + Time.get_datetime_string_from_system().replace(":", "-") + ".zip"
 	if kind == "scene":
 		dialog.add_filter("*.tscn", "Godot scene")
 	if kind == "soundtrack":
@@ -555,6 +570,7 @@ func _browse(kind: String) -> void:
 
 func _selected(kind: String, path: String) -> void:
 	match kind:
+		"diagnostics": _save_diagnostics(path)
 		"scene": recipe_fields.scene_path.text = path
 		"soundtrack":
 			soundtrack_field.text = ProjectSettings.localize_path(path)
@@ -582,6 +598,11 @@ func _selected(kind: String, path: String) -> void:
 		"save":
 			_update_profile()
 			status.text = "Recipe saved." if ResourceSaver.save(profile, path) == OK else "Could not save recipe."
+
+
+func _save_diagnostics(path: String) -> void:
+	var result := Diagnostics.build(folder, path)
+	diagnostics_result.text = str(result.error) if not str(result.error).is_empty() else "Diagnostics saved: " + str(result.path) + "\nReview the ZIP contents before sharing."
 
 
 func _save_settings() -> void:

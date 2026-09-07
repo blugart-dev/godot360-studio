@@ -16,6 +16,7 @@ Primary specifications used for interoperability:
 
 - [Godot Movie Maker](https://docs.godotengine.org/en/stable/tutorials/animation/creating_movies.html): offline timing and audio capture.
 - [OS.execute_with_pipe](https://docs.godotengine.org/en/stable/classes/class_os.html#class-os-method-execute-with-pipe): native process I/O and child process lifecycle.
+- [ZIPPacker](https://docs.godotengine.org/en/4.5/classes/class_zippacker.html): local diagnostics archives, verified by reading their members back before final naming.
 - [FFmpeg PNG encoder](https://ffmpeg.org/ffmpeg-codecs.html#png): lossless compression level and prediction options.
 - [FFmpeg progress output](https://ffmpeg.org/ffmpeg.html#Generic-options): machine-readable progress blocks and their update period.
 - [DirAccess free space](https://docs.godotengine.org/en/stable/classes/class_diraccess.html#class-diraccess-method-get-space-left): available-space reporting for job planning.

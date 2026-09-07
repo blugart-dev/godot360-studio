@@ -91,6 +91,16 @@ func _run() -> void:
 	check(recovery.get("can_reencode", false) and recovery.get("source_dir") == source, "Failed re-encode identifies the reusable original capture")
 	check(panel.status.text.contains("Re-encode saved"), "Panel shows the recovery action after failure")
 	check(before == _snapshot(source) and not FileAccess.file_exists(panel.folder.path_join("video-360.mp4")), "Failed re-encode preserves source files and publishes no video")
+	var failure_before := _snapshot(panel.folder)
+	var failure_status: String = panel.status.text
+	var bundle := ProjectSettings.globalize_path("res://.umbral360/audio-failure-diagnostics.zip")
+	panel._selected("diagnostics", bundle)
+	check(FileAccess.file_exists(bundle) and panel.diagnostics_result.text.contains("Diagnostics saved:"), "Failed panel job can save a diagnostics bundle")
+	var reader := ZIPReader.new()
+	reader.open(bundle)
+	check(JSON.parse_string(reader.read_file("job/status.json").get_string_from_utf8()).get("stage") == "Failed" and reader.file_exists("job/recovery.json"), "Failure bundle retains terminal status and recovery guidance")
+	reader.close()
+	check(panel.status.text == failure_status and failure_before == _snapshot(panel.folder) and before == _snapshot(source), "Diagnostics preserves failed-job state and original capture bytes")
 	print("AUDIO STUDIO CHECKS: %d checks, %d failures" % [checks, failures])
 	quit(0 if failures == 0 else 1)
 

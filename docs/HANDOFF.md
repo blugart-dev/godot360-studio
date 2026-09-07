@@ -1,6 +1,6 @@
 # Umbral360 development handoff
 
-Updated 2026-09-07 after the 0.7 storage/production validation milestone. A fresh session can begin by
+Updated 2026-09-07 after local 0.8 beta-candidate validation. A fresh session can begin by
 reading this file, the linked guides, and the relevant current source/tests.
 
 ## Purpose and working agreement
@@ -9,16 +9,18 @@ Build an original, integrated Godot-to-YouTube mono 360 addon with portable reci
 documented authoring, reliable export, and eventual community use. Conversation may
 be English or Spanish; all code, comments, UI, and docs must be English. The user
 authorized continued development and a GDExtension if measurements justify it.
-No external publication or upload has been performed. This directory has no Git
-repository; do not assume commits or branches exist.
+No external publication or upload has been performed. Local Git now exists on
+`main`, starting with commit `23759d4` and tag `v0.7.0` for the validated baseline.
+Generated renders, local settings/tools and release ZIPs are ignored. No remote
+has been configured or pushed. Use current Git status before editing.
 
 ## Implemented milestones
 
 The revised 1.0 route is in docs/roadmap.md: Windows/Compatibility first, storage
 and production-resolution evidence, then a clean packaged release candidate,
 diagnostics and independent beta feedback, then current YouTube playback review
-and explicitly approved publication. Source is still not in Git; establish local
-versioned history before the release candidate. Broader OS support and native code
+and explicitly approved publication. Local versioned history is established.
+Broader OS support and native code
 are not prerequisites for the initial supported release.
 
 - 0.1: six synchronized views, original equirectangular shader, fixed-frame capture,
@@ -51,6 +53,11 @@ are not prerequisites for the initial supported release.
   logged storage failures and source-preserving recovery. Current three-engine
   coverage is 1,161 unique checks, including targeted cancellation/log-write checks.
   Production-resolution frame/audio reviews are described under local evidence.
+- 0.8: local diagnostics ZIPs with bounded reports/logs, environment details,
+  verified payloads and per-file hashes; retain source bytes, status and recipe.
+  Exact-package reviewer installs the ZIP, verifies its inventory/reproducible
+  bytes and runs the complete matrix plus documented panel workflows. Independent
+  beta feedback and current-candidate YouTube review remain pending.
 
 The addon remains GDScript plus external FFmpeg. A native rewrite is not currently
 justified by the measured bottleneck. Read [performance](performance.md),
@@ -58,6 +65,15 @@ justified by the measured bottleneck. Read [performance](performance.md),
 [audio](../addons/umbral360/AUDIO.md), [validation](validation.md), and the [roadmap](roadmap.md).
 
 ## Preserve these contracts
+
+- Diagnostics reads only fixed filenames in the selected job folder, never media
+  subfolders or referenced source/soundtrack paths. JSON is capped at 1 MiB, log
+  tails at 512 KiB; manifest discloses omissions. Preserve malformed JSON as evidence.
+  Environment describes the collector, not necessarily the saved export. ZIP and
+  .partial destinations must be new and outside the source. Verify files before
+  renaming; Godot 4.7's ZIPReader also exposes `job/`, which is not a payload file.
+  Never hash an empty buffer with HashingContext.update; finish the started context.
+  Bundles contain local paths/scene messages and must be reviewed before sharing.
 
 - The storage guard keeps 256 MiB plus capture image/PCM allowance, and separately
   budgets the second MP4 copy. Its query cache is at most 250 ms; it is not a disk
@@ -119,6 +135,26 @@ justified by the measured bottleneck. Read [performance](performance.md),
 - Stereo ODS, ambisonics, automatic upload, and a community release are not implemented.
 
 ## Local evidence
+
+- `.umbral360/package-080-accepted/package-review.json`: exact current 0.8 ZIP
+  installed and reviewed on Godot 4.5.1/4.6.3/4.7.2; 444 checks per engine,
+  1,332 total. Headless contracts 251, audio panel 19, capture failures 50,
+  reopening 41, storage failures 56, release workflow 27. Rebuilt ZIP bytes and
+  extracted inventory are identical. Original settings/capture remain unchanged.
+- `dist/umbral360-studio-0.8.0.zip`: 84 members, 169,418 bytes; SHA-256
+  `16e41c52c4ef7e0e3c62783a3ae8bc79b93bb676dbd93e5e071daae3ead33961`.
+  `docs/release-0.8.md` records the candidate, source history and remaining gates.
+- `.umbral360/package-080-final/` is REJECTED development evidence, despite its
+  name. Godot 4.7's extra ZIP directory entry exposed the inventory mismatch.
+  The rejected ZIP is retained there. Only `package-080-accepted` establishes success.
+- `renders/delivery-080-8k/candidate-review.json` and `metadata-review.json`:
+  current 0.8 exporter, 12-second 7680×3840/30 FPS UMBRAL film, all 13 checks,
+  encoded MP4 identical to the original. All 360 decoded frames/audio, 719 offsets,
+  924 packet hashes/timestamps and V2-only recognition pass. Original capture and
+  saved settings are unchanged; no YouTube upload/review was performed. The 14
+  exporter payload files are identical across the candidate's diagnostics fix.
+- `.umbral360/delivery-080-diagnostics.zip`: actual 8K job support bundle, created
+  headlessly using 0.8. Review paths/scene-written text before sharing.
 
 - .umbral360/compatibility-070-final/compatibility-review.json: 1,143 checks pass,
   with 218 headless, 16 panel, 50 capture-failure, 41 reopening and 56 storage-failure
@@ -207,12 +243,13 @@ transcoding remains unavailable; do not claim that it was checked.
 
 ## Tools and tests
 
-Current package: dist/umbral360-studio-0.7.0.zip, 78 members, 153,141 bytes.
+Historical 0.7 package: dist/umbral360-studio-0.7.0.zip, 78 members, 153,141 bytes.
 SHA-256: c506621e64531d02934397eecd0e37cde4551b7956484f7672090d1f4418050c.
 .umbral360/package-070-review.json proves identical repeat-build bytes,
 source/extracted-inventory verification, and both accepted production results.
 The package includes storage tests/fixtures and STORAGE.md. Exact-package clean
-installation/workflow review remains a 0.8 gate. Do not overwrite accepted ZIPs.
+installation/workflow review is now implemented by tests/package_review.py.
+Do not overwrite accepted ZIPs. See docs/release-0.8.md for the current candidate.
 
 0.6.3 evidence: `.umbral360/compatibility-063-final/compatibility-review.json`
 records 306 passing checks per engine, 918 total, on 4.5.1/4.6.3/4.7.2.
@@ -282,12 +319,11 @@ success. Sandbox cache/certificate messages in logs are separate from test failu
 
 ## Next work
 
-The 0.7 storage and production-resolution gates pass locally.
-The next gate is 0.8: versioned local source history, useful diagnostics bundles,
-exact-package clean installation, documented workflow review and independent
-Windows/GPU beta feedback. Keep arbitrary capture resume and untested platform
-claims outside the initial 1.0 scope. Do not repeat large renders without a new
-change or concern, and do not infer a native rewrite is necessary from resolution.
-User-reviewed YouTube playback is still needed before 1.0/community release. The
-user asked to keep developing while no unresolved regression needs attention.
-Do not request their verification just to advance ordinary local development.
+The local 0.8 engineering gate passes; see docs/release-0.8.md and its accepted report.
+The remaining external gates are an independent Windows/GPU beta report and
+current-candidate YouTube playback. addons/umbral360/BETA-REPORT.md provides the
+specific checks. Do not claim those gates pass from automated local tests.
+Fix any reported blocking defect and repeat the affected checks before replacing
+the candidate. Keep arbitrary capture resume and untested platform claims outside
+the initial 1.0 scope. Do not repeat large renders or add unrelated features while
+waiting for feedback. Publication still needs the user's explicit authorization.

@@ -5,7 +5,7 @@ extends RefCounted
 
 const SPHERICAL_UUID = "ffcc8263f8554a938814587a02521fdd"
 const MAX_MOOV = 64 * 1024 * 1024
-const SOFTWARE = "Umbral360 Studio 0.7.0"
+const SOFTWARE = "Umbral360 Studio 0.8.0"
 # Unknown structural boxes may contain offsets we cannot safely relocate.
 const CONTAINERS = {
 	"moov": ["mvhd", "trak", "udta"],

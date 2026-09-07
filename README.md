@@ -23,6 +23,11 @@ The plugin is already enabled in this project.
 4. Inspect the spherical still preview, `video-360.mp4`, and `report.json`.
 
 Each job produces its own folder, with retained PNG frames, WAV, recipe, and logs.
+Version 0.8 adds **Save diagnostics…** for reviewed local support ZIPs, an
+[independent beta report](addons/umbral360/BETA-REPORT.md), and an exact-package
+installation/workflow reviewer. See the [diagnostics guide](addons/umbral360/DIAGNOSTICS.md)
+and [beta instructions](addons/umbral360/BETA.md). Source history starts at the
+validated 0.7 baseline in local Git; renders, settings and tool binaries are excluded.
 Version 0.7 adds working disk-space checks and required file-write checks. Captures
 retained after a storage failure can be re-encoded in a fresh folder; partial
 captures need a new render. See the [storage guide](addons/umbral360/STORAGE.md)

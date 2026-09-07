@@ -1,6 +1,6 @@
 # Compatibility and beta checks
 
-Umbral360 Studio 0.7.0 is an experimental local package. Use the [main guide](README.md)
+Umbral360 Studio 0.8.0 is a local beta candidate. Use the [main guide](README.md)
 for installation and export, [AUTHORING.md](AUTHORING.md) for timelines, and
 [AUDIO.md](AUDIO.md) for music and synchronization. This package has not been
 published to a community registry.
@@ -11,6 +11,11 @@ All rows below use Windows, an NVIDIA RTX 3060 Ti, Compatibility/OpenGL, and
 FFmpeg/FFprobe 9.0.1. Every engine ran in its own fresh project containing the addon
 and test fixtures. The original UMBRAL scene and its project configuration were
 not installed in those projects.
+
+The table records the validated **0.7 baseline**. Version 0.8 additionally supplies
+diagnostics contracts, actual successful/failed-job bundle checks and the documented
+release workflow. The exact-package command below writes the current candidate's
+per-engine counts and logs; those results remain separate from this historical table.
 
 | Godot stable | Headless contracts | Panel workflow | Capture failures | Reopening/recovery | Storage failures |
 | --- | --- | --- | --- | --- | --- |
@@ -110,22 +115,45 @@ separate evidence from the shorter Motion Lab and calibration fixtures.
    re-encode the completed capture with an audible level/offset change.
 5. Load **Motion lab** for an authored six-second film. Start with a short test,
    then render at a suitable resolution and inspect motion and audio cues.
+6. Save and reload a recipe, then close/reopen the editor and inspect its saved job.
+7. Click **Save diagnostics…**, choose a new ZIP outside the job folder, and inspect
+   its manifest and reports. Fill in [BETA-REPORT.md](BETA-REPORT.md) for independent
+   feedback; [DIAGNOSTICS.md](DIAGNOSTICS.md) explains the collected information.
 
 For a later YouTube check, use the verified `video-360.mp4`, allow high-resolution
 processing to complete, and inspect navigation, orientation, detail, seams and
 audio near both ends. Current V1/V2 outputs have not been independently checked
 after YouTube processing. Uploading is a separate user action.
 
-If reporting a failure, include the addon/engine version, OS/GPU, renderer,
-FFmpeg version, what you did, and the job's `status.json`, `report.json` if present,
-and relevant capture/encode logs. Logs and job files contain local paths; review
-them before sharing. Keep the failed folder and original capture for diagnosis.
+If reporting a failure, fill in the beta form and attach the reviewed diagnostics
+ZIP. Reports and logs can contain local paths and scene-written text. Keep the
+failed folder and original capture for diagnosis. Independent feedback from at
+least one other Windows/GPU setup remains required; another local automated run
+does not replace it. Current-candidate YouTube playback review remains pending too.
 
 ## Repeat the automated checks
 
 The ZIP includes `tests/` and `tools/` beside `addons/`. The reviewers require Python
 with numpy/Pillow, Godot, FFmpeg and FFprobe. Replace the paths below with local
 executables. Use a new output directory for every run.
+
+For the release gate, test the **exact ZIP**:
+
+```sh
+python tests/package_review.py --package dist/umbral360-studio-0.8.0.zip --godot /path/to/godot --ffmpeg /path/to/ffmpeg --ffprobe /path/to/ffprobe --output /path/to/new-package-review
+```
+
+Repeat `--godot` for each engine. The reviewer validates the manifest, extracts into
+a fresh folder, verifies the unpacked inventory and rebuilds identical ZIP bytes.
+It then runs all compatibility, capture-failure, recovery and storage tests from
+the extracted package in separate minimal projects. It also exercises the real
+panel's Draft 2K calibration, six preview directions, recipe save/reload, local
+diagnostics and Motion Lab sample/full six-second export at 512×256. Existing audio
+panel tests cover soundtrack mixing/re-encoding and unchanged original sources.
+It records `package-review.json`, engine reports, full logs and preview screenshots.
+Low-resolution Motion Lab checks here establish workflow, not new 4K/8K endurance.
+
+To work on source changes before packaging:
 
 ```sh
 python tests/compatibility_review.py --capture-failures --job-recovery --storage-failures --godot /path/to/godot --ffmpeg /path/to/ffmpeg --ffprobe /path/to/ffprobe --output /path/to/new-compatibility-run
@@ -171,7 +199,7 @@ Build or verify a package using Python's standard library:
 
 ```sh
 python tools/package_addon.py
-python tools/package_addon.py --verify dist/umbral360-studio-0.7.0.zip
+python tools/package_addon.py --verify dist/umbral360-studio-0.8.0.zip
 ```
 
 The builder reads current files, checks version labels, refuses to overwrite a

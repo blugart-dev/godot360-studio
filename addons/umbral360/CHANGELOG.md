@@ -1,5 +1,25 @@
 # Changelog
 
+## 0.8.0 — 2026-09-07
+
+- Add **Save diagnostics…** for successful, failed, unconfirmed and setup jobs.
+  Collect bounded reports/log tails and environment information into a locally
+  verified ZIP, with per-file hashes and explicit omissions. Preserve original
+  job files, current status/recipe and existing ZIPs; do not collect source media.
+- Distinguish collecting hardware from saved export hardware and include live
+  stderr logs. Support empty logs without invoking an invalid zero-length hash update.
+- Accept the explicit parent directory exposed by Godot 4.7's ZIP reader while
+  still verifying every payload against the exact allowed inventory and bytes.
+- Add diagnostics guidance and a reusable independent beta/YouTube feedback form.
+- Add an exact-package reviewer: verify/extract the release manifest, reproduce the
+  same ZIP bytes, and run the complete compatibility/failure/recovery suite plus
+  documented calibration, preview, recipe, diagnostics and Motion Lab workflows.
+- Establish local Git history from the validated 0.7 source baseline. Generated
+  media, local settings, tools and release ZIPs remain outside source history.
+
+This is a beta candidate. Independent Windows/GPU feedback, current-candidate
+YouTube playback review and approval for public publication remain release gates.
+
 ## 0.7.0 — 2026-09-07
 
 - Check output-drive working headroom before jobs, during capture/encoding and

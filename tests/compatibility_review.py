@@ -14,7 +14,7 @@ from pathlib import Path
 
 from audio_review import run, sha, snapshot, tones, write_wav
 
-CONTRACTS = ("export_checks", "planning_checks", "metadata_checks", "timeline_checks", "audio_checks", "frame_writer_checks", "storage_checks")
+CONTRACTS = ("export_checks", "planning_checks", "metadata_checks", "timeline_checks", "audio_checks", "frame_writer_checks", "storage_checks", "diagnostics_checks")
 
 
 def command(args, engine, project, name, options, timeout=120):
@@ -31,7 +31,7 @@ def command(args, engine, project, name, options, timeout=120):
     (project / ".umbral360" / (name + "-driver.log")).write_text(output, encoding="utf-8")
     success = code == 0 and "SCRIPT ERROR:" not in output
     match = re.search(r"CHECKS: (\d+) checks, (\d+) failures", output)
-    if name in CONTRACTS or name in ("audio_studio_checks", "capture_lifecycle_checks", "recovery_studio_checks", "storage_failure_checks"):
+    if name in CONTRACTS or name in ("audio_studio_checks", "capture_lifecycle_checks", "recovery_studio_checks", "storage_failure_checks", "release_workflow_checks"):
         success = success and match is not None and int(match.group(2)) == 0
     result = {"ok": success, "exit_code": code, "seconds": round(time.monotonic() - started, 3),
               "checks": int(match.group(1)) if match else None, "log": str(log)}
@@ -70,7 +70,7 @@ renderer/rendering_method.mobile="gl_compatibility"
         shutil.copytree(args.project / "addons/umbral360", project / "addons/umbral360")
         (project / "tests").mkdir()
         shutil.copytree(args.project / "tests/fixtures", project / "tests/fixtures")
-        for name in (*CONTRACTS, "audio_studio_checks", "capture_lifecycle_checks", "recovery_studio_checks", "storage_failure_checks"):
+        for name in (*CONTRACTS, "audio_studio_checks", "capture_lifecycle_checks", "recovery_studio_checks", "storage_failure_checks", "release_workflow_checks"):
             shutil.copy2(args.project / "tests" / (name + ".gd"), project / "tests" / (name + ".gd"))
         cue = project / ".umbral360/cue.wav"
         write_wav(cue, tones([0.25, 0.65], duration=1))
@@ -100,12 +100,16 @@ renderer/rendering_method.mobile="gl_compatibility"
                     ["--headless", "--script", "res://tests/storage_failure_checks.gd", "--",
                      "--output=" + str(project / ".umbral360/storage-failures"),
                      "--ffmpeg=" + str(args.ffmpeg), "--ffprobe=" + str(args.ffprobe)], timeout=240)
+            if args.release_workflow and all(check["ok"] for check in checks.values()):
+                checks["release_workflow_checks"] = command(args, engine, project, "release_workflow_checks",
+                    ["--rendering-method", "gl_compatibility", "--script", "res://tests/release_workflow_checks.gd", "--",
+                     "--ffmpeg=" + str(args.ffmpeg), "--ffprobe=" + str(args.ffprobe)], timeout=360)
         outputs = []
         for path in sorted((project / "renders").rglob("report.json")):
             report = json.loads(path.read_text())
             assert report["ok"] and len(report["checks"]) == 13 and all(report["checks"].values()), path
             outputs.append({"report": str(path), "checks": report["checks"], "capture_reused": report["capture_reused"]})
-        complete = len(checks) == len(CONTRACTS) + 2 + int(args.capture_failures) + int(args.job_recovery) + int(args.storage_failures) and all(check["ok"] for check in checks.values()) and len(outputs) == 2
+        complete = len(checks) == len(CONTRACTS) + 2 + int(args.capture_failures) + int(args.job_recovery) + int(args.storage_failures) + int(args.release_workflow) and all(check["ok"] for check in checks.values()) and len(outputs) == 2
         results.append({"godot_version": version, "executable": str(engine), "project": str(project), "ok": complete,
                         "stages": checks, "outputs": outputs})
     assert snapshot(args.project / "addons/umbral360") == addon_before
@@ -127,5 +131,6 @@ if __name__ == "__main__":
     parser.add_argument("--capture-failures", action="store_true", help="Also exercise six controlled capture failures in each isolated project")
     parser.add_argument("--job-recovery", action="store_true", help="Also reopen actual jobs after editor/coordinator loss and check stale identity rejection")
     parser.add_argument("--storage-failures", action="store_true", help="Inject low-space and real output-write failures in disposable jobs")
+    parser.add_argument("--release-workflow", action="store_true", help="Also exercise documented Draft calibration, six preview directions, diagnostics and full Motion Lab")
     parser.add_argument("--output", type=Path, default=Path(".umbral360") / ("compatibility-" + time.strftime("%Y%m%d-%H%M%S")))
     raise SystemExit(review(parser.parse_args()))

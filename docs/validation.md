@@ -15,6 +15,11 @@
 
 | Check | Result |
 | --- | --- |
+| 0.8 exact-package installation | 1,332 checks pass on the actual ZIP: 444 each on Godot 4.5.1/4.6.3/4.7.2; enabled plugin import, 251 headless, 19 audio panel, 50 capture-failure, 41 reopening, 56 storage-failure and 27 release-workflow checks per engine |
+| 0.8 diagnostics | Failed/completed/setup jobs; bounded log tails, empty stderr, malformed/oversized JSON, included byte hashes, existing ZIP/staging refusal, unavailable destinations, unchanged source bytes and real GPU/environment collection |
+| 0.8 documented workflow | Draft 2K calibration, six distinct preview directions, actual save dialog, recipe save/reload, one-second Motion Lab sample and full six-second film at 512×256 on each engine; all 13 delivery checks; compact panel screenshots inspected |
+| 0.8 package/source history | 84 ZIP members, 169,418 bytes; manifest/source/extracted inventory verified and byte-identical rebuild; local Git baseline at 23759d4 / v0.7.0 with the 0.8 work recorded separately |
+| 0.8 YouTube review candidate | 12-second 7680×3840/30 FPS film re-encoded from the accepted capture; encoded MP4 identical to original, all 360 decoded frames/audio preserved, 719 offsets and 924 packet hashes/timestamps verified; V2-only recognition/decode passes; original source/settings unchanged; YouTube review remains pending |
 | 0.7 storage and regressions | 1,143 checks in the three-engine matrix, plus six additional cancellation/log-write contracts per engine; 1,161 unique checks across Godot 4.5.1/4.6.3/4.7.2 |
 | 0.7 controlled storage failures | Nine injected capacity/blocked-write cases per engine; preserve the last status on blocked replacement, publish no final video, retain eligible sources, and re-encode after a report-write failure with identical source hashes |
 | 0.7 production capture | 60 seconds at 4096×2048/2048-pixel faces and 30 seconds at 7680×3840/3072-pixel faces, both 30 FPS; all 1,800/900 source and decoded frame codes/flash states pass; all thirteen delivery checks pass |

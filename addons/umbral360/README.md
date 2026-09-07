@@ -4,7 +4,7 @@ An original Godot addon for producing **monoscopic 360 video** from a 3D scene.
 Configure a scene and camera, render a fixed number of frames, encode an MP4,
 write spherical metadata, and inspect the validation report from one editor panel.
 
-**Version 0.7.0 — experimental.** The addon has passed isolated project checks on
+**Version 0.8.0 — beta candidate.** The addon has passed isolated project checks on
 Windows with Godot 4.5.1, 4.6.3 and 4.7.2, Compatibility, and an NVIDIA RTX 3060 Ti.
 Other engines, operating systems and renderers have not been validated. Read the
 [compatibility and beta guide](BETA.md) for the exact coverage and a clean-project
@@ -61,6 +61,13 @@ another export. A running 0.6.3 coordinator must answer a fresh request before t
 panel reconnects and enables cancellation. Completed captures offer **Re-encode
 this capture**, using the current CRF/audio settings and a fresh output folder.
 Unconfirmed jobs show their last saved stage and available recovery action.
+
+Use **Save diagnostics…** to save the selected job's reports, log excerpts and
+environment information as a local ZIP. Choose a new filename outside the job
+folder. Review the contents before sharing: local paths and scene-written text
+can be included. Source media is excluded. The [diagnostics guide](DIAGNOSTICS.md)
+explains limits and the [beta report form](BETA-REPORT.md) records feedback.
+Independent Windows/GPU feedback and current YouTube review remain pending.
 
 Failed jobs show a recovery action in the panel. A completed capture can usually
 be re-encoded after fixing the reported issue; an interrupted capture needs a new
