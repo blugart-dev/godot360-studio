@@ -149,6 +149,12 @@ visually checked. The master SHA-256 is
 The detailed machine-readable records are under `.umbral360/threshold-8k-run/`,
 `.umbral360/threshold-8k-media-review/`, and `.umbral360/threshold-capture-analysis.json`.
 
+On 2026-09-07, after reviewing THRESHOLD, the user reported: "It looks amazing in
+YouTube". This records positive user-reported visual quality after YouTube
+processing. No upload URL, selected playback resolution, device or individual
+navigation/seam/audio checks were supplied. It is not an agent-observed playback
+test or an independent addon installation test.
+
 The intended lessons are:
 
 - **8K is still only 1,920 horizontal source pixels per 90° view.** Thin luminous
@@ -163,8 +169,10 @@ The intended lessons are:
   directional sky shading and shared effect transforms. It does not validate
   arbitrary screen-space effects or per-camera billboards.
 - **Delivery remains mono 360 with ordinary stereo audio.** There is no stereo
-  depth, ambisonics, viewer-dependent story branching or uploaded platform review.
+  depth, ambisonics or viewer-dependent story branching. Positive YouTube visual
+  feedback is recorded above; a detailed platform/headset checklist is not recorded.
 
 This film uses the existing 0.8 addon without changing its release package. It adds
-production evidence and a reusable authored scene; independent beta feedback and
-current YouTube/headset playback review still matter for the 1.0 release decision.
+production evidence, a reusable authored scene and positive YouTube visual feedback.
+The main remaining external validation is an independent Windows/GPU beta; detailed
+playback checks and final release preparation remain part of the 1.0 decision.

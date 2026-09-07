@@ -79,13 +79,15 @@ resume and a native backend are outside the first release's support claim.
 | 0.7 — Production resolution | Inspect every source/decoded frame and beginning/middle/end audio cues in a 60-second 4096×2048/30 FPS run and a 30-second 7680×3840/30 FPS run; record storage, timings and limitations | Passed locally: all 1,800/900 frames and audio cues; see [validation](validation.md) |
 | 0.8 — Local candidate | Install the exact packaged addon in a clean project, complete the documented workflow, establish versioned source history and provide useful diagnostics bundles | Passed locally: 1,332 checks on the exact ZIP across three engines; reproducible build and Git history; see [candidate record](release-0.8.md) |
 | 0.8 — Independent beta | Gather at least one independent Windows/GPU beta report and resolve blocking defects | Pending external feedback; [report form](../addons/umbral360/BETA-REPORT.md) and tested candidate are ready |
-| 1.0 — Delivery and release | User-reviewed YouTube navigation, orientation, detail, seams and audio on a current candidate; final reproducible package/manifest, accurate supported limits and release notes; explicit approval before public publication | Pending |
+| 1.0 — Delivery review | User-reviewed YouTube navigation, orientation, detail, seams and audio on a current candidate | Positive user visual review of THRESHOLD on YouTube, 2026-09-07; individual playback checks are not yet recorded |
+| 1.0 — Release | Final reproducible package/manifest, accurate supported limits and release notes; explicit approval before public publication | Pending independent beta, findings and final release preparation |
 
-The 0.8 candidate's [verified 8K film](../renders/delivery-080-8k/video-360.mp4)
-is ready for YouTube review. It reuses the accepted 12-second capture, with unchanged
-encoded media and all 360 decoded frames/audio verified. This is delivery evidence,
-not a new endurance run or a completed YouTube check. Local engineering work is
-complete for this candidate; independent feedback remains part of the 0.8 gate.
+The original [12-second candidate film](../renders/delivery-080-8k/video-360.mp4)
+remains verified local evidence. The subsequent [THRESHOLD film](threshold.md),
+produced with the unchanged 0.8 addon, adds 60 seconds at 8K and positive user
+feedback on its appearance in YouTube. See its guide for the exact report and
+scope; no playback device/resolution or itemized checklist was supplied. Independent
+Windows/GPU beta feedback remains the main outstanding external validation.
 
 The 4K/8K runs establish these durations/settings on the measured machine. They do
 not certify one-hour exports, arbitrary scene complexity, or every GPU. The existing

@@ -1,8 +1,10 @@
 # Umbral360 0.8 beta candidate
 
 Prepared locally on 2026-09-07 for Windows, Godot 4.5.1/4.6.3/4.7.2 and
-Compatibility. Independent beta feedback and current-candidate YouTube review
-remain required before 1.0. No community publication or upload has been performed.
+Compatibility. THRESHOLD later received positive user-reported YouTube visual
+feedback; see [the film record](threshold.md). Independent beta feedback, detailed
+playback checks and final release preparation remain outstanding. The agent has
+not published the addon or uploaded video.
 
 ## Candidate
 
@@ -46,9 +48,11 @@ checks 719 chunk offsets, 924 packet hashes/timestamps, all 360 decoded frames a
 decoded audio against the accepted original encoded MP4. A separate copy with V1
 disabled confirms V2 recognition and identical decoding. The newly encoded MP4
 matches the original byte for byte. The [candidate record](../renders/delivery-080-8k/candidate-review.json)
-confirms unchanged original capture files and saved settings. No YouTube review
-has been performed on this candidate. Upload the main `video-360.mp4`, not the
-V2-only test copy.
+confirms unchanged original capture files and saved settings. No specific YouTube
+review of this 12-second file is recorded. The subsequent 60-second THRESHOLD film,
+using the unchanged 0.8 exporter, received positive user visual feedback in YouTube
+on 2026-09-07. Its [review record](threshold.md) distinguishes that feedback from
+an itemized playback checklist. Use the main `video-360.mp4` for delivery.
 
 The [local delivery diagnostics ZIP](../.umbral360/delivery-080-diagnostics.zip)
 contains the candidate's job reports and logs. Its headless environment describes
@@ -64,9 +68,9 @@ Godot caches, Python caches and distribution ZIPs. No remote is configured.
 
 1. Have at least one independent Windows/GPU tester follow the included beta form
    and record the candidate hash, environment, results and reviewed diagnostics ZIP.
-2. Review the current-candidate verified 8K film after YouTube finishes processing:
-   navigation, initial orientation, all directions, highest-quality detail, seams
-   during motion, and audio near the beginning and end.
+2. Retain the positive THRESHOLD YouTube visual feedback and record any remaining
+   detailed delivery checks: navigation, initial orientation, all directions,
+   selected playback quality, seams during motion, and beginning/end audio.
 3. Resolve blocking findings, repeat affected checks, then obtain explicit approval
    before public publication. Continue to state the measured support limits.
 

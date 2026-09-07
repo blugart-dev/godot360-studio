@@ -1,6 +1,6 @@
 # Umbral360 development handoff
 
-Updated 2026-09-07 with the original THRESHOLD film exercise after local 0.8 validation. A fresh session can begin by
+Updated 2026-09-07 with THRESHOLD's positive user-reported YouTube visual review. A fresh session can begin by
 reading this file, the linked guides, and the relevant current source/tests.
 
 ## Purpose and working agreement
@@ -9,7 +9,8 @@ Build an original, integrated Godot-to-YouTube mono 360 addon with portable reci
 documented authoring, reliable export, and eventual community use. Conversation may
 be English or Spanish; all code, comments, UI, and docs must be English. The user
 authorized continued development and a GDExtension if measurements justify it.
-No external publication or upload has been performed. Local Git now exists on
+The agent has not published or uploaded anything; the user reports viewing THRESHOLD
+in YouTube. Local Git now exists on
 `main`, starting with commit `23759d4` and tag `v0.7.0` for the validated baseline.
 Generated renders, local settings/tools and release ZIPs are ignored. No remote
 has been configured or pushed. Use current Git status before editing.
@@ -29,7 +30,9 @@ The local production job is `renders/threshold-8k/`; inspect its `report.json` a
 source passes 60 absolute-time checks. No addon source or 0.8 release ZIP changed.
 The scenes preload together and switch visibility under an opaque veil; this is
 not disk streaming or a newly implemented map sequencer. The film remains mono
-360, SDR and stereo audio. Local review is distinct from headset/YouTube acceptance.
+360, SDR and stereo audio. On 2026-09-07 the user reported that it looks amazing in
+YouTube. Record this as positive visual feedback after platform processing, not
+as an independently observed test or an itemized navigation/seam/audio/VR checklist.
 
 After media review, the job also contains a 4K browser copy, a 1080p ordinary
 perspective preview and a local drag-to-look player. `tools/play_threshold.py`
@@ -79,7 +82,8 @@ are not prerequisites for the initial supported release.
   verified payloads and per-file hashes; retain source bytes, status and recipe.
   Exact-package reviewer installs the ZIP, verifies its inventory/reproducible
   bytes and runs the complete matrix plus documented panel workflows. Independent
-  beta feedback and current-candidate YouTube review remain pending.
+  beta feedback remains pending. THRESHOLD later received positive YouTube visual
+  feedback from the user; individual playback checks are not recorded.
 
 The addon remains GDScript plus external FFmpeg. A native rewrite is not currently
 justified by the measured bottleneck. Read [performance](performance.md),
@@ -342,9 +346,11 @@ success. Sandbox cache/certificate messages in logs are separate from test failu
 ## Next work
 
 The local 0.8 engineering gate passes; see docs/release-0.8.md and its accepted report.
-The remaining external gates are an independent Windows/GPU beta report and
-current-candidate YouTube playback. addons/umbral360/BETA-REPORT.md provides the
-specific checks. Do not claim those gates pass from automated local tests.
+The main remaining external validation is an independent Windows/GPU beta report.
+THRESHOLD has positive user-reported YouTube visual feedback; individual playback
+checks were not supplied. addons/umbral360/BETA-REPORT.md provides the specific
+checks. Do not infer an independent beta or a complete itemized playback review
+from this feedback or from automated local tests.
 Fix any reported blocking defect and repeat the affected checks before replacing
 the candidate. Keep arbitrary capture resume and untested platform claims outside
 the initial 1.0 scope. Do not repeat large renders or add unrelated features while
