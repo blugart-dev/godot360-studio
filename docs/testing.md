@@ -125,6 +125,9 @@ workflow** after the workflow is pushed. It does not publish a release.
   with `LIBGL_ALWAYS_SOFTWARE=1 xvfb-run -a -s '-screen 0 1400x900x24'`.
 - **macOS:** `--headless-only` verifies contracts, real FFmpeg processes/PNG pipes,
   capture failure handling and storage failures without requiring a GPU session.
+  CI installs Homebrew's keg-only `ffmpeg-full` and puts its `bin` directory first
+  on PATH. Both platform lanes perform a tiny Theora/Vorbis encode before package
+  review so missing playback codecs fail in the dependency check with a clear log.
   The report explicitly says no rendered export was tested. It is not a release
   gate for Mac capture; run the full command on a Mac desktop before claiming that.
 - **Windows:** the full local package matrix still covers 4.5.1, 4.6.3 and 4.7.2.

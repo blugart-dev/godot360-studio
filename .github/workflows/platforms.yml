@@ -56,11 +56,19 @@ jobs:
       - name: Install Mac tools
         if: runner.os == 'macOS'
         run: |
-          brew install ffmpeg
+          brew install ffmpeg-full
+          # The full formula is keg-only; select it ahead of the runner's basic FFmpeg.
+          echo "$(brew --prefix ffmpeg-full)/bin" >> "$GITHUB_PATH"
           mkdir -p .godot360/ci/tools
           curl --fail --location --retry 3 "https://github.com/godotengine/godot-builds/releases/download/${GODOT_VERSION}-stable/Godot_v${GODOT_VERSION}-stable_macos.universal.zip" -o .godot360/ci/tools/godot.zip
           ditto -x -k .godot360/ci/tools/godot.zip .godot360/ci/tools
           echo "GODOT=$PWD/.godot360/ci/tools/Godot.app/Contents/MacOS/Godot" >> "$GITHUB_ENV"
+      - name: Check playback codecs
+        run: |
+          command -v ffmpeg
+          command -v ffprobe
+          ffmpeg -hide_banner -nostdin -loglevel error -n -f lavfi -i color=size=64x64:rate=1 -f lavfi -i anullsrc=r=48000:cl=stereo -t 1 -c:v libtheora -c:a libvorbis .godot360/ci/tools/playback-codecs.ogv
+          ffprobe -v error -show_entries stream=codec_name,codec_type -of json .godot360/ci/tools/playback-codecs.ogv > .godot360/ci/tools/playback-codecs.json
       - name: Build candidate
         run: python tools/package_addon.py --output .godot360/ci/candidate.zip
       - name: Review Linux package and rendered workflows
@@ -90,6 +98,7 @@ jobs:
           include-hidden-files: true
           path: |
             .godot360/ci/candidate.json
+            .godot360/ci/tools/playback-codecs.json
             .godot360/ci/review/**/*.json
             .godot360/ci/review/**/*.log
             .godot360/ci/review/**/release-preview-*.png

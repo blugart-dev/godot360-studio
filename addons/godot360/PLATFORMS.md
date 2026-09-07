@@ -87,22 +87,32 @@ editor for this workflow instead of changing sandbox permissions blindly.
    if you do not already have it. Complete the installer's **Next steps** so a new
    Terminal window recognizes `brew`. Homebrew lists its own system requirements
    and Command Line Tools requirement; those belong to the package manager.
-3. Install [Homebrew's FFmpeg package](https://formulae.brew.sh/formula/ffmpeg):
+3. Install [Homebrew's full FFmpeg package](https://formulae.brew.sh/formula/ffmpeg-full),
+   which includes the Theora/Vorbis encoders needed for in-editor playback:
 
    ```sh
-   brew install ffmpeg
-   ffmpeg -version
-   ffprobe -version
+   brew install ffmpeg-full
+   "$(brew --prefix ffmpeg-full)/bin/ffmpeg" -version
+   "$(brew --prefix ffmpeg-full)/bin/ffprobe" -version
    ```
 
-4. Open **Godot360 → Tool setup → Find installed tools**. Discovery checks PATH
-   first, then the usual Homebrew locations: `/opt/homebrew/bin` on Apple Silicon
-   and `/usr/local/bin` on Intel. This also works when Godot is opened from Finder
-   with a different PATH from Terminal. Existing MacPorts installs in
-   `/opt/local/bin` are searched too.
-5. If discovery fails, run `command -v ffmpeg` and `command -v ffprobe` in Terminal
-   and paste those full paths into the panel. Select the executables, not a folder
-   or `.app` bundle. Choose a writable output folder and run **Check setup**.
+4. This formula is **keg-only**: Homebrew does not link its executables into the
+   usual `bin` directory. Print their full paths in Terminal:
+
+   ```sh
+   echo "$(brew --prefix ffmpeg-full)/bin/ffmpeg"
+   echo "$(brew --prefix ffmpeg-full)/bin/ffprobe"
+   ```
+
+5. Paste those two paths into **Godot360 → Tool setup → FFmpeg / FFprobe**.
+   Select the executables, not a folder or `.app` bundle. Choose a writable output
+   folder and run **Check setup**, then try **Play video** after a short export.
+
+**Find installed tools** searches PATH and common Homebrew/MacPorts directories.
+It may find the basic `ffmpeg` package if both are installed; keep the explicit
+`ffmpeg-full` paths above for playback. The basic package can export H.264/AAC
+but currently lacks `libtheora`. These tool paths also work in Finder-launched
+Godot without changing your shell configuration.
 
 Use **Cmd+S** to save scenes. For command-line review scripts, Godot's executable
 is `/Applications/Godot.app/Contents/MacOS/Godot`; see the

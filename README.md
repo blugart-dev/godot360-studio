@@ -15,7 +15,7 @@ native tools for your operating system, then use the same addon folder everywher
 | --- | --- | --- | --- |
 | Windows x86_64 | [Official download](https://godotengine.org/download/archive/4.7.2-stable/) → Windows Standard | [gyan.dev](https://www.gyan.dev/ffmpeg/builds/) → release essentials ZIP; both tools are in `bin/` | [Windows setup](addons/godot360/PLATFORMS.md#windows) |
 | Linux | [Official download](https://godotengine.org/download/archive/4.7.2-stable/) → Linux Standard for your CPU | Ubuntu/Debian: `sudo apt install ffmpeg`; other builds via [FFmpeg](https://ffmpeg.org/download.html) | [Linux setup](addons/godot360/PLATFORMS.md#linux) |
-| macOS | [Official download](https://godotengine.org/download/archive/4.7.2-stable/) → macOS Universal | [Install Homebrew](https://docs.brew.sh/Installation), then [`brew install ffmpeg`](https://formulae.brew.sh/formula/ffmpeg) | [macOS setup](addons/godot360/PLATFORMS.md#macos) |
+| macOS | [Official download](https://godotengine.org/download/archive/4.7.2-stable/) → macOS Universal | [Install Homebrew](https://docs.brew.sh/Installation), then [`brew install ffmpeg-full`](https://formulae.brew.sh/formula/ffmpeg-full); select its tool paths as described in setup | [macOS setup](addons/godot360/PLATFORMS.md#macos) |
 
 **[Platform setup: downloads, installation and troubleshooting](addons/godot360/PLATFORMS.md)**
 includes executable permissions, macOS app paths, optional PATH configuration and

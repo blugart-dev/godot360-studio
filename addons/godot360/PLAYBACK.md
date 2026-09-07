@@ -19,6 +19,11 @@ additional Godot extension is needed. FFmpeg must include **libtheora** and
 These codecs are only required for in-editor video playback. An FFmpeg build
 without them can still export the usual H.264/AAC delivery MP4.
 
+On macOS, install Homebrew's **ffmpeg-full** and select its explicit FFmpeg and
+FFprobe paths using [Mac setup](PLATFORMS.md#macos). The basic Homebrew `ffmpeg`
+package lacks `libtheora`; installing the separate Theora library does not add
+that encoder to an already-built FFmpeg executable.
+
 Review preparation converts the delivery's BT.709 pixels to sRGB transfer with
 the BT.601 YUV matrix used by Godot's native Theora decoder. The spherical shader
 then displays the resulting SDR texture. This is a pixel conversion, not a tag
