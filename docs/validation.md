@@ -1,5 +1,48 @@
 # Validation record — updated 2026-09-08
 
+## Hosted macOS playback codec fix — 2026-09-08
+
+GitHub Actions runs for `a037209` and `85a924a` failed in the Mac playback suite;
+their Linux jobs passed. The retained encoder log reports
+`Unknown encoder 'libtheora'`. Homebrew's basic FFmpeg build could produce the
+H.264/AAC test MP4 but could not prepare its Theora review copy. This was not a
+recent-exports regression. The earlier Windows check counts did not cover hosted
+CI, and the failed Mac jobs are not counted as successful validation.
+
+Commit `203cd56` installs [Homebrew's full FFmpeg formula](https://formulae.brew.sh/formula/ffmpeg-full)
+and prepends its keg-only `bin` directory to the runner PATH. Both CI lanes now
+encode and probe a one-second Theora/Vorbis clip before package review. Mac user
+setup instructions select the explicit full-build tool paths. Addon runtime and
+test contracts are unchanged. All six workflow Bash blocks pass syntax checks;
+the exact new codec step also passes locally on Windows FFmpeg 9.0.1.
+
+The [corrected hosted run](https://github.com/blugart-dev/godot360-studio/actions/runs/34169487525)
+passes the Mac lane with **505 checks** on macOS 15.7.9 / arm64, Godot 4.7.2 and
+FFmpeg/FFprobe 9.0.1. This includes 35 playback, 32 history, 58 capture-lifecycle
+and 56 storage-failure checks. The package report confirms verified manifest,
+identical rebuild and unchanged payload/package. Mac package SHA-256:
+`b265667746bb24ead9fbe9534a40672da08908fab8ad04368b82aa12eb4d3adf`.
+The codec probe identifies both Theora video and Vorbis audio. Reports/logs are
+retained locally under `.godot360/ci-fix/hosted-macos/`; local shell/codec evidence
+is in `.godot360/ci-fix/local-review.json`.
+
+The same run's **Ubuntu 24.04 lane passes 639 checks**, including rendered export,
+native playback, history, recovery and storage workflows with Mesa software OpenGL.
+It also passes eight appearance cases: color, lighting, glow and a compute
+compositor under each of Forward+ and Mobile with software Vulkan. Both renderer
+reports have `ok: true`. Linux's package has the same SHA-256 as Mac and passes
+the same manifest/rebuild/preservation assertions. Evidence is under
+`.godot360/ci-fix/hosted-linux/`. The overall Actions run is **successful**, with
+1,144 package/workflow checks across both platforms; the eight renderer cases
+are separate. These hosted results supersede earlier notes that CI was only
+prepared or unobserved. Software rendering does not establish Linux hardware-GPU
+compatibility or production performance.
+
+Mac evidence is headless: conversion, native playback clocks/audio and control
+behavior are tested, but no graphical export, rendered-pixel review or Mac GPU
+compatibility is claimed. Independent beta and hardware-platform gaps remain.
+No release was published. Later root documentation edits do not change tested code.
+
 ## Recent exports — 2026-09-08
 
 The unreleased panel remembers up to 12 launched/opened export folders, displays

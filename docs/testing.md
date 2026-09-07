@@ -92,7 +92,7 @@ library and Godot. Its output must be inside the chosen `--project`.
 
 The Linux CI lane now also renders Forward+ and Mobile with Mesa software Vulkan,
 including color, lighting, glow and a compute compositor. Its reports and contact
-sheets are retained. Hosted execution remains unclaimed until Actions runs it.
+sheets are retained. Accepted hosted runs are recorded in [validation](validation.md).
 Native macOS/Metal, Linux hardware GPUs and 4K/8K Forward+ endurance require
 separate machine-specific validation.
 

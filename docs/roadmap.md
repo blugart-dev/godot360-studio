@@ -92,8 +92,9 @@ Keep feature scope around mono equirectangular video, SDR BT.709, stereo audio,
 portable recipes and recoverable jobs. The user expanded platform work to Linux
 and ideally macOS on 2026-09-07, superseding the original Windows-only boundary.
 Windows retains Godot 4.5.1/4.6.3/4.7.2 evidence; Linux now has native 4.7.2 workflow
-checks under Ubuntu/WSLg. macOS setup and a headless CI lane are prepared; native
-Mac exports still need validation. See [platform status](../addons/godot360/PLATFORMS.md).
+checks under Ubuntu/WSLg. Native macOS headless CI now passes after selecting
+Homebrew's full FFmpeg build; graphical Mac exports still need validation. See
+[platform status](../addons/godot360/PLATFORMS.md) and [hosted evidence](validation.md).
 Project renderer preservation, external FFmpeg/FFprobe and local storage are the
 target. Forward+/Mobile now have native visual evidence; remaining priorities are
 Mac hardware validation, representative user scenes, GI/temporal effects and

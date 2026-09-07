@@ -1,5 +1,19 @@
 # Godot360 Studio development handoff
 
+## CI follow-up — 2026-09-08
+
+The user noticed failed GitHub Actions runs and authorized fixing them. The Mac
+runner's basic Homebrew FFmpeg lacked `libtheora`; Linux passed on both `a037209`
+and `85a924a`. Commit `203cd56` installs `ffmpeg-full`, puts its keg-only `bin`
+first on CI PATH, and checks an actual Theora/Vorbis encode before package review.
+Mac setup/playback documentation now tells users to select the full tool paths.
+No addon runtime or test contracts changed. The corrected hosted Mac lane passes
+505 checks on macOS 15.7.9 / Apple Silicon / Godot 4.7.2, including playback and
+recent exports. Linux passes 639 package/workflow checks plus eight software-Vulkan
+appearance cases. Both jobs in run `34169487525` are green. Mac evidence remains
+headless, not graphical Mac capture validation.
+See the latest [validation entry](validation.md) for the complete hosted result.
+
 ## Current pass — 2026-09-08
 
 The user authorized another autonomous increment, verification, commit and push
