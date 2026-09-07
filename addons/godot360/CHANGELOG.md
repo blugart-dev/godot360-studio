@@ -1,5 +1,19 @@
 # Changelog
 
+## Unreleased — first-export workflow
+
+- Add Use current scene with a save boundary, saved-scene camera discovery and a
+  picker for inherited/instanced cameras. Keep manual paths for runtime cameras.
+- Group advanced capture, audio timing, tool setup, recipes and recovery controls.
+  Keep the basic scene/video/audio workflow and test/render actions prominent.
+- Discover tools on PATH and check FFmpeg/FFprobe capabilities asynchronously.
+  Check output writes and display scene risks before capture; invalidate readiness
+  after path changes. Keep authoritative job validation and recovery in the pipeline.
+- Reject malformed numeric input before launch and clear the previous still preview
+  when starting a new job. Expand recovery controls when a saved job needs attention.
+- Add a portable quick start, shorten the repository landing page, and move demo
+  architecture and developer commands into their own guides.
+
 ## Unreleased — folder naming
 
 - Use `addons/godot360` for the addon and `.godot360` for local settings/output.

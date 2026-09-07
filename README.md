@@ -1,233 +1,71 @@
 # Godot360 Studio
 
-An original **Godot addon for producing mono 360° video**, with deterministic
-capture, soundtracks, spherical MP4 metadata and export validation. Includes the
-UMBRAL interactive installation and THRESHOLD, a sixty-second film through four
-procedural worlds.
+**Export your Godot 3D scene as a 360° video.** Select a camera, choose quality
+and duration, test a short sample, and render a verified MP4 from the Godot editor.
+The addon handles capture, sound, encoding and spherical metadata.
 
-The addon lives in `addons/godot360`; local settings and generated checks live in
-`.godot360`. Godot360 Studio is an independent project. UMBRAL and THRESHOLD are
-the names of the included creative examples.
+**[Start here: your first 360° export](addons/godot360/QUICKSTART.md)**
 
-See [repository contents and privacy audit](docs/repository.md) for what is
-versioned and what remains local. Exported videos and local tools are not included.
+## Use it in your project
 
-All project code, comments, interface text, and documentation are in English.
-Development conversation may be in Spanish or English.
+1. Copy `addons/godot360` into your Godot project and enable **Godot360 Studio**
+   under **Project > Project Settings > Plugins**.
+2. Open the **Godot360** bottom panel. Select FFmpeg and FFprobe under **Tool setup**
+   if they were not found on PATH.
+3. Click **Use current scene** and pick a **Camera**. This saves the current named
+   scene; new scenes must first be saved in Godot. **Choose scene…** selects another
+   saved scene. Runtime-created cameras can use a manual path under Advanced.
+4. Choose **Production · 4K**, duration, audio and an output folder. **Check setup**
+   shows configuration issues, tool capabilities and saved-scene notes.
+5. Click **Test 1 second** to inspect a sample and estimate render time/storage,
+   then **Render 360 video**. Use **Open output** for the verified `video-360.mp4`.
 
-**THRESHOLD** is the original sixty-second, four-world film experiment. Open
-`scenes/films/Threshold.tscn` with F6, or load `export_profiles/threshold-8k.tres` to
-export it. See the [film guide and measured limitations](docs/threshold.md).
+The panel previews the first frame as a draggable sphere. Review the full video
+in a spherical player. A video preserves the authored sequence; viewers can look
+around, while interactive gameplay and gaze events need to be prepared for capture.
 
-## Produce a 360 video
+The current usability work adds scene/camera discovery, setup checks and grouped
+controls to the 0.8 codebase. Historical beta evidence is recorded separately;
+this working source has not been published as a new release.
 
-Open `project.godot` in **Godot 4.7.2** and use the **Godot360** bottom panel.
-The plugin is already enabled in this project.
+## What it supports
 
-1. Select FFmpeg and FFprobe executables. FFmpeg needs libx264 and AAC.
-   Paths are stored locally, outside the shareable addon.
-2. Load `export_profiles/umbral-film.tres` for a 12-second, 4096×2048, 30 fps clip,
-   or use **Calibration defaults** to check the six directions and generated audio.
-3. Choose an output parent folder and click **Test 1 second** to estimate the
-   full export's time and retained storage, then **Render 360 video**.
-   **Fast PNG** speeds up capture using more temporary disk space; **Compact PNG**
-   retains the smaller-file option. Both preserve the same source pixels.
-4. Inspect the spherical still preview, `video-360.mp4`, and `report.json`.
+- Mono 360° video, SDR BT.709, and ordinary stereo sound.
+- Draft 2K, Production 4K and Detail 8K presets; 24, 25, 30, 50 or 60 FPS.
+- Scene audio, an attached soundtrack, or a mix.
+- Measured short-test estimates, progress, cancellation and saved-job recovery.
+- Re-encoding retained captures to change quality or sound without rendering again.
 
-Each job produces its own folder, with retained PNG frames, WAV, recipe, and logs.
-Version 0.8 adds **Save diagnostics…** for reviewed local support ZIPs, an
-[independent beta report](addons/godot360/BETA-REPORT.md), and an exact-package
-installation/workflow reviewer. See the [diagnostics guide](addons/godot360/DIAGNOSTICS.md)
-and [beta instructions](addons/godot360/BETA.md). Source history starts at the
-validated 0.7 baseline in local Git; renders, settings and tool binaries are excluded.
-Version 0.7 adds working disk-space checks and required file-write checks. Captures
-retained after a storage failure can be re-encoded in a fresh folder; partial
-captures need a new render. See the [storage guide](addons/godot360/STORAGE.md)
-and the revised [route to 1.0](docs/roadmap.md).
-Version 0.6.3 restores the last job when the panel opens. **Open saved job…** can
-reconnect to an ongoing export or inspect a stopped job; **Re-encode this capture**
-reuses a finalized source in a fresh job. Read the [recovery guide](addons/godot360/RECOVERY.md).
-The addon handles capture, encoding, spherical metadata, and FFprobe verification.
-Version 0.6 adds soundtrack attachment, mixing, levels and synchronization offsets
-for renders and re-encodes. Read the [audio guide](addons/godot360/AUDIO.md).
-It also delivers fast-start MP4 with equivalent Spherical Video V1/V2 metadata,
-alongside measured job planning, live encoding progress and cancellation,
-**Re-encode saved…**, and the **Motion lab** camera/timeline example. Read the
-[job planning guide](docs/job-planning.md) and [authoring guide](addons/godot360/AUTHORING.md).
-It exports mono 360 and ordinary stereo audio. Stereo 3D, ambisonics, and YouTube
-upload are not implemented. A user confirmed basic YouTube 360 playback of the
-initial 2K clip, but found it blurry. Use **Production · 4K** or **Detail · 8K**
-for greater viewing detail; 2K is a draft preset. The 12-second Detail recipe is
-`export_profiles/umbral-film-8k.tres`.
+Initial support targets **Windows and Compatibility**, with recorded checks on
+Godot **4.5.1, 4.6.3 and 4.7.2**. FFmpeg and FFprobe are external dependencies.
+See [compatibility and limitations](addons/godot360/BETA.md) for the exact evidence.
+Stereoscopic 3D, ambisonics and automatic uploads are outside the current scope.
 
-Read the [addon guide](addons/godot360/README.md) for setup, recipes, CLI use,
-capture hooks, known limitations, and architecture. The
-[production workflow](docs/youtube-360-production.md) explains release checks.
+## Try the included examples
 
-## Play the interactive installation
+Open this repository's `project.godot` in **Godot 4.7.2**; the plugin is enabled.
 
-Press **F5**, or open `scenes/Main.tscn` and press **F6**.
-
-| Control | Action |
+| Example | How to try it |
 | --- | --- |
-| Mouse | Look around, with smoothing and pitch limited to ±85° |
-| Esc | Release/capture the mouse |
-| Click with mouse released | Capture the mouse |
-| R | Smoothly recenter |
-| F3 | Toggle FPS, target name, and gaze duration |
+| Calibration | Panel → Recipes and examples → Calibration defaults. Checks six directions and a tone. |
+| Motion lab | Panel → Recipes and examples → Motion lab. An editable animated camera and timeline. |
+| UMBRAL | F5 for the interactive installation; load `export_profiles/umbral-film.tres` for its 12-second film. [Scene guide](docs/umbral.md). |
+| THRESHOLD | Open `scenes/films/Threshold.tscn` with F6; load `export_profiles/threshold-8k.tres` to export the four-world film. [Film guide](docs/threshold.md). |
 
-Mouse sensitivity is exposed on `Player` in degrees per pixel. Smoothing and pitch
-limits are also configurable. Releasing the mouse or losing focus cancels gaze
-interaction while environmental animation continues. Restart to reset discoveries.
+Godot360 Studio is the tool. UMBRAL and THRESHOLD are creative examples.
 
-- **Front — The core:** appears at 2 seconds. A one-second gaze changes its
-  appearance and animation, once per playthrough.
-- **Right — The echo:** sends a cue at 5 seconds. Look away and back to repeat its pulse.
-- **Behind — The reverse:** a light trail appears at 8 seconds. Gaze opens and
-  raises the bloom with its collision shape.
-- **Left — The witness:** moves along an arc while the camera points at the core,
-  then stops when you look elsewhere. Its reaction depends on whether it has moved.
-- **Above:** an animated orbital mobile; original SVG cutouts decorate the space.
+## Find the right guide
 
-The crosshair shows dwell progress. There are four discoveries, and exploration
-can continue after finding them all. These interactions belong to Godot. A YouTube
-video cannot execute the gaze logic: its events happen at the same time for everyone.
-
-## Scene architecture
-
-```text
-scenes/Main.tscn
-├── World
-│   ├── Environment             Procedural sky or a panorama texture
-│   ├── Props                   Floor, arches, sprites, and ceiling mobile
-│   └── GazeTargets             Four independently instanced targets
-├── Player
-│   ├── Camera3D
-│   └── GazeDetector
-├── SequenceController
-└── UI/HUD
-```
-
-| File | Responsibility |
+| I want to… | Read |
 | --- | --- |
-| `scripts/player_look.gd` | Mouse input, capture, smoothing, recentering |
-| `scripts/gaze_detector.gd` | Physics ray, target changes, dwell timer |
-| `scripts/gaze_target.gd` | Reusable target properties and interaction signals |
-| `scripts/props/*.gd` | Target behavior and Tween animation |
-| `scripts/sequence_controller.gd` | Timed cues at 2, 5, and 8 seconds |
-| `scripts/main.gd` | Narrative wiring, discovery count, optional film hooks |
-| `scripts/ui/*.gd` | Crosshair, messages, compass, debugging |
-| `scripts/world/*.gd` | Background and generated geometry |
-| `addons/godot360/` | Independent export tool, calibration scene, and preview |
+| Export my first scene | [Quick start](addons/godot360/QUICKSTART.md) |
+| Animate a camera or prepare interactive content | [Authoring](addons/godot360/AUTHORING.md) |
+| Add music or adjust synchronization | [Audio](addons/godot360/AUDIO.md) |
+| Understand quality, recipes or command-line exports | [Addon reference](addons/godot360/README.md) |
+| Recover an export or manage disk space | [Recovery](addons/godot360/RECOVERY.md) · [Storage](addons/godot360/STORAGE.md) |
+| Review delivery for YouTube | [Production workflow](docs/youtube-360-production.md) |
+| Develop or contribute | [Tests](docs/testing.md) · [Validation record](docs/validation.md) · [Roadmap](docs/roadmap.md) |
 
-Decorative meshes are generated in `_ready()`, so they appear when running the
-scene. Gaze targets and their collision shapes are edited in their `.tscn` scenes.
-The film hook disables live gaze, awakens the core at 3.5 s, pulses the echo at 6 s,
-opens the rear bloom at 9 s, and moves the witness along a scripted arc. It also
-orients cutouts toward the shared capture origin instead of per-camera billboards.
-
-## Add a gaze target
-
-1. Create an `Area3D` scene using `scripts/gaze_target.gd`.
-2. Set collision layer 2 and collision mask 0, then add a suitable `CollisionShape3D`.
-3. Add a visual node and instance the scene under `World/GazeTargets`.
-4. Set `display_name`, `dwell_time`, `accent_color`, `enabled`, and `activate_once`.
-5. Connect `gaze_activated` to its behavior. `gaze_entered` and `gaze_exited` are
-   also available; all three signals have no arguments.
-
-With `activate_once = false`, a target activates once per visit: look away to rearm
-it. `reset_activation()` clears the completed state. Looking away, disabling or
-removing a target, or releasing input resets detection. The four-discovery narrative
-in `main.gd` is specific to this demo; adapt it when adding targets.
-
-The detector queries layers 1 and 2. Occluding objects require a `StaticBody3D` and
-collision on layer 1. A visual mesh alone does not block a physics ray.
-
-## Use a panorama background
-
-Copy a 2:1 equirectangular image into `assets/panoramas/`, select
-`World/Environment`, and assign **Panorama Texture**. Adjust **Panorama Rotation
-Degrees** to align it. Leaving the texture empty restores the procedural sky.
-This is a static spherical background, with no video playback or positional parallax.
-
-## Verification
-
-The interactive regression suite covers 48 checks: real input events, camera
-smoothing, physics rays, occlusion, target removal, repeatable events, narrative,
-and background selection. Export tests cover validation, metadata structure,
-source-byte preservation, unsupported inputs, and failure detection.
-
-```sh
-godot --headless --path . --fixed-fps 60 --script res://tests/runtime_checks.gd
-godot --headless --path . --script res://tests/export_checks.gd
-godot --headless --path . --script res://tests/metadata_checks.gd
-godot --headless --path . --script res://tests/audio_checks.gd
-godot --headless --path . --script res://tests/planning_checks.gd
-godot --headless --path . --script res://tests/timeline_checks.gd
-godot --headless --path . --script res://tests/frame_writer_checks.gd -- --ffmpeg=/path/to/ffmpeg
-```
-
-The quality preset buttons, sampling warnings, and compact panel layout are checked
-with `godot --path . --script res://tests/quality_panel_checks.gd` (GPU required).
-
-A GUI/GPU integration test exercises the actual studio panel, full export, and
-drag preview. Pass your tool paths after `--`:
-
-```sh
-godot --path . --script res://tests/studio_checks.gd -- --ffmpeg=/path/to/ffmpeg --ffprobe=/path/to/ffprobe
-godot --path . --script res://tests/planning_studio_checks.gd -- --ffmpeg=/path/to/ffmpeg --ffprobe=/path/to/ffprobe --cancel-source=/path/to/completed-capture
-```
-
-It saves `.godot360/studio-preview.png` and a two-second calibration export under
-`renders/studio-checks/`. The optional legacy `tests/capture_preview.gd` records six
-perspective views of the interactive installation; it is not the 360 exporter.
-The planning integration test also checks duration rescaling, stale estimates,
-re-encoding at another CRF, and source-file hashes. An optional `--cancel-source`
-with a longer capture exercises cancellation during an active H.264 encode.
-
-The metadata suite covers V2 structure, media relocation, 32/64-bit offset tables,
-cascading promotion across 4 GiB, invalid inputs and copy cancellation. Review a
-real encoded/final MP4 pair independently with:
-
-```sh
-python tests/metadata_review.py /path/to/encoded.mp4 /path/to/video-360.mp4 --ffmpeg /path/to/ffmpeg --ffprobe /path/to/ffprobe
-```
-
-The reviewer compares media bytes, packet hashes/timestamps and all decoded video
-and audio, and checks V2 recognition with the V1 UUID disabled in a separate copy.
-
-`tests/audio_review.py` generates short cues, runs complete re-encodes, and compares
-AAC decoding against independently placed source samples. Pass `--godot`, `--ffmpeg`,
-`--ffprobe`, and a fresh `--output` folder. `tests/audio_delivery_checks.py` accepts
-those arguments plus `--source-review` pointing to the completed audio review and
-`--legacy-source` pointing to a pre-0.6 CRF-16 capture with its encoded MP4.
-It checks limiting, legacy media preservation and soundtrack mutation rejection.
-
-Version 0.6.1 fixes Motion Lab on Godot 4.5.1 and adds isolated compatibility checks
-on 4.5.1/4.6.3/4.7.2, eight soundtrack format cases and a 90-second mix. The
-[beta guide](addons/godot360/BETA.md) gives exact coverage, clean-project steps,
-reviewer commands and reproducible packaging with `tools/package_addon.py`.
-Version 0.6.2 adds [failure recovery guidance](addons/godot360/RECOVERY.md),
-controlled worker/encoder interruption tests, and a real 90-second GPU capture at
-60 FPS with all 5,400 delivered frames and audio cues checked. The compatibility
-reviewer accepts `--capture-failures`; `tests/endurance_review.py` runs the long
-fixture with the same tool arguments and a fresh `--output` directory.
-Add `--job-recovery` to exercise reopened panels, editor/coordinator loss,
-fresh identity checks, stale PID rejection and recovered-source re-encoding.
-`tests/audio_studio_checks.gd` exercises the real panel with `--soundtrack`,
-`--ffmpeg` and `--ffprobe`; it restores local studio settings afterward.
-
-The Motion Lab button and complete authored export are checked by
-`tests/timeline_studio_checks.gd` with the same executable arguments. Render
-`tests/fixtures/motion.tscn` for six seconds, then run `tests/motion_review.py`
-against its folder to inspect actual PNG/MP4 motion and tone alignment. See the
-[authoring guide](addons/godot360/AUTHORING.md#verification) for dependencies.
-
-See [validation results](docs/validation.md) for the tested environment and known
-gaps. The addon carries its own MIT license and reference notes, so it can be
-copied into another project. It has not been published to the Asset Library.
-
-See the [performance record](docs/performance.md) for measurements and the
-[roadmap](docs/roadmap.md) for the next production milestones.
-The [development handoff](docs/HANDOFF.md) records the current state and constraints
-for continuing in a fresh session.
+The addon is [MIT licensed](addons/godot360/LICENSE). Settings, generated checks,
+tool binaries and renders stay local; see [repository contents](docs/repository.md).
+Project code, interface text and documentation are in English.

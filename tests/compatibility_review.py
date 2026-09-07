@@ -14,7 +14,7 @@ from pathlib import Path
 
 from audio_review import run, sha, snapshot, tones, write_wav
 
-CONTRACTS = ("export_checks", "planning_checks", "metadata_checks", "timeline_checks", "audio_checks", "frame_writer_checks", "storage_checks", "diagnostics_checks")
+CONTRACTS = ("export_checks", "planning_checks", "metadata_checks", "timeline_checks", "audio_checks", "frame_writer_checks", "storage_checks", "diagnostics_checks", "usability_checks")
 
 
 def command(args, engine, project, name, options, timeout=120):
@@ -78,7 +78,7 @@ renderer/rendering_method.mobile="gl_compatibility"
         if checks["editor-import"]["ok"]:
             for name in CONTRACTS:
                 checks[name] = command(args, engine, project, name, ["--headless", "--script", "res://tests/" + name + ".gd",
-                                      "--", "--ffmpeg=" + str(args.ffmpeg)])
+                                      "--", "--ffmpeg=" + str(args.ffmpeg), "--ffprobe=" + str(args.ffprobe)])
                 if not checks[name]["ok"]:
                     break
             if all(check["ok"] for check in checks.values()):

@@ -24,6 +24,7 @@ func _run() -> void:
 	panel = preload("res://addons/godot360/studio_panel.gd").new()
 	root.add_child(panel)
 	panel.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	panel.sections.recipes.toggle.button_pressed = true
 	_button("Calibration defaults").pressed.emit()
 	_button("Draft · 2K").pressed.emit()
 	panel.ffmpeg.text = IO.argument("ffmpeg")
@@ -54,6 +55,7 @@ func _run() -> void:
 		signatures[preload("res://addons/godot360/diagnostics.gd")._hash(view.get_data())] = true
 		check(panel.heading.distance_to(angles[index]) < 0.001 and saved == OK, "Preview drag reaches and renders " + names[index])
 	check(signatures.size() == 6, "Six preview directions produce distinct rendered views")
+	panel.sections.jobs.toggle.button_pressed = true
 	panel._browse("diagnostics")
 	var dialog: FileDialog = panel.get_child(panel.get_child_count() - 1)
 	check(dialog.file_mode == FileDialog.FILE_MODE_SAVE_FILE and dialog.access == FileDialog.ACCESS_FILESYSTEM and dialog.current_file.ends_with(".zip"), "Diagnostics action opens a ZIP save dialog")

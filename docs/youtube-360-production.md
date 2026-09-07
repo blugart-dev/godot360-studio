@@ -1,7 +1,8 @@
 # A reproducible Godot → YouTube 360 workflow
 
 The first standard is intentionally narrow: **mono equirectangular video, a 2:1
-frame, SDR BT.709, and ordinary stereo audio**. This is the implemented v0.4 path.
+frame, SDR BT.709, and ordinary stereo audio**. For installation and the current
+panel workflow, start with the [quick start](../addons/godot360/QUICKSTART.md).
 An equirectangular frame stores every viewing direction at one instant; the player
 lets viewers choose which part to see. The scene timeline is shared by all viewers.
 

@@ -7,6 +7,10 @@ const Planner = preload("job_planner.gd")
 const Audio = preload("audio_plan.gd")
 const Session = preload("job_session.gd")
 const Diagnostics = preload("diagnostics.gd")
+const Layout = preload("studio_layout.gd")
+const Inspector = preload("scene_inspector.gd")
+const Setup = preload("setup_check.gd")
+const StorageGuard = preload("storage_guard.gd")
 const AUDIO_MODES = ["scene", "soundtrack", "mix"]
 const SETTINGS_PATH = "res://.godot360/settings.cfg"
 var profile: Resource = Profile.new()
@@ -45,155 +49,42 @@ var reconnected := false
 var session_started := 0
 var recovery_source := ""
 var diagnostics_result: Label
+var current_scene_provider: Callable
+var save_current_scene: Callable
+var use_scene_button: Button
+var camera_picker: OptionButton
+var fps_picker: OptionButton
+var quality_buttons := {}
+var sections := {}
+var readiness_label: Label
+var check_button: Button
+var output_button: Button
+var preview_empty: Label
+var setup_checker: Node
+var tool_result := {}
+var checked_tools: Array = []
+var scene_summary := {}
+var inspected_scene := ""
+var scene_dirty := false
+var writable_output := ""
+var output_error := ""
+var soundtrack_widgets: Array[Control] = []
+var inspected_stamp := 0
 
 
 func _ready() -> void:
-	custom_minimum_size = Vector2(0, 350)
-	add_theme_constant_override("separation", 24)
-	var left_column := VBoxContainer.new()
-	left_column.custom_minimum_size = Vector2(545, 350)
-	add_child(left_column)
-	var settings_scroll := ScrollContainer.new()
-	settings_scroll.custom_minimum_size = Vector2(545, 225)
-	settings_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
-	settings_scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	left_column.add_child(settings_scroll)
-	var settings := VBoxContainer.new()
-	settings.custom_minimum_size.x = 520
-	settings.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	settings_scroll.add_child(settings)
-	var title := Label.new()
-	title.text = "GODOT360 STUDIO   /   0.8.0"
-	title.add_theme_font_size_override("font_size", 19)
-	settings.add_child(title)
-	var hint := Label.new()
-	hint.text = "Mono 360 · SDR · Stereo audio · Compatibility renderer"
-	settings.add_child(hint)
-	var grid := GridContainer.new()
-	grid.columns = 2
-	settings.add_child(grid)
-	for entry in [["scene_path", "Scene (.tscn)"], ["camera_path", "Camera node path"],
-		["width", "Output width (2:1)"], ["face_size", "Cube face size"], ["fps", "Frames per second"], ["duration", "Duration (seconds)"]]:
-		var field := _field(grid, entry[1], str(profile.get(entry[0])))
-		recipe_fields[entry[0]] = field
-	ffmpeg = _field(grid, "FFmpeg executable", "ffmpeg")
-	ffprobe = _field(grid, "FFprobe executable", "ffprobe")
-	output = _field(grid, "Output parent folder", ProjectSettings.globalize_path("res://renders"))
-	var browse_row := HBoxContainer.new()
-	settings.add_child(browse_row)
-	for pair in [["Scene…", "scene"], ["FFmpeg…", "ffmpeg"], ["FFprobe…", "ffprobe"], ["Folder…", "folder"]]:
-		_button(browse_row, pair[0], _browse.bind(pair[1]))
-	var quality_row := HBoxContainer.new()
-	settings.add_child(quality_row)
-	for pair in [["Draft · 2K", "draft"], ["Production · 4K", "production"], ["Detail · 8K", "detail"]]:
-		_button(quality_row, pair[0], func():
-			_update_profile()
-			profile.apply_quality_preset(pair[1])
-			_refresh_fields())
-	quality_hint = Label.new()
-	quality_hint.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	quality_hint.custom_minimum_size.x = 480
-	settings.add_child(quality_hint)
-	for key in ["width", "face_size"]:
-		recipe_fields[key].text_changed.connect(func(_value: String): _refresh_quality_hint())
-	var storage_row := HBoxContainer.new()
-	settings.add_child(storage_row)
-	var storage_label := Label.new()
-	storage_label.text = "Frame storage"
-	storage_row.add_child(storage_label)
-	storage = OptionButton.new()
-	storage.add_item("Fast PNG · larger files")
-	storage.add_item("Compact PNG · slower")
-	storage.tooltip_text = "Both preserve identical pixels. Fast PNG uses FFmpeg compression and more temporary disk space."
-	storage_row.add_child(storage)
-	storage.item_selected.connect(func(index: int): profile.frame_writer = "fast_png" if index == 0 else "png")
-	storage.item_selected.connect(func(_index: int): _refresh_plan())
-	var encoding_row := HBoxContainer.new()
-	settings.add_child(encoding_row)
-	var crf_label := Label.new()
-	crf_label.text = "H.264 CRF"
-	encoding_row.add_child(crf_label)
-	crf_control = SpinBox.new()
-	crf_control.min_value = 12
-	crf_control.max_value = 28
-	crf_control.value = profile.crf
-	crf_control.tooltip_text = "Lower values retain more detail and increase video size. Applies to renders and re-encoding."
-	crf_control.value_changed.connect(func(value: float):
-		profile.crf = int(value)
-		_refresh_plan())
-	encoding_row.add_child(crf_control)
-	reencode_button = _button(encoding_row, "Re-encode saved…", _browse.bind("reencode"))
-	reencode_button.tooltip_text = "Choose a completed original capture folder. Its video timing is preserved; current CRF and audio controls apply to the new video."
-	var jobs_row := HBoxContainer.new()
-	settings.add_child(jobs_row)
-	open_job_button = _button(jobs_row, "Open saved job…", _browse.bind("job"))
-	open_job_button.tooltip_text = "Inspect an earlier export or reconnect to its running coordinator."
-	reuse_button = _button(jobs_row, "Re-encode this capture", func(): _reencode(recovery_source))
-	reuse_button.disabled = true
-	var diagnostics_row := VBoxContainer.new()
-	settings.add_child(diagnostics_row)
-	_button(diagnostics_row, "Save diagnostics…", _browse.bind("diagnostics"))
-	diagnostics_result = Label.new()
-	diagnostics_result.text = "Local ZIP of this job's reports and logs. Review before sharing; paths may be included."
-	diagnostics_result.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	diagnostics_result.custom_minimum_size.x = 480
-	diagnostics_row.add_child(diagnostics_result)
-	_build_audio_controls(settings)
-	var actions := HBoxContainer.new()
-	left_column.add_child(actions)
-	test_button = _button(actions, "Test 1 second", _test_render)
-	test_button.tooltip_text = "Render up to the first second, using the selected production settings."
-	render_button = _button(actions, "Render 360 video", _render)
-	cancel_button = _button(actions, "Cancel", _cancel)
-	cancel_button.disabled = true
-	_button(actions, "Open output", func():
-		if not folder.is_empty():
-			OS.shell_open(folder))
-	var presets := HBoxContainer.new()
-	settings.add_child(presets)
-	_button(presets, "Load recipe…", _browse.bind("load"))
-	_button(presets, "Save recipe…", _browse.bind("save"))
-	_button(presets, "Calibration defaults", func():
-		profile = Profile.new()
-		_refresh_fields())
-	_button(presets, "Motion lab", func():
-		profile = load("res://addons/godot360/examples/timeline.tres").duplicate()
-		_refresh_fields())
-	var viewer := VBoxContainer.new()
-	viewer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	add_child(viewer)
-	var preview_title := Label.new()
-	preview_title.text = "SPHERICAL STILL PREVIEW · Drag to look around after rendering"
-	viewer.add_child(preview_title)
-	planning_label = Label.new()
-	planning_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	viewer.add_child(planning_label)
-	preview = ColorRect.new()
-	preview.custom_minimum_size = Vector2(350, 225)
-	preview.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	preview.color = Color("101e29")
-	preview.gui_input.connect(_preview_input)
-	preview.resized.connect(func():
-		if preview_material != null:
-			_update_preview())
-	viewer.add_child(preview)
-	progress = ProgressBar.new()
-	progress.show_percentage = true
-	viewer.add_child(progress)
-	status = Label.new()
-	status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	status.text = "Ready. Select a scene and its Camera3D. Each export gets a new folder."
-	viewer.add_child(status)
-	var note := Label.new()
-	note.text = "FFmpeg with libx264 + AAC and FFprobe are required. Frames and logs are retained."
-	note.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	viewer.add_child(note)
+	Layout.build(self)
+	setup_checker = Setup.new()
+	add_child(setup_checker)
 	_load_settings()
+	_refresh_scene_cameras(false)
 	_refresh_quality_hint()
 	for field in recipe_fields.values() + [ffmpeg, ffprobe, output]:
 		field.text_changed.connect(func(_value: String): _refresh_plan())
+	recipe_fields.scene_path.text_changed.connect(func(_value: String): scene_dirty = true)
+	recipe_fields.camera_path.text_changed.connect(func(_value: String): _sync_camera_picker())
 	_refresh_plan()
-
+	_detect_tools(false)
 
 func _field(parent: Control, label_text: String, value: String) -> LineEdit:
 	var label := Label.new()
@@ -202,7 +93,7 @@ func _field(parent: Control, label_text: String, value: String) -> LineEdit:
 	var edit := LineEdit.new()
 	edit.text = value
 	edit.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	edit.custom_minimum_size.x = 280
+	edit.custom_minimum_size.x = 240
 	parent.add_child(edit)
 	return edit
 
@@ -217,7 +108,7 @@ func _button(parent: Control, label: String, action: Callable) -> Button:
 
 func _build_audio_controls(parent: Control) -> void:
 	var title := Label.new()
-	title.text = "Audio and synchronization"
+	title.text = "Audio"
 	parent.add_child(title)
 	var grid := GridContainer.new()
 	grid.columns = 2
@@ -234,14 +125,23 @@ func _build_audio_controls(parent: Control) -> void:
 		_refresh_audio_enabled()
 		_refresh_plan())
 	soundtrack_field = _field(grid, "Soundtrack file", "")
+	soundtrack_widgets.append(grid.get_child(grid.get_child_count() - 2))
+	soundtrack_widgets.append(soundtrack_field)
 	soundtrack_field.placeholder_text = "res://audio/music.wav or an absolute path"
 	soundtrack_field.text_changed.connect(func(_value: String): _refresh_plan())
 	var row := HBoxContainer.new()
 	parent.add_child(row)
+	soundtrack_widgets.append(row)
 	_button(row, "Soundtrack…", _browse.bind("soundtrack"))
+	var advanced := Layout.foldout(self, parent, "audio", "Audio timing and levels")
+	row = HBoxContainer.new()
+	advanced.add_child(row)
 	var timing := Label.new()
 	timing.text = "Positive offset = later · Negative = earlier"
 	row.add_child(timing)
+	grid = GridContainer.new()
+	grid.columns = 2
+	advanced.add_child(grid)
 	for entry in [["soundtrack_trim_seconds", "Soundtrack trim (s)"], ["soundtrack_offset_seconds", "Soundtrack offset (s)"],
 		["soundtrack_gain_db", "Soundtrack level (dB)"], ["scene_audio_offset_seconds", "Scene offset (s)"], ["scene_audio_gain_db", "Scene level (dB)"]]:
 		var field_label := Label.new()
@@ -259,8 +159,7 @@ func _build_audio_controls(parent: Control) -> void:
 	var hint := Label.new()
 	hint.text = "Applies to renders and re-encoding. Short audio ends in silence. Mixing uses a peak limiter."
 	hint.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	hint.custom_minimum_size.x = 480
-	parent.add_child(hint)
+	advanced.add_child(hint)
 	_refresh_audio_fields()
 
 
@@ -276,6 +175,8 @@ func _refresh_audio_fields() -> void:
 
 func _refresh_audio_enabled() -> void:
 	var mode: String = AUDIO_MODES[audio_mode_control.selected]
+	for widget in soundtrack_widgets:
+		widget.visible = mode != "scene"
 	soundtrack_field.editable = mode != "scene"
 	for key in audio_controls:
 		audio_controls[key].editable = mode != "scene" if key.begins_with("soundtrack") else mode != "soundtrack"
@@ -305,6 +206,7 @@ func _refresh_fields() -> void:
 		crf_control.set_value_no_signal(profile.crf)
 	_refresh_audio_fields()
 	_refresh_quality_hint()
+	_refresh_scene_cameras(false)
 	refreshing_fields = false
 	_refresh_plan()
 
@@ -314,11 +216,252 @@ func _refresh_quality_hint() -> void:
 		return
 	var width: int = int(recipe_fields.width.text)
 	var advice: Array[String] = IO.quality_advice({"width": width, "face_size": int(recipe_fields.face_size.text)})
-	quality_hint.text = "\n".join(advice) if not advice.is_empty() else "About %d source columns across a 90-degree view. Playback quality also depends on the player." % (width / 4)
+	quality_hint.text = "\n".join(advice) if not advice.is_empty() else "Viewing detail: about %d pixels across a 90° view." % (width / 4)
+	quality_hint.tooltip_text = "The output covers the whole sphere. Perspective playback and the player's selected quality also affect sharpness."
+	for preset in quality_buttons:
+		var comparison := Profile.new()
+		comparison.apply_quality_preset(preset)
+		quality_buttons[preset].set_pressed_no_signal(str(width) == comparison.width and int(recipe_fields.face_size.text) == comparison.face_size and int(crf_control.value) == comparison.crf)
+	var index := fps_picker.get_item_index(int(recipe_fields.fps.text))
+	if index >= 0:
+		fps_picker.select(index)
+
+
+func _use_current_scene() -> void:
+	if not current_scene_provider.is_valid():
+		return
+	var scene: Node = current_scene_provider.call()
+	if scene == null or scene.scene_file_path.is_empty():
+		status.text = "Save your scene in Godot first (Ctrl+S), then choose Use current scene."
+		return
+	if not _save_editor_scene(scene.scene_file_path):
+		return
+	recipe_fields.scene_path.text = scene.scene_file_path
+	_refresh_scene_cameras(true)
+	_update_profile()
+	_refresh_plan()
+	status.text = "Current scene saved and selected. Choose a camera, then Test 1 second."
+
+
+func _save_editor_scene(path: String) -> bool:
+	if not current_scene_provider.is_valid() or not save_current_scene.is_valid():
+		return true
+	var scene: Node = current_scene_provider.call()
+	if scene != null and scene.scene_file_path == path:
+		if int(save_current_scene.call()) != OK:
+			status.text = "Godot could not save the current scene. Save it successfully before exporting."
+			return false
+	return true
+
+
+func _refresh_scene_cameras(choose_camera: bool = false) -> void:
+	if camera_picker == null or not recipe_fields.has("camera_path"):
+		return
+	inspected_scene = recipe_fields.scene_path.text.strip_edges()
+	inspected_stamp = FileAccess.get_modified_time(inspected_scene) if FileAccess.file_exists(inspected_scene) else 0
+	scene_summary = Inspector.inspect(inspected_scene)
+	scene_dirty = false
+	if choose_camera:
+		recipe_fields.camera_path.text = Inspector.preferred_camera(scene_summary.cameras)
+	_sync_camera_picker()
+	_refresh_readiness()
+
+
+func _sync_camera_picker() -> void:
+	if camera_picker == null or not recipe_fields.has("camera_path"):
+		return
+	camera_picker.clear()
+	camera_picker.add_item("Choose a camera…")
+	camera_picker.set_item_metadata(0, "")
+	var selected: String = recipe_fields.camera_path.text.strip_edges()
+	var selected_index := 0
+	for camera in scene_summary.get("cameras", []):
+		var index := camera_picker.item_count
+		camera_picker.add_item(str(camera.path) + (" · current" if camera.current else ""))
+		camera_picker.set_item_metadata(index, str(camera.path))
+		camera_picker.set_item_tooltip(index, str(camera.path))
+		if str(camera.path) == selected:
+			selected_index = index
+	if selected_index == 0 and not selected.is_empty():
+		selected_index = camera_picker.item_count
+		camera_picker.add_item("Manual · " + selected)
+		camera_picker.set_item_metadata(selected_index, selected)
+		camera_picker.set_item_tooltip(selected_index, "Not found in saved scene metadata. The capture worker will check this path at runtime.")
+	camera_picker.add_item("Enter a runtime camera path…")
+	camera_picker.set_item_metadata(camera_picker.item_count - 1, null)
+	camera_picker.select(selected_index)
+
+
+func _camera_selected(index: int) -> void:
+	var path = camera_picker.get_item_metadata(index)
+	if path == null:
+		sections.advanced.toggle.button_pressed = true
+		recipe_fields.camera_path.grab_focus()
+		recipe_fields.camera_path.select_all()
+		_sync_camera_picker()
+		return
+	recipe_fields.camera_path.text = str(path)
+	_update_profile()
+	_refresh_plan()
+
+
+func _detect_tools(explicit: bool = true) -> void:
+	var encoder := Setup.find_executable("ffmpeg" if explicit else ffmpeg.text)
+	if not encoder.is_empty():
+		ffmpeg.text = encoder
+	var probe := Setup.find_executable("ffprobe" if explicit else ffprobe.text)
+	if probe.is_empty() and not encoder.is_empty():
+		probe = Setup.find_executable(encoder.get_base_dir().path_join("ffprobe.exe" if OS.get_name() == "Windows" else "ffprobe"))
+	if not probe.is_empty():
+		ffprobe.text = probe
+	if encoder.is_empty() or probe.is_empty():
+		sections.tools.toggle.button_pressed = true
+	_refresh_readiness()
+
+
+func _check_readiness() -> void:
+	if setup_checker.busy:
+		return
+	if not _save_editor_scene(recipe_fields.scene_path.text.strip_edges()):
+		return
+	_refresh_scene_cameras(inspected_scene != recipe_fields.scene_path.text.strip_edges())
+	_check_output_folder()
+	var signature := [ffmpeg.text.strip_edges(), ffprobe.text.strip_edges()]
+	tool_result = {}
+	checked_tools = []
+	check_button.disabled = true
+	check_button.text = "Checking…"
+	_refresh_readiness()
+	var result: Dictionary = await setup_checker.check_tools(signature[0], signature[1])
+	if signature == [ffmpeg.text.strip_edges(), ffprobe.text.strip_edges()]:
+		tool_result = result
+		checked_tools = signature
+		if not result.ok:
+			sections.tools.toggle.button_pressed = true
+	check_button.disabled = false
+	check_button.text = "Check setup"
+	_update_profile()
+	_save_settings()
+	_refresh_readiness()
+
+
+func _check_output_folder() -> void:
+	writable_output = output.text.strip_edges()
+	output_error = ""
+	if not writable_output.is_absolute_path() or writable_output.begins_with("res://") or writable_output.begins_with("user://"):
+		output_error = "Choose an absolute output folder."
+		return
+	if FileAccess.file_exists(writable_output):
+		output_error = "The output location is a file. Choose a folder instead."
+		return
+	if DirAccess.make_dir_recursive_absolute(writable_output) != OK:
+		output_error = "Cannot create the output folder. Choose a writable location."
+		return
+	var path := writable_output.path_join(".godot360-write-check-" + str(OS.get_process_id()) + "-" + str(Time.get_ticks_usec()))
+	var file := FileAccess.open(path, FileAccess.WRITE)
+	if file == null:
+		output_error = "Output folder is not writable. Choose another folder or check drive access."
+		return
+	file.store_string("Godot360 write check")
+	file.flush()
+	var written := file.get_error() == OK
+	file.close()
+	var removed := DirAccess.remove_absolute(path) == OK
+	if not written or not removed:
+		output_error = "Output write check failed. Check drive access and available space."
+
+
+func _numeric_error() -> String:
+	for key in ["width", "face_size", "fps"]:
+		if not recipe_fields[key].text.strip_edges().is_valid_int():
+			return "Enter a whole number for " + {"width": "output width", "face_size": "cube face size", "fps": "frame rate"}[key] + "."
+	var duration: String = recipe_fields.duration.text.strip_edges()
+	if not duration.is_valid_float() or not is_finite(float(duration)) or float(duration) <= 0 or float(duration) > 3600:
+		return "Enter a duration above zero and up to 3600 seconds."
+	return ""
+
+
+func _refresh_readiness() -> void:
+	if readiness_label == null or ffmpeg == null:
+		return
+	var issues: Array[String] = []
+	var notes: Array[String] = []
+	if scene_dirty or inspected_scene != recipe_fields.scene_path.text.strip_edges():
+		issues.append("Scene: refresh cameras or check setup after changing the scene.")
+	elif not str(scene_summary.get("error", "")).is_empty():
+		issues.append("Scene: " + str(scene_summary.error))
+	elif recipe_fields.camera_path.text.strip_edges().is_empty():
+		issues.append("Camera: choose a camera, or enter a runtime path under Advanced.")
+	else:
+		var camera_path: String = recipe_fields.camera_path.text.strip_edges()
+		var cameras: Array = scene_summary.get("cameras", [])
+		if not cameras.any(func(camera: Dictionary): return str(camera.path) == camera_path):
+			notes.append("Manual camera: %s will be checked when the scene runs. Test before a long render." % camera_path)
+		for warning in scene_summary.get("warnings", []):
+			notes.append(str(warning))
+	var numeric := _numeric_error()
+	var valid_recipe := false
+	if not numeric.is_empty():
+		issues.append(numeric)
+	else:
+		_update_profile()
+		var job: Dictionary = profile.to_dictionary()
+		job.merge({"ffmpeg": ffmpeg.text.strip_edges(), "ffprobe": ffprobe.text.strip_edges(), "output_dir": output.text.strip_edges().path_join("readiness")})
+		var error := IO.validate(job)
+		valid_recipe = error.is_empty()
+		if not error.is_empty() and not str(scene_summary.get("error", "")).is_empty():
+			pass # The scene error above is more useful than a duplicate validation error.
+		elif not error.is_empty():
+			issues.append(error)
+	var signature := [ffmpeg.text.strip_edges(), ffprobe.text.strip_edges()]
+	if checked_tools != signature or tool_result.is_empty():
+		issues.append("Tools: checking…" if check_button.disabled else "Tools: select Check setup to verify FFmpeg and FFprobe.")
+	elif not tool_result.get("ok", false):
+		issues.append("Tools: " + str(tool_result.get("error", "Check setup again.")))
+	elif profile.frame_writer == "fast_png" and not tool_result.get("png", false):
+		issues.append("Tools: this FFmpeg has no PNG encoder. Choose Compact PNG under Advanced.")
+	else:
+		for filter in Audio.required_filters(profile.to_dictionary()):
+			if not str(tool_result.get("filters", "")).contains(" " + str(filter) + " "):
+				issues.append("Tools: FFmpeg is missing the %s audio filter. Choose another build." % filter)
+				break
+	var destination: String = output.text.strip_edges()
+	if destination.is_empty() or not destination.is_absolute_path() or destination.begins_with("res://") or destination.begins_with("user://"):
+		issues.append("Output: choose an absolute folder on your computer.")
+	elif writable_output != destination:
+		issues.append("Output: Check setup verifies that this folder is writable.")
+	elif not output_error.is_empty():
+		issues.append(output_error)
+	var directory := DirAccess.open(destination)
+	if directory != null:
+		var available := directory.get_space_left()
+		if available >= 0:
+			if valid_recipe and available < StorageGuard.RESERVE + StorageGuard.capture_headroom(profile.to_dictionary()):
+				issues.append("Output: not enough free space for capture working headroom. Free space or choose another drive.")
+			notes.append("Available space: %.2f GiB. A test estimates the full export's storage." % (float(available) / 1073741824.0))
+		else:
+			issues.append("Output: available disk space could not be read. Check drive access.")
+	elif writable_output == destination and output_error.is_empty():
+		issues.append("Output folder is no longer accessible. Check setup again.")
+	var renderer := str(ProjectSettings.get_setting("rendering/renderer/rendering_method", "gl_compatibility"))
+	if renderer != "gl_compatibility":
+		notes.append("%s has not been validated. Initial support covers Compatibility; review a short test carefully." % renderer)
+	var heading_text := "Ready for a 1-second test · scene, tools and output checked." if issues.is_empty() else "Before your first render"
+	readiness_label.text = heading_text + "\n" + "\n".join(issues + notes)
 
 
 func _render(test_run: bool = false) -> void:
 	if process_id > 0 or not pending_session.is_empty():
+		return
+	if not _save_editor_scene(recipe_fields.scene_path.text.strip_edges()):
+		return
+	_refresh_scene_cameras(inspected_scene != recipe_fields.scene_path.text.strip_edges())
+	var input_error := _numeric_error()
+	if not input_error.is_empty():
+		status.text = input_error
+		return
+	if recipe_fields.camera_path.text.strip_edges().is_empty():
+		status.text = "Choose a camera before rendering. Runtime-created cameras can use a manual path under Advanced."
 		return
 	_update_profile()
 	var recipe: Dictionary = profile.to_dictionary()
@@ -358,6 +501,9 @@ func _launch(recipe: Dictionary) -> void:
 		status.text = error
 		return
 	folder = str(recipe.output_dir)
+	preview.material = null
+	preview_material = null
+	preview_empty.show()
 	reconnected = false
 	session_owner = {}
 	recovery_source = ""
@@ -366,6 +512,7 @@ func _launch(recipe: Dictionary) -> void:
 	if DirAccess.make_dir_recursive_absolute(folder) != OK or not IO.write_json(folder.path_join("job.json"), recipe):
 		status.text = "Cannot write to the output folder."
 		return
+	output_button.disabled = false
 	process_id = OS.create_process(OS.get_executable_path(), ["--headless", "--path", ProjectSettings.globalize_path("res://"),
 		"--log-file", folder.path_join("pipeline.log"), "--script", "res://addons/godot360/pipeline.gd", "--", "--job=" + folder.path_join("job.json")])
 	if process_id <= 0:
@@ -381,6 +528,9 @@ func _process(delta: float) -> void:
 	planning_poll += delta
 	if planning_poll >= 1.0:
 		planning_poll = 0.0
+		var path: String = recipe_fields.scene_path.text.strip_edges()
+		if scene_dirty or (FileAccess.file_exists(path) and FileAccess.get_modified_time(path) != inspected_stamp):
+			_refresh_scene_cameras(path != inspected_scene)
 		_refresh_plan()
 	if not pending_session.is_empty():
 		_poll_session()
@@ -442,10 +592,12 @@ func _open_job(path: String) -> void:
 		status.text = str(record.error)
 		return
 	folder = path
+	output_button.disabled = false
 	active_job = record.job
 	recovery_source = ""
 	preview.material = null
 	preview_material = null
+	preview_empty.show()
 	_save_settings()
 	if record.terminal or record.delivered:
 		_finish_saved_job(record)
@@ -518,6 +670,8 @@ func _finish_saved_job(record: Dictionary) -> void:
 		status.text += "\n" + str(recovery.get("next_step", ""))
 	else:
 		status.text = "No live coordinator confirmed. Saved stage: %s.\n%s\nThe exporter may still be working. Reopen this job to check again." % [str(state.get("stage", "Unknown")), str(recovery.get("next_step", ""))]
+	if not record.get("delivered", false):
+		sections.jobs.toggle.button_pressed = true
 
 
 func _show_preview() -> void:
@@ -528,6 +682,7 @@ func _show_preview() -> void:
 	preview_material.shader = preload("preview.gdshader")
 	preview_material.set_shader_parameter("panorama", ImageTexture.create_from_image(image))
 	preview.material = preview_material
+	preview_empty.hide()
 	heading = Vector2.ZERO
 	_update_preview()
 
@@ -571,7 +726,11 @@ func _browse(kind: String) -> void:
 func _selected(kind: String, path: String) -> void:
 	match kind:
 		"diagnostics": _save_diagnostics(path)
-		"scene": recipe_fields.scene_path.text = path
+		"scene":
+			recipe_fields.scene_path.text = path
+			_refresh_scene_cameras(true)
+			_update_profile()
+			_refresh_plan()
 		"soundtrack":
 			soundtrack_field.text = ProjectSettings.localize_path(path)
 			if audio_mode_control.selected == 0:
@@ -596,6 +755,10 @@ func _selected(kind: String, path: String) -> void:
 			else:
 				status.text = "Select a Godot360 export recipe."
 		"save":
+			var error := _numeric_error()
+			if not error.is_empty():
+				status.text = error
+				return
 			_update_profile()
 			status.text = "Recipe saved." if ResourceSaver.save(profile, path) == OK else "Could not save recipe."
 
@@ -652,8 +815,13 @@ func _duration_label(seconds: float) -> String:
 func _refresh_plan() -> void:
 	if planning_label == null or refreshing_fields:
 		return
+	_refresh_quality_hint()
+	_refresh_readiness()
 	if sample_record.is_empty():
 		planning_label.text = "Test the first second to estimate export time and disk space at these settings."
+		return
+	if not _numeric_error().is_empty():
+		planning_label.text = "Correct the video settings to update the estimate."
 		return
 	_update_profile()
 	var target: Dictionary = profile.to_dictionary()

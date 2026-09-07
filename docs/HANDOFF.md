@@ -1,7 +1,39 @@
 # Godot360 Studio development handoff
 
-Updated 2026-09-07 for the Godot360 Studio rename and private GitHub hosting. A fresh session can begin by
+Updated 2026-09-07 for the first-export usability pass, following the rename and private GitHub hosting. A fresh session can begin by
 reading this file, the linked guides, and the relevant current source/tests.
+
+## Latest product direction
+
+The user chose Godot creators exporting their existing 3D scenes as the initial
+audience and explicitly approved implementing the proposed first usability pass.
+This supersedes the older instruction below to hold feature work while awaiting
+beta feedback. The agreed pass covers current-scene selection, camera discovery,
+simplified controls, readiness checks and onboarding documentation.
+
+`studio_layout.gd` builds the grouped panel; `studio_panel.gd` retains job/recipe
+coordination. `scene_inspector.gd` reads inherited/instanced saved-scene metadata
+without instantiating nodes. `setup_check.gd` runs bounded asynchronous FFmpeg and
+FFprobe checks. The editor plugin supplies current-scene and save callbacks.
+Use current scene saves a named scene, and check/render save it again if selected.
+Runtime-created cameras retain the manual path escape hatch. The capture pipeline
+and source-frame contracts are unchanged. Read the portable
+[quick start](../addons/godot360/QUICKSTART.md) for the current interface.
+
+The README now directs users to their first export. Interactive installation
+details are in [umbral.md](umbral.md) and developer commands in [testing.md](testing.md).
+The version remains the 0.8 baseline with unreleased source changes; original
+candidate ZIPs are unchanged. Full spherical playback and a recent-export view
+were discussed as subsequent work; the current preview is still a first frame.
+
+The exact new package passed 1,443 checks (481 per engine) on 4.5.1/4.6.3/4.7.2,
+including clean imports, 37 usability checks, actual exports and full recovery/
+storage workflows. It reproduced byte-for-byte from its own unpacked source.
+See `.godot360/usability-review/review/package-review.json` and the latest
+[validation record](validation.md) for hashes, screenshots and six additional
+actual-editor save checks. The user's Main / 4K / 12-second recipe and planning
+sample remain selected. No further backend regression run is needed without new
+changes or a concrete unresolved concern.
 
 ## Purpose and working agreement
 

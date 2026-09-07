@@ -15,7 +15,7 @@ TESTS = """audio_checks.gd audio_delivery_checks.py audio_formats_review.py
 audio_review.py audio_studio_checks.gd capture_lifecycle_checks.gd compatibility_review.py diagnostics_checks.gd endurance_review.py export_checks.gd
 frame_writer_checks.gd metadata_checks.gd metadata_integration.gd metadata_review.py
 motion_review.py planning_checks.gd planning_studio_checks.gd quality_panel_checks.gd recovery_studio_checks.gd
-studio_checks.gd timeline_checks.gd timeline_studio_checks.gd storage_checks.gd storage_failure_checks.gd release_workflow_checks.gd package_review.py""".split()
+studio_checks.gd timeline_checks.gd timeline_studio_checks.gd storage_checks.gd storage_failure_checks.gd release_workflow_checks.gd usability_checks.gd package_review.py""".split()
 ADDON_SUFFIXES = {".md", ".gd", ".uid", ".gdshader", ".tscn", ".tres", ".cfg"}
 
 
@@ -29,7 +29,7 @@ def inventory(root):
     assert match, "Missing addon version"
     version = match.group(1)
     assert 'const SOFTWARE = "Godot360 Studio ' + version + '"' in (addon / "spherical_metadata.gd").read_text()
-    assert 'title.text = "GODOT360 STUDIO   /   ' + version + '"' in (addon / "studio_panel.gd").read_text()
+    assert 'title.text = "GODOT360 STUDIO   /   ' + version + '"' in (addon / "studio_layout.gd").read_text()
     assert "**Version " + version + " " in (addon / "README.md").read_text(), "README version differs"
     paths = sorted(path for path in addon.rglob("*") if path.is_file() and
                    (path.suffix in ADDON_SUFFIXES or path.name == "LICENSE"))

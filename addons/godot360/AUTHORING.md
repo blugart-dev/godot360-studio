@@ -6,7 +6,7 @@ output timestamp. The existing scene-processing workflow remains available.
 
 ## Try Motion Lab
 
-1. Click **Motion lab** in the Godot360 panel. It loads the included six-second
+1. Expand **Recipes and examples** and click **Motion lab** in the Godot360 panel. It loads the included six-second
    4096×2048 / 30 FPS recipe and its camera path.
 2. Open `addons/godot360/examples/timeline.tscn` in Godot. All meshes, labels,
    path points, and animation keys are saved in the scene and can be edited.
@@ -22,6 +22,13 @@ The studio still viewer shows only the first delivered frame; review full motion
 in a spherical video player.
 
 ## Author your own scene
+
+Start with **Use current scene** and the camera picker in the panel. See the
+[quick start](QUICKSTART.md) for saving, camera discovery and setup checks.
+For an interactive scene, plan what happens without player input: the exporter
+runs a separate copy, so mouse movement and gaze events are not a film timeline.
+Use the helper below for keyed motion, or the capture hooks later in this guide
+to prepare your existing scene script. Ordinary scene processing remains available.
 
 Attach `timeline_scene.gd` to a Node3D scene root, or extend it in your scene script:
 

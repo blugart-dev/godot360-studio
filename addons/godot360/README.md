@@ -4,7 +4,7 @@ An original Godot addon for producing **monoscopic 360 video** from a 3D scene.
 Configure a scene and camera, render a fixed number of frames, encode an MP4,
 write spherical metadata, and inspect the validation report from one editor panel.
 
-**Version 0.8.0 — beta candidate.** The addon has passed isolated project checks on
+**Version 0.8.0 — beta baseline with unreleased usability changes.** The addon has passed isolated project checks on
 Windows with Godot 4.5.1, 4.6.3 and 4.7.2, Compatibility, and an NVIDIA RTX 3060 Ti.
 Other engines, operating systems and renderers have not been validated. Read the
 [compatibility and beta guide](BETA.md) for the exact coverage and a clean-project
@@ -15,7 +15,7 @@ check. No custom engine or .NET runtime is needed.
 1. Copy `addons/godot360` into a Godot project at the same path.
 2. Enable **Godot360 Studio** under **Project > Project Settings > Plugins**.
 3. Open the **Godot360** bottom panel.
-4. Select FFmpeg and FFprobe executables, or leave their command names if on PATH.
+4. Expand **Tool setup** to select FFmpeg and FFprobe if they were not found on PATH.
    FFmpeg must include **libx264**, **AAC**, `scale`, and `colorspace`.
    **Fast PNG** storage additionally requires its **PNG** encoder.
    Builds are linked from [FFmpeg's download page](https://ffmpeg.org/download.html).
@@ -30,23 +30,32 @@ before replacing the addon or loading saved recipes.
 
 ## First export
 
-The default scene is the included calibration room. It has six labeled faces,
-an asymmetric grid, a moving marker, and a quiet 440 Hz tone.
+For the complete walkthrough, use **[Your first 360° export](QUICKSTART.md)**.
+The panel's **Quick start** button opens that guide locally.
 
-1. Keep `Scene` set to `res://addons/godot360/examples/calibration.tscn` and
-   `Camera node path` set to `Camera3D`.
-2. For a quick compatibility check, use **Draft · 2K**. For viewing quality,
-   select **Production · 4K** or **Detail · 8K**; these also raise cube-face
-   resolution, rather than only enlarging the output image.
-3. Choose **Fast PNG** for faster capture with larger temporary files, or
-   **Compact PNG** for smaller files. Both preserve identical pixels.
-   Choose an output parent directory with enough free disk space.
-4. Click **Test 1 second** at your intended production settings. The completed
-   sample estimates the full recipe's export time and retained disk space.
-5. Click **Render 360 video** for the full duration. The editor remains available
-   while a separate Godot process renders the scene using the GPU.
-6. When complete, drag the spherical **still** preview to check orientation.
-   Open the output directory for `video-360.mp4` and `report.json`.
+1. Click **Use current scene** to save and select your open named scene, or
+   **Choose scene…** for another saved scene. Pick a **Camera** from the list.
+   For the included calibration room, expand **Recipes and examples** and choose
+   **Calibration defaults**; its camera is selected automatically.
+2. Choose **Production · 4K** for viewing or **Draft · 2K** for a quick compatibility
+   check. Set duration, frame rate, audio and **Save exports in**.
+3. Click **Check setup**. It verifies FFmpeg/FFprobe capabilities and output-folder
+   writes, and displays saved-scene notes. Missing tools open **Tool setup**.
+4. Click **Test 1 second** to inspect a sample and estimate the full export's time
+   and retained storage. Then **Render 360 video** for the full duration.
+5. Drag the spherical **still** preview to inspect the first frame. Use **Open output**
+   for `video-360.mp4` and `report.json`; review full motion in a spherical player.
+
+**Advanced capture and encoding** contains the manual camera path, dimensions,
+PNG storage and H.264 CRF. **Audio timing and levels** contains offsets, trim and
+gain. **Recipes and examples** contains recipe loading/saving and both examples.
+**Saved exports and recovery** contains job reopening, re-encoding and diagnostics.
+
+Current-scene selection and export save the open named scene through Godot. Other
+scenes use their saved versions. Save other scenes, scripts and assets before
+exporting. Camera discovery reads saved metadata, including inherited and instanced
+scenes, without instantiating their nodes. Runtime-created cameras require a manual
+path and a short test. Setup checks do not certify scene behavior or visual quality.
 
 Each export creates a fresh timestamped directory. The pipeline refuses to reuse
 a previous job's directory. Cancel stops rendering at a frame boundary and stops
@@ -150,7 +159,7 @@ For camera paths and keyed timelines, use the **Motion lab** example and the
 [authoring guide](AUTHORING.md). Version 0.4 includes a reusable AnimationPlayer
 scene base, absolute frame sampling, editable Path3D example, and motion/audio checks.
 
-Choose a saved `.tscn` and the path to its `Camera3D`, relative to the scene root.
+Choose a saved `.tscn` and select its `Camera3D` from the camera picker. For a runtime-created camera, enter its path relative to the scene root under **Advanced capture and encoding**.
 The rig follows that camera's position and orientation. FOV is replaced by six
 square 90° views; near/far planes, cull mask, environment, and camera attributes
 are copied. Keep the source camera's scale uniform. Avoid abrupt rotations and

@@ -1,5 +1,37 @@
 # Validation record — updated 2026-09-07
 
+## First-export usability pass — 2026-09-07
+
+The exact working-source package passed **1,443 checks: 481 per engine** on Godot
+4.5.1, 4.6.3 and 4.7.2, Windows / Compatibility / RTX 3060 Ti / FFmpeg 9.0.1.
+Each engine imported the addon in a separate clean project and passed its contracts,
+37 new usability checks, actual audio/capture workflows, controlled interruption,
+saved-job recovery, storage failures and the documented calibration/Motion Lab
+workflow. Every delivered output passed all thirteen delivery checks.
+
+Local evidence:
+
+- `.godot360/usability-review/candidate.zip`: 102 members, 189,172 bytes; SHA-256
+  `11bee63ee2893186ac2c4684d08a11d9d295b249701152e4105331248f9fb787`.
+- `.godot360/usability-review/review/package-review.json`: manifest verified,
+  identical extracted-source rebuild, unchanged package and unpacked payload.
+- `.godot360/usability-review/review/engines/compatibility-review.json`: all three
+  engine runs, individual counts and logs. Isolated-project settings are restored.
+- `.godot360/usability-checks-final2.log` and `.godot360/usability-panel.png`: a
+  separate 37-check GPU panel run and visual review at 1100×600. The existing
+  quality/preset suite also passed eight checks at 1400×520 during this pass.
+- `.godot360/usability-editor-check/editor-review.json`: six additional checks
+  inside the actual Godot 4.7.2 editor confirm plugin hookup, current-scene selection,
+  real scene-file saves before setup/render, and tool readiness. The disposable
+  headless editor emits thumbnail/cache diagnostics; scene changes were read back
+  from disk to verify saving. It does not use the user's open project.
+
+The capture/encoding backend is unchanged. These checks validate the new interface
+and its integration with existing export/recovery contracts; they do not broaden
+hardware/renderer support or replace independent usability and YouTube review.
+The package retains the 0.8 baseline version with explicitly unreleased changes.
+Previous accepted packages remain unchanged; nothing was published in this pass.
+
 ## Environment
 
 - Windows, Godot **4.7.2 stable**, Compatibility / OpenGL 3.3.

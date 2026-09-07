@@ -8,6 +8,20 @@ The 1.0 target is dependable mono 360 production from a documented Godot scene
 contract: repeatable recipes, predictable jobs, useful failure reports, and a
 validated YouTube delivery file. It does not include stereoscopic ODS or ambisonic audio.
 
+## Current priority — first successful export
+
+On 2026-09-07 the user chose **Godot creators exporting their existing scenes** as
+the primary audience and authorized the first usability pass. The working tree
+adds current-scene selection with saving, a camera picker, grouped advanced controls,
+tool/output readiness checks and a portable [quick start](../addons/godot360/QUICKSTART.md).
+This work follows the historical 0.8 candidate; it is not a new published release.
+
+The next product improvement discussed is full spherical playback, followed by a
+recent-export view. The panel still previews only the first delivered frame. Test
+the new first-export workflow with an independent Godot creator and use observed
+dead ends to choose subsequent changes. Historical release gates below retain
+their original scope and evidence.
+
 ## 0.2 — Capture performance
 
 - Fast and Compact lossless PNG storage, with explicit disk-space tradeoffs.
