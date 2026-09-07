@@ -73,6 +73,9 @@ var writable_output := ""
 var output_error := ""
 var soundtrack_widgets: Array[Control] = []
 var inspected_stamp := 0
+var playback: Control
+var effects_label: Label
+var effects_scroll: ScrollContainer
 
 
 func _ready() -> void:
@@ -505,6 +508,8 @@ func _launch(recipe: Dictionary) -> void:
 	if not error.is_empty():
 		status.text = error
 		return
+	playback.clear()
+	_show_effect_notes([])
 	folder = str(recipe.output_dir)
 	preview.material = null
 	preview_material = null
@@ -596,6 +601,8 @@ func _open_job(path: String) -> void:
 	if record.has("error"):
 		status.text = str(record.error)
 		return
+	playback.clear()
+	_show_effect_notes([])
 	folder = path
 	output_button.disabled = false
 	active_job = record.job
@@ -658,6 +665,7 @@ func _finish_saved_job(record: Dictionary) -> void:
 	progress.value = float(state.get("progress", 0)) * 100.0
 	if record.get("delivered", false):
 		progress.value = 100
+		playback.select_job(folder)
 		if FileAccess.file_exists(folder.path_join("preview.png")):
 			_show_preview()
 		status.text = "Complete · video-360.mp4 and report.json are ready. YouTube playback still needs a manual check."
@@ -674,8 +682,7 @@ func _finish_saved_job(record: Dictionary) -> void:
 			status.text += "\nCaptured with %s / %s." % [captured.get("renderer", "unknown"), captured.get("rendering_driver", "unknown")]
 		else:
 			status.text += "\nLegacy capture: renderer evidence is in the original capture-settings.json or capture.log."
-		if not report.get("scene_checks", {}).get("warnings", []).is_empty():
-			status.text += " Scene effect notes are in scene-checks.json; inspect motion and seams."
+		_show_effect_notes(report.get("scene_checks", {}).get("warnings", []))
 	elif record.get("terminal", false):
 		status.text = str(state.get("stage", "Stopped")) + " · " + str(state.get("error", ""))
 		if state.get("stage") == "Complete":
@@ -698,6 +705,24 @@ func _show_preview() -> void:
 	preview_empty.hide()
 	heading = Vector2.ZERO
 	_update_preview()
+
+
+func _video_texture(texture: Texture2D) -> void:
+	preview_material = ShaderMaterial.new()
+	preview_material.shader = preload("preview.gdshader")
+	preview_material.set_shader_parameter("panorama", texture)
+	preview.material = preview_material
+	preview_empty.hide()
+	_update_preview()
+
+
+func _show_effect_notes(warnings: Array) -> void:
+	var unique: Array[String] = []
+	for warning in warnings:
+		if not str(warning) in unique:
+			unique.append(str(warning))
+	effects_label.text = "Scene notes · Review these throughout playback\n" + "\n".join(unique)
+	effects_scroll.visible = not unique.is_empty()
 
 
 func _preview_input(event: InputEvent) -> void:

@@ -136,6 +136,15 @@ rendering does not establish GPU compatibility or production render performance.
 
 ## First-export workflow
 
+`tests/playback_checks.gd` creates a real six-second MP4, prepares and probes its
+review copy, checks native seeking/pause/replay/audio, cache reuse, cancellation,
+source preservation and scene notes. Run it with the same FFmpeg/FFprobe arguments
+as usability checks. A graphical run also validates decoded red/green/blue frame
+intervals after forward/backward seeks and saves `playback-panel.png` in its test
+job. Headless runs omit those pixel checks. Both lanes run in package review;
+the release workflow additionally opens its actual Motion Lab export in playback.
+Review tests require FFmpeg's optional libtheora and libvorbis encoders.
+
 `tests/usability_checks.gd` exercises saved-scene camera discovery, inheritance and
 instances without scene instantiation, camera ambiguity, editor save callbacks,
 recipe restoration, malformed inputs, tool capabilities, stale readiness and output

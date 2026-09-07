@@ -131,7 +131,9 @@ The addon does not remove quarantine attributes or change system security settin
 For full-video review, [download VLC for your platform](https://www.videolan.org/vlc/)
 and follow VideoLAN's [360° playback guide](https://docs.videolan.me/vlc-user/desktop/3.0/en/advanced/player/360_video.html).
 Open the final `video-360.mp4` through VLC's **File/Media → Open File** menu, then
-drag with the left mouse button to look around. The editor preview is a still image.
+drag with the left mouse button to look around. The editor also offers
+[native playback](PLAYBACK.md) using an optional local review copy up to 2K / 30 FPS;
+preparing it requires FFmpeg's libtheora and libvorbis encoders.
 
 ## Troubleshooting
 

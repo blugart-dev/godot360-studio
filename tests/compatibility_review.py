@@ -15,7 +15,7 @@ from pathlib import Path
 
 from audio_review import run, sha, snapshot, tones, write_wav
 
-CONTRACTS = ("export_checks", "planning_checks", "metadata_checks", "timeline_checks", "audio_checks", "frame_writer_checks", "storage_checks", "diagnostics_checks", "usability_checks", "platform_checks", "renderer_checks")
+CONTRACTS = ("export_checks", "planning_checks", "metadata_checks", "timeline_checks", "audio_checks", "frame_writer_checks", "storage_checks", "diagnostics_checks", "usability_checks", "platform_checks", "renderer_checks", "playback_checks")
 
 
 def command(args, engine, project, name, options, timeout=120):
@@ -37,7 +37,7 @@ def command(args, engine, project, name, options, timeout=120):
                           (name == "capture_lifecycle_checks" and "Parse Error:" in error and "bad-script.gd:" in error)]
     success = code == 0 and not unexpected_scripts
     match = re.search(r"CHECKS: (\d+) checks, (\d+) failures", output)
-    if name in CONTRACTS or name in ("audio_studio_checks", "capture_lifecycle_checks", "recovery_studio_checks", "storage_failure_checks", "release_workflow_checks"):
+    if name in CONTRACTS or name in ("audio_studio_checks", "capture_lifecycle_checks", "recovery_studio_checks", "storage_failure_checks", "release_workflow_checks", "playback_visual_checks"):
         success = success and match is not None and int(match.group(2)) == 0
     result = {"ok": success, "exit_code": code, "seconds": round(time.monotonic() - started, 3),
               "checks": int(match.group(1)) if match else None, "log": str(log)}
@@ -93,6 +93,10 @@ renderer/rendering_method.mobile="{args.rendering_method}"
                 if not checks[name]["ok"]:
                     break
             if not args.headless_only and all(check["ok"] for check in checks.values()):
+                checks["playback_visual_checks"] = command(args, engine, project, "playback_visual_checks",
+                    ["--rendering-method", args.rendering_method, "--audio-driver", "Dummy", "--script", "res://tests/playback_checks.gd", "--",
+                     "--ffmpeg=" + str(args.ffmpeg), "--ffprobe=" + str(args.ffprobe)])
+            if not args.headless_only and all(check["ok"] for check in checks.values()):
                 checks["audio_studio_checks"] = command(args, engine, project, "audio_studio_checks",
                     ["--rendering-method", args.rendering_method, "--script", "res://tests/audio_studio_checks.gd", "--",
                      "--ffmpeg=" + str(args.ffmpeg), "--ffprobe=" + str(args.ffprobe), "--soundtrack=" + str(cue)], timeout=240)
@@ -120,7 +124,16 @@ renderer/rendering_method.mobile="{args.rendering_method}"
             report = json.loads(path.read_text())
             assert report["ok"] and len(report["checks"]) == 13 and all(report["checks"].values()), path
             outputs.append({"report": str(path), "checks": report["checks"], "capture_reused": report["capture_reused"], "capture_settings": report.get("capture_settings", {})})
-        complete = len(checks) == len(CONTRACTS) + 1 + int(not args.headless_only) + int(args.capture_failures) + int(args.job_recovery) + int(args.storage_failures) + int(args.release_workflow) and all(check["ok"] for check in checks.values()) and len(outputs) == (0 if args.headless_only else 2)
+        expected_stages = {"editor-import", *CONTRACTS}
+        if not args.headless_only:
+            expected_stages.update(("audio_studio_checks", "playback_visual_checks"))
+        for enabled, name in ((args.capture_failures, "capture_lifecycle_checks"),
+                              (args.job_recovery, "recovery_studio_checks"),
+                              (args.storage_failures, "storage_failure_checks"),
+                              (args.release_workflow, "release_workflow_checks")):
+            if enabled:
+                expected_stages.add(name)
+        complete = set(checks) == expected_stages and all(check["ok"] for check in checks.values()) and len(outputs) == (0 if args.headless_only else 2)
         results.append({"godot_version": version, "executable": str(engine), "project": str(project), "ok": complete,
                         "stages": checks, "outputs": outputs})
     assert snapshot(args.project / "addons/godot360") == addon_before

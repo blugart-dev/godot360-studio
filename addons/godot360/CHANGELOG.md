@@ -1,5 +1,17 @@
 # Changelog
 
+## Unreleased — native playback and scene notes
+
+- Play completed exports in the editor with spherical navigation, pause, seeking,
+  replay and stereo sound. Prepare a local Theora/Vorbis copy up to 2K / 30 FPS
+  using the existing external FFmpeg/FFprobe tools; reuse it on later reviews.
+- Keep conversion asynchronous and cancellable, check disk headroom and output,
+  stop its child on plugin shutdown, and preserve delivered media and captures.
+- Show actual capture warnings in the panel. Expand saved-scene advice to glow,
+  auto exposure, fog, SDFGI, depth of field and compositors.
+- Add native pixel/audio playback checks and exact-package workflow coverage.
+  Playback is a review aid; full-resolution delivery and renderer limitations remain.
+
 ## Unreleased — renderer preservation
 
 - Default capture to the saved project renderer/driver; explicit recipe/UI/CLI

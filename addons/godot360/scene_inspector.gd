@@ -26,6 +26,21 @@ static func inspect(path: String) -> Dictionary:
 		var environment = node.get("environment")
 		if environment is Environment and (environment.ssao_enabled or environment.ssil_enabled or environment.ssr_enabled):
 			result.warnings.append("Screen-space effects on %s may create seams. Review all directions in a test." % node_path)
+		if environment is Environment:
+			if environment.glow_enabled:
+				result.warnings.append("Glow on %s can stop at cube edges. Check bright objects crossing the boundaries during playback." % node_path)
+			if environment.fog_enabled or environment.volumetric_fog_enabled:
+				result.warnings.append("Fog on %s is evaluated per face. Inspect the horizon and moving lights for boundaries." % node_path)
+			if environment.sdfgi_enabled:
+				result.warnings.append("SDFGI on %s needs time to converge. Inspect the opening and camera motion; warmup is currently limited to ten frames." % node_path)
+		for key in ["attributes", "camera_attributes"]:
+			var attributes = node.get(key)
+			if attributes is CameraAttributes and attributes.auto_exposure_enabled:
+				result.warnings.append("Auto exposure on %s meters each face separately and can create brightness seams. Use fixed exposure for consistent 360 delivery." % node_path)
+			if attributes is CameraAttributesPhysical or (attributes is CameraAttributesPractical and (attributes.dof_blur_far_enabled or attributes.dof_blur_near_enabled)):
+				result.warnings.append("Depth of field on %s uses face-camera depth. Inspect blur across cube edges." % node_path)
+		if node.get("compositor") is Compositor:
+			result.warnings.append("The compositor on %s runs for multiple face views. Check that custom effects keep history per view." % node_path)
 		if node.get("placeholder", false):
 			result.warnings.append("%s is a runtime placeholder; its cameras cannot be listed until it is loaded." % node_path)
 	return result
@@ -51,7 +66,7 @@ static func _collect(state: SceneState, prefix: String, nodes: Dictionary, depth
 			node.placeholder = true
 		for property in range(state.get_node_property_count(index)):
 			var name := str(state.get_node_property_name(index, property))
-			if name in ["current", "billboard", "environment"]:
+			if name in ["current", "billboard", "environment", "attributes", "camera_attributes", "compositor"]:
 				node[name] = state.get_node_property_value(index, property)
 		nodes[path] = node
 

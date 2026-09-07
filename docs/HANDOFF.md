@@ -1,5 +1,25 @@
 # Godot360 Studio development handoff
 
+## Current pass — 2026-09-08
+
+The user authorized continued experimental work and delegated the next priorities.
+Native spherical video playback and visible scene notes are the chosen increment.
+`playback_review.gd` owns cancellable local review-copy preparation, cache reuse,
+native Theora playback, seeking, pause/replay and audio. It reads the verified MP4;
+capture and delivery behavior are unchanged. Read
+[Playback](../addons/godot360/PLAYBACK.md) for the new optional codec dependencies,
+2K / 30 FPS review limit and cache behavior. Independent beta and full-resolution
+delivery review remain outstanding. Recent exports and rendering experiments are
+subsequent work, not implemented by this pass. See the latest validation entry.
+
+The final exact package passed 1,800 checks (600 each on Windows Godot 4.5.1,
+4.6.3 and 4.7.2). Separate Forward+/Mobile playback checks and an actual-editor
+playback/audio/seek run pass. THRESHOLD's corrected 2K review copy takes about
+3 minutes 25 seconds to prepare and occupies 37.10 MiB; later reviews reuse it.
+Pixel tests caught and fixed a BT.709-to-sRGB preview conversion error. All evidence
+is under `.godot360/playback-validation/`; the final package hash and exact limits
+are in `docs/validation.md`. Work remains unreleased on the 0.8 version baseline.
+
 Updated 2026-09-07 for project renderer preservation and native renderer validation,
 following Linux/macOS preparation, dependency onboarding and first-export usability. A fresh session can begin by
 reading this file, the linked guides, and the relevant current source/tests.
@@ -61,8 +81,8 @@ and source-frame contracts are unchanged. Read the portable
 The README now directs users to their first export. Interactive installation
 details are in [umbral.md](umbral.md) and developer commands in [testing.md](testing.md).
 The version remains the 0.8 baseline with unreleased source changes; original
-candidate ZIPs are unchanged. Full spherical playback and a recent-export view
-were discussed as subsequent work; the current preview is still a first frame.
+candidate ZIPs are unchanged. At that point full spherical playback and a
+recent-export view were subsequent work; the 2026-09-08 pass above adds playback.
 
 The earlier usability package passed 1,443 checks (481 per engine) on 4.5.1/4.6.3/4.7.2,
 including clean imports, 37 usability checks, actual exports and full recovery/

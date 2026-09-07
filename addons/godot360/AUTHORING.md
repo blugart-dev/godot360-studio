@@ -18,8 +18,9 @@ output timestamp. The existing scene-processing workflow remains available.
 The orange marker travels around the horizon through cube edges and the rear
 seam. The cyan marker travels through the zenith and nadir. A magenta card flashes
 with a short tone at 1, 3, and 5 seconds. The title disappears at 3 seconds.
-The studio still viewer shows only the first delivered frame; review full motion
-in a spherical video player.
+Click **Play video** for a local review copy with native seeking and sound.
+Use the delivery MP4 in an external spherical player for final detail; see
+[playback quality and limits](PLAYBACK.md).
 
 ## Author your own scene
 

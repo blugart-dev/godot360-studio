@@ -49,8 +49,11 @@ Nothing is downloaded by the addon. Tool paths stay local in
 5. Click **Test 1 second** to inspect a sample and estimate render time/storage,
    then **Render 360 video**. Use **Open output** for the verified `video-360.mp4`.
 
-The panel previews the first frame as a draggable sphere. To review the full video,
-install VLC from VideoLAN's download above, use **File/Media → Open File**, and
+The panel previews the first frame as a draggable sphere. **Play video** prepares
+a cached copy up to 2K / 30 FPS, then plays the entire clip with seeking and sound
+inside Godot. Scene-effect warnings are displayed beside playback. See
+[playback requirements and limits](addons/godot360/PLAYBACK.md).
+To review the original full-resolution MP4, install VLC from VideoLAN's download above, use **File/Media → Open File**, and
 hold the left mouse button while dragging to look around. VideoLAN documents this
 in its [360° playback guide](https://docs.videolan.me/vlc-user/desktop/3.0/en/advanced/player/360_video.html).
 A video preserves the authored sequence; viewers can look
@@ -114,6 +117,7 @@ Godot360 Studio is the tool. UMBRAL and THRESHOLD are creative examples.
 | Add music or adjust synchronization | [Audio](addons/godot360/AUDIO.md) |
 | Understand quality, recipes or command-line exports | [Addon reference](addons/godot360/README.md) |
 | Recover an export or manage disk space | [Recovery](addons/godot360/RECOVERY.md) · [Storage](addons/godot360/STORAGE.md) |
+| Review motion and sound inside Godot | [Playback and review copies](addons/godot360/PLAYBACK.md) |
 | Review delivery for YouTube | [Production workflow](docs/youtube-360-production.md) |
 | Develop or contribute | [Tests](docs/testing.md) · [Validation record](docs/validation.md) · [Roadmap](docs/roadmap.md) |
 

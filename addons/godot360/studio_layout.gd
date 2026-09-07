@@ -186,7 +186,7 @@ static func _viewer(panel: Control) -> void:
 	var viewer := VBoxContainer.new()
 	viewer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	viewer.custom_minimum_size.x = 320
-	viewer.add_theme_constant_override("separation", 8)
+	viewer.add_theme_constant_override("separation", 6)
 	panel.add_child(viewer)
 	var row := HBoxContainer.new()
 	viewer.add_child(row)
@@ -194,13 +194,13 @@ static func _viewer(panel: Control) -> void:
 	heading.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	panel.check_button = panel._button(row, "Check setup", panel._check_readiness)
 	var readiness_scroll := ScrollContainer.new()
-	readiness_scroll.custom_minimum_size.y = 90
+	readiness_scroll.custom_minimum_size.y = 72
 	readiness_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	viewer.add_child(readiness_scroll)
 	panel.readiness_label = _note(readiness_scroll, "Choose a scene, then check your setup.")
 	panel.readiness_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	panel.planning_label = _note(viewer, "")
-	_label(viewer, "360° still preview · Drag to look around")
+	_label(viewer, "360° preview · Drag to look around")
 	panel.preview = ColorRect.new()
 	panel.preview.custom_minimum_size = Vector2(320, 130)
 	panel.preview.size_flags_vertical = Control.SIZE_EXPAND_FILL
@@ -217,9 +217,23 @@ static func _viewer(panel: Control) -> void:
 	panel.preview_empty.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	panel.preview.add_child(panel.preview_empty)
 	panel.preview_empty.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	panel.playback = preload("playback_review.gd").new()
+	panel.playback.tools_provider = func(): return {"ffmpeg": panel.ffmpeg.text.strip_edges(), "ffprobe": panel.ffprobe.text.strip_edges()}
+	panel.playback.texture_changed.connect(panel._video_texture)
+	viewer.add_child(panel.playback)
+	panel.effects_scroll = ScrollContainer.new()
+	panel.effects_scroll.custom_minimum_size.y = 52
+	panel.effects_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	viewer.add_child(panel.effects_scroll)
+	panel.effects_label = _note(panel.effects_scroll, "")
+	panel.effects_scroll.hide()
 	panel.progress = ProgressBar.new()
 	viewer.add_child(panel.progress)
-	panel.status = _note(viewer, "Choose a scene or try Calibration under Recipes and examples.")
+	var status_scroll := ScrollContainer.new()
+	status_scroll.custom_minimum_size.y = 44
+	status_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	viewer.add_child(status_scroll)
+	panel.status = _note(status_scroll, "Choose a scene or try Calibration under Recipes and examples.")
 	row = HBoxContainer.new()
 	viewer.add_child(row)
 	panel.output_button = panel._button(row, "Open output", func():

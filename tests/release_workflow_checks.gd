@@ -94,6 +94,14 @@ func _run() -> void:
 	check(IO.read_json(panel.folder.path_join("capture-settings.json")).get("timeline_sampling") == "frame_index / fps", "Packaged scene uses the absolute-frame authoring hook")
 	panel._save_diagnostics(ProjectSettings.globalize_path("res://.godot360/release-motion-diagnostics.zip"))
 	check(panel.diagnostics_result.text.contains("Diagnostics saved:"), "Full authored export also produces a diagnostics bundle")
+	var delivery_hash := FileAccess.get_sha256(panel.folder.path_join("video-360.mp4"))
+	panel.playback.play_button.pressed.emit()
+	var playback_deadline := Time.get_ticks_msec() + 120000
+	while not panel.playback.phase.is_empty() and Time.get_ticks_msec() < playback_deadline:
+		await create_timer(0.1).timeout
+	check(not panel.playback.proxy_path.is_empty() and panel.playback.last_error.is_empty(), "The actual verified Motion Lab export opens in native spherical playback")
+	check(FileAccess.get_sha256(panel.folder.path_join("video-360.mp4")) == delivery_hash, "Native playback preserves the verified delivery MP4")
+	panel.playback.player.paused = true
 	var scroll: ScrollContainer = panel.get_child(0).get_child(0)
 	scroll.scroll_vertical = 385
 	await process_frame

@@ -16,9 +16,11 @@ adds current-scene selection with saving, a camera picker, grouped advanced cont
 tool/output readiness checks and a portable [quick start](../addons/godot360/QUICKSTART.md).
 This work follows the historical 0.8 candidate; it is not a new published release.
 
-The next product improvement discussed is full spherical playback, followed by a
-recent-export view. The panel still previews only the first delivered frame. Test
-the new first-export workflow with an independent Godot creator and use observed
+On 2026-09-08 the user authorized continued experimental development and delegated
+the next priorities. The current pass adds native spherical playback with seeking
+and sound from a cached review copy, plus visible capture-effect notes. See
+[playback](../addons/godot360/PLAYBACK.md). A recent-export view remains subsequent
+work. Test the first-export and review workflow with an independent Godot creator and use observed
 dead ends to choose subsequent changes. Historical release gates below retain
 their original scope and evidence.
 

@@ -1,4 +1,85 @@
-# Validation record — updated 2026-09-07
+# Validation record — updated 2026-09-08
+
+## Native playback and scene notes — 2026-09-08
+
+The current unreleased addon plays a completed delivery through a cached native
+Theora/Vorbis review copy up to 2K / 30 FPS. It adds seeking, pause, replay, mute,
+asynchronous preparation and cancellation, visible capture warnings and broader
+saved-scene advice. Capture, encoding and spherical delivery code remain unchanged.
+See [Playback](../addons/godot360/PLAYBACK.md) for user-facing limits.
+
+### Exact-package workflow
+
+The final package is `.godot360/playback-validation/final-candidate.zip`, SHA-256
+`863eb98bb340ca030e3f6f44b1d6d8a82d074f4e92015687ac9db1d6ab155d45`.
+It contains 118 members, is 233,478 bytes, verifies against source and rebuilds
+byte-for-byte with the bundled Python/zlib runtime. The three final package
+reports under `.godot360/playback-validation/` each have `ok: true`, verified
+manifest, identical rebuild and unchanged payload/package:
+
+| Windows / RTX 3060 Ti / Compatibility | Checks | Report folder |
+| --- | ---: | --- |
+| Godot 4.5.1 | 600 | `final-4.5.1/` |
+| Godot 4.6.3 | 600 | `final-4.6.3/` |
+| Godot 4.7.2 | 600 | `final-4.7.2/` |
+
+The **1,800 checks** include existing capture/audio/recovery/storage workflows,
+35 headless playback checks and 41 native visual playback checks per engine, and
+actual playback of the verified Motion Lab export. Tests verify native audio
+reaches the mix bus, pause holds the clock, forward/backward seeks show the right
+decoded intervals, a color patch returns to authored sRGB values, end/replay,
+cache reuse, cancellation, failed codecs, injected low space, hidden-panel behavior,
+source preservation and the 1100×600 completed-job layout.
+
+Separate native Godot 4.7.2 Forward+/Vulkan and Mobile/Vulkan playback runs each
+pass 41 checks (`native-forward_plus/driver.log` and `native-mobile/driver.log`).
+These are playback checks, not additional production-resolution renderer claims.
+
+### THRESHOLD and actual editor
+
+The unchanged 60-second 8K delivery produced a 2048×1024 review copy in **204.980 s**,
+occupying **38,906,694 bytes (37.10 MiB)**. Six native seeks at 10, 22, 36, 50, 59
+and 3 seconds reached the requested clock positions and decoded 2K images. A short
+playback observation advanced 4.864 seconds during 4.846 seconds of wall time;
+this is clock evidence, not a measured no-dropped-frames guarantee. The delivery
+MP4's SHA-256 stayed unchanged.
+
+Four native decoded snapshots compared against independently converted/scaled
+master references have mean absolute channel errors of **1.64–1.78 / 255**;
+99th-percentile errors are 7–10 code values. The first prototype omitted the
+required transfer conversion and differed by 9.80–15.07 / 255 on these snapshots.
+The corrected path explicitly converts BT.709 delivery pixels to sRGB transfer
+and the BT.601 matrix used by Godot's native Theora decoder. The color-patch
+regression covers this conversion in each native engine check.
+
+Decoded audio has 2,880,000 stereo frames in both source and review copy.
+Independent four-second windows beginning at 0.5, 28 and 55 seconds have zero
+measured added lag. Mono-sum SNR measurements are 24.72–31.84 dB; the review is
+lossy and no perceptual-quality certification is inferred from these measurements.
+
+A separate **actual Godot editor** run, with `Engine.is_editor_hint() == true`,
+finds and opens the installed bottom panel, reuses the copy, advances playback,
+captures nonzero native audio and seeks to 36 seconds with a decoded 2048×1024
+texture. Reports, native PNGs, reference comparisons and an editor screenshot are
+under `threshold/.godot360/` (`threshold-review.json`, `pixel-review-corrected.json`,
+`audio-review.json`, `actual-editor.json` and `actual-editor.png`).
+
+### Findings and remaining scope
+
+Development artifacts are retained separately. An initial package built with
+system Python had different compressed ZIP bytes from the bundled-runtime rebuild;
+building and reviewing with the same runtime resolved that expected zlib boundary.
+The first full matrix passed all individual stages but its aggregate check still
+counted only one graphical stage. The reviewer now compares the exact expected
+stage names, and the final package was rerun successfully on all three engines.
+No failed development package is counted as final acceptance.
+
+This pass has no new Linux/macOS playback, hosted CI, YouTube or headset evidence.
+Review copies are additional local storage, require libtheora/libvorbis and do
+not replace full-resolution/final-frame-rate review. Existing glow, auto-exposure,
+temporal-effect and partial-capture-resume limitations remain. No public release
+was published. Subsequent documentation-only changes do not require repeating
+this matrix while runtime and test behavior stay unchanged.
 
 ## Project renderer preservation — 2026-09-07
 

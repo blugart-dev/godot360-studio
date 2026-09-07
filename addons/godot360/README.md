@@ -4,7 +4,7 @@ An original Godot addon for producing **monoscopic 360 video** from a 3D scene.
 Configure a scene and camera, render a fixed number of frames, encode an MP4,
 write spherical metadata, and inspect the validation report from one editor panel.
 
-**Version 0.8.0 — beta baseline with unreleased usability changes.** The addon has passed isolated project checks on
+**Version 0.8.0 — beta baseline with unreleased renderer, usability and playback changes.** The addon has passed isolated project checks on
 Windows with Godot 4.5.1, 4.6.3 and 4.7.2, Compatibility, and an NVIDIA RTX 3060 Ti.
 Linux and macOS preparation and evidence are listed in [Platform setup](PLATFORMS.md).
 Forward+ and Mobile have actual rendered evidence; see [renderers and scene appearance](RENDERERS.md).
@@ -40,6 +40,7 @@ after installing or changing tools.
    configuration is optional. Click **Check setup** after choosing an output folder.
    FFmpeg must include **libx264**, **AAC**, `scale`, and `colorspace`.
    **Fast PNG** storage additionally requires its **PNG** encoder.
+   Optional in-editor video playback requires **libtheora** and **libvorbis**.
 
 FFmpeg is an external codec dependency. The addon does not bundle or silently
 download executables. Selecting FFmpeg also locates FFprobe in the same directory
@@ -64,8 +65,9 @@ The panel's **Quick start** button opens that guide locally.
    writes, and displays saved-scene notes. Missing tools open **Tool setup**.
 4. Click **Test 1 second** to inspect a sample and estimate the full export's time
    and retained storage. Then **Render 360 video** for the full duration.
-5. Drag the spherical **still** preview to inspect the first frame. Use **Open output**
-   for `video-360.mp4` and `report.json`; review full motion in a spherical player.
+5. Drag the spherical preview, then click **Play video** to review the whole clip
+   with seeking and sound. A local copy is prepared on first use. Use **Open output**
+   for `video-360.mp4` and `report.json`; inspect the master in a full-resolution player.
 
 **Advanced capture and encoding** contains the manual camera path, dimensions,
 renderer/driver overrides, PNG storage and H.264 CRF. **Audio timing and levels** contains offsets, trim and
@@ -110,8 +112,11 @@ and the limits of partial files.
 During capture and encoding the panel shows completed frames and approximate
 time remaining in that stage. Encoding ETA appears after its initial startup.
 
-The preview shows the first delivered frame, not video playback. Watch the whole
-video in a spherical player and check all directions before publishing.
+The preview initially shows the first delivered frame. **Play video** prepares
+a cached review copy up to 2K / 30 FPS for native playback, seeking and sound.
+Actual scene-effect warnings appear beside playback. Read [Playback](PLAYBACK.md)
+for codec requirements, cancellation, cache storage and quality limits. Check all
+directions and the full-resolution delivery MP4 before publishing.
 
 ## Test before a long render
 

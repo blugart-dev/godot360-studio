@@ -94,13 +94,18 @@ partial files. Each job gets a new folder; existing exports are preserved.
 
 ## 5. Review your result
 
-Drag the **360° still preview** to check the first frame's orientation. **Open output**
-opens the selected job folder. `video-360.mp4` is the verified delivery file;
-`report.json` records the technical checks. For full playback, you can install
+Drag the **360° preview** to check the first frame's orientation. Click **Play video**
+to prepare a local 2K review copy, then play, pause, seek and hear the complete clip
+inside the editor. Read **Scene notes** beside playback and inspect movement and
+sound throughout the clip. See [playback, cache and requirements](PLAYBACK.md).
+
+**Open output** opens the selected job folder. `video-360.mp4` is the verified
+delivery file; `report.json` records the technical checks. For full-resolution
+playback, you can install
 [VLC for your platform from VideoLAN](https://www.videolan.org/vlc/).
 Use **File/Media → Open File**, then hold the left mouse button and drag to look
 around, as described in [VideoLAN's 360° guide](https://docs.videolan.me/vlc-user/desktop/3.0/en/advanced/player/360_video.html).
-Check movement and sound throughout the clip. The panel preview is a still image.
+The in-editor video copy is limited to 2K / 30 FPS; use the delivery MP4 for final detail.
 
 Keep the capture folder if you may want to change quality or audio later.
 Under **Saved exports and recovery**, **Re-encode this capture** uses retained
