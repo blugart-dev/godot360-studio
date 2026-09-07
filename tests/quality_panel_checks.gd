@@ -11,7 +11,7 @@ func _run() -> void:
 	root.size = Vector2i(1400, 520)
 	root.content_scale_size = root.size
 	root.content_scale_mode = Window.CONTENT_SCALE_MODE_VIEWPORT
-	var panel = preload("res://addons/umbral360/studio_panel.gd").new()
+	var panel = preload("res://addons/godot360/studio_panel.gd").new()
 	root.add_child(panel)
 	panel.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	_find_button(panel, "Production · 4K").pressed.emit()
@@ -34,7 +34,7 @@ func _run() -> void:
 	await process_frame
 	await RenderingServer.frame_post_draw
 	check(panel.size.y <= root.size.y, "Studio fits a compact bottom panel without extending below the window")
-	root.get_texture().get_image().save_png(ProjectSettings.globalize_path("res://.umbral360/quality-panel.png"))
+	root.get_texture().get_image().save_png(ProjectSettings.globalize_path("res://.godot360/quality-panel.png"))
 	print("QUALITY PANEL CHECKS: 8 checks, %d failures" % failures)
 	quit(0 if failures == 0 else 1)
 

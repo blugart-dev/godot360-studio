@@ -23,7 +23,7 @@ def main(args):
     original = folder / "encoded.mp4"
     report = json.loads((folder / "report.json").read_text())
     assert report["ok"] and all(report["checks"].values())
-    evidence = project / ".umbral360" / (folder.name + "-media-review")
+    evidence = project / ".godot360" / (folder.name + "-media-review")
     evidence.mkdir(exist_ok=args.inspect_only)
     raw = evidence / "decoded-srgb.rgb"
     filters = ("[0:v]split=3[p][f][q];"

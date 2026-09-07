@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased — folder naming
+
+- Use `addons/godot360` for the addon and `.godot360` for local settings/output.
+- Update scene/script references, recipes, CLI tools, tests and package contents
+  together; retain script resource UIDs.
+- Rename the Motion Lab's in-scene label to Godot360 and document migration for
+  existing installations. Historical release artifacts retain their original names.
+
 ## 0.8.0 — 2026-09-07
 
 - Add **Save diagnostics…** for successful, failed, unconfirmed and setup jobs.

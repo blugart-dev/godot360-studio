@@ -1,6 +1,6 @@
 extends SceneTree
 ## Documented calibration, six preview directions, recipes, Motion Lab and diagnostics.
-const IO = preload("res://addons/umbral360/job_io.gd")
+const IO = preload("res://addons/godot360/job_io.gd")
 var panel: Control
 var checks := 0
 var failures := 0
@@ -14,21 +14,21 @@ func _initialize() -> void:
 
 
 func _run() -> void:
-	settings_existed = FileAccess.file_exists("res://.umbral360/settings.cfg")
+	settings_existed = FileAccess.file_exists("res://.godot360/settings.cfg")
 	if settings_existed:
-		original_settings = FileAccess.get_file_as_bytes("res://.umbral360/settings.cfg")
+		original_settings = FileAccess.get_file_as_bytes("res://.godot360/settings.cfg")
 	initialized = true
 	root.size = Vector2i(1400, 600)
 	root.content_scale_size = root.size
 	root.content_scale_mode = Window.CONTENT_SCALE_MODE_VIEWPORT
-	panel = preload("res://addons/umbral360/studio_panel.gd").new()
+	panel = preload("res://addons/godot360/studio_panel.gd").new()
 	root.add_child(panel)
 	panel.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	_button("Calibration defaults").pressed.emit()
 	_button("Draft · 2K").pressed.emit()
 	panel.ffmpeg.text = IO.argument("ffmpeg")
 	panel.ffprobe.text = IO.argument("ffprobe")
-	panel.output.text = ProjectSettings.globalize_path("res://.umbral360/release-workflow")
+	panel.output.text = ProjectSettings.globalize_path("res://.godot360/release-workflow")
 	check(panel.profile.width == "2048" and panel.profile.face_size == 512 and panel.profile.scene_path.ends_with("calibration.tscn"), "Documented calibration and Draft buttons select the expected recipe")
 	panel.test_button.pressed.emit()
 	await _wait_job()
@@ -50,8 +50,8 @@ func _run() -> void:
 		await RenderingServer.frame_post_draw
 		var screenshot := root.get_texture().get_image()
 		var view := screenshot.get_region(Rect2i(panel.preview.get_global_rect()))
-		var saved := view.save_png("res://.umbral360/release-preview-" + names[index] + ".png")
-		signatures[preload("res://addons/umbral360/diagnostics.gd")._hash(view.get_data())] = true
+		var saved := view.save_png("res://.godot360/release-preview-" + names[index] + ".png")
+		signatures[preload("res://addons/godot360/diagnostics.gd")._hash(view.get_data())] = true
 		check(panel.heading.distance_to(angles[index]) < 0.001 and saved == OK, "Preview drag reaches and renders " + names[index])
 	check(signatures.size() == 6, "Six preview directions produce distinct rendered views")
 	panel._browse("diagnostics")
@@ -60,7 +60,7 @@ func _run() -> void:
 	var status_before: String = panel.status.text
 	var recipe_before: Dictionary = panel.profile.to_dictionary()
 	var selected_before: String = panel.folder
-	var bundle := ProjectSettings.globalize_path("res://.umbral360/release-completed-diagnostics.zip")
+	var bundle := ProjectSettings.globalize_path("res://.godot360/release-completed-diagnostics.zip")
 	dialog.file_selected.emit(bundle)
 	await process_frame
 	check(FileAccess.file_exists(bundle) and panel.diagnostics_result.text.contains("Diagnostics saved:"), "Save dialog produces a completed-job support bundle")
@@ -78,7 +78,7 @@ func _run() -> void:
 	# A low-resolution workflow check; the separately recorded 4K/8K evidence remains unchanged.
 	panel.recipe_fields.width.text = "512"
 	panel.recipe_fields.face_size.text = "256"
-	var recipe := ProjectSettings.globalize_path("res://.umbral360/release-recipe.tres")
+	var recipe := ProjectSettings.globalize_path("res://.godot360/release-recipe.tres")
 	panel._selected("save", recipe)
 	_button("Calibration defaults").pressed.emit()
 	panel._selected("load", recipe)
@@ -90,14 +90,14 @@ func _run() -> void:
 	await _wait_job()
 	check(_delivered(panel.folder) and panel.active_job.frames == 180, "Installed Motion Lab completes the full six-second workflow")
 	check(IO.read_json(panel.folder.path_join("capture-settings.json")).get("timeline_sampling") == "frame_index / fps", "Packaged scene uses the absolute-frame authoring hook")
-	panel._save_diagnostics(ProjectSettings.globalize_path("res://.umbral360/release-motion-diagnostics.zip"))
+	panel._save_diagnostics(ProjectSettings.globalize_path("res://.godot360/release-motion-diagnostics.zip"))
 	check(panel.diagnostics_result.text.contains("Diagnostics saved:"), "Full authored export also produces a diagnostics bundle")
 	var scroll: ScrollContainer = panel.get_child(0).get_child(0)
 	scroll.scroll_vertical = 385
 	await process_frame
 	await RenderingServer.frame_post_draw
 	check(panel.size.y <= root.size.y and panel.size.x <= root.size.x, "New controls fit within the compact scrolling panel")
-	root.get_texture().get_image().save_png("res://.umbral360/release-panel.png")
+	root.get_texture().get_image().save_png("res://.godot360/release-panel.png")
 	_finish()
 
 
@@ -138,9 +138,9 @@ func _finish() -> void:
 func _finalize() -> void:
 	if initialized:
 		if settings_existed:
-			FileAccess.open("res://.umbral360/settings.cfg", FileAccess.WRITE).store_buffer(original_settings)
-		elif FileAccess.file_exists("res://.umbral360/settings.cfg"):
-			DirAccess.remove_absolute("res://.umbral360/settings.cfg")
+			FileAccess.open("res://.godot360/settings.cfg", FileAccess.WRITE).store_buffer(original_settings)
+		elif FileAccess.file_exists("res://.godot360/settings.cfg"):
+			DirAccess.remove_absolute("res://.godot360/settings.cfg")
 
 
 func check(condition: bool, description: String) -> void:

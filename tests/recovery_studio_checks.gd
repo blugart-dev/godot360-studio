@@ -1,8 +1,8 @@
 extends SceneTree
 ## Actual reopened panel, absent editor/coordinator, stale identity and source reuse.
-const IO = preload("res://addons/umbral360/job_io.gd")
-const Session = preload("res://addons/umbral360/job_session.gd")
-const Studio = preload("res://addons/umbral360/studio_panel.gd")
+const IO = preload("res://addons/godot360/job_io.gd")
+const Session = preload("res://addons/godot360/job_session.gd")
+const Studio = preload("res://addons/godot360/studio_panel.gd")
 var panel: Control
 var folder: String
 var checks := 0
@@ -35,7 +35,7 @@ func _run() -> void:
 	panel.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	# Allow automatic inspection of an earlier compatibility sample to settle.
 	await _wait_panel()
-	panel.profile = preload("res://addons/umbral360/export_profile.gd").new()
+	panel.profile = preload("res://addons/godot360/export_profile.gd").new()
 	panel.profile.width = "512"
 	panel.profile.face_size = 128
 	panel.profile.duration = 1.0

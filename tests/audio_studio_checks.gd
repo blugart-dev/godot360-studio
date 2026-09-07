@@ -1,7 +1,7 @@
 extends SceneTree
 ## Actual panel audio controls, persistence, one-second capture and re-encode.
-const IO = preload("res://addons/umbral360/job_io.gd")
-const Audio = preload("res://addons/umbral360/audio_plan.gd")
+const IO = preload("res://addons/godot360/job_io.gd")
+const Audio = preload("res://addons/godot360/audio_plan.gd")
 var panel: Control
 var original_settings := PackedByteArray()
 var settings_existed := false
@@ -15,17 +15,17 @@ func _initialize() -> void:
 
 
 func _run() -> void:
-	settings_existed = FileAccess.file_exists("res://.umbral360/settings.cfg")
+	settings_existed = FileAccess.file_exists("res://.godot360/settings.cfg")
 	if settings_existed:
-		original_settings = FileAccess.get_file_as_bytes("res://.umbral360/settings.cfg")
+		original_settings = FileAccess.get_file_as_bytes("res://.godot360/settings.cfg")
 	restore_settings = true
 	root.size = Vector2i(1400, 600)
 	root.content_scale_size = root.size
 	root.content_scale_mode = Window.CONTENT_SCALE_MODE_VIEWPORT
-	panel = preload("res://addons/umbral360/studio_panel.gd").new()
+	panel = preload("res://addons/godot360/studio_panel.gd").new()
 	root.add_child(panel)
 	panel.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	panel.profile = preload("res://addons/umbral360/export_profile.gd").new()
+	panel.profile = preload("res://addons/godot360/export_profile.gd").new()
 	panel.profile.width = "512"
 	panel.profile.face_size = 128
 	panel.profile.duration = 1.5
@@ -40,9 +40,9 @@ func _run() -> void:
 	panel.audio_controls.scene_audio_offset_seconds.value = -0.05
 	panel._update_profile()
 	check(panel.profile.audio_mode == "mix" and is_equal_approx(panel.profile.soundtrack_offset_seconds, 0.125) and is_equal_approx(panel.profile.scene_audio_offset_seconds, -0.05), "Mix mode serializes independent scene and soundtrack timing")
-	var recipe_path := ProjectSettings.globalize_path("res://.umbral360/audio-panel-recipe.tres")
+	var recipe_path := ProjectSettings.globalize_path("res://.godot360/audio-panel-recipe.tres")
 	panel._selected("save", recipe_path)
-	panel.profile = preload("res://addons/umbral360/export_profile.gd").new()
+	panel.profile = preload("res://addons/godot360/export_profile.gd").new()
 	panel._refresh_fields()
 	panel._selected("load", recipe_path)
 	check(panel.audio_mode_control.selected == 2 and panel.audio_controls.soundtrack_gain_db.value == -6.0, "Recipe loading restores audio controls")
@@ -79,12 +79,12 @@ func _run() -> void:
 	await process_frame
 	await RenderingServer.frame_post_draw
 	check(panel.size.y <= root.size.y, "Audio controls fit within a scrolling bottom panel")
-	root.get_texture().get_image().save_png(ProjectSettings.globalize_path("res://.umbral360/audio-panel-06.png"))
+	root.get_texture().get_image().save_png(ProjectSettings.globalize_path("res://.godot360/audio-panel-06.png"))
 	print("AUDIO STUDIO SOURCE: " + source)
 	print("AUDIO STUDIO OUTPUT: " + panel.folder)
 	# A failed encode can reuse the completed capture. The panel must point to
 	# that original folder, not the failed re-encode's empty output directory.
-	panel.ffmpeg.text = ProjectSettings.globalize_path("res://.umbral360/missing-ffmpeg.exe")
+	panel.ffmpeg.text = ProjectSettings.globalize_path("res://.godot360/missing-ffmpeg.exe")
 	panel._reencode(source)
 	await _wait_job()
 	var recovery := IO.read_json(panel.folder.path_join("recovery.json"))
@@ -93,7 +93,7 @@ func _run() -> void:
 	check(before == _snapshot(source) and not FileAccess.file_exists(panel.folder.path_join("video-360.mp4")), "Failed re-encode preserves source files and publishes no video")
 	var failure_before := _snapshot(panel.folder)
 	var failure_status: String = panel.status.text
-	var bundle := ProjectSettings.globalize_path("res://.umbral360/audio-failure-diagnostics.zip")
+	var bundle := ProjectSettings.globalize_path("res://.godot360/audio-failure-diagnostics.zip")
 	panel._selected("diagnostics", bundle)
 	check(FileAccess.file_exists(bundle) and panel.diagnostics_result.text.contains("Diagnostics saved:"), "Failed panel job can save a diagnostics bundle")
 	var reader := ZIPReader.new()
@@ -128,9 +128,9 @@ func _snapshot(folder: String) -> Dictionary:
 func _finalize() -> void:
 	if restore_settings:
 		if settings_existed:
-			FileAccess.open("res://.umbral360/settings.cfg", FileAccess.WRITE).store_buffer(original_settings)
+			FileAccess.open("res://.godot360/settings.cfg", FileAccess.WRITE).store_buffer(original_settings)
 		else:
-			DirAccess.remove_absolute(ProjectSettings.globalize_path("res://.umbral360/settings.cfg"))
+			DirAccess.remove_absolute(ProjectSettings.globalize_path("res://.godot360/settings.cfg"))
 
 
 func check(condition: bool, description: String) -> void:

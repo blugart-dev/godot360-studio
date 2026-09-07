@@ -90,7 +90,7 @@ def review(args):
     args.output.mkdir(parents=True)
     folder = args.output / "capture"
     folder.mkdir()
-    settings = args.project / ".umbral360/settings.cfg"
+    settings = args.project / ".godot360/settings.cfg"
     before = sha(settings) if settings.exists() else None
     count, fps, warmup, width, height = args.seconds * args.fps, args.fps, 2, args.width, args.width // 2
     assert 1 <= args.seconds <= 90 and count < 8192, "The thirteen-bit fixture supports runs up to 90 seconds"
@@ -104,7 +104,7 @@ def review(args):
     observations = []
     with (args.output / "driver.log").open("wb") as log:
         child = subprocess.Popen([str(args.godot), "--headless", "--path", str(args.project), "--log-file", str(folder / "pipeline.log"),
-                                  "--script", "res://addons/umbral360/pipeline.gd", "--", "--job=" + str(folder / "job.json")], stdout=log, stderr=log)
+                                  "--script", "res://addons/godot360/pipeline.gd", "--", "--job=" + str(folder / "job.json")], stdout=log, stderr=log)
         try:
             last_print = 0
             while child.poll() is None:

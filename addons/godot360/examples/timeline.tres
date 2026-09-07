@@ -1,10 +1,10 @@
 [gd_resource type="Resource" script_class="" load_steps=2 format=3]
 
-[ext_resource type="Script" path="res://addons/umbral360/export_profile.gd" id="1"]
+[ext_resource type="Script" path="res://addons/godot360/export_profile.gd" id="1"]
 
 [resource]
 script = ExtResource("1")
-scene_path = "res://addons/umbral360/examples/timeline.tscn"
+scene_path = "res://addons/godot360/examples/timeline.tscn"
 camera_path = NodePath("CameraPath/Follow/Camera3D")
 width = "4096"
 face_size = 2048

@@ -11,10 +11,10 @@ not published the addon or uploaded video.
 - [Addon ZIP](../dist/umbral360-studio-0.8.0.zip): 84 members, 169,418 bytes.
 - SHA-256: `16e41c52c4ef7e0e3c62783a3ae8bc79b93bb676dbd93e5e071daae3ead33961`.
 - [Package manifest record](../dist/umbral360-studio-0.8.0.json).
-- [Exact-package review](../.umbral360/package-080-accepted/package-review.json)
-  and [engine results](../.umbral360/package-080-accepted/engines/compatibility-review.json).
-- [Diagnostics guide](../addons/umbral360/DIAGNOSTICS.md) and
-  [independent feedback form](../addons/umbral360/BETA-REPORT.md).
+- [Exact-package review](../.godot360/package-080-accepted/package-review.json)
+  and [engine results](../.godot360/package-080-accepted/engines/compatibility-review.json).
+- [Diagnostics guide](../addons/godot360/DIAGNOSTICS.md) and
+  [independent feedback form](../addons/godot360/BETA-REPORT.md).
 
 The reviewer verifies the manifest, extracts the exact ZIP, checks the extracted
 inventory, rebuilds identical bytes and installs it in separate minimal projects.
@@ -23,7 +23,7 @@ controlled process and storage failures, reopened jobs and recovered-source
 re-encoding. It also runs the documented Draft 2K calibration, six preview
 directions, recipe persistence, support ZIPs and the six-second Motion Lab film
 at 512×256. Screenshots and original logs are retained under each engine's
-`.umbral360` directory. Source and settings are checked for preservation.
+`.godot360` directory. Source and settings are checked for preservation.
 
 The exact-package review **passed all 1,332 checks**: 444 per engine on Godot
 4.5.1, 4.6.3 and 4.7.2. Each runs 251 headless contracts, 19 audio panel checks,
@@ -54,7 +54,7 @@ using the unchanged 0.8 exporter, received positive user visual feedback in YouT
 on 2026-09-07. Its [review record](threshold.md) distinguishes that feedback from
 an itemized playback checklist. Use the main `video-360.mp4` for delivery.
 
-The [local delivery diagnostics ZIP](../.umbral360/delivery-080-diagnostics.zip)
+The [local delivery diagnostics ZIP](../.godot360/delivery-080-diagnostics.zip)
 contains the candidate's job reports and logs. Its headless environment describes
 the collector; the original capture is referenced, not copied into the bundle.
 
@@ -80,7 +80,7 @@ those durations, certify hour-long exports, or establish another hardware/OS res
 
 ## Rejected development evidence
 
-`.umbral360/package-080-final/` is the first rejected candidate review, despite
+`.godot360/package-080-final/` is the first rejected candidate review, despite
 its directory name. Its ZIP is retained there as `rejected-0.8.0.zip` with SHA-256
 `23fbdadea3436ae0f87bf5f52294915d76b47a3aeed495ea96d347c1730eedf3`.
 Godot 4.7 lists the ZIP's parent directory as an additional entry; treating it as

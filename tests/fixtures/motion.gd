@@ -1,4 +1,4 @@
-extends "res://addons/umbral360/examples/timeline.gd"
+extends "res://addons/godot360/examples/timeline.gd"
 ## A deliberately simple camera trajectory gives the image test an independent oracle.
 
 

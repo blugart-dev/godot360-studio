@@ -1,6 +1,6 @@
 extends SceneTree
 ## Headless coordinator; starts a separate GPU Movie Maker worker.
-## godot --headless --path PROJECT --script res://addons/umbral360/pipeline.gd -- --job=ABSOLUTE_JSON
+## godot --headless --path PROJECT --script res://addons/godot360/pipeline.gd -- --job=ABSOLUTE_JSON
 
 const IO = preload("job_io.gd")
 const Metadata = preload("spherical_metadata.gd")
@@ -239,7 +239,7 @@ func _capture() -> bool:
 		"--quit-after", str(int(job.frames) + int(job.get("warmup_frames", 2))),
 		"--write-movie", folder.path_join("movie/audio.png"), "--disable-vsync",
 		"--log-file", folder.path_join("capture.log"),
-		"--script", "res://addons/umbral360/capture.gd", "--", "--job=" + folder.path_join("job.json")])
+		"--script", "res://addons/godot360/capture.gd", "--", "--job=" + folder.path_join("job.json")])
 	process_id = OS.create_process(OS.get_executable_path(), arguments)
 	if process_id <= 0:
 		_fail("Could not start the Godot rendering worker.")

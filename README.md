@@ -5,10 +5,9 @@ capture, soundtracks, spherical MP4 metadata and export validation. Includes the
 UMBRAL interactive installation and THRESHOLD, a sixty-second film through four
 procedural worlds.
 
-Previously named **Umbral360 Studio**. The internal `addons/umbral360` and
-`.umbral360` paths are retained so existing recipes, scenes and local settings
-continue to work. Historical release records use the original name. Godot360
-Studio is an independent project.
+The addon lives in `addons/godot360`; local settings and generated checks live in
+`.godot360`. Godot360 Studio is an independent project. UMBRAL and THRESHOLD are
+the names of the included creative examples.
 
 See [repository contents and privacy audit](docs/repository.md) for what is
 versioned and what remains local. Exported videos and local tools are not included.
@@ -37,31 +36,31 @@ The plugin is already enabled in this project.
 
 Each job produces its own folder, with retained PNG frames, WAV, recipe, and logs.
 Version 0.8 adds **Save diagnostics…** for reviewed local support ZIPs, an
-[independent beta report](addons/umbral360/BETA-REPORT.md), and an exact-package
-installation/workflow reviewer. See the [diagnostics guide](addons/umbral360/DIAGNOSTICS.md)
-and [beta instructions](addons/umbral360/BETA.md). Source history starts at the
+[independent beta report](addons/godot360/BETA-REPORT.md), and an exact-package
+installation/workflow reviewer. See the [diagnostics guide](addons/godot360/DIAGNOSTICS.md)
+and [beta instructions](addons/godot360/BETA.md). Source history starts at the
 validated 0.7 baseline in local Git; renders, settings and tool binaries are excluded.
 Version 0.7 adds working disk-space checks and required file-write checks. Captures
 retained after a storage failure can be re-encoded in a fresh folder; partial
-captures need a new render. See the [storage guide](addons/umbral360/STORAGE.md)
+captures need a new render. See the [storage guide](addons/godot360/STORAGE.md)
 and the revised [route to 1.0](docs/roadmap.md).
 Version 0.6.3 restores the last job when the panel opens. **Open saved job…** can
 reconnect to an ongoing export or inspect a stopped job; **Re-encode this capture**
-reuses a finalized source in a fresh job. Read the [recovery guide](addons/umbral360/RECOVERY.md).
+reuses a finalized source in a fresh job. Read the [recovery guide](addons/godot360/RECOVERY.md).
 The addon handles capture, encoding, spherical metadata, and FFprobe verification.
 Version 0.6 adds soundtrack attachment, mixing, levels and synchronization offsets
-for renders and re-encodes. Read the [audio guide](addons/umbral360/AUDIO.md).
+for renders and re-encodes. Read the [audio guide](addons/godot360/AUDIO.md).
 It also delivers fast-start MP4 with equivalent Spherical Video V1/V2 metadata,
 alongside measured job planning, live encoding progress and cancellation,
 **Re-encode saved…**, and the **Motion lab** camera/timeline example. Read the
-[job planning guide](docs/job-planning.md) and [authoring guide](addons/umbral360/AUTHORING.md).
+[job planning guide](docs/job-planning.md) and [authoring guide](addons/godot360/AUTHORING.md).
 It exports mono 360 and ordinary stereo audio. Stereo 3D, ambisonics, and YouTube
 upload are not implemented. A user confirmed basic YouTube 360 playback of the
 initial 2K clip, but found it blurry. Use **Production · 4K** or **Detail · 8K**
 for greater viewing detail; 2K is a draft preset. The 12-second Detail recipe is
 `export_profiles/umbral-film-8k.tres`.
 
-Read the [addon guide](addons/umbral360/README.md) for setup, recipes, CLI use,
+Read the [addon guide](addons/godot360/README.md) for setup, recipes, CLI use,
 capture hooks, known limitations, and architecture. The
 [production workflow](docs/youtube-360-production.md) explains release checks.
 
@@ -119,7 +118,7 @@ scenes/Main.tscn
 | `scripts/main.gd` | Narrative wiring, discovery count, optional film hooks |
 | `scripts/ui/*.gd` | Crosshair, messages, compass, debugging |
 | `scripts/world/*.gd` | Background and generated geometry |
-| `addons/umbral360/` | Independent export tool, calibration scene, and preview |
+| `addons/godot360/` | Independent export tool, calibration scene, and preview |
 
 Decorative meshes are generated in `_ready()`, so they appear when running the
 scene. Gaze targets and their collision shapes are edited in their `.tscn` scenes.
@@ -179,7 +178,7 @@ godot --path . --script res://tests/studio_checks.gd -- --ffmpeg=/path/to/ffmpeg
 godot --path . --script res://tests/planning_studio_checks.gd -- --ffmpeg=/path/to/ffmpeg --ffprobe=/path/to/ffprobe --cancel-source=/path/to/completed-capture
 ```
 
-It saves `.umbral360/studio-preview.png` and a two-second calibration export under
+It saves `.godot360/studio-preview.png` and a two-second calibration export under
 `renders/studio-checks/`. The optional legacy `tests/capture_preview.gd` records six
 perspective views of the interactive installation; it is not the 360 exporter.
 The planning integration test also checks duration rescaling, stale estimates,
@@ -206,9 +205,9 @@ It checks limiting, legacy media preservation and soundtrack mutation rejection.
 
 Version 0.6.1 fixes Motion Lab on Godot 4.5.1 and adds isolated compatibility checks
 on 4.5.1/4.6.3/4.7.2, eight soundtrack format cases and a 90-second mix. The
-[beta guide](addons/umbral360/BETA.md) gives exact coverage, clean-project steps,
+[beta guide](addons/godot360/BETA.md) gives exact coverage, clean-project steps,
 reviewer commands and reproducible packaging with `tools/package_addon.py`.
-Version 0.6.2 adds [failure recovery guidance](addons/umbral360/RECOVERY.md),
+Version 0.6.2 adds [failure recovery guidance](addons/godot360/RECOVERY.md),
 controlled worker/encoder interruption tests, and a real 90-second GPU capture at
 60 FPS with all 5,400 delivered frames and audio cues checked. The compatibility
 reviewer accepts `--capture-failures`; `tests/endurance_review.py` runs the long
@@ -222,7 +221,7 @@ The Motion Lab button and complete authored export are checked by
 `tests/timeline_studio_checks.gd` with the same executable arguments. Render
 `tests/fixtures/motion.tscn` for six seconds, then run `tests/motion_review.py`
 against its folder to inspect actual PNG/MP4 motion and tone alignment. See the
-[authoring guide](addons/umbral360/AUTHORING.md#verification) for dependencies.
+[authoring guide](addons/godot360/AUTHORING.md#verification) for dependencies.
 
 See [validation results](docs/validation.md) for the tested environment and known
 gaps. The addon carries its own MIT license and reference notes, so it can be

@@ -1,6 +1,6 @@
 extends RefCounted
 ## Small structural fixtures; these are not decodable media.
-const M = preload("res://addons/umbral360/spherical_metadata.gd")
+const M = preload("res://addons/godot360/spherical_metadata.gd")
 
 
 static func track(offsets: Array, wide: bool = false, audio: bool = false, extra: PackedByteArray = PackedByteArray()) -> PackedByteArray:

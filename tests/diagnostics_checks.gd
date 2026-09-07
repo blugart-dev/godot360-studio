@@ -1,6 +1,6 @@
 extends SceneTree
-const Diagnostics = preload("res://addons/umbral360/diagnostics.gd")
-const IO = preload("res://addons/umbral360/job_io.gd")
+const Diagnostics = preload("res://addons/godot360/diagnostics.gd")
+const IO = preload("res://addons/godot360/job_io.gd")
 var checks := 0
 var failures := 0
 
@@ -10,7 +10,7 @@ func _initialize() -> void:
 
 
 func _run() -> void:
-	var output := ProjectSettings.globalize_path("res://.umbral360/diagnostics-checks-" + str(Time.get_ticks_usec()))
+	var output := ProjectSettings.globalize_path("res://.godot360/diagnostics-checks-" + str(Time.get_ticks_usec()))
 	var source := output.path_join("failed-job")
 	DirAccess.make_dir_recursive_absolute(source.path_join("frames"))
 	IO.write_json(source.path_join("job.json"), {"scene_path": "res://private-scene.tscn", "source_dir": output.path_join("other-capture"), "width": 4096})

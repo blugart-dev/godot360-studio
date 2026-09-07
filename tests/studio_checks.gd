@@ -1,7 +1,7 @@
 extends SceneTree
 ## Real GUI + GPU + encoder integration test. Paths are passed after --.
 ## --ffmpeg=/absolute/ffmpeg --ffprobe=/absolute/ffprobe
-const IO = preload("res://addons/umbral360/job_io.gd")
+const IO = preload("res://addons/godot360/job_io.gd")
 var panel: Control
 var failures: int = 0
 
@@ -11,7 +11,7 @@ func _initialize() -> void:
 
 
 func _run() -> void:
-	var settings_path := "res://.umbral360/settings.cfg"
+	var settings_path := "res://.godot360/settings.cfg"
 	var had_settings := FileAccess.file_exists(settings_path)
 	var original_settings := FileAccess.get_file_as_bytes(settings_path) if had_settings else PackedByteArray()
 	root.size = Vector2i(1500, 680)
@@ -23,9 +23,9 @@ func _run() -> void:
 		margin.add_theme_constant_override("margin_" + edge, 24)
 	margin.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	root.add_child(margin)
-	panel = preload("res://addons/umbral360/studio_panel.gd").new()
+	panel = preload("res://addons/godot360/studio_panel.gd").new()
 	margin.add_child(panel)
-	panel.profile = preload("res://addons/umbral360/export_profile.gd").new()
+	panel.profile = preload("res://addons/godot360/export_profile.gd").new()
 	panel._refresh_fields()
 	panel.recipe_fields.width.text = "2048"
 	panel.recipe_fields.face_size.text = "512"
@@ -51,7 +51,7 @@ func _run() -> void:
 		panel.heading = Vector2.ZERO
 		panel._update_preview()
 	await RenderingServer.frame_post_draw
-	root.get_texture().get_image().save_png(ProjectSettings.globalize_path("res://.umbral360/studio-preview.png"))
+	root.get_texture().get_image().save_png(ProjectSettings.globalize_path("res://.godot360/studio-preview.png"))
 	print("STUDIO EXPORT FOLDER: " + panel.folder)
 	await _check_cancellation()
 	print("STUDIO CHECKS: %d failures" % failures)

@@ -1,5 +1,7 @@
 .godot/
 *.tmp
+.godot360/
+# Keep older local validation checkouts and settings out of Git as well.
 .umbral360/
 renders/
 dist/

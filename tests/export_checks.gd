@@ -1,9 +1,9 @@
 extends SceneTree
 ## Headless contract tests for validation and the constrained MP4 metadata writer.
 
-const IO = preload("res://addons/umbral360/job_io.gd")
-const Metadata = preload("res://addons/umbral360/spherical_metadata.gd")
-const Pipeline = preload("res://addons/umbral360/pipeline.gd")
+const IO = preload("res://addons/godot360/job_io.gd")
+const Metadata = preload("res://addons/godot360/spherical_metadata.gd")
+const Pipeline = preload("res://addons/godot360/pipeline.gd")
 var checks: int = 0
 var failures: int = 0
 var folder: String
@@ -14,9 +14,9 @@ func _initialize() -> void:
 
 
 func _run() -> void:
-	folder = ProjectSettings.globalize_path("res://.umbral360/tests-" + str(Time.get_ticks_usec()))
+	folder = ProjectSettings.globalize_path("res://.godot360/tests-" + str(Time.get_ticks_usec()))
 	DirAccess.make_dir_recursive_absolute(folder)
-	var recipe: Dictionary = preload("res://addons/umbral360/export_profile.gd").new().to_dictionary()
+	var recipe: Dictionary = preload("res://addons/godot360/export_profile.gd").new().to_dictionary()
 	recipe.merge({"output_dir": folder, "ffmpeg": "ffmpeg", "ffprobe": "ffprobe"})
 	check(IO.validate(recipe).is_empty(), "Default export recipe is valid")
 	for change in [{"width": 2049}, {"height": 1023}, {"frames": 0}, {"fps": 29}, {"face_size": 64},
@@ -29,7 +29,7 @@ func _run() -> void:
 	check(not IO.quality_advice(recipe).is_empty(), "Draft resolution reports limited viewing detail")
 	check(not IO.quality_advice({"width": 7680, "face_size": 512}).is_empty(), "Increasing output size alone warns about low-resolution cube faces")
 	check(IO.quality_advice({"width": 4096, "face_size": 2048}).is_empty(), "Production sampling has no draft or face-resolution warning")
-	var quality_profile = preload("res://addons/umbral360/export_profile.gd").new()
+	var quality_profile = preload("res://addons/godot360/export_profile.gd").new()
 	quality_profile.apply_quality_preset("detail")
 	check(quality_profile.to_dictionary().width == 7680 and quality_profile.face_size == 3072 and quality_profile.crf == 16, "Detail preset raises actual capture detail as well as output size")
 	check(IO.write_json(folder.path_join("roundtrip.json"), recipe), "Job JSON writes successfully")

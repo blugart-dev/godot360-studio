@@ -1,6 +1,6 @@
 extends SceneTree
-const Planner = preload("res://addons/umbral360/job_planner.gd")
-const IO = preload("res://addons/umbral360/job_io.gd")
+const Planner = preload("res://addons/godot360/job_planner.gd")
+const IO = preload("res://addons/godot360/job_io.gd")
 var checks: int = 0
 var failures: int = 0
 
@@ -10,8 +10,8 @@ func _initialize() -> void:
 
 
 func _run() -> void:
-	var root_folder := ProjectSettings.globalize_path("res://.umbral360/planning-checks-" + str(Time.get_ticks_usec()))
-	var target: Dictionary = preload("res://addons/umbral360/export_profile.gd").new().to_dictionary()
+	var root_folder := ProjectSettings.globalize_path("res://.godot360/planning-checks-" + str(Time.get_ticks_usec()))
+	var target: Dictionary = preload("res://addons/godot360/export_profile.gd").new().to_dictionary()
 	target.merge({"frames": 300, "output_dir": root_folder, "ffmpeg": "ffmpeg", "ffprobe": "ffprobe"}, true)
 	var sample := Planner.test_job(target)
 	check(sample.frames == 30 and sample.target_frames == 300 and target.frames == 300, "Test clamps capture to one second without changing the full recipe")
@@ -28,7 +28,7 @@ func _run() -> void:
 	check(is_equal_approx(float(estimate.estimated_total_seconds), 47.5), "Total estimate includes encoding and verification")
 	check(estimate.estimated_retained_bytes == 353200, "Storage estimate includes PNGs, WAV, preview, and both MP4 copies")
 	check(estimate.suggested_free_bytes > estimate.estimated_retained_bytes, "Suggested free space includes explicit headroom")
-	check(estimate.suggested_free_bytes >= estimate.estimated_retained_bytes + preload("res://addons/umbral360/storage_guard.gd").capture_headroom(target) + 256 * 1024 * 1024, "Planning includes the capture guard's working floor as well as retained files")
+	check(estimate.suggested_free_bytes >= estimate.estimated_retained_bytes + preload("res://addons/godot360/storage_guard.gd").capture_headroom(target) + 256 * 1024 * 1024, "Planning includes the capture guard's working floor as well as retained files")
 	var longer := target.duplicate()
 	longer.frames = 600
 	check(Planner.estimate(sample, report, sizes, longer).estimated_total_seconds > estimate.estimated_total_seconds, "Duration can be rescaled without repeating the sample")

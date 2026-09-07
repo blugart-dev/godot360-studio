@@ -1,6 +1,6 @@
 extends SceneTree
 ## Actual Motion lab button and complete authored export. GPU/FFmpeg required.
-const IO = preload("res://addons/umbral360/job_io.gd")
+const IO = preload("res://addons/godot360/job_io.gd")
 var checks: int = 0
 var failures: int = 0
 
@@ -10,13 +10,13 @@ func _initialize() -> void:
 
 
 func _run() -> void:
-	var settings := "res://.umbral360/settings.cfg"
+	var settings := "res://.godot360/settings.cfg"
 	var existed := FileAccess.file_exists(settings)
 	var original := FileAccess.get_file_as_bytes(settings) if existed else PackedByteArray()
 	root.size = Vector2i(1500, 720)
 	root.content_scale_size = root.size
 	root.content_scale_mode = Window.CONTENT_SCALE_MODE_VIEWPORT
-	var panel = preload("res://addons/umbral360/studio_panel.gd").new()
+	var panel = preload("res://addons/godot360/studio_panel.gd").new()
 	root.add_child(panel)
 	panel.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	_find_button(panel, "Motion lab").pressed.emit()
@@ -44,7 +44,7 @@ func _run() -> void:
 	await process_frame
 	await RenderingServer.frame_post_draw
 	check(panel.size.y <= root.size.y, "Motion lab actions fit the studio panel")
-	root.get_texture().get_image().save_png("res://.umbral360/motion-lab-panel.png")
+	root.get_texture().get_image().save_png("res://.godot360/motion-lab-panel.png")
 	print("TIMELINE STUDIO FOLDER: " + panel.folder)
 	if existed:
 		var file := FileAccess.open(settings, FileAccess.WRITE)

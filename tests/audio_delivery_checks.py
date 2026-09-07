@@ -21,7 +21,7 @@ def review(args):
     results = {}
     source = args.source_review / "source"
     source_hashes = snapshot(source)
-    settings_path = args.project / ".umbral360/settings.cfg"
+    settings_path = args.project / ".godot360/settings.cfg"
     settings_hash = sha(settings_path) if settings_path.exists() else None
     # Strong coincident signals exceed unity before the mixer limiter.
     loud_source = args.output / "loud-source"
@@ -62,7 +62,7 @@ def review(args):
     path.write_text(json.dumps(job), encoding="utf-8")
     with (args.output / "mutation-driver.log").open("wb") as log:
         process = subprocess.Popen([str(args.godot), "--headless", "--path", str(args.project), "--log-file", str(mutation / "pipeline.log"),
-                                    "--script", "res://addons/umbral360/pipeline.gd", "--", "--job=" + str(path)], stdout=log, stderr=log)
+                                    "--script", "res://addons/godot360/pipeline.gd", "--", "--job=" + str(path)], stdout=log, stderr=log)
         changed = False
         deadline = time.monotonic() + 30
         while process.poll() is None and time.monotonic() < deadline:

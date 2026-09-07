@@ -1,5 +1,5 @@
 extends SceneTree
-const IO = preload("res://addons/umbral360/job_io.gd")
+const IO = preload("res://addons/godot360/job_io.gd")
 var checks := 0
 var failures := 0
 var cases := {}
@@ -61,7 +61,7 @@ func _run() -> void:
 	DirAccess.make_dir_recursive_absolute(retry)
 	IO.write_json(retry.path_join("job.json"), {"mode": "reencode", "source_dir": source, "output_dir": retry, "ffmpeg": IO.argument("ffmpeg"), "ffprobe": IO.argument("ffprobe")})
 	var retry_pid := OS.create_process(OS.get_executable_path(), ["--headless", "--path", ProjectSettings.globalize_path("res://"),
-		"--log-file", retry.path_join("pipeline.log"), "--script", "res://addons/umbral360/pipeline.gd", "--", "--job=" + retry.path_join("job.json")])
+		"--log-file", retry.path_join("pipeline.log"), "--script", "res://addons/godot360/pipeline.gd", "--", "--job=" + retry.path_join("job.json")])
 	var retry_started := Time.get_ticks_msec()
 	while OS.is_process_running(retry_pid) and Time.get_ticks_msec() - retry_started < 30000:
 		await create_timer(0.05).timeout

@@ -1,7 +1,7 @@
 # THRESHOLD
 
 An original sixty-second mono 360 film, authored as a practical production exercise
-for Umbral360. Four procedural worlds, a recurring light guide, three spherical
+for Godot360 Studio. Four procedural worlds, a recurring light guide, three spherical
 light transitions, original stereo music and an ending. The visuals use an
 illustrated, geometric style; all geometry, shaders and music are generated locally.
 No stock models, recordings, external music or network assets are required.
@@ -67,7 +67,7 @@ recenter, scrub, mute or enter fullscreen. It also links to the ordinary 1080p
 front-view preview and the tagged 8K master. This is local playback, not publishing.
 The server binds only to localhost and serves only those playback files. Stop the
 terminal process to stop serving. Review evidence is saved under
-`.umbral360/<output-folder-name>-media-review/`.
+`.godot360/<output-folder-name>-media-review/`.
 
 ## Authoring contract
 
@@ -146,8 +146,8 @@ The final 4K browser copy is 65.40 MB; the 1080p front-view preview is 29.05 MB.
 Local browser playback, dragging, seeking and the initial forward orientation were
 visually checked. The master SHA-256 is
 `0c434c261519e2bb41298765dcf855e7cf3c81dfabc7d8d36b0b044dac1c469c`.
-The detailed machine-readable records are under `.umbral360/threshold-8k-run/`,
-`.umbral360/threshold-8k-media-review/`, and `.umbral360/threshold-capture-analysis.json`.
+The detailed machine-readable records are under `.godot360/threshold-8k-run/`,
+`.godot360/threshold-8k-media-review/`, and `.godot360/threshold-capture-analysis.json`.
 
 On 2026-09-07, after reviewing THRESHOLD, the user reported: "It looks amazing in
 YouTube". This records positive user-reported visual quality after YouTube

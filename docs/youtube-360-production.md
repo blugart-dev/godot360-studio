@@ -17,7 +17,7 @@ interactive and film behaviors. A recorded video does not retain executable Godo
 scripts, free movement, dynamic branching, or per-viewer state.
 
 For an editable camera path and keyed property timeline, start from **Motion lab**.
-The [authoring guide](../addons/umbral360/AUTHORING.md) explains the AnimationPlayer
+The [authoring guide](../addons/godot360/AUTHORING.md) explains the AnimationPlayer
 helper, frame-zero timing, warmup, supported tracks, and synchronization cues.
 
 Use a square 90° cubemap capture from one origin. Avoid camera-facing geometry and
@@ -85,7 +85,7 @@ rendering the scene. It leaves every source file in place. Live encoding progres
 and cancellation are available for both new captures and re-encodes.
 The **Audio and synchronization** controls can also attach a soundtrack, mix it
 with scene audio, or adjust levels and timing during re-encoding. See the
-[audio guide](../addons/umbral360/AUDIO.md) for the frame-zero contract and file retention.
+[audio guide](../addons/godot360/AUDIO.md) for the frame-zero contract and file retention.
 
 ## 5. Validate before upload
 
@@ -117,5 +117,5 @@ Stereo 360 is a separate milestone. Two offset ordinary cubemaps are not suffici
 for correct omnidirectional stereo. Spatial audio likewise needs an ambisonic capture
 and metadata design; Godot's ordinary stereo mix is not an AmbiX master.
 
-See the [addon reference survey](../addons/umbral360/REFERENCES.md) for existing
+See the [addon reference survey](../addons/godot360/REFERENCES.md) for existing
 projects and the official documentation used to design this implementation.

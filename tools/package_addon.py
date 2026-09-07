@@ -24,7 +24,7 @@ def digest(data):
 
 
 def inventory(root):
-    addon = root / "addons/umbral360"
+    addon = root / "addons/godot360"
     match = re.search(r'^version="(\d+\.\d+\.\d+)"$', (addon / "plugin.cfg").read_text(), re.MULTILINE)
     assert match, "Missing addon version"
     version = match.group(1)
@@ -42,7 +42,7 @@ def inventory(root):
         name = path.relative_to(root).as_posix()
         assert name not in files, name
         files[name] = path.read_bytes()
-    assert "addons/umbral360/LICENSE" in files
+    assert "addons/godot360/LICENSE" in files
     manifest = {"version": version, "files": {name: {"bytes": len(data), "sha256": digest(data)}
                                              for name, data in sorted(files.items())}}
     files["manifest.json"] = (json.dumps(manifest, indent=2, sort_keys=True) + "\n").encode()

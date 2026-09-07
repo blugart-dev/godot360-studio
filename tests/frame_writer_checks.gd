@@ -1,7 +1,7 @@
 extends SceneTree
 ## Real FFmpeg round trips, frame ordering, rejected input, and child-process cleanup.
-const Writer = preload("res://addons/umbral360/frame_writer.gd")
-const IO = preload("res://addons/umbral360/job_io.gd")
+const Writer = preload("res://addons/godot360/frame_writer.gd")
+const IO = preload("res://addons/godot360/job_io.gd")
 var checks: int = 0
 var failures: int = 0
 var base: String
@@ -12,7 +12,7 @@ func _initialize() -> void:
 
 
 func _run() -> void:
-	base = ProjectSettings.globalize_path("res://.umbral360/frame-writer-checks-" + str(Time.get_ticks_usec()))
+	base = ProjectSettings.globalize_path("res://.godot360/frame-writer-checks-" + str(Time.get_ticks_usec()))
 	for format in [Image.FORMAT_RGB8, Image.FORMAT_RGBA8]:
 		var settings := _settings("roundtrip-" + str(format))
 		var writer = Writer.new()

@@ -1,4 +1,4 @@
-extends "res://addons/umbral360/pipeline.gd"
+extends "res://addons/godot360/pipeline.gd"
 ## Disposable fault injection; never fills a real disk or changes permissions.
 var metadata_reads := 0
 

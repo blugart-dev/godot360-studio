@@ -1,8 +1,8 @@
 extends SceneTree
 ## Actual panel test -> estimate -> re-encode -> cancellation integration.
 ## --ffmpeg=PATH --ffprobe=PATH [--cancel-source=COMPLETED_CAPTURE_FOLDER]
-const IO = preload("res://addons/umbral360/job_io.gd")
-const Planner = preload("res://addons/umbral360/job_planner.gd")
+const IO = preload("res://addons/godot360/job_io.gd")
+const Planner = preload("res://addons/godot360/job_planner.gd")
 var panel: Control
 var checks: int = 0
 var failures: int = 0
@@ -13,16 +13,16 @@ func _initialize() -> void:
 
 
 func _run() -> void:
-	var settings_path := "res://.umbral360/settings.cfg"
+	var settings_path := "res://.godot360/settings.cfg"
 	var existed := FileAccess.file_exists(settings_path)
 	var original := FileAccess.get_file_as_bytes(settings_path) if existed else PackedByteArray()
 	root.size = Vector2i(1500, 800)
 	root.content_scale_size = root.size
 	root.content_scale_mode = Window.CONTENT_SCALE_MODE_VIEWPORT
-	panel = preload("res://addons/umbral360/studio_panel.gd").new()
+	panel = preload("res://addons/godot360/studio_panel.gd").new()
 	root.add_child(panel)
 	panel.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	panel.profile = preload("res://addons/umbral360/export_profile.gd").new()
+	panel.profile = preload("res://addons/godot360/export_profile.gd").new()
 	panel.profile.width = "512"
 	panel.profile.face_size = 128
 	panel.profile.duration = 3.0
@@ -97,7 +97,7 @@ func _cancel_encoding(source: String) -> void:
 	await create_timer(0.35).timeout
 	check(panel.status.text.contains("Encoding ·"), "Panel displays live encoding frame counts")
 	await RenderingServer.frame_post_draw
-	root.get_texture().get_image().save_png(ProjectSettings.globalize_path("res://.umbral360/planning-encoding.png"))
+	root.get_texture().get_image().save_png(ProjectSettings.globalize_path("res://.godot360/planning-encoding.png"))
 	var started: int = Time.get_ticks_msec()
 	panel.cancel_button.pressed.emit()
 	await _wait_for_job()

@@ -2,7 +2,7 @@
 extends Resource
 ## A portable export recipe. Executable paths belong to local editor settings.
 
-@export_file("*.tscn") var scene_path: String = "res://addons/umbral360/examples/calibration.tscn"
+@export_file("*.tscn") var scene_path: String = "res://addons/godot360/examples/calibration.tscn"
 @export var camera_path: NodePath = NodePath("Camera3D")
 @export_enum("2048", "4096", "7680") var width: String = "2048"
 @export_range(128, 4096, 128) var face_size: int = 512

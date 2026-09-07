@@ -8,7 +8,7 @@ const Audio = preload("audio_plan.gd")
 const Session = preload("job_session.gd")
 const Diagnostics = preload("diagnostics.gd")
 const AUDIO_MODES = ["scene", "soundtrack", "mix"]
-const SETTINGS_PATH = "res://.umbral360/settings.cfg"
+const SETTINGS_PATH = "res://.godot360/settings.cfg"
 var profile: Resource = Profile.new()
 var recipe_fields: Dictionary = {}
 var ffmpeg: LineEdit
@@ -157,7 +157,7 @@ func _ready() -> void:
 		profile = Profile.new()
 		_refresh_fields())
 	_button(presets, "Motion lab", func():
-		profile = load("res://addons/umbral360/examples/timeline.tres").duplicate()
+		profile = load("res://addons/godot360/examples/timeline.tres").duplicate()
 		_refresh_fields())
 	var viewer := VBoxContainer.new()
 	viewer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -367,7 +367,7 @@ func _launch(recipe: Dictionary) -> void:
 		status.text = "Cannot write to the output folder."
 		return
 	process_id = OS.create_process(OS.get_executable_path(), ["--headless", "--path", ProjectSettings.globalize_path("res://"),
-		"--log-file", folder.path_join("pipeline.log"), "--script", "res://addons/umbral360/pipeline.gd", "--", "--job=" + folder.path_join("job.json")])
+		"--log-file", folder.path_join("pipeline.log"), "--script", "res://addons/godot360/pipeline.gd", "--", "--job=" + folder.path_join("job.json")])
 	if process_id <= 0:
 		status.text = "Could not start the export coordinator."
 		return
@@ -606,7 +606,7 @@ func _save_diagnostics(path: String) -> void:
 
 
 func _save_settings() -> void:
-	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path("res://.umbral360"))
+	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path("res://.godot360"))
 	var config := ConfigFile.new()
 	config.set_value("tools", "ffmpeg", ffmpeg.text)
 	config.set_value("tools", "ffprobe", ffprobe.text)

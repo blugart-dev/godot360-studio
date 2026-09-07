@@ -1,6 +1,6 @@
 # Test, plan, render, and re-encode
 
-Umbral360 Studio 0.3 keeps the expensive scene capture separate from encoding.
+Godot360 Studio 0.3 keeps the expensive scene capture separate from encoding.
 Use a short sample to plan a new capture and reuse retained frames when only
 the H.264 quality needs changing.
 
@@ -32,7 +32,7 @@ frame count. Storage includes source PNG/WAV, a preview, and both MP4 copies.
 Suggested free space adds 25%, a 256 MiB reserve, and the capture working allowance
 for images and audio. No disk space is reserved. Version 0.7 also checks operating
 headroom during jobs and fails explicitly if required output files cannot be
-written. See the [storage guide](../addons/umbral360/STORAGE.md).
+written. See the [storage guide](../addons/godot360/STORAGE.md).
 
 Duration changes rescale an existing sample. Changes to scene/camera selection,
 resolution, face size, FPS, seed, warmup, frame storage, CRF, executable paths, the
@@ -41,7 +41,7 @@ Referenced scripts, textures, and other assets are not fingerprinted. Re-test
 after editing them or changing engine, hardware, or rendering configuration.
 Active audio settings and the attached soundtrack's path, size and modification
 time are included since 0.6. The soundtrack stays external and is not counted as
-new retained storage. See the [audio guide](../addons/umbral360/AUDIO.md).
+new retained storage. See the [audio guide](../addons/godot360/AUDIO.md).
 
 These are first-second extrapolations. A quiet opening cannot predict the cost or
 compressed size of a busy later scene. Encoder startup also affects short samples.
@@ -87,5 +87,5 @@ project in **54.86 seconds**, passing all eight checks. Its intermediate
 `encoded.mp4` matched the original SHA-256 exactly at the same CRF and tool version.
 This result does not imply byte-identical encoding across different tool versions.
 
-See the [addon guide](../addons/umbral360/README.md#command-line) for JSON jobs and
+See the [addon guide](../addons/godot360/README.md#command-line) for JSON jobs and
 CLI commands. For the following milestone, see the [roadmap](roadmap.md).

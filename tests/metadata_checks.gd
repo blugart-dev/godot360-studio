@@ -1,6 +1,6 @@
 extends SceneTree
 ## Structural, relocation, large-offset and failure contracts without GPU capture.
-const M = preload("res://addons/umbral360/spherical_metadata.gd")
+const M = preload("res://addons/godot360/spherical_metadata.gd")
 const F = preload("res://tests/fixtures/mp4.gd")
 var checks := 0
 var failures := 0
@@ -14,7 +14,7 @@ func _initialize() -> void:
 
 
 func _run() -> void:
-	folder = ProjectSettings.globalize_path("res://.umbral360/metadata-" + str(Time.get_ticks_usec()))
+	folder = ProjectSettings.globalize_path("res://.godot360/metadata-" + str(Time.get_ticks_usec()))
 	DirAccess.make_dir_recursive_absolute(folder)
 	_regular()
 	_large_offsets()

@@ -105,7 +105,7 @@ separate evidence from the shorter Motion Lab and calibration fixtures.
 
 ## Check a clean project
 
-1. Create an empty Godot project using **Compatibility**. Copy `addons/umbral360`
+1. Create an empty Godot project using **Compatibility**. Copy `addons/godot360`
    into it and enable the plugin in Project Settings.
 2. Select FFmpeg and FFprobe. Keep **Calibration defaults**, use Draft, and click
    **Test 1 second**. Confirm the preview shows the front face with upright text.

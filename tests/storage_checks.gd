@@ -1,7 +1,7 @@
 extends SceneTree
-const IO = preload("res://addons/umbral360/job_io.gd")
-const Storage = preload("res://addons/umbral360/storage_guard.gd")
-const Writer = preload("res://addons/umbral360/frame_writer.gd")
+const IO = preload("res://addons/godot360/job_io.gd")
+const Storage = preload("res://addons/godot360/storage_guard.gd")
+const Writer = preload("res://addons/godot360/frame_writer.gd")
 var checks := 0
 var failures := 0
 
@@ -11,7 +11,7 @@ func _initialize() -> void:
 
 
 func _run() -> void:
-	var folder := ProjectSettings.globalize_path("res://.umbral360/storage-contracts-" + str(Time.get_ticks_usec()))
+	var folder := ProjectSettings.globalize_path("res://.godot360/storage-contracts-" + str(Time.get_ticks_usec()))
 	DirAccess.make_dir_recursive_absolute(folder)
 	var guard := Storage.new(folder)
 	check(str(guard.check(0, "test", true).error).is_empty(), "Actual output drive reports usable headroom")
@@ -34,7 +34,7 @@ func _run() -> void:
 	check(not IO.write_json(directory_path, {"value": true}), "Atomic rename failure is reported")
 	check(DirAccess.dir_exists_absolute(directory_path), "Checkpoint failure leaves an existing directory intact")
 	check(not IO.write_text(directory_path, "unwritable"), "Cancellation marker writer detects an unwritable destination")
-	var session := preload("res://addons/umbral360/job_session.gd").new()
+	var session := preload("res://addons/godot360/job_session.gd").new()
 	var control := folder.path_join("control-write")
 	session.start(control)
 	DirAccess.make_dir_recursive_absolute(control.path_join("cancel.request"))
@@ -43,7 +43,7 @@ func _run() -> void:
 	check(session.response(control, pending).is_empty(), "A failed cancellation write never produces accepted control proof")
 	check(IO.read_json(control.path_join("control").path_join(str(pending.nonce) + ".reply.json")).get("accepted") == false, "Coordinator explicitly rejects an unwritable cancellation marker")
 	session.clear_request(control, pending)
-	var panel := preload("res://addons/umbral360/studio_panel.gd").new()
+	var panel := preload("res://addons/godot360/studio_panel.gd").new()
 	root.add_child(panel)
 	panel.folder = control
 	panel.process_id = OS.get_process_id()

@@ -1,8 +1,8 @@
 extends SceneTree
-const Audio = preload("res://addons/umbral360/audio_plan.gd")
-const Planner = preload("res://addons/umbral360/job_planner.gd")
-const IO = preload("res://addons/umbral360/job_io.gd")
-const Profile = preload("res://addons/umbral360/export_profile.gd")
+const Audio = preload("res://addons/godot360/audio_plan.gd")
+const Planner = preload("res://addons/godot360/job_planner.gd")
+const IO = preload("res://addons/godot360/job_io.gd")
+const Profile = preload("res://addons/godot360/export_profile.gd")
 var checks := 0
 var failures := 0
 
@@ -12,7 +12,7 @@ func _initialize() -> void:
 
 
 func _run() -> void:
-	var folder := ProjectSettings.globalize_path("res://.umbral360/audio-checks-" + str(Time.get_ticks_usec()))
+	var folder := ProjectSettings.globalize_path("res://.godot360/audio-checks-" + str(Time.get_ticks_usec()))
 	DirAccess.make_dir_recursive_absolute(folder)
 	var path := folder.path_join("sound ' & [cue].wav")
 	FileAccess.open(path, FileAccess.WRITE).store_buffer(PackedByteArray([1, 2, 3]))

@@ -8,7 +8,7 @@ output timestamp. The existing scene-processing workflow remains available.
 
 1. Click **Motion lab** in the Godot360 panel. It loads the included six-second
    4096×2048 / 30 FPS recipe and its camera path.
-2. Open `addons/umbral360/examples/timeline.tscn` in Godot. All meshes, labels,
+2. Open `addons/godot360/examples/timeline.tscn` in Godot. All meshes, labels,
    path points, and animation keys are saved in the scene and can be edited.
 3. Select `AnimationPlayer`, open its **film** animation, and scrub its tracks.
    The camera follows `CameraPath`; its orientation stays level and fixed.
@@ -26,7 +26,7 @@ in a spherical video player.
 Attach `timeline_scene.gd` to a Node3D scene root, or extend it in your scene script:
 
 ```gdscript
-extends "res://addons/umbral360/timeline_scene.gd"
+extends "res://addons/godot360/timeline_scene.gd"
 
 func _ready() -> void:
     super._ready()

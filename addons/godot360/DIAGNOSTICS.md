@@ -50,7 +50,7 @@ programs. Include `ffmpeg -version` separately if the FFmpeg version is needed.
 godot --headless --path . --script res://tests/diagnostics_checks.gd
 ```
 
-The suite uses disposable fixtures under `.umbral360`. It covers failed and setup
+The suite uses disposable fixtures under `.godot360`. It covers failed and setup
 jobs, valid ZIP contents/hashes, bounded logs, empty stderr, malformed/oversized
 JSON, missing destinations, overwrite refusal and original file preservation.
 The exact-package reviewer also tests the real save dialog, successful/failed

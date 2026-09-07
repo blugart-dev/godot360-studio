@@ -127,11 +127,11 @@ def export(args, folder, source, audio, render=False, timeout=90):
                "ffmpeg": str(args.ffmpeg), "ffprobe": str(args.ffprobe), "crf": 18, **audio}
     if render:
         request.update(json.loads((source / "job.json").read_text()))
-        request.update(mode="render", scene_path="res://addons/umbral360/examples/calibration.tscn", output_dir=str(folder))
+        request.update(mode="render", scene_path="res://addons/godot360/examples/calibration.tscn", output_dir=str(folder))
     job = folder / "job.json"
     job.write_text(json.dumps(request), encoding="utf-8")
     completed = run([args.godot, "--headless", "--path", args.project, "--log-file", folder / "pipeline.log",
-                     "--script", "res://addons/umbral360/pipeline.gd", "--", "--job=" + str(job)], check=False, timeout=timeout)
+                     "--script", "res://addons/godot360/pipeline.gd", "--", "--job=" + str(job)], check=False, timeout=timeout)
     (folder / "driver.log").write_bytes(completed.stdout + completed.stderr)
     return completed
 
@@ -140,7 +140,7 @@ def review(args):
     args.project, args.ffmpeg, args.ffprobe, args.godot = [path.resolve() for path in (args.project, args.ffmpeg, args.ffprobe, args.godot)]
     root = args.output.resolve()
     root.mkdir(parents=True)
-    settings = args.project / ".umbral360/settings.cfg"
+    settings = args.project / ".godot360/settings.cfg"
     settings_hash = sha(settings)
     scene, recipe = fixture(root / "source")
     soundtrack_path = root / "sound ' & [cue].wav"

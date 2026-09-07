@@ -16,7 +16,7 @@ const LOG_FILES := ["pipeline.log", "capture.log", "encode.log", "frame-writer.l
 
 static func environment() -> Dictionary:
 	var config := ConfigFile.new()
-	config.load("res://addons/umbral360/plugin.cfg")
+	config.load("res://addons/godot360/plugin.cfg")
 	var result := {"addon_version": config.get_value("plugin", "version", "unknown"),
 		"godot_version": Engine.get_version_info().get("string", "unknown"),
 		"os": OS.get_name(), "os_version": OS.get_version(), "cpu": OS.get_processor_name(),

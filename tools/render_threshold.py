@@ -1,4 +1,4 @@
-"""Render the original Threshold film through the unchanged Umbral360 pipeline.
+"""Render the original Threshold film through the unchanged Godot360 Studio pipeline.
 
 Requires explicit Godot/FFmpeg paths. Always creates a fresh output folder and
 records time, storage and saved-settings preservation outside the job folder.
@@ -35,7 +35,7 @@ def render(args):
     output = args.output.resolve()
     assert not output.exists(), "Choose a fresh output folder"
     assert args.offset >= 0 and 0 < args.seconds <= 60 and args.offset + args.seconds <= 60
-    settings = project / ".umbral360/settings.cfg"
+    settings = project / ".godot360/settings.cfg"
     before = hashlib.sha256(settings.read_bytes()).hexdigest() if settings.exists() else None
     output.mkdir(parents=True)
     job = {"scene_path": "res://scenes/films/Threshold.tscn", "camera_path": "Camera3D",
@@ -46,14 +46,14 @@ def render(args):
            "soundtrack_trim_seconds": args.offset, "threshold_offset": args.offset,
            "ffmpeg": str(args.ffmpeg.resolve()), "ffprobe": str(args.ffprobe.resolve()), "output_dir": str(output)}
     (output / "job.json").write_text(json.dumps(job, indent=2), encoding="utf-8")
-    logs = project / ".umbral360" / (output.name + "-run")
+    logs = project / ".godot360" / (output.name + "-run")
     logs.mkdir()
     started = time.monotonic()
     observations = []
     with (logs / "driver.log").open("wb") as log:
         process = subprocess.Popen([str(args.godot.resolve()), "--headless", "--path", str(project),
                                     "--log-file", str(output / "pipeline.log"), "--script",
-                                    "res://addons/umbral360/pipeline.gd", "--", "--job=" + str(output / "job.json")],
+                                    "res://addons/godot360/pipeline.gd", "--", "--job=" + str(output / "job.json")],
                                    stdout=log, stderr=log)
         try:
             last = -15

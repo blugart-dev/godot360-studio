@@ -29,7 +29,7 @@ window/stretch/mode="canvas_items"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/umbral360/plugin.cfg")
+enabled=PackedStringArray("res://addons/godot360/plugin.cfg")
 
 [layer_names]
 

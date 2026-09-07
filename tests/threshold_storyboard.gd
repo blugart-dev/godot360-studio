@@ -1,6 +1,6 @@
 extends SceneTree
 ## Real GPU storyboard from the same absolute-time scene used by the film exporter.
-const IO = preload("res://addons/umbral360/job_io.gd")
+const IO = preload("res://addons/godot360/job_io.gd")
 var scene: Node3D
 
 func _initialize() -> void:
@@ -9,7 +9,7 @@ func _initialize() -> void:
 func _run() -> void:
 	var folder := IO.argument("output")
 	if folder.is_empty():
-		folder = ProjectSettings.globalize_path("res://.umbral360/threshold-storyboard")
+		folder = ProjectSettings.globalize_path("res://.godot360/threshold-storyboard")
 	DirAccess.make_dir_recursive_absolute(folder)
 	root.size = Vector2i(1280, 800)
 	root.content_scale_size = root.size
@@ -30,7 +30,7 @@ func _run() -> void:
 	root.content_scale_size = Vector2i(2048, 1024)
 	root.content_scale_mode = Window.CONTENT_SCALE_MODE_VIEWPORT
 	root.content_scale_aspect = Window.CONTENT_SCALE_ASPECT_IGNORE
-	var rig := preload("res://addons/umbral360/capture_rig.gd").new()
+	var rig := preload("res://addons/godot360/capture_rig.gd").new()
 	root.add_child(rig)
 	rig.build(scene.camera, 1024, Vector2i(2048, 1024))
 	rig.set_process(false)

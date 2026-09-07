@@ -1,18 +1,28 @@
 # Repository and local files
 
-The project is **Godot360 Studio**, previously Umbral360 Studio. The Godot project
-name, editor plugin, bottom panel, rendering window, diagnostic label and metadata
-producer now use Godot360. Existing `addons/umbral360` resource paths and
-`.umbral360/settings.cfg` remain stable for compatibility with saved recipes.
-UMBRAL and THRESHOLD remain the names of the two creative examples.
+The project is **Godot360 Studio**. Its addon folder is `addons/godot360`; local
+settings, tools and validation output live in `.godot360`. Project configuration,
+scenes, recipes, tests, documentation and package contents use those paths.
+UMBRAL and THRESHOLD are the names of the two creative examples.
+
+Older installations should follow the [folder migration guide](../addons/godot360/MIGRATION.md).
+The original name remains only where needed for migration, original copyright
+attribution, ignore rules and historical release/validation records. Old Git tags
+preserve the source layout of their releases.
+
+The outer local checkout is still named `Umbral360`: Windows refused to rename
+it while the workspace was in use. Once Codex/Godot are closed, the local helper
+`.godot360/naming-review/Rename-LocalCheckout.ps1` renames it to `Godot360Studio`
+and updates saved absolute paths. Its syntax and `-WhatIf` preview were checked;
+the actual outer-folder move remains pending. Reopen the new folder in Codex and
+Godot afterward. This machine-local folder name is not part of GitHub's tree.
 
 The private source repository is
 [blugart-dev/godot360-studio](https://github.com/blugart-dev/godot360-studio), created
 with GitHub CLI on 2026-09-07 after the user selected the name and authorized the
 upload. GitHub confirmed the owner and private visibility before source upload.
 Public addon/video releases require separate authorization. GitHub CLI is used
-for account/repository operations and authentication. The working checkout keeps
-its existing disk path.
+for account/repository operations and authentication.
 
 ## Upload contents
 
@@ -23,7 +33,7 @@ Git. The WAV is a required original project asset, approximately 11.5 MB.
 The following remain local and ignored:
 
 - `renders/`: source frame sequences, MP4 deliveries, previews and job output.
-- `.umbral360/`: studio settings, tool executables, diagnostics, audit reports,
+- `.godot360/`: studio settings, tool executables, diagnostics, audit reports,
   local history backups and disposable validation projects.
 - `.godot/`, `.agents/`, `.codex/`, Python caches and temporary files.
 - `dist/`, downloaded archives, executable files and logs.
@@ -47,7 +57,7 @@ findings and the full file/history inventory with no excluded paths, personal
 commit identities, private-video links or unexpected binary assets.
 
 A verified original-history bundle and the original-to-clean commit mapping remain
-under `.umbral360/github-publish/`. Privacy changes alter commit IDs; original IDs
+under `.godot360/github-publish/`. Privacy changes alter commit IDs; original IDs
 quoted in historical development records refer to that local backup. Existing
 release ZIPs remain local and unchanged. Tags preserve their historical source
 versions and naming, while `main` contains the Godot360 branding change.
@@ -60,8 +70,15 @@ never force-add local settings, audit bundles, renders or credential files.
 
 ## Rename validation
 
-The renamed source passed an isolated Godot 4.7.2 plugin import, 251 existing
-headless contract checks and 19 audio-panel checks, including two small exports.
-The renamed addon package also passed inventory/content verification. The older
-three-engine package evidence remains documented in `release-0.8.md`; the local
-post-rename check does not claim a new complete three-engine release certification.
+The initial display-name change passed 270 checks. The subsequent folder change
+passed a full Godot 4.7.2 project import, all 60 THRESHOLD film checks and the
+444-check exact-package suite, including exports, recovery, storage failures and
+the documented calibration/Motion Lab workflow. Godot resource UIDs are retained
+and newly generated source UIDs are versioned.
+
+Evidence for folder migration lives in `.godot360/naming-review/`; the final
+package review is under `final-package/review/`. The package is reproduced from
+its own extracted source and verified against its manifest. Historical validation
+paths now point into `.godot360`; archived projects retain their internal layout.
+The older three-engine evidence remains in `release-0.8.md`; this folder-migration
+run covers 4.7.2 and does not replace that historical certification.

@@ -91,12 +91,12 @@ file receives its final name. The historical eight/twelve-check results remain
 evidence for their original versions.
 
 The clean-project test has no dependency on UMBRAL scenes, scripts, global class
-names, or assets. Its only source is `addons/umbral360` plus a minimal `project.godot`.
+names, or assets. Its only source is `addons/godot360` plus a minimal `project.godot`.
 The FFmpeg executable remains an external dependency in both projects.
 
 ## Local evidence
 
-- `.umbral360/audio-checks-06.log`, `audio-studio-06.log`, `export-checks-06.log`,
+- `.godot360/audio-checks-06.log`, `audio-studio-06.log`, `export-checks-06.log`,
   `planning-checks-06.log`, `metadata-checks-06.log` and `audio-panel-06.png`.
 - `renders/audio-06-timed/audio-review.json`: offsets, trims, levels, padding,
   silence, mixed audio, mono resampling, 24/30/60 FPS and preflight failures.
@@ -104,49 +104,49 @@ The FFmpeg executable remains an external dependency in both projects.
   exact legacy encoded bytes, and source mutation rejection.
 - `renders/audio-studio-06/test-2026-09-06T23-09-15-1789555/` and
   `reencode-2026-09-06T23-09-22-9341312/`: successful actual panel jobs.
-- `.umbral360/portable-06/output/report.json`: inherited mixed audio without the original scene.
+- `.godot360/portable-06/output/report.json`: inherited mixed audio without the original scene.
 - `dist/umbral360-studio-0.6.0.zip`: portable addon, audio guide and tests.
-- `.umbral360/metadata-checks-05.log`, `export-checks-05.log`, and `planning-checks-05.log`.
+- `.godot360/metadata-checks-05.log`, `export-checks-05.log`, and `planning-checks-05.log`.
 - `renders/delivery-05-motion/metadata-review.json`: independent media, timestamps,
   decoded video/audio and V2-only recognition checks on the six-second motion film.
 - `renders/delivery-05-8k/metadata-review.json` and `video-360.mp4`: the 12-second
   8K film with V1/V2 and fast-start; original encoded SHA-256 still matches the
   earlier recorded `AA65D1E53BB6B7C07FDE82CD4F2ACD68BDE5C94609F2989D0A1A52BA1F103C2D`.
 - `renders/delivery-05-reencode/report.json`: complete pipeline with all 12 checks.
-- `.umbral360/portable-05/output/report.json`: minimal-project re-encode with all 12 checks.
+- `.godot360/portable-05/output/report.json`: minimal-project re-encode with all 12 checks.
 - `dist/umbral360-studio-0.5.0.zip`: portable addon, guides, examples and tests.
 - `renders/umbral-first-film/video-360.mp4` and `report.json`.
 - `renders/calibration-4k-check/`.
 - `renders/studio-checks/` (successful and cancelled integration jobs).
-- `.umbral360/runtime-checks.log`, `export-checks.log`, and `studio-checks.log`.
-- `.umbral360/studio-preview.png` and `calibration-cube-later.png`.
-- `.umbral360/portable-project/output/report.json`.
-- `.umbral360/export-checks-quality.log`, `quality-panel-checks.log`, and `quality-panel.png`.
+- `.godot360/runtime-checks.log`, `export-checks.log`, and `studio-checks.log`.
+- `.godot360/studio-preview.png` and `calibration-cube-later.png`.
+- `.godot360/portable-project/output/report.json`.
+- `.godot360/export-checks-quality.log`, `quality-panel-checks.log`, and `quality-panel.png`.
 - `renders/quality-report-check/report.json`.
 - `renders/umbral-quality-8k/`: final MP4, report, capture settings, and local quality review.
-- `.umbral360/quality-before.png` and `quality-after.png`: the same animation frame
+- `.godot360/quality-before.png` and `quality-after.png`: the same animation frame
   and 90-degree view, independently reprojected by FFmpeg from 2K and 8K source PNGs.
-- `.umbral360/quality-after-encoded.png`: a matching frame decoded from the final
+- `.godot360/quality-after-encoded.png`: a matching frame decoded from the final
   8K MP4; sharper text and outlines remain visible after encoding.
-- `.umbral360/quality-eight-k-cube.png`: a later 8K frame reprojected into all six directions.
+- `.godot360/quality-eight-k-cube.png`: a later 8K frame reprojected into all six directions.
 - `renders/performance-baseline-8k/` and `renders/performance-fast-8k/`.
 - `renders/umbral-fast-8k/report.json` and `performance-review.json`.
-- `.umbral360/frame-writer-checks.log`, `export-checks-02.log`, `quality-panel-02.log`, and `studio-02.log`.
-- `.umbral360/portable-02/output/report.json` and `renders/compact-02-check/report.json`.
-- `.umbral360/planning-checks.log` and `planning-studio-checks.log`.
-- `.umbral360/studio-03.log`, `quality-panel-03.log`, and `export-checks-03.log`.
+- `.godot360/frame-writer-checks.log`, `export-checks-02.log`, `quality-panel-02.log`, and `studio-02.log`.
+- `.godot360/portable-02/output/report.json` and `renders/compact-02-check/report.json`.
+- `.godot360/planning-checks.log` and `planning-studio-checks.log`.
+- `.godot360/studio-03.log`, `quality-panel-03.log`, and `export-checks-03.log`.
 - `renders/planning-studio-checks/`: sample, re-encode, and active-encoding cancellation evidence.
-- `.umbral360/portable-03-reencode/output/report.json` and `encoded.mp4`.
+- `.godot360/portable-03-reencode/output/report.json` and `encoded.mp4`.
 - `renders/test-2026-09-06T21-52-29-2066321/`: actual 4K planning sample and estimate.
-- `.umbral360/production-plan.png`: the completed sample and compact panel layout.
-- `.umbral360/timeline-checks.log`, `timeline-studio-checks.log`, and `studio-04.log`.
+- `.godot360/production-plan.png`: the completed sample and compact panel layout.
+- `.godot360/timeline-checks.log`, `timeline-studio-checks.log`, and `studio-04.log`.
 - `renders/timeline-studio-checks/render-2026-09-06T22-18-00-1693637/`: full 4K authored film.
-- `.umbral360/motion-lab-panel.png`: actual panel with the completed 4K example.
+- `.godot360/motion-lab-panel.png`: actual panel with the completed 4K example.
 - `renders/motion-04-timed/motion-review.json`: 30 FPS source/encoded geometry and audio.
 - `renders/motion-04-24fps-final/motion-review.json`: 24 FPS, zero warmup, source/encoded geometry and audio.
-- `.umbral360/portable-04/output/report.json`: addon-only authored capture.
-- `.umbral360/portable-04/invalid-duration/capture-result.json`: expected duration rejection.
-- `.umbral360/quality-panel-04.log` and `export-checks-04.log`: final regression checks.
+- `.godot360/portable-04/output/report.json`: addon-only authored capture.
+- `.godot360/portable-04/invalid-duration/capture-result.json`: expected duration rejection.
+- `.godot360/quality-panel-04.log` and `export-checks-04.log`: final regression checks.
 
 The final 0.2 studio cancellation test waits for at least 10 captured frames before
 cancelling, so it exercises a running encoder. Cancellation keeps its original
@@ -232,7 +232,7 @@ with failure reports; only jobs whose `report.json` says `ok: true` are validate
 - Attached audio files remain external dependencies. Selected WAV, FLAC, MP3,
   Ogg Vorbis/Opus, M4A and ADTS AAC cases have actual export evidence. The longest
   mixed-audio check is 90 seconds using synthetic retained frames, not a long GPU
-  capture. See the exact [format matrix](../addons/umbral360/BETA.md). Loops, fades,
+  capture. See the exact [format matrix](../addons/godot360/BETA.md). Loops, fades,
   arbitrary multichannel sources, loudness mastering and spatial audio are absent.
 - Actual timeline motion/audio has been exercised at 24 and 30 FPS. Unit sampling
   also covers 60 FPS. The 0.6.2 endurance fixture verifies actual 60 FPS property
@@ -268,8 +268,8 @@ The 0.6.1 compatibility run caught Motion Lab's missing animation on Godot 4.5.1
 the newer `libraries/` resource property was read as an empty library dictionary.
 Saving the example with the older `libraries` dictionary fixes all three tested
 engines. The existing timeline tests catch this regression; they now stop promptly
-if initialization fails. `.umbral360/compatibility-061/` retains the failed original
-run. Accepted evidence is `.umbral360/compatibility-061-fixed/compatibility-review.json`.
+if initialization fails. `.godot360/compatibility-061/` retains the failed original
+run. Accepted evidence is `.godot360/compatibility-061-fixed/compatibility-review.json`.
 All six final outputs pass thirteen checks. The 4.5.1 panel screenshot also shows
 the rendered calibration preview and correctly fitting audio controls.
 
@@ -284,8 +284,8 @@ The 63-member `dist/umbral360-studio-0.6.1.zip` was rebuilt to a second destinat
 with identical bytes, extracted, and verified against every payload's source.
 Its unpacked reviewer then passed all 208 checks plus both verified outputs on
 Godot 4.5.1, without the source project installed. Evidence:
-`.umbral360/package-061-review.json` and
-`.umbral360/package-061-compatibility/compatibility-review.json`. ZIP SHA-256:
+`.godot360/package-061-review.json` and
+`.godot360/package-061-compatibility/compatibility-review.json`. ZIP SHA-256:
 `7886819d3451c898d08f6c8181ad8c6b4bfc861cccdb397ea0159206e95ba4ae`.
 
 The accepted 0.6.2 endurance result is
@@ -298,7 +298,7 @@ Movie Maker scratch PNGs are gone after completion, and saved settings are uncha
 The pipeline took 301.888 seconds, including 285.993 seconds in capture, during a
 shared test workload; these are not isolated performance benchmark measurements.
 
-`.umbral360/compatibility-062-fixed/compatibility-review.json` records 795 passing
+`.godot360/compatibility-062-fixed/compatibility-review.json` records 795 passing
 checks across the three engines. Each suite includes malformed scene loading,
 injected frame-hook failure, graceful early shutdown, user cancellation, worker
 termination and PNG encoder termination. All six cases retain a terminal failure
@@ -309,7 +309,7 @@ back to its usable original capture, and verifies unchanged source hashes.
 Capture failures now retain submitted counts and timing samples. A killed process
 cannot write final diagnostics, so the coordinator separately records its reported
 exit code and requires both successful capture evidence and finalized WAV audio.
-The accepted standalone failure run is `.umbral360/lifecycle-062-final/`.
+The accepted standalone failure run is `.godot360/lifecycle-062-final/`.
 Earlier `lifecycle-062-before/` records the original missing diagnostic fields;
 `compatibility-062/` records a test-fixture path-escaping error, fixed by normalizing
 Windows paths before embedding them in scene text. These failed development runs
@@ -318,20 +318,20 @@ does not claim to resume an arbitrary scene or fully decode the saved sources.
 
 The 0.6.2 ZIP contains 68 members and is 130,480 bytes. Every member matches the
 checked source, rebuilding produces identical ZIP bytes, and verification from the
-extracted package also passes. See `.umbral360/package-062-review.json`; SHA-256:
+extracted package also passes. See `.godot360/package-062-review.json`; SHA-256:
 `115403ae460818a9395e3f8567acd76a7e7050a36bb3d87158ae192902026bd0`.
 
 ## 0.7 storage reliability
 
-.umbral360/compatibility-070-final/compatibility-review.json records the complete
-1,143-check matrix. .umbral360/storage-control-070-final/review.json records 24
+.godot360/compatibility-070-final/compatibility-review.json records the complete
+1,143-check matrix. .godot360/storage-control-070-final/review.json records 24
 storage contracts per engine, including six new cancellation/log-write cases;
 combined current coverage is 1,161 unique checks. These changes check cancellation
 write results and preserve process startup errors without changing the protocol,
 successful encoding, frame sampling or capture timing. The 4K/8K reviews use the
 same successful media path; the later startup-error adjustment affects failures.
 
-Each isolated project's .umbral360/storage-failures/storage-failure-review.json
+Each isolated project's .godot360/storage-failures/storage-failure-review.json
 contains nine controlled pipeline faults and an actual recovered-source re-encode.
 Tests inject available-space values instead of filling the real drive. Blocked
 paths exercise actual JSON open/rename, preview, and PNG output errors. The
@@ -371,7 +371,7 @@ only preliminary fixture validation. Earlier geometry/seam tests remain separate
 
 dist/umbral360-studio-0.7.0.zip contains 78 members and is 153,141 bytes.
 SHA-256: c506621e64531d02934397eecd0e37cde4551b7956484f7672090d1f4418050c.
-The adjacent JSON records its manifest/hash; .umbral360/package-070-review.json
+The adjacent JSON records its manifest/hash; .godot360/package-070-review.json
 records identical repeat-build bytes, verification against the extracted source,
 the exact changed-file inventory since 0.6.3 and both accepted production runs.
 Local settings, media and FFmpeg binaries are excluded. Exact-package installation
@@ -379,10 +379,10 @@ and documented workflow review remain explicit 0.8 acceptance work.
 
 ## 0.6.3 reopening and recovery
 
-`.umbral360/compatibility-063-final/compatibility-review.json` records all 918
+`.godot360/compatibility-063-final/compatibility-review.json` records all 918
 passing checks. Each isolated project retains a recovery-review.json, panel image,
 actual capture/re-encode outputs, launcher evidence, and coordinator-loss logs in
-its `.umbral360/recovery/` directory. The reviewer confirms the source addon,
+its `.godot360/recovery/` directory. The reviewer confirms the source addon,
 original project.godot and studio settings are unchanged by tests.
 
 Fresh session/PID/action/challenge replies are required to reconnect. Independent
@@ -408,5 +408,5 @@ was shortened after the matrix; behavior and assertions are unchanged.
 The 0.6.3 package has 71 members and is 140,231 bytes. Rebuilding gives identical
 bytes and verification against the extracted source passes. The package review
 lists the exact changes from 0.6.2, with no removed members. See
-`.umbral360/package-063-review.json`; SHA-256:
+`.godot360/package-063-review.json`; SHA-256:
 `c4bedc440de20229e91bad0c60aeed9859f6906e0abf191e600ec55932873988`.

@@ -1,7 +1,7 @@
 # Godot360 Studio roadmap
 
-Previously Umbral360 Studio. The user authorized the Godot360 name and private
-GitHub source hosting on 2026-09-07; that is separate from a public 1.0 release.
+The user authorized the Godot360 name and private GitHub source hosting on
+2026-09-07; that is separate from a public 1.0 release.
 See [repository/privacy notes](repository.md).
 
 The 1.0 target is dependable mono 360 production from a documented Godot scene
@@ -33,7 +33,7 @@ preserves the original capture and creates a fresh output. See the
 - Exact visual cue frames and measured source/encoded audio synchronization.
 
 Implemented and locally tested. Method/audio/nested-playback animation tracks are
-outside this helper's scope. See the [authoring guide](../addons/umbral360/AUTHORING.md).
+outside this helper's scope. See the [authoring guide](../addons/godot360/AUTHORING.md).
 
 ## 0.5 — Spherical delivery
 
@@ -53,7 +53,7 @@ unfragmented H.264/AAC MP4s with trailing moov. See [validation](validation.md).
 - Real sample placement, resampling, limiter, preflight and source-change tests.
 
 Implemented and locally tested. Attached files remain external dependencies;
-read the [audio guide](../addons/umbral360/AUDIO.md).
+read the [audio guide](../addons/godot360/AUDIO.md).
 
 ## Completed — Release reliability through 0.6.3
 
@@ -82,7 +82,7 @@ resume and a native backend are outside the first release's support claim.
 | 0.7 — Storage and production runs | Check writable job files and operating headroom; stop on low space/write failures with no unverified final output; preserve reusable sources; pass injected failure and engine regressions | Passed locally: 1,161 checks across three engines |
 | 0.7 — Production resolution | Inspect every source/decoded frame and beginning/middle/end audio cues in a 60-second 4096×2048/30 FPS run and a 30-second 7680×3840/30 FPS run; record storage, timings and limitations | Passed locally: all 1,800/900 frames and audio cues; see [validation](validation.md) |
 | 0.8 — Local candidate | Install the exact packaged addon in a clean project, complete the documented workflow, establish versioned source history and provide useful diagnostics bundles | Passed locally: 1,332 checks on the exact ZIP across three engines; reproducible build and Git history; see [candidate record](release-0.8.md) |
-| 0.8 — Independent beta | Gather at least one independent Windows/GPU beta report and resolve blocking defects | Pending external feedback; [report form](../addons/umbral360/BETA-REPORT.md) and tested candidate are ready |
+| 0.8 — Independent beta | Gather at least one independent Windows/GPU beta report and resolve blocking defects | Pending external feedback; [report form](../addons/godot360/BETA-REPORT.md) and tested candidate are ready |
 | 1.0 — Delivery review | User-reviewed YouTube navigation, orientation, detail, seams and audio on a current candidate | Positive user visual review of THRESHOLD on YouTube, 2026-09-07; individual playback checks are not yet recorded |
 | 1.0 — Release | Final reproducible package/manifest, accurate supported limits and release notes; explicit approval before public publication | Pending independent beta, findings and final release preparation |
 

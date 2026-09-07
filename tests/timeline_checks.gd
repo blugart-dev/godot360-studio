@@ -8,7 +8,7 @@ func _initialize() -> void:
 
 
 func _run() -> void:
-	var scene = load("res://addons/umbral360/examples/timeline.tscn").instantiate()
+	var scene = load("res://addons/godot360/examples/timeline.tscn").instantiate()
 	scene.play_sync_audio = false
 	var job := {"fps": 30, "frames": 180, "warmup_frames": 2}
 	scene.prepare_360_capture(job)

@@ -47,9 +47,9 @@ func _run() -> void:
 	scene.sample_360_frame(1800, 60, {})
 	expect(scene.veil_material.get_shader_parameter("darkness") == 1.0, "Ending fully fades")
 	expect(not scene.guide.visible, "Guide retires before ending")
-	var output := preload("res://addons/umbral360/job_io.gd").argument("report")
+	var output := preload("res://addons/godot360/job_io.gd").argument("report")
 	var result := {"ok": failures.is_empty(), "checks": checks, "failures": failures}
 	if not output.is_empty():
-		preload("res://addons/umbral360/job_io.gd").write_json(output, result)
+		preload("res://addons/godot360/job_io.gd").write_json(output, result)
 	print(JSON.stringify(result))
 	quit(0 if failures.is_empty() else 1)

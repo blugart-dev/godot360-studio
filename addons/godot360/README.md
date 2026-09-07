@@ -12,7 +12,7 @@ check. No custom engine or .NET runtime is needed.
 
 ## Install
 
-1. Copy `addons/umbral360` into a Godot project at the same path.
+1. Copy `addons/godot360` into a Godot project at the same path.
 2. Enable **Godot360 Studio** under **Project > Project Settings > Plugins**.
 3. Open the **Godot360** bottom panel.
 4. Select FFmpeg and FFprobe executables, or leave their command names if on PATH.
@@ -22,15 +22,18 @@ check. No custom engine or .NET runtime is needed.
 
 FFmpeg is an external codec dependency. The addon does not bundle or silently
 download executables. Selecting FFmpeg also locates FFprobe in the same directory
-when present. Machine paths are saved in `.umbral360/settings.cfg`; exclude that
+when present. Machine paths are saved in `.godot360/settings.cfg`; exclude that
 directory and your render directory from version control.
+
+For an existing installation, follow the [folder migration guide](MIGRATION.md)
+before replacing the addon or loading saved recipes.
 
 ## First export
 
 The default scene is the included calibration room. It has six labeled faces,
 an asymmetric grid, a moving marker, and a quiet 440 Hz tone.
 
-1. Keep `Scene` set to `res://addons/umbral360/examples/calibration.tscn` and
+1. Keep `Scene` set to `res://addons/godot360/examples/calibration.tscn` and
    `Camera node path` set to `Camera3D`.
 2. For a quick compatibility check, use **Draft · 2K**. For viewing quality,
    select **Production · 4K** or **Detail · 8K**; these also raise cube-face
@@ -294,7 +297,7 @@ Save an absolute-path job JSON with these fields:
 
 ```json
 {
-  "scene_path": "res://addons/umbral360/examples/calibration.tscn",
+  "scene_path": "res://addons/godot360/examples/calibration.tscn",
   "camera_path": "Camera3D",
   "width": 2048,
   "height": 1024,
@@ -312,7 +315,7 @@ Save an absolute-path job JSON with these fields:
 ```
 
 ```sh
-godot --headless --path /path/to/project --script res://addons/umbral360/pipeline.gd -- --job=/absolute/path/job.json
+godot --headless --path /path/to/project --script res://addons/godot360/pipeline.gd -- --job=/absolute/path/job.json
 ```
 
 On Windows use paths such as `C:/Tools/ffmpeg.exe` and quote shell arguments

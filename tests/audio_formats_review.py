@@ -30,7 +30,7 @@ def review(args):
         setattr(args, key, getattr(args, key).resolve())
     root = args.output
     root.mkdir(parents=True)
-    settings = args.project / ".umbral360/settings.cfg"
+    settings = args.project / ".godot360/settings.cfg"
     settings_before = sha(settings) if settings.exists() else None
     fixture(root / "source")
     sources_before = snapshot(root / "source")

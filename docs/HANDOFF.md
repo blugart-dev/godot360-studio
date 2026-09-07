@@ -17,10 +17,17 @@ and removes an older private-video URL from history. Original commit IDs quoted
 below refer to the verified local history backup; the release tags retain their
 source chronology. Generated renders, settings/tools and release ZIPs remain local.
 
-Godot project and plugin branding is now Godot360 Studio. Internal `umbral360`
-resource/settings paths are preserved. The pre-rename 0.8 ZIP and its evidence
-remain historical artifacts; the renamed source passed a fresh isolated 4.7.2
-import, 270 contract/panel checks and package content verification.
+Godot project and plugin branding is now Godot360 Studio. The addon now lives at
+`addons/godot360`, with `.godot360/settings.cfg` for local settings. Scenes,
+recipes, tools, tests and package contents use these paths. Follow the
+[migration guide](../addons/godot360/MIGRATION.md) for older installations.
+Pre-rename ZIPs and their evidence remain historical artifacts. The earlier
+display-name-only rename passed 270 checks; folder migration has separate evidence.
+
+Folder migration passed a full project import, 60 film checks and the 444-check
+exact-package workflow on 4.7.2. See `.godot360/naming-review/` for evidence.
+The outer local checkout still awaits renaming after the workspace is closed;
+the checked local helper is documented in [repository notes](repository.md).
 
 ## Current creative production exercise
 
@@ -32,8 +39,8 @@ opens the original installation. The portable recipe is
 `export_profiles/threshold-8k.tres`.
 
 The local production job is `renders/threshold-8k/`; inspect its `report.json` and
-`.umbral360/threshold-8k-media-review/review.json` for acceptance, and
-`.umbral360/threshold-8k-run/render-review.json` for measured time/storage. The film
+`.godot360/threshold-8k-media-review/review.json` for acceptance, and
+`.godot360/threshold-8k-run/render-review.json` for measured time/storage. The film
 source passes 60 absolute-time checks. No addon source or 0.8 release ZIP changed.
 The scenes preload together and switch visibility under an opaque veil; this is
 not disk streaming or a newly implemented map sequencer. The film remains mono
@@ -94,8 +101,8 @@ are not prerequisites for the initial supported release.
 
 The addon remains GDScript plus external FFmpeg. A native rewrite is not currently
 justified by the measured bottleneck. Read [performance](performance.md),
-[planning](job-planning.md), [authoring](../addons/umbral360/AUTHORING.md),
-[audio](../addons/umbral360/AUDIO.md), [validation](validation.md), and the [roadmap](roadmap.md).
+[planning](job-planning.md), [authoring](../addons/godot360/AUTHORING.md),
+[audio](../addons/godot360/AUDIO.md), [validation](validation.md), and the [roadmap](roadmap.md).
 
 ## Preserve these contracts
 
@@ -169,7 +176,7 @@ justified by the measured bottleneck. Read [performance](performance.md),
 
 ## Local evidence
 
-- `.umbral360/package-080-accepted/package-review.json`: exact current 0.8 ZIP
+- `.godot360/package-080-accepted/package-review.json`: exact current 0.8 ZIP
   installed and reviewed on Godot 4.5.1/4.6.3/4.7.2; 444 checks per engine,
   1,332 total. Headless contracts 251, audio panel 19, capture failures 50,
   reopening 41, storage failures 56, release workflow 27. Rebuilt ZIP bytes and
@@ -177,7 +184,7 @@ justified by the measured bottleneck. Read [performance](performance.md),
 - `dist/umbral360-studio-0.8.0.zip`: 84 members, 169,418 bytes; SHA-256
   `16e41c52c4ef7e0e3c62783a3ae8bc79b93bb676dbd93e5e071daae3ead33961`.
   `docs/release-0.8.md` records the candidate, source history and remaining gates.
-- `.umbral360/package-080-final/` is REJECTED development evidence, despite its
+- `.godot360/package-080-final/` is REJECTED development evidence, despite its
   name. Godot 4.7's extra ZIP directory entry exposed the inventory mismatch.
   The rejected ZIP is retained there. Only `package-080-accepted` establishes success.
 - `renders/delivery-080-8k/candidate-review.json` and `metadata-review.json`:
@@ -186,13 +193,13 @@ justified by the measured bottleneck. Read [performance](performance.md),
   924 packet hashes/timestamps and V2-only recognition pass. Original capture and
   saved settings are unchanged; no YouTube upload/review was performed. The 14
   exporter payload files are identical across the candidate's diagnostics fix.
-- `.umbral360/delivery-080-diagnostics.zip`: actual 8K job support bundle, created
+- `.godot360/delivery-080-diagnostics.zip`: actual 8K job support bundle, created
   headlessly using 0.8. Review paths/scene-written text before sharing.
 
-- .umbral360/compatibility-070-final/compatibility-review.json: 1,143 checks pass,
+- .godot360/compatibility-070-final/compatibility-review.json: 1,143 checks pass,
   with 218 headless, 16 panel, 50 capture-failure, 41 reopening and 56 storage-failure
   checks per engine. Original project/settings were unchanged.
-- .umbral360/storage-control-070-final/review.json: updated 24-check storage
+- .godot360/storage-control-070-final/review.json: updated 24-check storage
   contracts pass on each engine, adding three cancellation-write and three blocked
   process-log startup checks per engine. Combined current coverage is 1,161 checks.
 - The initial 070 capture-space fixture ran get_tree() too early; _ready fixes it.
@@ -218,23 +225,23 @@ justified by the measured bottleneck. Read [performance](performance.md),
 - `renders/timeline-studio-checks/render-2026-09-06T22-18-00-1693637/`: full 4K Motion Lab.
 - `renders/motion-04-timed/motion-review.json`: 180 PNG and decoded MP4 frames at 30 FPS.
 - `renders/motion-04-24fps-final/motion-review.json`: 144 frames without warmup.
-- `.umbral360/portable-04/output/report.json`: addon-only authored capture.
+- `.godot360/portable-04/output/report.json`: addon-only authored capture.
 - `renders/delivery-05-motion/metadata-review.json`: 180 decoded motion frames,
   non-silent audio, packet timestamps and V2-only recognition preserved exactly.
 - `renders/delivery-05-8k/video-360.mp4` and `metadata-review.json`: updated 8K
   film with V1/V2 and fast-start; 719 offsets, 924 packet hashes/timestamps and
   all 360 decoded frames/audio checked, including a V2-only test copy.
 - `renders/delivery-05-reencode/report.json`: complete headless pipeline, 12 checks.
-- `.umbral360/portable-05/output/report.json`: addon-only headless pipeline, 12 checks.
+- `.godot360/portable-05/output/report.json`: addon-only headless pipeline, 12 checks.
 - `renders/audio-06-timed/audio-review.json`: ten successful audio exports and
   two early input rejections; zero sample cue lag in tested non-silent outputs.
 - `renders/audio-06-delivery-complete/audio-delivery-review.json`: limiter,
   exact legacy encoded bytes and source-mutation rejection.
 - `renders/audio-studio-06/test-2026-09-06T23-09-15-1789555/` and
   `reencode-2026-09-06T23-09-22-9341312/`: accepted panel capture/re-encode.
-- `.umbral360/portable-06/output/report.json`: mixed re-encode with the source scene removed.
+- `.godot360/portable-06/output/report.json`: mixed re-encode with the source scene removed.
 - `dist/umbral360-studio-0.6.0.zip`: portable addon, audio guide, examples and tests.
-- `.umbral360/compatibility-061-fixed/compatibility-review.json`: 208 checks on
+- `.godot360/compatibility-061-fixed/compatibility-review.json`: 208 checks on
   each of Godot 4.5.1/4.6.3/4.7.2; actual calibration capture and mixed re-encode.
   The original `compatibility-061/` folder contains the intentional 4.5.1 failure.
 - `renders/audio-formats-061/audio-formats-review.json`: eight codec/rate cases
@@ -244,8 +251,8 @@ justified by the measured bottleneck. Read [performance](performance.md),
 - `dist/umbral360-studio-0.6.1.zip`: 63 members, 118,423 bytes; reliability update
   with BETA.md, repeatable reviewers and `tools/package_addon.py`; adjacent JSON hash.
   SHA-256: `7886819d3451c898d08f6c8181ad8c6b4bfc861cccdb397ea0159206e95ba4ae`.
-  `.umbral360/package-061-review.json` proves identical repeat-build bytes and
-  verification after extraction. `.umbral360/package-061-compatibility/` runs
+  `.godot360/package-061-review.json` proves identical repeat-build bytes and
+  verification after extraction. `.godot360/package-061-compatibility/` runs
   the actual unpacked package's complete reviewer on 4.5.1.
 - `renders/endurance-062-full/endurance-review.json`: 90-second actual GPU capture,
   1024×512, 512-pixel faces, 60 FPS. All 5,400 delivered PNG and MP4 frame codes
@@ -253,17 +260,17 @@ justified by the measured bottleneck. Read [performance](performance.md),
   startup offset. AAC preserves their placement (zero added lag), 55.81 dB SNR.
   Pipeline elapsed 301.888 s with other tests sharing the machine; not a clean
   performance benchmark. The earlier two-second `endurance-062-sample` also passes.
-- `.umbral360/compatibility-062-fixed/compatibility-review.json`: 265 checks per
+- `.godot360/compatibility-062-fixed/compatibility-review.json`: 265 checks per
   engine on 4.5.1/4.6.3/4.7.2 (795 total), including 50 lifecycle checks and 16
   panel checks. Each engine produces a verified capture/re-encode and rejects six
   disposable capture failures. Original `compatibility-062/` failures were from
   backslashes embedded in generated test scenes; normalized fixture paths fix it.
-- `.umbral360/lifecycle-062-final/lifecycle-review.json`: standalone 50-check pass;
+- `.godot360/lifecycle-062-final/lifecycle-review.json`: standalone 50-check pass;
   malformed scene, sample hook, early quit, cancellation, killed worker and writer.
 - `dist/umbral360-studio-0.6.2.zip`: 68 members, 130,480 bytes, includes RECOVERY.md
   and sustained/failure tests. SHA-256:
   `115403ae460818a9395e3f8567acd76a7e7050a36bb3d87158ae192902026bd0`.
-  `.umbral360/package-062-review.json` verifies repeat-build bytes and extraction.
+  `.godot360/package-062-review.json` verifies repeat-build bytes and extraction.
 
 The user confirmed YouTube 360 playback of the original 2K film but found it blurry.
 They later praised the 8K replacement. Independent verification after YouTube
@@ -271,27 +278,27 @@ transcoding remains unavailable; do not claim that it was checked.
 
 - `dist/umbral360-studio-0.6.3.zip`: 71 members, 140,231 bytes. SHA-256:
   `c4bedc440de20229e91bad0c60aeed9859f6906e0abf191e600ec55932873988`.
-  `.umbral360/package-063-review.json` proves identical repeat-build bytes,
+  `.godot360/package-063-review.json` proves identical repeat-build bytes,
   verification against the extracted source, and the exact changed-file inventory.
 
 ## Tools and tests
 
 Historical 0.7 package: dist/umbral360-studio-0.7.0.zip, 78 members, 153,141 bytes.
 SHA-256: c506621e64531d02934397eecd0e37cde4551b7956484f7672090d1f4418050c.
-.umbral360/package-070-review.json proves identical repeat-build bytes,
+.godot360/package-070-review.json proves identical repeat-build bytes,
 source/extracted-inventory verification, and both accepted production results.
 The package includes storage tests/fixtures and STORAGE.md. Exact-package clean
 installation/workflow review is now implemented by tests/package_review.py.
 Do not overwrite accepted ZIPs. See docs/release-0.8.md for the current candidate.
 
-0.6.3 evidence: `.umbral360/compatibility-063-final/compatibility-review.json`
+0.6.3 evidence: `.godot360/compatibility-063-final/compatibility-review.json`
 records 306 passing checks per engine, 918 total, on 4.5.1/4.6.3/4.7.2.
-Each isolated project's `.umbral360/recovery/recovery-review.json` records the
+Each isolated project's `.godot360/recovery/recovery-review.json` records the
 41-check reopening suite, actual launcher exit/coordinator loss and source hashes.
 The source project/settings remain unchanged. `--job-recovery` enables that suite
 in `tests/compatibility_review.py`; combine it with `--capture-failures` for the
 full matrix. `tests/recovery_studio_checks.gd` needs GPU/FFmpeg/FFprobe and a fresh
-absolute output folder. `.umbral360/recovery-063-dev/.umbral360/run1` caught the
+absolute output folder. `.godot360/recovery-063-dev/.umbral360/run1` caught the
 child-process-query issue; run2 passes. The final panel wording is shorter than
 the matrix screenshot, with unchanged behavior and test assertions.
 
@@ -302,7 +309,7 @@ The 0.6.2 suite repeats compatibility with 199 headless contracts, 16 panel chec
 and 50 controlled-failure checks per engine. `planning_checks.gd` now has 31 checks;
 other existing headless counts are unchanged. `--capture-failures` adds the six
 disposable interruption cases to `tests/compatibility_review.py`.
-FFmpeg/FFprobe paths are in `.umbral360/settings.cfg`. The Godot console executable
+FFmpeg/FFprobe paths are in `.godot360/settings.cfg`. The Godot console executable
 is under the user's `Game Development/Godot/Versions` directory. Bundled Python
 with numpy/Pillow is in the Codex runtime cache. Use project-local Godot log paths.
 
@@ -319,7 +326,7 @@ without a project.godot, creating a separate minimal project for each engine.
 It runs 195 headless checks plus 13 actual panel checks per engine. Fixture
 generation requires numpy/Pillow; package creation only needs Python's standard
 library. `audio_delivery_checks.py` now requires `--legacy-source`; the accepted
-local baseline is `.umbral360/portable-04/output` with CRF 16.
+local baseline is `.godot360/portable-04/output` with CRF 16.
 
 `tests/endurance_review.py` defaults to 90 seconds at 60 FPS and 1024×512; use
 `--seconds 2` for a quick fixture check. It needs the same tools/numpy/Pillow and
@@ -355,7 +362,7 @@ success. Sandbox cache/certificate messages in logs are separate from test failu
 The local 0.8 engineering gate passes; see docs/release-0.8.md and its accepted report.
 The main remaining external validation is an independent Windows/GPU beta report.
 THRESHOLD has positive user-reported YouTube visual feedback; individual playback
-checks were not supplied. addons/umbral360/BETA-REPORT.md provides the specific
+checks were not supplied. addons/godot360/BETA-REPORT.md provides the specific
 checks. Do not infer an independent beta or a complete itemized playback review
 from this feedback or from automated local tests.
 Fix any reported blocking defect and repeat the affected checks before replacing

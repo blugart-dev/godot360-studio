@@ -1,6 +1,6 @@
 extends SceneTree
 ## Disposable jobs exercise capture failure, interruption, and retained diagnostics.
-const IO = preload("res://addons/umbral360/job_io.gd")
+const IO = preload("res://addons/godot360/job_io.gd")
 var folder: String
 var checks := 0
 var failures := 0
@@ -20,7 +20,7 @@ func _run() -> void:
 		quit(1)
 		return
 	DirAccess.make_dir_recursive_absolute(folder)
-	var settings_before := FileAccess.get_sha256("res://.umbral360/settings.cfg")
+	var settings_before := FileAccess.get_sha256("res://.godot360/settings.cfg")
 	var broken := folder.path_join("broken.tscn")
 	FileAccess.open(broken, FileAccess.WRITE).store_string("[gd_scene format=3]\n[node name=\"Broken\" type=\"Node3D\"]\nposition = Vector3(0, 0,\n")
 	var hook := folder.path_join("hook.gd")
@@ -46,7 +46,7 @@ func _run() -> void:
 	if IO.argument("writer-check") == "true":
 		var writer := await _job("writer-killed", {}, "kill-writer")
 		check(str(writer.capture.get("error", "")).contains("PNG writer"), "Killed PNG encoder fails through capture diagnostics")
-	check(FileAccess.get_sha256("res://.umbral360/settings.cfg") == settings_before, "Lifecycle tests preserve studio settings")
+	check(FileAccess.get_sha256("res://.godot360/settings.cfg") == settings_before, "Lifecycle tests preserve studio settings")
 	IO.write_json(folder.path_join("lifecycle-review.json"), {"ok": failures == 0, "checks": checks, "failures": failures, "cases": cases})
 	print("CAPTURE LIFECYCLE CHECKS: %d checks, %d failures" % [checks, failures])
 	quit(0 if failures == 0 else 1)
@@ -55,13 +55,13 @@ func _run() -> void:
 func _job(name: String, overrides: Dictionary, action: String = "") -> Dictionary:
 	var output := folder.path_join(name)
 	DirAccess.make_dir_recursive_absolute(output)
-	var job := {"scene_path": "res://addons/umbral360/examples/calibration.tscn", "camera_path": "Camera3D", "width": 512, "height": 256,
+	var job := {"scene_path": "res://addons/godot360/examples/calibration.tscn", "camera_path": "Camera3D", "width": 512, "height": 256,
 		"face_size": 128, "fps": 60, "frames": 5400, "warmup_frames": 2, "frame_writer": "fast_png", "crf": 18,
 		"ffmpeg": IO.argument("ffmpeg"), "ffprobe": IO.argument("ffprobe"), "output_dir": output}
 	job.merge(overrides, true)
 	IO.write_json(output.path_join("job.json"), job)
 	var pid := OS.create_process(OS.get_executable_path(), ["--headless", "--path", ProjectSettings.globalize_path("res://"),
-		"--log-file", output.path_join("pipeline.log"), "--script", "res://addons/umbral360/pipeline.gd", "--", "--job=" + output.path_join("job.json")])
+		"--log-file", output.path_join("pipeline.log"), "--script", "res://addons/godot360/pipeline.gd", "--", "--job=" + output.path_join("job.json")])
 	var started := Time.get_ticks_msec()
 	var acted := false
 	var worker_pid := -1

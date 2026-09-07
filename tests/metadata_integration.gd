@@ -1,7 +1,7 @@
 extends SceneTree
 ## Metadata-only integration driver for a retained encoded.mp4 (no scene capture).
-const IO = preload("res://addons/umbral360/job_io.gd")
-const M = preload("res://addons/umbral360/spherical_metadata.gd")
+const IO = preload("res://addons/godot360/job_io.gd")
+const M = preload("res://addons/godot360/spherical_metadata.gd")
 
 
 func _initialize() -> void:
