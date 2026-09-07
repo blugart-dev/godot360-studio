@@ -6,8 +6,8 @@ var panel: Control
 
 func _enter_tree() -> void:
 	panel = preload("studio_panel.gd").new()
-	panel.name = "Umbral360"
-	add_control_to_bottom_panel(panel, "Umbral360")
+	panel.name = "Godot360"
+	add_control_to_bottom_panel(panel, "Godot360")
 
 
 func _exit_tree() -> void:

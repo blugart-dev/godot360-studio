@@ -7,7 +7,7 @@ the H.264 quality needs changing.
 ## Before a full render
 
 1. Save your scene and select its camera, intended resolution, face size, FPS,
-   duration, frame storage, and H.264 CRF in the Umbral360 panel.
+   duration, frame storage, and H.264 CRF in the Godot360 panel.
 2. Choose the output parent folder and click **Test 1 second**. The full recipe
    stays intact. The sample renders at most one second plus warmup, encodes it,
 adds spherical metadata, and runs the same output checks as a full export

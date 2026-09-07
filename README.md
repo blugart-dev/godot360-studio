@@ -1,8 +1,17 @@
-# UMBRAL · A 360° experiment
+# Godot360 Studio
 
-A circular interactive installation and an original **Godot 360 video production
-addon**. The interactive scene responds to your gaze. The film version follows an
-authored timeline and exports a panorama that viewers can look around.
+An original **Godot addon for producing mono 360° video**, with deterministic
+capture, soundtracks, spherical MP4 metadata and export validation. Includes the
+UMBRAL interactive installation and THRESHOLD, a sixty-second film through four
+procedural worlds.
+
+Previously named **Umbral360 Studio**. The internal `addons/umbral360` and
+`.umbral360` paths are retained so existing recipes, scenes and local settings
+continue to work. Historical release records use the original name. Godot360
+Studio is an independent project.
+
+See [repository contents and privacy preparation](docs/repository.md) for what is
+versioned and what remains local. Exported videos and local tools are not included.
 
 All project code, comments, interface text, and documentation are in English.
 Development conversation may be in Spanish or English.
@@ -13,7 +22,7 @@ export it. See the [film guide and measured limitations](docs/threshold.md).
 
 ## Produce a 360 video
 
-Open `project.godot` in **Godot 4.7.2** and use the **Umbral360** bottom panel.
+Open `project.godot` in **Godot 4.7.2** and use the **Godot360** bottom panel.
 The plugin is already enabled in this project.
 
 1. Select FFmpeg and FFprobe executables. FFmpeg needs libx264 and AAC.

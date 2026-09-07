@@ -1,12 +1,12 @@
 # Camera paths and frame-sampled timelines
 
-Umbral360 0.4 adds an optional authoring path built on Godot's own AnimationPlayer,
+Godot360 0.4 adds an optional authoring path built on Godot's own AnimationPlayer,
 Path3D, and PathFollow3D. The capture driver samples property tracks at a precise
 output timestamp. The existing scene-processing workflow remains available.
 
 ## Try Motion Lab
 
-1. Click **Motion lab** in the Umbral360 panel. It loads the included six-second
+1. Click **Motion lab** in the Godot360 panel. It loads the included six-second
    4096×2048 / 30 FPS recipe and its camera path.
 2. Open `addons/umbral360/examples/timeline.tscn` in Godot. All meshes, labels,
    path points, and animation keys are saved in the scene and can be edited.

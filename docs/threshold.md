@@ -30,7 +30,7 @@ Open `scenes/films/Threshold.tscn` and press **F6** in Godot 4.7.2. Hold the lef
 button and drag to look around; Esc closes this film. Restart the scene to replay.
 The project's original F5 installation remains the main scene.
 
-Load `export_profiles/threshold-8k.tres` in Umbral360 to export 60 seconds at
+Load `export_profiles/threshold-8k.tres` in Godot360 to export 60 seconds at
 7680×3840, 30 FPS, with six 3072-pixel faces, Fast PNG, CRF 16 and the attached score.
 The source score is `assets/audio/threshold-score.wav`. Recreate it with:
 

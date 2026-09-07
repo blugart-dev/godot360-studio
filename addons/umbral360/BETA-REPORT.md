@@ -1,4 +1,4 @@
-# Umbral360 beta report
+# Godot360 beta report
 
 Copy this form for one independently tested Windows machine. Review any diagnostics
 ZIP before attaching it. Leave untested steps marked **not tested**. Do not report

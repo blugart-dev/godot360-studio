@@ -1,7 +1,7 @@
 # Architecture and interoperability references
 
 Reviewed on 2026-09-06. These are references, not runtime addon dependencies.
-No source code from the following Godot projects is incorporated in Umbral360.
+No source code from the following Godot projects is incorporated in Godot360.
 
 | Project | What its documentation contributes | Difference in this implementation |
 | --- | --- | --- |
@@ -28,7 +28,7 @@ Primary specifications used for interoperability:
 - [FFmpeg audio filters](https://ffmpeg.org/ffmpeg-filters.html): sample-based trim/delay, timestamp generation from sample count, stereo resampling, amix and alimiter latency compensation, tested with actual encoded audio in 0.6.
 - [Spherical Video V1 RFC](https://github.com/google/spatial-media/blob/master/docs/spherical-video-rfc.md): track UUID and RDF/XML retained for compatibility.
 - [Spherical Video V2 RFC](https://github.com/google/spatial-media/blob/master/docs/spherical-video-v2-rfc.md): sample-entry placement of `st3d`/`sv3d`, mono layout, zero pose and uncropped equirectangular bounds. V1 and V2 can coexist with equivalent semantics. Version 0.5 tests V2 recognition with V1 disabled.
-- [FFmpeg MOV/MP4 muxer](https://ffmpeg.org/ffmpeg-formats.html#mov_002c-mp4_002c-ismv): conventional MP4 and fast-start layout. Umbral360 performs its own bounded metadata/offset rewrite to preserve the original encoded media bytes.
+- [FFmpeg MOV/MP4 muxer](https://ffmpeg.org/ffmpeg-formats.html#mov_002c-mp4_002c-ismv): conventional MP4 and fast-start layout. Godot360 performs its own bounded metadata/offset rewrite to preserve the original encoded media bytes.
 - [YouTube 360 upload instructions](https://support.google.com/youtube/answer/6178631?hl=en): spherical metadata and playback checks.
 - [YouTube upload encoding settings](https://support.google.com/youtube/answer/1722171?hl=en): codec, audio, and SDR color guidance.
 

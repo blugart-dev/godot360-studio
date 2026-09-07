@@ -17,7 +17,7 @@ func _run() -> void:
 	root.size = Vector2i(1500, 680)
 	root.content_scale_size = Vector2i(1500, 680)
 	root.content_scale_mode = Window.CONTENT_SCALE_MODE_VIEWPORT
-	root.title = "Umbral360 Studio · Integration check"
+	root.title = "Godot360 Studio · Integration check"
 	var margin := MarginContainer.new()
 	for edge in ["left", "right", "top", "bottom"]:
 		margin.add_theme_constant_override("margin_" + edge, 24)

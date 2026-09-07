@@ -1,6 +1,6 @@
 # Compatibility and beta checks
 
-Umbral360 Studio 0.8.0 is a local beta candidate. Use the [main guide](README.md)
+Godot360 Studio 0.8.0 is a local beta candidate. Use the [main guide](README.md)
 for installation and export, [AUTHORING.md](AUTHORING.md) for timelines, and
 [AUDIO.md](AUDIO.md) for music and synchronization. This package has not been
 published to a community registry.
@@ -140,7 +140,7 @@ executables. Use a new output directory for every run.
 For the release gate, test the **exact ZIP**:
 
 ```sh
-python tests/package_review.py --package dist/umbral360-studio-0.8.0.zip --godot /path/to/godot --ffmpeg /path/to/ffmpeg --ffprobe /path/to/ffprobe --output /path/to/new-package-review
+python tests/package_review.py --package dist/godot360-studio-0.8.0.zip --godot /path/to/godot --ffmpeg /path/to/ffmpeg --ffprobe /path/to/ffprobe --output /path/to/new-package-review
 ```
 
 Repeat `--godot` for each engine. The reviewer validates the manifest, extracts into
@@ -199,7 +199,7 @@ Build or verify a package using Python's standard library:
 
 ```sh
 python tools/package_addon.py
-python tools/package_addon.py --verify dist/umbral360-studio-0.8.0.zip
+python tools/package_addon.py --verify dist/godot360-studio-0.8.0.zip
 ```
 
 The builder reads current files, checks version labels, refuses to overwrite a

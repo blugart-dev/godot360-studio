@@ -57,7 +57,7 @@ def review(args):
         (project / ".umbral360").mkdir()
         (project / "project.godot").write_text('''config_version=5
 [application]
-config/name="Umbral360 isolated compatibility check"
+config/name="Godot360 isolated compatibility check"
 [display]
 window/size/viewport_width=1400
 window/size/viewport_height=600

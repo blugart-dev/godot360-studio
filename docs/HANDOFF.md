@@ -1,6 +1,6 @@
-# Umbral360 development handoff
+# Godot360 Studio development handoff
 
-Updated 2026-09-07 with THRESHOLD's positive user-reported YouTube visual review. A fresh session can begin by
+Updated 2026-09-07 for the Godot360 Studio rename and authorized private repository preparation. A fresh session can begin by
 reading this file, the linked guides, and the relevant current source/tests.
 
 ## Purpose and working agreement
@@ -9,11 +9,18 @@ Build an original, integrated Godot-to-YouTube mono 360 addon with portable reci
 documented authoring, reliable export, and eventual community use. Conversation may
 be English or Spanish; all code, comments, UI, and docs must be English. The user
 authorized continued development and a GDExtension if measurements justify it.
-The agent has not published or uploaded anything; the user reports viewing THRESHOLD
-in YouTube. Local Git now exists on
-`main`, starting with commit `23759d4` and tag `v0.7.0` for the validated baseline.
-Generated renders, local settings/tools and release ZIPs are ignored. No remote
-has been configured or pushed. Use current Git status before editing.
+The user reports viewing THRESHOLD in YouTube and explicitly authorized the project
+rename and private GitHub hosting under `blugart-dev/godot360-studio`. This does not
+authorize a public release. See [repository/privacy notes](repository.md) and check
+the current Git remote/status. The private upload uses a noreply commit identity
+and removes an older private-video URL from history. Original commit IDs quoted
+below refer to the verified local history backup; the release tags retain their
+source chronology. Generated renders, settings/tools and release ZIPs remain local.
+
+Godot project and plugin branding is now Godot360 Studio. Internal `umbral360`
+resource/settings paths are preserved. The pre-rename 0.8 ZIP and its evidence
+remain historical artifacts; the renamed source passed a fresh isolated 4.7.2
+import, 270 contract/panel checks and package content verification.
 
 ## Current creative production exercise
 

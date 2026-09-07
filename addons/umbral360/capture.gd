@@ -30,7 +30,7 @@ func _initialize() -> void:
 	root.content_scale_mode = Window.CONTENT_SCALE_MODE_VIEWPORT
 	root.content_scale_aspect = Window.CONTENT_SCALE_ASPECT_IGNORE
 	root.size = Vector2i(960, 480)
-	root.title = "Umbral360 · Rendering"
+	root.title = "Godot360 · Rendering"
 	root.disable_3d = true
 	root.audio_listener_enable_3d = true
 	root.audio_listener_enable_2d = false

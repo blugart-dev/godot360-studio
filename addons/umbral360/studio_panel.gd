@@ -63,7 +63,7 @@ func _ready() -> void:
 	settings.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	settings_scroll.add_child(settings)
 	var title := Label.new()
-	title.text = "UMBRAL360 STUDIO   /   0.8.0"
+	title.text = "GODOT360 STUDIO   /   0.8.0"
 	title.add_theme_font_size_override("font_size", 19)
 	settings.add_child(title)
 	var hint := Label.new()
@@ -552,7 +552,7 @@ func _browse(kind: String) -> void:
 		dialog.title = "Save local diagnostics ZIP"
 		dialog.add_filter("*.zip", "Diagnostics bundle")
 		dialog.current_dir = ProjectSettings.globalize_path("res://")
-		dialog.current_file = "umbral360-diagnostics-" + Time.get_datetime_string_from_system().replace(":", "-") + ".zip"
+		dialog.current_file = "godot360-diagnostics-" + Time.get_datetime_string_from_system().replace(":", "-") + ".zip"
 	if kind == "scene":
 		dialog.add_filter("*.tscn", "Godot scene")
 	if kind == "soundtrack":
@@ -594,7 +594,7 @@ func _selected(kind: String, path: String) -> void:
 				profile = loaded.duplicate()
 				_refresh_fields()
 			else:
-				status.text = "Select an Umbral360 export recipe."
+				status.text = "Select a Godot360 export recipe."
 		"save":
 			_update_profile()
 			status.text = "Recipe saved." if ResourceSaver.save(profile, path) == OK else "Could not save recipe."

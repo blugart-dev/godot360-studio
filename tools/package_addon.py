@@ -2,7 +2,7 @@
 
 Python standard library only. Run from the checkout or an unpacked release:
     python tools/package_addon.py
-    python tools/package_addon.py --verify dist/umbral360-studio-VERSION.zip
+    python tools/package_addon.py --verify dist/godot360-studio-VERSION.zip
 """
 import argparse
 import hashlib
@@ -28,8 +28,8 @@ def inventory(root):
     match = re.search(r'^version="(\d+\.\d+\.\d+)"$', (addon / "plugin.cfg").read_text(), re.MULTILINE)
     assert match, "Missing addon version"
     version = match.group(1)
-    assert 'const SOFTWARE = "Umbral360 Studio ' + version + '"' in (addon / "spherical_metadata.gd").read_text()
-    assert 'title.text = "UMBRAL360 STUDIO   /   ' + version + '"' in (addon / "studio_panel.gd").read_text()
+    assert 'const SOFTWARE = "Godot360 Studio ' + version + '"' in (addon / "spherical_metadata.gd").read_text()
+    assert 'title.text = "GODOT360 STUDIO   /   ' + version + '"' in (addon / "studio_panel.gd").read_text()
     assert "**Version " + version + " " in (addon / "README.md").read_text(), "README version differs"
     paths = sorted(path for path in addon.rglob("*") if path.is_file() and
                    (path.suffix in ADDON_SUFFIXES or path.name == "LICENSE"))
@@ -65,7 +65,7 @@ def main(args):
         verify(args.verify, files)
         print(json.dumps({"verified": str(args.verify.resolve()), "files": len(files), "version": version}))
         return
-    destination = args.output or root / "dist" / ("umbral360-studio-" + version + ".zip")
+    destination = args.output or root / "dist" / ("godot360-studio-" + version + ".zip")
     destination = destination.resolve()
     report_path = destination.with_suffix(".json")
     assert not destination.exists() and not report_path.exists(), "Use a fresh package destination"

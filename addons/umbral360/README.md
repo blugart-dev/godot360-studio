@@ -1,4 +1,4 @@
-# Umbral360 Studio
+# Godot360 Studio
 
 An original Godot addon for producing **monoscopic 360 video** from a 3D scene.
 Configure a scene and camera, render a fixed number of frames, encode an MP4,
@@ -13,8 +13,8 @@ check. No custom engine or .NET runtime is needed.
 ## Install
 
 1. Copy `addons/umbral360` into a Godot project at the same path.
-2. Enable **Umbral360 Studio** under **Project > Project Settings > Plugins**.
-3. Open the **Umbral360** bottom panel.
+2. Enable **Godot360 Studio** under **Project > Project Settings > Plugins**.
+3. Open the **Godot360** bottom panel.
 4. Select FFmpeg and FFprobe executables, or leave their command names if on PATH.
    FFmpeg must include **libx264**, **AAC**, `scale`, and `colorspace`.
    **Fast PNG** storage additionally requires its **PNG** encoder.

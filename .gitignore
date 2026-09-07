@@ -7,3 +7,24 @@ __pycache__/
 *.py[cod]
 .agents/
 .codex/
+
+# Local credentials and private environment configuration.
+.env
+.env.*
+!.env.example
+!.env.template
+export_credentials.cfg
+*.pem
+*.key
+*.p12
+*.pfx
+id_rsa
+id_ed25519
+
+# Logs, system debris and downloaded tool/release archives.
+*.log
+*.zip
+*.7z
+*.exe
+Thumbs.db
+.DS_Store

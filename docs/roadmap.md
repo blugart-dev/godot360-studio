@@ -1,4 +1,8 @@
-# Umbral360 roadmap
+# Godot360 Studio roadmap
+
+Previously Umbral360 Studio. The user authorized the Godot360 name and private
+GitHub source hosting on 2026-09-07; that is separate from a public 1.0 release.
+See [repository/privacy notes](repository.md).
 
 The 1.0 target is dependable mono 360 production from a documented Godot scene
 contract: repeatable recipes, predictable jobs, useful failure reports, and a
