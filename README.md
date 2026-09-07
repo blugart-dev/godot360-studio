@@ -10,7 +10,7 @@ Previously named **Umbral360 Studio**. The internal `addons/umbral360` and
 continue to work. Historical release records use the original name. Godot360
 Studio is an independent project.
 
-See [repository contents and privacy preparation](docs/repository.md) for what is
+See [repository contents and privacy audit](docs/repository.md) for what is
 versioned and what remains local. Exported videos and local tools are not included.
 
 All project code, comments, interface text, and documentation are in English.

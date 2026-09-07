@@ -6,10 +6,13 @@ producer now use Godot360. Existing `addons/umbral360` resource paths and
 `.umbral360/settings.cfg` remain stable for compatibility with saved recipes.
 UMBRAL and THRESHOLD remain the names of the two creative examples.
 
-The user selected the name and authorized a private repository under
-`blugart-dev/godot360-studio`. This is private source hosting, not a public addon
-release or permission to publish a video. GitHub CLI is used for account/repository
-operations and authentication. The working checkout keeps its existing disk path.
+The private source repository is
+[blugart-dev/godot360-studio](https://github.com/blugart-dev/godot360-studio), created
+with GitHub CLI on 2026-09-07 after the user selected the name and authorized the
+upload. GitHub confirmed the owner and private visibility before source upload.
+Public addon/video releases require separate authorization. GitHub CLI is used
+for account/repository operations and authentication. The working checkout keeps
+its existing disk path.
 
 ## Upload contents
 
@@ -31,14 +34,17 @@ therefore examines the complete histories of `main`, `v0.7.0` and `v0.8.0`, not
 just the current directory. Only those branch/tag refs are intended for upload;
 editor-owned auxiliary refs are local.
 
-## Privacy preparation
+## First-upload privacy audit
 
 The initial audit found no Gitleaks credential findings. Manual/history checks
 identified personal commit emails and an older private-video URL in the validation
 notes. The upload history replaces author/committer emails with the account's
 GitHub noreply identity and removes that video URL from every historical revision.
 Commit chronology, messages, branch/tag structure and all other file contents are
-preserved. The current reviewed source tree must match the prepared history exactly.
+preserved. The prepared history's current source tree was verified identical to
+the reviewed working source. The cleaned history passed Gitleaks with zero
+findings and the full file/history inventory with no excluded paths, personal
+commit identities, private-video links or unexpected binary assets.
 
 A verified original-history bundle and the original-to-clean commit mapping remain
 under `.umbral360/github-publish/`. Privacy changes alter commit IDs; original IDs

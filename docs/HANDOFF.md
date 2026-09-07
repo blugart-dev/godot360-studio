@@ -1,6 +1,6 @@
 # Godot360 Studio development handoff
 
-Updated 2026-09-07 for the Godot360 Studio rename and authorized private repository preparation. A fresh session can begin by
+Updated 2026-09-07 for the Godot360 Studio rename and private GitHub hosting. A fresh session can begin by
 reading this file, the linked guides, and the relevant current source/tests.
 
 ## Purpose and working agreement
