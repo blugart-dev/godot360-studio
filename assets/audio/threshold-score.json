@@ -1,0 +1,16 @@
+{
+  "title": "Threshold \u2014 Original score",
+  "duration_seconds": 60,
+  "sample_rate": 48000,
+  "channels": 2,
+  "tempo_bpm": 80,
+  "transition_centers_seconds": [
+    14,
+    29,
+    44
+  ],
+  "peak": 0.85,
+  "rms": 0.1406919311463532,
+  "sha256": "dce1ec5230514ff834fc6a0918c6f08e33f1ce9656be6e10cd8fc95206da0bcb",
+  "provenance": "Original deterministic PCM synthesis; no recordings or external samples."
+}

@@ -7,6 +7,10 @@ authored timeline and exports a panorama that viewers can look around.
 All project code, comments, interface text, and documentation are in English.
 Development conversation may be in Spanish or English.
 
+**THRESHOLD** is the original sixty-second, four-world film experiment. Open
+`scenes/films/Threshold.tscn` with F6, or load `export_profiles/threshold-8k.tres` to
+export it. See the [film guide and measured limitations](docs/threshold.md).
+
 ## Produce a 360 video
 
 Open `project.godot` in **Godot 4.7.2** and use the **Umbral360** bottom panel.

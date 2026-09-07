@@ -1,0 +1,16 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://addons/umbral360/export_profile.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+scene_path = "res://scenes/films/Threshold.tscn"
+camera_path = NodePath("Camera3D")
+width = "7680"
+face_size = 3072
+fps = "30"
+duration = 60.0
+crf = 16
+frame_writer = "fast_png"
+audio_mode = "soundtrack"
+soundtrack_path = "res://assets/audio/threshold-score.wav"

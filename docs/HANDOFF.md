@@ -1,6 +1,6 @@
 # Umbral360 development handoff
 
-Updated 2026-09-07 after local 0.8 beta-candidate validation. A fresh session can begin by
+Updated 2026-09-07 with the original THRESHOLD film exercise after local 0.8 validation. A fresh session can begin by
 reading this file, the linked guides, and the relevant current source/tests.
 
 ## Purpose and working agreement
@@ -13,6 +13,28 @@ No external publication or upload has been performed. Local Git now exists on
 `main`, starting with commit `23759d4` and tag `v0.7.0` for the validated baseline.
 Generated renders, local settings/tools and release ZIPs are ignored. No remote
 has been configured or pushed. Use current Git status before editing.
+
+## Current creative production exercise
+
+The user requested a one-minute experience with full creative freedom to explore
+the tool's limits. **THRESHOLD** adds four original procedural worlds, spherical
+light transitions and a deterministic synthesized stereo score. Read
+[the film guide](threshold.md). Open `scenes/films/Threshold.tscn` with F6; F5 still
+opens the original installation. The portable recipe is
+`export_profiles/threshold-8k.tres`.
+
+The local production job is `renders/threshold-8k/`; inspect its `report.json` and
+`.umbral360/threshold-8k-media-review/review.json` for acceptance, and
+`.umbral360/threshold-8k-run/render-review.json` for measured time/storage. The film
+source passes 60 absolute-time checks. No addon source or 0.8 release ZIP changed.
+The scenes preload together and switch visibility under an opaque veil; this is
+not disk streaming or a newly implemented map sequencer. The film remains mono
+360, SDR and stereo audio. Local review is distinct from headset/YouTube acceptance.
+
+After media review, the job also contains a 4K browser copy, a 1080p ordinary
+perspective preview and a local drag-to-look player. `tools/play_threshold.py`
+serves only playback files on localhost:8360. The server is a local preview helper,
+not a published site. Source frames and previous exports are retained.
 
 ## Implemented milestones
 
