@@ -84,6 +84,8 @@ are met; no public beta is required.
   checks. Graphical export and Mac GPU validation remain open.
 - **New:** optional [capture borders with before/after examples](docs/capture-borders.md)
   reduce tested glow cuts at edges and corners.
+- [Particle capture checks](docs/particle-capture.md) now cover authored pauses
+  and show how explicit visibility bounds fix tested CPU particle startup.
 - **Next:** exposure and remaining effect seams, complex animated scenes, native hardware
   coverage, representative Forward+/Mobile endurance and private workflow review.
 

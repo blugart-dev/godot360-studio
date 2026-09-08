@@ -2,8 +2,13 @@
 
 ## CPU visibility bounds follow-up — 2026-09-08
 
-Implementation `8b16092` is pushed to private `origin/main`. A follow-up found an
-authored workaround for its measured Compatibility CPU first-frame gap: set a
+Implementation `17d0abc` is pushed to private `origin/main`, following `8b16092`.
+Hosted run `34255433218` passes: 875 Linux package/workflow checks, three skeletal
+exports, eight software-Vulkan appearance cases, nine particle exports and 741
+Mac headless checks. Both platforms reproduce the exact package hash below.
+The initial run was superseded during Linux software-Vulkan checks; final CI
+passed without retry. The follow-up found an authored workaround for the measured
+Compatibility CPU first-frame gap: set a
 conservative **Visibility AABB** covering the full effect. All 60 frames then
 match the analytic mesh reference exactly on Windows 4.7.2. The fixture now uses
 explicit bounds for both CPU and GPU emitters; `--automatic-bounds` preserves the
@@ -47,9 +52,9 @@ GPU Compatibility comparison and four processing-mode cases. Final package is
 from the 3,089-check full regression snapshot are in validation. Local evidence,
 negative controls and helper scripts remain under `.godot360/particle-review/`.
 The authored scenes/settings/recipes/master hashes remain preserved.
-The exact final package passes 739 further checks plus eight rendered Compatibility
-jobs, including its final scene notes. Local package checks total 3,828. Hosted CI
-is pending for the implementation commit; record its outcome before closing out.
+That package passes 739 further checks plus eight rendered Compatibility jobs,
+including its scene notes. Local package checks total 3,828. Its initial hosted run
+was superseded; the successful final follow-up CI is recorded at the top.
 
 Next work includes resolving the measured particle startup behavior, broader
 particle/character/temporal fixtures, shared adaptive exposure policy, representative

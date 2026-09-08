@@ -32,6 +32,19 @@ failed before scene startup because the standalone helper omitted its disposable
 profile; restoring the isolated profile fixed that test invocation, with no addon
 change. It is retained as a harness failure, not counted as a passed export.
 
+Hosted run [34255433218](https://github.com/blugart-dev/godot360-studio/actions/runs/34255433218)
+passes on implementation `17d0abc`: **875 Linux package/workflow checks**, the
+three-export skeletal comparison, eight Forward+/Mobile software-Vulkan appearance
+cases, and the nine-export particle review; **741 Mac headless checks** pass too.
+Both platforms reproduce the exact final package hash above. Hosted Linux's
+explicit-bounds CPU comparison also matches all source/decoded frames exactly;
+the automatic-bounds observation reproduces the first-frame gap. All four mode
+cases pass. Artifacts are retained locally in `bounds-final/ci-linux` and `ci-mac`.
+The earlier `8b16092` run `34254377349` was superseded/cancelled by this follow-up
+after Mac passed, while Linux was still in its software-Vulkan stage. Final CI
+passes without a retry. Mac evidence remains headless, and Linux uses Mesa software
+rendering; native Mac graphical and Linux hardware-GPU coverage remain open.
+
 The initial `8b16092` validation and narrower particle lanes are historical
 evidence, retained below. Zero/short-warmup behavior, arbitrary fixed particle
 steps, automatic-bound startup and complex particle effects remain open.
@@ -103,7 +116,8 @@ four processing-mode cases and the short-warmup observation. These verify the
 final notes and strengthened static-frame metrics. Three settled clips add 180
 source and decoded frames; the short-warmup observation adds 60 of each. Local
 package checks total **3,828** across the two explicitly identified snapshots.
-Hosted validation is pending for the implementation commit.
+Its first hosted run was superseded by the bounds follow-up; the final successful
+hosted evidence is recorded above.
 
 Source scene/settings/recipe/master hashes remain unchanged. Evidence lives under
 `.godot360/particle-review/`, including the failed Compatibility CPU report and
