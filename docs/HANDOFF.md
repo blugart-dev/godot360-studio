@@ -2,6 +2,12 @@
 
 ## Consistent authored exposure — 2026-09-08
 
+Implementation commit `afcfbc5` is pushed to private `origin/main`. Its hosted run
+`34241199252` passes 747 Linux package/workflow checks plus eight software-Vulkan
+appearance cases and 613 Mac headless checks. Both rebuild the exact final package
+hash recorded in validation. The documentation follow-up records this result;
+it changes no packaged code or assets.
+
 Continue private development toward 1.0. The starting tree was clean at `bef3b9e`;
 its hosted Linux/Mac run `34235851891` has now passed. This increment adds
 **Advanced → Capture exposure → Fixed (authored)**. Scene remains the default for

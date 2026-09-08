@@ -126,6 +126,16 @@ This remains private 0.8 development. Shared adaptive exposure, complex temporal
 scenes, native Mac graphical / Linux hardware-GPU workflows, production endurance
 and the final private delivery walkthrough remain open; no public release occurred.
 
+The implementation was pushed privately as `afcfbc5`. Its
+[hosted Linux/Mac run](https://github.com/blugart-dev/godot360-studio/actions/runs/34241199252)
+also passes: **747 Linux package/workflow checks**, eight additional Forward+/Mobile
+software-Vulkan appearance cases, and **613 macOS headless checks**. Both platform
+packages have the exact final SHA-256 above and verify reproducible rebuilds. The
+new 57-check exposure contract suite passes on both hosts. Evidence is retained in
+`ci-linux`, `ci-mac` and `hosted-ci.json` under the same local review folder. This
+adds final-package cross-platform regression evidence, with the same headless/
+software limitations; it does not validate native Mac graphical or Linux GPU capture.
+
 ## Capture borders and private 1.0 development — 2026-09-08
 
 The owner clarified that the addon stays private until 1.0 is implemented, tested
