@@ -30,6 +30,15 @@ Source code, Godot scenes/resources, shaders, SVG artwork, documentation, tests,
 portable export recipes and the original THRESHOLD WAV/score generator belong in
 Git. The WAV is a required original project asset, approximately 11.5 MB.
 
+Curated previews in `docs/media/` and the small panel screenshot in
+`addons/godot360/media/` also belong in Git. They let readers see the tool and its
+results without rendering first. The full film masters and source frames remain
+local under `renders/`. [Media provenance and regeneration](media/README.md)
+documents the selected excerpts, sizes and source hashes. Documentation media
+folders use `.gdignore` to avoid importing promotional media as scene assets.
+The addon package includes its illustrated-guide PNG; full video/GIF previews
+are confined to repository documentation.
+
 The following remain local and ignored:
 
 - `renders/`: source frame sequences, MP4 deliveries, previews and job output.

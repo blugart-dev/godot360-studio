@@ -4,6 +4,14 @@ An original Godot addon for producing **monoscopic 360 video** from a 3D scene.
 Configure a scene and camera, render a fixed number of frames, encode an MP4,
 write spherical metadata, and inspect the validation report from one editor panel.
 
+![The Godot360 panel with scene and video controls beside spherical playback of the THRESHOLD example.](media/studio.png)
+
+*Select a scene and camera, test a second, render, then drag, seek and listen.
+This is the actual panel with a completed film open; the review copy is limited
+to 2K / 30 FPS. THRESHOLD is an example from the full source repository.*
+
+**[Start here: your first 360° export →](QUICKSTART.md)**
+
 **Version 0.8.0 — beta baseline with unreleased renderer, usability and playback changes.** The addon has passed isolated project checks on
 Windows with Godot 4.5.1, 4.6.3 and 4.7.2, Compatibility, and an NVIDIA RTX 3060 Ti.
 Linux and macOS preparation and evidence are listed in [Platform setup](PLATFORMS.md).
@@ -21,7 +29,7 @@ check. No custom engine or .NET runtime is needed.
 - **Godot:** [4.7.2 Standard, official archive](https://godotengine.org/download/archive/4.7.2-stable/), choosing Windows, Linux or macOS for your machine. Keep your project's renderer.
 - **Windows FFmpeg/FFprobe:** [gyan.dev release essentials ZIP](https://www.gyan.dev/ffmpeg/builds/); extract both executables from its `bin` folder.
 - **Linux FFmpeg/FFprobe:** Ubuntu/Debian `sudo apt install ffmpeg`; [Linux instructions](PLATFORMS.md#linux).
-- **macOS FFmpeg/FFprobe:** [Install Homebrew](https://docs.brew.sh/Installation), then [`brew install ffmpeg`](https://formulae.brew.sh/formula/ffmpeg); [Mac instructions](PLATFORMS.md#macos).
+- **macOS FFmpeg/FFprobe:** [Install Homebrew](https://docs.brew.sh/Installation), then [`brew install ffmpeg-full`](https://formulae.brew.sh/formula/ffmpeg-full); [Mac instructions and explicit tool paths](PLATFORMS.md#macos).
 - **VLC, optional:** [VideoLAN download](https://www.videolan.org/vlc/) for [360° playback](https://docs.videolan.me/vlc-user/desktop/3.0/en/advanced/player/360_video.html).
 
 No Python, compiler, .NET runtime or Godot export templates are needed by the addon.

@@ -1,0 +1,72 @@
+{
+  "sources": [
+    {
+      "file": "renders/threshold-8k/encoded.mp4",
+      "sha256": "b7c2c6db78a20814d535f3d307874f34b4cead041815469524c6c63c3a01c703"
+    },
+    {
+      "file": "renders/umbral-quality-8k/encoded.mp4",
+      "sha256": "aa65d1e53bb6b7c07fde82cd4f2acd68bde5c94609f2989d0a1a52ba1f103c2d"
+    }
+  ],
+  "perspective": {
+    "horizontal_fov": 100,
+    "vertical_fov": 68,
+    "yaw": 0,
+    "pitch": 0
+  },
+  "excerpt_starts_seconds": [
+    8,
+    20,
+    35,
+    49
+  ],
+  "excerpt_duration_seconds": 2,
+  "video": "60-second flat perspective view; original stereo score; no spherical metadata",
+  "gif": "8-second silent montage; 720 x 406; 10 FPS; not interactive",
+  "still_seconds": {
+    "tidal-archive": 8,
+    "glass-desert": 20,
+    "sky-garden": 35,
+    "star-engine": 49,
+    "umbral": 3
+  },
+  "outputs": {
+    "glass-desert.jpg": {
+      "bytes": 40897,
+      "sha256": "f3872239e55d87b029a833512f578eb6fcffff35cd9a974c64a52d6d626f899c"
+    },
+    "sky-garden-panorama.jpg": {
+      "bytes": 69820,
+      "sha256": "06da7c9a79827437a474821e2fa3bd970d733bf8757a240218d791c248a0ec9c"
+    },
+    "sky-garden.jpg": {
+      "bytes": 49169,
+      "sha256": "c26304efb3e3e78b6a9ba07e6fb332f3292de8c0934cbfc75923dfdac459a3b8"
+    },
+    "star-engine.jpg": {
+      "bytes": 86849,
+      "sha256": "92129a43ce7d87cce8c7bb13bddbc7e443b4ea573bab2f4c41b671732054959f"
+    },
+    "threshold-tour.gif": {
+      "bytes": 3721686,
+      "sha256": "ce7dd08438bd9f35faf6bb483116de39900ac563078932669d301be364fb2dc9"
+    },
+    "threshold-tour.mp4": {
+      "bytes": 6233550,
+      "sha256": "247724344c0014e8ed8b16d567727af29c1a104e3e6a98b20b013941bff5f113"
+    },
+    "threshold-worlds.jpg": {
+      "bytes": 118733,
+      "sha256": "3a59ae2863090ab13c27adb6d2f703c5bad94d57c3c5a663ac27e211cfea3098"
+    },
+    "tidal-archive.jpg": {
+      "bytes": 55201,
+      "sha256": "7f255f271d0b2ed3f828b2edff38a78951c10f413fd9e9bbf33e46d86b6a4177"
+    },
+    "umbral.jpg": {
+      "bytes": 29128,
+      "sha256": "5f08eeff62a797910967073ff2f4d5b86253fda7644e9ac6185ba7cd7af18b48"
+    }
+  }
+}

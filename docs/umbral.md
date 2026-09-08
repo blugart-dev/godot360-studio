@@ -1,5 +1,15 @@
 # UMBRAL interactive installation
 
+A small world of gaze-driven discoveries, with an authored **12-second film**
+recipe for 360° export.
+
+![UMBRAL's golden central core with orbiting rings, shown in the rendered film at three seconds.](media/umbral.jpg)
+
+*A perspective view from the exported film. In Godot, looking at objects triggers
+their reactions; the video follows a prepared sequence.*
+[See how interactive scenes become films](showcase.md#an-interactive-scene-prepared-for-film)
+· [Export your first scene](../addons/godot360/QUICKSTART.md)
+
 ## Play the interactive installation
 
 Press **F5**, or open `scenes/Main.tscn` and press **F6**.

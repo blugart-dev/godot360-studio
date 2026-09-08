@@ -1,5 +1,42 @@
 # Validation record — updated 2026-09-08
 
+## Visual documentation — 2026-09-08
+
+The README and guides now show actual film output and the current panel before
+installation details. [Media provenance](media/README.md) records source hashes,
+excerpt timestamps and regeneration. Preview assets total about 11 MB including
+the portable PNG; full renders remain ignored. No capture, renderer, playback or
+other addon runtime code changed. The only packaging change includes guide PNGs
+and their `.gdignore` from `addons/godot360/media/`.
+
+Verification under `.godot360/docs-review/` includes:
+
+- All 140 local links across the initial 12 edited/new user guides resolve,
+  including Markdown anchors; screenshot references also resolve in the addon ZIP.
+- The GIF has 80 frames, eight seconds and an infinite loop; a decoded contact
+  sheet of all four excerpts was inspected. All JPEG/PNG assets decode successfully.
+- The full preview MP4 decodes without errors: 60 seconds, 960×540, 30 FPS,
+  H.264/AAC stereo, BT.709, and no spherical side data. It is labeled as a flat
+  perspective preview throughout the documentation.
+- The real panel was captured graphically on Godot 4.7.2 / Windows / RTX 3060 Ti
+  with the THRESHOLD recipe and native review paused at 35 seconds. Source project,
+  studio settings, recipe and original delivery hashes remain unchanged.
+- A local Markdown browser preview was visually inspected for the README's first
+  screen and the tour's image gallery/captions. It is a local rendering, not a
+  claim of GitHub-hosted rendering or public video playback.
+- The 124-member package verifies against source and rebuilds byte-for-byte from
+  its extracted source with the same bundled Python/zlib runtime. Final package:
+  `.godot360/docs-review/review-candidate.zip`, 804,112 bytes, SHA-256
+  `45efd85cb651722759ad24d22bcab020ad7dfb34b4fe5b07dc9e3d1df288e06b`.
+  An initial comparison across two Python/zlib runtimes differed in compressed
+  bytes; matching the build/rebuild runtime resolves that comparison.
+- Python syntax and Git whitespace checks pass. The known sandbox certificate-store
+  warning appeared during Godot capture; there was no capture script error.
+
+The existing backend validation remains applicable; a full export matrix was not
+rerun for documentation and package media. The new local screenshot is not new
+platform support evidence. No release was published.
+
 ## Hosted macOS playback codec fix — 2026-09-08
 
 GitHub Actions runs for `a037209` and `85a924a` failed in the Mac playback suite;

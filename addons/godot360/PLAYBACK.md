@@ -6,6 +6,12 @@ with the delivered audio mix. Drag the image to look around, use the position
 slider to seek, pause to inspect a moment, or toggle **Sound on / Muted**.
 The end of the clip offers **Replay**. Hiding the Godot360 panel pauses playback.
 
+![THRESHOLD open at 35 seconds in Godot360: spherical preview above playback, seeking and sound controls.](media/studio.png)
+
+*Drag the picture to look around. Use the slider beneath it to find a moment;
+Play video / Pause and Sound on / Muted control the review. The screenshot shows
+the full-repository film example at 35 seconds through its 2K review copy.*
+
 **Open saved job…** also enables playback for an existing export with a successful
 report and its delivery MP4. Retained PNGs are not needed for playback. Starting
 another export or opening another job stops the current review.

@@ -1,5 +1,28 @@
 # Godot360 Studio development handoff
 
+## Visual documentation — 2026-09-08
+
+The user asked for current project status and documentation that shows what the
+tool can do immediately. The root README now opens with a real eight-second
+THRESHOLD GIF, a small complete film with sound, and a current panel screenshot.
+[Visual tour](showcase.md) explains the four worlds, panorama versus viewing
+direction, editor workflow and UMBRAL's interactive-to-film distinction.
+[Documentation index](README.md) groups the existing guides by user task.
+The quick start, addon reference, playback and example guides are illustrated.
+
+`tools/build_docs_media.py` derives repository previews from existing films;
+`tools/capture_docs_panel.gd` captures the actual panel in a disposable project.
+Read [media provenance and regeneration](media/README.md). The packager now includes
+the portable screenshot and its `.gdignore`; GIF/MP4 previews stay in root docs.
+Mac platform wording and the addon reference's FFmpeg install command now match
+the recorded headless CI evidence and full-codec playback requirement.
+
+Docs/media/package verification passes; see the new [validation entry](validation.md).
+Addon runtime code, original film, user project/settings and selected recipes are
+unchanged. Work remains on the unreleased 0.8 baseline. This pass prepares local
+changes and does not publish a release. Independent creator feedback, graphical
+Mac/Linux hardware validation and glow/exposure seams remain the next product work.
+
 ## CI follow-up — 2026-09-08
 
 The user noticed failed GitHub Actions runs and authorized fixing them. The Mac

@@ -6,6 +6,14 @@ light transitions, original stereo music and an ending. The visuals use an
 illustrated, geometric style; all geometry, shaders and music are generated locally.
 No stock models, recordings, external music or network assets are required.
 
+![The four worlds of THRESHOLD: underwater archive, glass desert, sky garden and star engine.](media/threshold-worlds.jpg)
+
+**[Watch / download the film with sound · 60 s, 6 MB](media/threshold-tour.mp4)**
+· [Animated excerpt](media/threshold-tour.gif) · [Visual tour](showcase.md)
+
+*These are perspective views extracted from the rendered 8K film. The small video
+is a flat preview; export the recipe below for the full 360° delivery.*
+
 ## Experience
 
 | Film time | World | Events and composition |

@@ -12,8 +12,8 @@ templates are required by the addon itself.
 | Platform | Status |
 | --- | --- |
 | Windows x86_64 | Compatibility baseline on 4.5.1/4.6.3/4.7.2; current Forward+/Mobile evidence and backend-specific limits are in [Renderers](RENDERERS.md). |
-| Linux x86_64 | Ubuntu 26.04 under WSL2/WSLg, Godot 4.7.2, Mesa llvmpipe OpenGL/Vulkan and FFmpeg 8.0.1. See [current evidence](BETA.md) and [renderer limits](RENDERERS.md). |
-| macOS, Apple Silicon and Intel | Prepared for testing: native paths, Homebrew discovery and installation guide. Native Mac export validation is pending. |
+| Linux x86_64 | Local Ubuntu 26.04 / WSLg software OpenGL/Vulkan validation and hosted Ubuntu 24.04 CI pass. Hosted CI includes 639 package/workflow checks plus eight software-Vulkan appearance cases on Godot 4.7.2. Hardware GPU validation remains open. See [renderer limits](RENDERERS.md). |
+| macOS | Apple Silicon headless CI passes 505 checks on macOS 15.7.9 / Godot 4.7.2 with FFmpeg 9.0.1 full. Graphical exports, Mac GPU appearance and Intel Mac validation remain open. Native paths and installation steps support both Homebrew prefixes. |
 
 Validation on one machine does not cover every GPU or desktop environment.
 Forward+ and Mobile have Windows Vulkan/D3D12 and Linux software-Vulkan visual

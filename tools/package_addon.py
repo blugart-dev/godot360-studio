@@ -33,6 +33,9 @@ def inventory(root):
     assert "**Version " + version + " " in (addon / "README.md").read_text(), "README version differs"
     paths = sorted(path for path in addon.rglob("*") if path.is_file() and
                    (path.suffix in ADDON_SUFFIXES or path.name == "LICENSE"))
+    # Keep illustrated guides portable; full film previews stay in root docs.
+    paths += sorted((addon / "media").glob("*.png"))
+    paths += sorted((addon / "media").glob(".gdignore"))
     paths += [root / "tests" / name for name in TESTS]
     paths += sorted(path for path in (root / "tests/fixtures").rglob("*") if path.suffix in {".gd", ".tscn"})
     paths += [root / "tools/package_addon.py"]

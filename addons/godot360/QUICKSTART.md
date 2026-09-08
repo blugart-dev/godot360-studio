@@ -5,6 +5,15 @@ around in. You choose the camera's position and movement; viewers choose their
 looking direction. Interactive gameplay and gaze-triggered events need a planned
 sequence if they should appear in the film.
 
+![Godot360 with an 8K film recipe and a completed video open in the spherical review area.](media/studio.png)
+
+*Your destination: choose a scene and camera on the left, then test, render and
+review on the right. The pictured THRESHOLD scene is in the full repository;
+addon-only installs can follow these steps with their own scene. The review copy
+is limited to 2K / 30 FPS; the delivered MP4 keeps the selected resolution.*
+
+**Select scene → Choose video → Check setup → Test 1 second → Render → Review**
+
 ## 1. Install and check your tools
 
 Follow **[Platform setup](PLATFORMS.md)** for Windows, Linux or macOS. It links to
@@ -24,8 +33,8 @@ The addon needs no .NET, Python, compiler or Godot export templates.
    tools and checks the needed encoders/filters. Repeat after upgrading tools or
    changing machines. Nothing is downloaded by the addon.
 
-See [platform validation status](PLATFORMS.md#support-status); macOS export tests
-remain pending. New captures use your saved project's renderer and driver, with
+See [platform validation status](PLATFORMS.md#support-status); macOS graphical export
+tests remain pending, while headless CI passes. New captures use your saved project's renderer and driver, with
 explicit overrides under Advanced. Unexpected fallback stops capture. Review
 [renderer support and scene effects](RENDERERS.md); a graphical session is required.
 
