@@ -1,5 +1,43 @@
 # Godot360 Studio development handoff
 
+## Private 1.0 development and capture borders — 2026-09-08
+
+The owner explicitly rejected pausing at a beta gate: keep building and testing
+privately, with no public release until 1.0 is ready. Use
+[release readiness](release-readiness.md) for current priorities. Earlier beta
+milestones and test records are historical; independent feedback is useful but
+does not block local work. The previous visual documentation commit was pushed
+as `0c3cb24`; both hosted Linux and Mac jobs passed.
+
+This increment implements **Advanced → Capture border per edge (%)** (0–25%,
+default zero), expanded face projections with unchanged core pixel density, and
+smooth blending of valid overlaps at edges and three-face corners. Settings and
+recipes persist the choice, estimates invalidate on change, and retained captures
+keep their original projection on re-encode. Invalid saved values fail safely.
+The shader's zero-border branch retains the original projection/assembly path.
+
+[Before/after images](capture-borders.md) show actual Forward+/Mobile tests.
+The moving-glow fixture measures 98–99.6% less boundary discontinuity, while
+no-glow frame differences remain below 0.001 mean RGB on the 0–255 scale.
+Borders cost 56.25% more face pixels at 12.5%. Halo shape, separate auto-exposure
+metering and arbitrary screen/temporal effects remain limits.
+
+The [validation record](validation.md) distinguishes the 3,345-check full Windows
+matrix snapshot from 531 focused checks on the final package after saved-input
+hardening and FOV wording corrections. All packaged render code except the
+planner validation and warning text matches that full matrix. The final ZIP is
+under `.godot360/seam-review/accepted-final/`; all evidence remains local.
+That exact final package also passes five nonzero-border analytic motion exports:
+900 source and 900 decoded frames, cue timing within 10 ms and all five re-encodes
+with unchanged source hashes/settings. The expanded Advanced control was visually
+checked at 1100×600. Source project/settings, recipe and film master are unchanged.
+
+Next implementation priorities are exposure consistency, complex animated scene
+fixtures and representative Forward+/Mobile 4K/8K endurance. Native Mac graphical
+exports and Linux hardware-GPU validation still require the target machines;
+continue independent local work while those remain open. This is still internal
+0.8 development, not a public release or a claim that all 1.0 gates are complete.
+
 ## Visual documentation — 2026-09-08
 
 The user asked for current project status and documentation that shows what the

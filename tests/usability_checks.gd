@@ -69,6 +69,15 @@ func _run() -> void:
 	panel.profile = preload("res://addons/godot360/examples/timeline.tres").duplicate()
 	panel._refresh_fields()
 	check(panel.recipe_fields.camera_path.text == "CameraPath/Follow/Camera3D" and panel.camera_picker.get_selected_metadata() == panel.recipe_fields.camera_path.text, "Loading a recipe preserves its authored camera selection")
+	panel.border_control.value = 12.5
+	check(panel.profile.to_dictionary().capture_border_percent == 12.5 and panel.border_hint.text.contains("56%"), "Capture border reaches the recipe and explains the extra pixel cost")
+	panel._save_settings()
+	panel.border_control.value = 0.0
+	panel._load_settings()
+	check(panel.profile.capture_border_percent == 12.5 and panel.border_control.value == 12.5, "Nonzero capture border survives project-local settings reload")
+	panel.profile = preload("res://addons/godot360/examples/timeline.tres").duplicate()
+	panel._refresh_fields()
+	check(panel.border_control.value == 0.0, "Loading a legacy recipe restores its zero-border default")
 	panel.recipe_fields.duration.text = "12seconds"
 	panel._render()
 	check(panel.process_id <= 0 and panel.status.text.contains("duration"), "Invalid numeric text cannot silently become a valid render duration")

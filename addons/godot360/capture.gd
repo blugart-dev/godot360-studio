@@ -100,12 +100,14 @@ func _start() -> void:
 	if scene.has_method("sample_360_frame"):
 		rig.before_sync = _before_frame
 	root.add_child(rig)
-	rig.build(camera, int(job.face_size), Vector2i(int(job.width), int(job.height)))
+	rig.build(camera, int(job.face_size), Vector2i(int(job.width), int(job.height)), float(job.get("capture_border_percent", 0.0)))
 	if stopped:
 		return
 	capture_settings.merge({
 		"output_width": int(job.width), "output_height": int(job.height),
 		"face_size": int(job.face_size), "msaa_3d": camera.get_viewport().msaa_3d,
+		"capture_border_percent": float(job.get("capture_border_percent", 0.0)),
+		"face_texture_size": rig.projection.texture_size, "face_border_pixels": rig.projection.border_pixels,
 		"viewport_settings": rig.settings(), "warnings": warnings,
 		"color": {"source": "tone-mapped SDR sRGB RGB8/RGBA8", "face_hdr_2d": false,
 			"assembly_hdr_2d": false, "delivery": "SDR BT.709 limited-range yuv420p",
@@ -228,7 +230,7 @@ func _inspect_attributes(attributes: CameraAttributes, warnings: Array[String]) 
 	if attributes != null and attributes.auto_exposure_enabled:
 		warnings.append("Auto exposure meters each cube face independently and can create brightness seams. Use authored fixed exposure for consistent 360 delivery.")
 	if attributes is CameraAttributesPhysical or (attributes is CameraAttributesPractical and (attributes.dof_blur_far_enabled or attributes.dof_blur_near_enabled)):
-		warnings.append("Depth of field uses face-camera depth, not spherical distance; blur may differ at cube edges. Physical lens FOV is replaced by 90 degrees.")
+		warnings.append("Depth of field uses face-camera depth, not spherical distance; blur may differ at cube edges. Physical lens FOV uses the capture face projection, including any border.")
 
 
 func _inspect_camera(camera: Camera3D, warnings: Array[String]) -> void:

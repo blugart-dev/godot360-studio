@@ -18,7 +18,7 @@ the results, then follow the walkthrough using your own scene or an included exa
 | Animate a camera or prepare interactive events | [Authoring](../addons/godot360/AUTHORING.md) |
 | Add a soundtrack, mix audio and adjust timing | [Audio](../addons/godot360/AUDIO.md) |
 | Understand quality, recipes and command-line use | [Addon reference](../addons/godot360/README.md) |
-| Check glow, exposure and other scene effects | [Renderers](../addons/godot360/RENDERERS.md) |
+| Check glow, exposure and other scene effects | [Renderers](../addons/godot360/RENDERERS.md) · [Capture borders: before/after](capture-borders.md) |
 | Play, seek and listen inside Godot | [Playback](../addons/godot360/PLAYBACK.md) |
 | Reopen work, re-encode or reclaim space | [Recovery](../addons/godot360/RECOVERY.md) · [Storage](../addons/godot360/STORAGE.md) |
 | Plan a larger render and final delivery | [Job planning](job-planning.md) · [YouTube production](youtube-360-production.md) |
@@ -34,8 +34,9 @@ the results, then follow the walkthrough using your own scene or an included exa
 
 ## Development and project status
 
-The source is on the **0.8 beta baseline with unreleased improvements**. Start with
-the [roadmap](roadmap.md) for completed work and open release gates; use the
+The source is in **private development toward 1.0**, on the 0.8 version baseline.
+Start with the [remaining work and completion criteria](release-readiness.md) and
+the [roadmap](roadmap.md) for completed work; use the
 [validation record](validation.md) for the exact evidence behind support claims.
 
 | Topic | Reference |

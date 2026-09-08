@@ -249,6 +249,13 @@ See [validation results](validation.md) for the tested environment and known
 gaps. The addon carries its own MIT license and reference notes, so it can be
 copied into another project. It has not been published to the Asset Library.
 
+`tests/border_review.py` renders moving glow and no-glow controls with 0% and 12.5%
+capture borders. It measures discontinuities at an equatorial edge, three-face
+corner and top edge, and writes a before/after sheet. Run separately for Forward+
+and Mobile using a fresh output for each. See [capture borders](capture-borders.md)
+for the images, measurement limits and command. Geometry and audio checks should
+also use the six-second analytic motion fixture with a nonzero border.
+
 See the [performance record](performance.md) for measurements and the
 [roadmap](roadmap.md) for the next production milestones.
 The [development handoff](HANDOFF.md) records the current state and constraints

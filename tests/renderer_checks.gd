@@ -32,6 +32,23 @@ func _run() -> void:
 	changed = recipe.duplicate(true)
 	changed.rendering_driver = "d3d12"
 	check(not Planner.matches(sample, changed), "Changing driver invalidates estimates")
+	check(recipe.capture_border_percent == 0.0, "Default recipes preserve the original capture without borders")
+	var legacy_sample := sample.duplicate(true)
+	legacy_sample.erase("capture_border_percent")
+	check(Planner.matches(legacy_sample, recipe), "A missing legacy border is equivalent to zero for estimates")
+	changed = recipe.duplicate(true)
+	changed.capture_border_percent = 12.5
+	check(not Planner.matches(sample, changed), "Changing the border invalidates measured render estimates")
+	var projection_policy = preload("res://addons/godot360/capture_projection.gd")
+	for value in [-1, 25.1, INF, NAN, "12.5", true, null, {}, []]:
+		check(not projection_policy.validate({"capture_border_percent": value}).is_empty(), "Invalid border rejected: " + str(value))
+		changed = recipe.duplicate(true)
+		changed.capture_border_percent = value
+		var corrupt_sample := sample.duplicate(true)
+		corrupt_sample.capture_border_percent = value
+		check(not Planner.matches(sample, changed) and not Planner.matches(corrupt_sample, recipe), "Malformed border settings cannot reuse estimates or crash the panel")
+	for value in [0, 12.5, 25]:
+		check(projection_policy.validate({"capture_border_percent": value}).is_empty(), "Valid border accepted: " + str(value))
 	var camera := Camera3D.new()
 	root.add_child(camera)
 	camera.position = Vector3(1, 2, 3)
@@ -64,6 +81,20 @@ func _run() -> void:
 	rig.sync_camera()
 	check(rig.cameras.all(func(c): return is_equal_approx(c.get_camera_projection().get_fov(), 90.0)), "Animated physical lens retains square projection")
 	rig.free()
+	for percent in [12.5, 25.0]:
+		rig = preload("res://addons/godot360/capture_rig.gd").new()
+		root.add_child(rig)
+		rig.build(camera, 128, Vector2i(256, 128), percent)
+		var size := 160 if percent == 12.5 else 192
+		check(rig.cameras.all(func(c): return c.get_viewport().size == Vector2i(size, size)), "Border increases all six target dimensions without reducing core density")
+		check(rig.cameras.all(func(c): return is_equal_approx(tan(deg_to_rad(c.get_camera_projection().get_fov() * 0.5)), float(size) / 128.0)), "Actual physical-camera projection includes the requested border")
+		check(is_equal_approx(float(rig.material.get_shader_parameter("face_uv_scale")), 128.0 / size), "Assembler scales face coordinates to the expanded projection")
+		physical.frustum_focal_length += 5.0
+		rig.sync_camera()
+		check(rig.cameras.all(func(c): return is_equal_approx(tan(deg_to_rad(c.get_camera_projection().get_fov() * 0.5)), float(size) / 128.0)), "Animated physical lens preserves expanded projection")
+		rig.free()
+	var odd := projection_policy.geometry(511, 12.5)
+	check(odd.texture_size == 639 and odd.border_pixels == 64 and is_equal_approx(odd.uv_scale, 511.0 / 639.0), "Odd face sizes round the border symmetrically and retain core density")
 	camera.free()
 	print("RENDERER CHECKS: %d checks, %d failures" % [checks, failures])
 	quit(0 if failures == 0 else 1)

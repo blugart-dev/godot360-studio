@@ -1,5 +1,102 @@
 # Validation record — updated 2026-09-08
 
+## Capture borders and private 1.0 development — 2026-09-08
+
+The owner clarified that the addon stays private until 1.0 is implemented, tested
+and ready. The historical independent-beta gate no longer blocks development.
+[Release readiness](release-readiness.md) lists the remaining work and scope.
+This increment adds optional capture borders and smooth overlap blending,
+including three-face corners. Defaults remain zero; recipes/settings persist the
+choice, estimates become stale after a change, and re-encoding retains the
+original capture settings and pixels.
+
+### Rendered glow comparisons
+
+`tests/border_review.py` runs four actual export jobs per renderer: glow on/off,
+each with zero and 12.5% borders. Every job delivers 90 frames at 2048×1024 / 30 FPS,
+with a 512 core, eight warmup frames, Fast PNG and CRF 16. Windows 11 / RTX 3060 Ti /
+Godot 4.7.2 / Vulkan was used for Forward+ and Mobile. All eight deliveries pass
+their 13 media checks. The review measures every frame across an equatorial edge,
+three-face corner and top edge, with a fixed-count excess-gradient score at cube
+boundaries. It excludes the emitter core and compares no-glow controls separately.
+
+| Crossing | Forward+ reduction | Mobile reduction |
+| --- | ---: | ---: |
+| Equatorial edge | 99.60% | 98.77% |
+| Three-face corner | 99.19% | 98.20% |
+| Top edge | 99.47% | 98.81% |
+
+Maximum whole-frame mean RGB difference in no-glow controls is 0.000893 for
+Forward+ and 0.000806 for Mobile, on the 0–255 scale. Before/after perspective
+sheets were visually inspected; [the illustrated comparison](capture-borders.md)
+uses unmodified copies. The cuts are reduced, but the corner halo still changes
+shape and Mobile's glow differs from Forward+'s. The metric is not a general
+appearance score. At 12.5%, face pixel count grows 56.25%; these short runs do not
+establish production VRAM or timing overhead.
+
+Evidence is under `.godot360/seam-review/forward-blended/` and `mobile-blended/`,
+including `border-review.json`, per-frame scores, capture settings, images and
+pipeline logs. Earlier border-only experiments left a visible three-face cut;
+the accepted shader blends valid overlaps instead. Those experiments are not the
+accepted result. Shared exposure and arbitrary view-dependent effects remain open.
+
+### Package and workflow regression
+
+The frozen border implementation passed the following full local package reviews,
+including contracts, rendered playback/export, audio, cancellation, recovery,
+storage failures and the clean-project release workflow:
+
+| Windows engine / renderer | Checks passed |
+| --- | ---: |
+| Godot 4.5.1 / Compatibility | 669 |
+| Godot 4.6.3 / Compatibility | 669 |
+| Godot 4.7.2 / Compatibility | 669 |
+| Godot 4.7.2 / Forward+ / Vulkan | 669 |
+| Godot 4.7.2 / Mobile / Vulkan | 669 |
+
+The 3,345-check matrix and reproducible-package reports are under
+`.godot360/seam-review/final-validation/`. This snapshot's package SHA-256 is
+`fc9e7b81c030cac9baf3f48bfc25271feba11298ed17834a0dd39da5ce6ad055`.
+
+A subsequent review hardened malformed saved-border data in estimate/re-encode
+handling and corrected FOV warning/reference wording. Final package checks pass
+**177 per engine, 531 total** across 4.5.1/4.6.3/4.7.2: 54 renderer/projection,
+42 planning/re-encode, 41 export validation and 40 usability/persistence checks.
+The comparison against the full-matrix package records exactly five changed
+files: the planner, its two test files, capture warning text and addon README.
+The capture rig, shader and remaining runtime are identical. Final package:
+129 members, 813,525 bytes, SHA-256
+`3943c6475e76d009f798642b3df2be7abf54124f69c6e40ac8519758268220a3`.
+Its manifest matches source and it rebuilds byte-for-byte from its extracted
+source with the same Python/zlib runtime. Evidence:
+`.godot360/seam-review/accepted-final/review.json` and `candidate.json`.
+
+### Final-package motion, audio and panel review
+
+The final package then rendered the six-second analytic motion fixture at
+2048×1024 / 30 FPS, a 1024 core, two warmup frames and **12.5% borders** on all
+five combinations in the table above. All **900 source and 900 decoded frames**
+pass marker position/area, rear-seam, pole and flash-timing checks. Maximum marker
+position error stays below 0.31°, within the test's 0.45° tolerance. Every source
+and encoded audio cue stays within 10 ms, with no unexpected cue windows.
+
+Each capture was also re-encoded at a different CRF. All five new deliveries pass,
+retain exactly the original capture-settings dictionary and leave every source
+file hash unchanged. Evidence is under `.godot360/seam-review/motion-blended/`,
+with `summary.json` and per-case motion/re-encode reports. The final expanded
+Advanced panel was captured at 1100×600 and visually inspected: the border control,
+2560-pixel target and 56% extra-pixel hint are visible and wrap within the panel.
+
+Local documentation links/anchors, Python syntax and Git whitespace checks pass.
+The user's original project configuration, studio settings, THRESHOLD recipe and
+film master match the earlier recorded hashes. The expected sandbox certificate
+store warning appeared; the accepted runs contain no capture script error.
+
+The preceding documentation commit `0c3cb24` also has a green
+[hosted Linux/Mac run](https://github.com/blugart-dev/godot360-studio/actions/runs/34230197618).
+That hosted run predates capture borders and is not new-border CI evidence.
+No public release or upload was performed.
+
 ## Visual documentation — 2026-09-08
 
 The README and guides now show actual film output and the current panel before

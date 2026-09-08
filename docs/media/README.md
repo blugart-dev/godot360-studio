@@ -15,6 +15,7 @@ video service is needed to read the illustrated guides.
 | `sky-garden-panorama.jpg` | The entire sphere at 35 s, flattened to 1280×640 | 70 KB |
 | `umbral.jpg` | A forward view at 3 s from UMBRAL's rendered film | 29 KB |
 | `../../addons/godot360/media/studio.png` | Actual current panel, THRESHOLD 8K recipe, native playback paused at 35 s | 567 KB |
+| `capture-borders-forward.jpg`, `capture-borders-mobile.jpg` | Unmodified before/after sheets from the moving-emitter capture-border fixture; see [test and regeneration](../capture-borders.md) | Under 40 KB each |
 
 The film previews are **ordinary perspective views**, not interactive 360 players.
 They have no spherical metadata. This distinction is repeated beside the media

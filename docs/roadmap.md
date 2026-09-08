@@ -8,7 +8,20 @@ The 1.0 target is dependable mono 360 production from a documented Godot scene
 contract: repeatable recipes, predictable jobs, useful failure reports, and a
 validated YouTube delivery file. It does not include stereoscopic ODS or ambisonic audio.
 
-## Current priority — first successful export
+## Current priority — private development toward 1.0
+
+On 2026-09-08 the owner clarified that development should continue privately until
+1.0 is tested and ready. The `0.8.0` version is an internal development baseline;
+"beta" is not a pause or a requirement to recruit public testers. Independent
+feedback can inform the work without blocking local implementation and testing.
+
+**[Remaining work and 1.0 completion criteria](release-readiness.md)** is the
+current checklist. Priorities are capture seams and exposure, complex animated
+scenes, representative production endurance, native hardware coverage, and a final
+private end-to-end review of the exact package. Hardware-dependent checks remain
+open where hardware is unavailable; all other development continues.
+
+## Completed first-export and review increments
 
 On 2026-09-07 the user chose **Godot creators exporting their existing scenes** as
 the primary audience and authorized the first usability pass. The working tree
@@ -106,16 +119,17 @@ native backend are outside the first release's support claim.
 | 0.7 — Storage and production runs | Check writable job files and operating headroom; stop on low space/write failures with no unverified final output; preserve reusable sources; pass injected failure and engine regressions | Passed locally: 1,161 checks across three engines |
 | 0.7 — Production resolution | Inspect every source/decoded frame and beginning/middle/end audio cues in a 60-second 4096×2048/30 FPS run and a 30-second 7680×3840/30 FPS run; record storage, timings and limitations | Passed locally: all 1,800/900 frames and audio cues; see [validation](validation.md) |
 | 0.8 — Local candidate | Install the exact packaged addon in a clean project, complete the documented workflow, establish versioned source history and provide useful diagnostics bundles | Passed locally: 1,332 checks on the exact ZIP across three engines; reproducible build and Git history; see [candidate record](release-0.8.md) |
-| 0.8 — Independent beta | Gather at least one independent Windows/GPU beta report and resolve blocking defects | Pending external feedback; [report form](../addons/godot360/BETA-REPORT.md) and tested candidate are ready |
+| 0.8 — Independent beta (historical gate) | Gather independent Windows/GPU feedback | Superseded as a development prerequisite on 2026-09-08; private workflow review remains in the [1.0 checklist](release-readiness.md) |
 | 1.0 — Delivery review | User-reviewed YouTube navigation, orientation, detail, seams and audio on a current candidate | Positive user visual review of THRESHOLD on YouTube, 2026-09-07; individual playback checks are not yet recorded |
-| 1.0 — Release | Final reproducible package/manifest, accurate supported limits and release notes; explicit approval before public publication | Pending independent beta, findings and final release preparation |
+| 1.0 — Release | Final reproducible package/manifest, accurate supported limits and release notes; explicit approval before public publication | Pending implementation, native/private validation and final package acceptance in the [1.0 checklist](release-readiness.md) |
 
 The original [12-second candidate film](../renders/delivery-080-8k/video-360.mp4)
 remains verified local evidence. The subsequent [THRESHOLD film](threshold.md),
 produced with the unchanged 0.8 addon, adds 60 seconds at 8K and positive user
 feedback on its appearance in YouTube. See its guide for the exact report and
-scope; no playback device/resolution or itemized checklist was supplied. Independent
-Windows/GPU beta feedback remains the main outstanding external validation.
+scope; no playback device/resolution or itemized checklist was supplied. Native
+hardware coverage and a current private delivery review remain open in the
+[1.0 checklist](release-readiness.md).
 
 The 4K/8K runs establish these durations/settings on the measured machine. They do
 not certify one-hour exports, arbitrary scene complexity, or every GPU. The existing
@@ -123,7 +137,7 @@ not certify one-hour exports, arbitrary scene complexity, or every GPU. The exis
 fails, fix and repeat the affected case before expanding duration or hardware.
 
 Do local implementation and tests before requesting user verification. Independent
-beta feedback and YouTube review can proceed alongside development, but cannot be
+feedback and private playback review can proceed alongside development, but cannot be
 replaced by another local unit test. Do not add features solely to fill version
 numbers. Promote each platform's support claim only after its native workflow
 passes; partial/headless checks are useful evidence with a narrower scope.

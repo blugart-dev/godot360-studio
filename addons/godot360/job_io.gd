@@ -59,6 +59,9 @@ static func validate(job: Dictionary) -> String:
 		return "Choose 24, 25, 30, 50 or 60 fps and a duration up to one hour."
 	if int(job.face_size) < 128 or int(job.face_size) > 4096:
 		return "Face size must be between 128 and 4096 pixels."
+	var projection_error := preload("capture_projection.gd").validate(job)
+	if not projection_error.is_empty():
+		return projection_error
 	if int(job.get("warmup_frames", 2)) < 0 or int(job.get("warmup_frames", 2)) > 10:
 		return "Warmup must be between zero and ten frames."
 	if int(job.get("crf", 18)) < 12 or int(job.get("crf", 18)) > 28:

@@ -108,6 +108,11 @@ to prepare a local 2K review copy, then play, pause, seek and hear the complete 
 inside the editor. Read **Scene notes** beside playback and inspect movement and
 sound throughout the clip. See [playback, cache and requirements](PLAYBACK.md).
 
+If a glow halo has a hard cut, try **Advanced → Capture border per edge (%)** at
+**12.5%**, then run a new short test. It adds face context and blends overlaps,
+using about 56% more face pixels. Read [capture borders and limits](RENDERERS.md#capture-borders)
+before relying on it for a final render.
+
 **Open output** opens the selected job folder. `video-360.mp4` is the verified
 delivery file; `report.json` records the technical checks. For full-resolution
 playback, you can install

@@ -14,6 +14,8 @@ const StorageGuard = preload("storage_guard.gd")
 const Renderer = preload("renderer_policy.gd")
 var renderer_control: OptionButton
 var driver_control: OptionButton
+var border_control: SpinBox
+var border_hint: Label
 const AUDIO_MODES = ["scene", "soundtrack", "mix"]
 const SETTINGS_PATH = "res://.godot360/settings.cfg"
 var profile: Resource = Profile.new()
@@ -215,6 +217,7 @@ func _refresh_fields() -> void:
 		crf_control.set_value_no_signal(profile.crf)
 	renderer_control.select(Renderer.METHODS.find(profile.rendering_method))
 	driver_control.select(Renderer.DRIVERS.find(profile.rendering_driver))
+	border_control.set_value_no_signal(profile.capture_border_percent)
 	_refresh_audio_fields()
 	_refresh_quality_hint()
 	_refresh_scene_cameras(false)
@@ -236,6 +239,9 @@ func _refresh_quality_hint() -> void:
 	var index := fps_picker.get_item_index(int(recipe_fields.fps.text))
 	if index >= 0:
 		fps_picker.select(index)
+	if border_hint != null and int(recipe_fields.face_size.text) > 0:
+		var geometry := preload("capture_projection.gd").geometry(int(recipe_fields.face_size.text), profile.capture_border_percent)
+		border_hint.text = "Extra scene context can reduce glow cuts at face edges. %d px face targets, %.0f%% more face pixels. Render time and GPU memory may increase; run a new short test. Auto-exposure seams remain." % [geometry.texture_size, (geometry.pixel_ratio - 1.0) * 100.0]
 
 
 func _use_current_scene() -> void:
@@ -824,7 +830,7 @@ func _save_settings() -> void:
 	config.set_value("export", "last_folder", folder)
 	config.set_value("export", "sample_folder", sample_record.get("folder", ""))
 	config.set_value("export", "recent_folders", recent_exports.paths)
-	for key in ["crf", "random_seed", "warmup_frames", "frame_writer", "rendering_method", "rendering_driver"]:
+	for key in ["crf", "random_seed", "warmup_frames", "frame_writer", "rendering_method", "rendering_driver", "capture_border_percent"]:
 		config.set_value("advanced", key, profile.get(key))
 	for key in Audio.DEFAULTS:
 		config.set_value("audio", key, profile.get(key))
@@ -842,7 +848,7 @@ func _load_settings() -> void:
 	output.text = str(config.get_value("export", "output", output.text))
 	for key in recipe_fields:
 		recipe_fields[key].text = str(config.get_value("recipe", key, recipe_fields[key].text))
-	for key in ["crf", "random_seed", "warmup_frames", "frame_writer", "rendering_method", "rendering_driver"]:
+	for key in ["crf", "random_seed", "warmup_frames", "frame_writer", "rendering_method", "rendering_driver", "capture_border_percent"]:
 		profile.set(key, config.get_value("advanced", key, profile.get(key)))
 	for key in Audio.DEFAULTS:
 		profile.set(key, config.get_value("audio", key, profile.get(key)))
@@ -851,6 +857,7 @@ func _load_settings() -> void:
 	crf_control.set_value_no_signal(profile.crf)
 	renderer_control.select(Renderer.METHODS.find(profile.rendering_method))
 	driver_control.select(Renderer.DRIVERS.find(profile.rendering_driver))
+	border_control.set_value_no_signal(profile.capture_border_percent)
 	sample_record = Planner.load_sample(str(config.get_value("export", "sample_folder", "")))
 	folder = str(config.get_value("export", "last_folder", ""))
 	# Migrate the previous single-job preference only when history is absent.

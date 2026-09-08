@@ -71,8 +71,10 @@ Open this repository's `project.godot` to try them; the plugin is already enable
 
 ## Where the project stands
 
-**0.8 beta baseline, with unreleased improvements to onboarding, rendering,
-playback and recent exports.** The working source has not been published as a new release.
+**Private development toward 1.0, currently on the 0.8 code baseline.**
+Onboarding, rendering, playback and recent-export improvements are implemented.
+Development and testing continue privately until the [1.0 completion criteria](docs/release-readiness.md)
+are met; no public beta is required.
 
 - **Windows:** tested exports and review on Godot 4.5.1, 4.6.3 and 4.7.2;
   Forward+/Mobile also have Windows Vulkan and Direct3D 12 visual evidence.
@@ -80,8 +82,10 @@ playback and recent exports.** The working source has not been published as a ne
   including hosted CI. Hardware GPU validation remains open.
 - **macOS:** Apple Silicon headless CI passes, including playback and recovery
   checks. Graphical export and Mac GPU validation remain open.
-- **Next:** independent creator feedback, hardware-platform coverage, glow and
-  exposure seam work, and representative Forward+/Mobile production endurance.
+- **New:** optional [capture borders with before/after examples](docs/capture-borders.md)
+  reduce tested glow cuts at edges and corners.
+- **Next:** exposure and remaining effect seams, complex animated scenes, native hardware
+  coverage, representative Forward+/Mobile endurance and private workflow review.
 
 Scope is **mono 360°, SDR BT.709 and stereo sound**. Six-face capture can show
 seams with glow, auto exposure and other screen-space effects; inspect a test

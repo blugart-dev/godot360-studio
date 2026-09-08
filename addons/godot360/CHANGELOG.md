@@ -1,5 +1,17 @@
 # Changelog
 
+## Unreleased — capture borders and private 1.0 development
+
+- Add optional capture borders with smooth overlap blending at face edges and
+  three-face corners. Preserve the 90° core's pixel density and final panorama
+  dimensions; the default zero border keeps the original capture path.
+- Save the setting in recipes and local preferences, show the additional face
+  pixel cost, invalidate stale estimates and retain capture evidence on re-encode.
+- Add moving glow/no-glow comparisons and projection, validation, persistence
+  and re-encode checks. Glow shape and independent auto-exposure remain limits.
+- Clarify that 0.8 is an internal development baseline. Work continues privately
+  until the supported 1.0 workflow is implemented and validated.
+
 ## Unreleased — recent exports
 
 - Add a project-local list of the last 12 launched or opened jobs, with scene,

@@ -1,6 +1,9 @@
-# Compatibility and beta checks
+# Compatibility and private validation
 
-Godot360 Studio 0.8.0 is a local beta candidate. Use the [main guide](README.md)
+Godot360 Studio 0.8.0 is a private development baseline toward 1.0. Implementation
+and validation continue before public release; independent beta feedback is not
+a prerequisite for continuing work. This filename and the historical tables are
+retained for existing links. Use the [main guide](README.md)
 for installation and export, [AUTHORING.md](AUTHORING.md) for timelines, and
 [AUDIO.md](AUDIO.md) for music and synchronization. This package has not been
 published to a community registry.
@@ -30,7 +33,8 @@ coverage. The repository's validation record tracks exact-package reruns separat
 macOS has native tool resolution and Homebrew setup instructions. Its CI lane
 checks headless contracts; even a passing lane does not establish rendered export
 support. Native Mac editor/capture/recovery and Intel/Apple Silicon validation
-remain pending. CI is configured in source; no hosted run is claimed here.
+remain pending. Hosted Mac headless CI passes; see the repository's validation
+record for the exact runs and counts.
 
 ## Historical Windows environment
 

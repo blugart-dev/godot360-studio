@@ -75,7 +75,7 @@ def main(args):
               "compatibility_report": str(matrix_path),
               "platform": matrix.get("platform"), "architecture": matrix.get("architecture"),
               "coverage": matrix.get("coverage"),
-              "independent_beta_feedback": "pending; automated checks use the local machine",
+              "independent_beta_feedback": "not assessed; private development continues without a public beta",
               "youtube_playback": "pending; no upload performed"}
     (output / "package-review.json").write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
     print(json.dumps(report, indent=2), flush=True)

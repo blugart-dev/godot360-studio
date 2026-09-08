@@ -100,6 +100,20 @@ static func _advanced(panel: Control, parent: Control) -> void:
 	panel.recipe_fields.fps.hide()
 	grid.get_child(grid.get_child_count() - 2).hide()
 	_note(section, "Manual camera paths are relative to the scene root. Use this for cameras created by scripts at runtime.")
+	var border_row := HBoxContainer.new()
+	section.add_child(border_row)
+	_label(border_row, "Capture border per edge (%)")
+	panel.border_control = SpinBox.new()
+	panel.border_control.min_value = 0.0
+	panel.border_control.max_value = 25.0
+	panel.border_control.step = 0.5
+	panel.border_control.value = panel.profile.capture_border_percent
+	border_row.add_child(panel.border_control)
+	panel.border_hint = _note(section, "")
+	panel.border_control.value_changed.connect(func(value: float):
+		panel.profile.capture_border_percent = value
+		panel._refresh_quality_hint()
+		panel._refresh_plan())
 	var renderer_grid := _grid(section)
 	_label(renderer_grid, "Capture renderer")
 	panel.renderer_control = OptionButton.new()

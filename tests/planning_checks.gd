@@ -61,6 +61,23 @@ func _run() -> void:
 	check(Planner.resolve_reencode(request).error.contains("new render"), "Re-encoding cannot relabel captured pixels with a different renderer")
 	request.erase("rendering_method")
 	check(resolved.job.rendering_method == source.rendering_method, "Re-encoding retains the original renderer selection")
+	request.capture_border_percent = 12.5
+	check(Planner.resolve_reencode(request).error.contains("new render"), "Re-encoding rejects a change to the captured border")
+	request.capture_border_percent = "invalid"
+	check(not Planner.resolve_reencode(request).error.is_empty(), "Malformed re-encode border requests cannot become zero silently")
+	request.erase("capture_border_percent")
+	source.capture_border_percent = 12.5
+	IO.write_json(capture_folder.path_join("job.json"), source)
+	check(Planner.resolve_reencode(request).job.capture_border_percent == 12.5, "Re-encoding preserves a retained nonzero border without a request override")
+	request.capture_border_percent = 12.5
+	check(Planner.resolve_reencode(request).error.is_empty(), "An explicitly unchanged capture border is allowed for re-encoding")
+	for invalid in [{}, [], "invalid", null]:
+		var corrupt_source := source.duplicate(true)
+		corrupt_source.capture_border_percent = invalid
+		IO.write_json(capture_folder.path_join("job.json"), corrupt_source)
+		check(Planner.resolve_reencode(request).error.begins_with("Saved capture:"), "Malformed saved borders produce an actionable re-encode error")
+	IO.write_json(capture_folder.path_join("job.json"), source)
+	request.erase("capture_border_percent")
 	request.output_dir = capture_folder.path_join("nested-output")
 	check(not Planner.resolve_reencode(request).error.is_empty(), "Re-encode output cannot write inside its source capture")
 	check(not Planner.validate_frames(capture_folder, source).is_empty(), "A missing sequence is rejected")

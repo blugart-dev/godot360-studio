@@ -70,9 +70,10 @@ in a scrollable area beside playback. Inspect the relevant effects at several
 times and viewing directions. These checks are heuristic; runtime changes and
 custom materials can introduce effects that saved-scene inspection cannot see.
 
-No rendering effect is automatically disabled or repaired. In particular, glow
-halos can still stop at cube boundaries and auto exposure still meters separate
-faces. See [renderer behavior and limits](RENDERERS.md).
+No rendering effect is automatically disabled or repaired. The optional
+[capture border](RENDERERS.md#capture-borders) can soften glow cuts at face edges
+and corners. Auto exposure still meters separate faces, and view-dependent effects
+need inspection. See [renderer behavior and limits](RENDERERS.md).
 
 ## Validation scope
 

@@ -12,12 +12,13 @@ to 2K / 30 FPS. THRESHOLD is an example from the full source repository.*
 
 **[Start here: your first 360° export →](QUICKSTART.md)**
 
-**Version 0.8.0 — beta baseline with unreleased renderer, usability and playback changes.** The addon has passed isolated project checks on
+**Version 0.8.0 — private development baseline toward 1.0.** Development and
+validation continue before public release. The addon has passed isolated project checks on
 Windows with Godot 4.5.1, 4.6.3 and 4.7.2, Compatibility, and an NVIDIA RTX 3060 Ti.
 Linux and macOS preparation and evidence are listed in [Platform setup](PLATFORMS.md).
 Forward+ and Mobile have actual rendered evidence; see [renderers and scene appearance](RENDERERS.md).
 Native Mac exports remain unvalidated. Read the
-[compatibility and beta guide](BETA.md) for the exact coverage and a clean-project
+[compatibility guide](BETA.md) for the exact coverage and a clean-project
 check. No custom engine or .NET runtime is needed.
 
 ## Install
@@ -166,7 +167,16 @@ the new MP4s, preview, logs, and source reference, not another copy of the sourc
 **Load recipe** restores it. Additional fields can be edited in Godot's Inspector:
 random seed and warmup frames. H.264 CRF is also exposed in the panel. Duration is
 rounded to whole frames.
-Frame storage is also saved with the recipe and local editor settings.
+Frame storage and the optional capture border are also saved with the recipe and
+local editor settings.
+
+**Capture border per edge (%)**, under Advanced, renders extra scene context
+around each face, then smoothly blends overlapping views. Start with **12.5%** when testing
+glow cuts; the default is **0%**. It retains the core's pixel density and increases
+face pixel count by about 56% at 12.5%, so GPU memory and render cost can rise.
+Output dimensions stay the same. Run a new short test after changing it.
+It reduces some glow cuts but does not fix independent auto-exposure metering or
+all view-dependent effects. See [capture borders and limits](RENDERERS.md#capture-borders).
 
 | Use | Equirectangular output | Face size | FPS |
 | --- | --- | --- | --- |
@@ -197,7 +207,7 @@ scene base, absolute frame sampling, editable Path3D example, and motion/audio c
 
 Choose a saved `.tscn` and select its `Camera3D` from the camera picker. For a runtime-created camera, enter its path relative to the scene root under **Advanced capture and encoding**.
 The rig follows that camera's position and orientation. FOV is replaced by six
-square 90° views; near/far planes, cull mask, environment, camera attributes,
+square views with a 90° core and optional borders; near/far planes, cull mask, environment, camera attributes,
 offsets and camera compositor follow the source each frame. See [renderer details](RENDERERS.md)
 for viewport settings and effects that use independent face histories.
 Keep the source camera's scale uniform. Avoid abrupt rotations and

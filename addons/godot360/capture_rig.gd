@@ -15,16 +15,19 @@ var source: Camera3D
 var cameras: Array[Camera3D] = []
 var material: ShaderMaterial
 var before_sync: Callable
+var projection: Dictionary
 
 
-func build(camera: Camera3D, face_size: int, output_size: Vector2i) -> void:
+func build(camera: Camera3D, face_size: int, output_size: Vector2i, border_percent: float = 0.0) -> void:
 	source = camera
+	projection = preload("capture_projection.gd").geometry(face_size, border_percent)
 	material = ShaderMaterial.new()
 	material.shader = preload("equirectangular.gdshader")
+	material.set_shader_parameter("face_uv_scale", projection.uv_scale)
 	for i in range(6):
 		var viewport := SubViewport.new()
 		viewport.name = "Face_" + FACE_NAMES[i]
-		viewport.size = Vector2i(face_size, face_size)
+		viewport.size = Vector2i(projection.texture_size, projection.texture_size)
 		viewport.world_3d = source.get_world_3d()
 		viewport.audio_listener_enable_3d = false
 		viewport.render_target_update_mode = SubViewport.UPDATE_ALWAYS
@@ -66,7 +69,7 @@ func sync_camera() -> void:
 		view.attributes = source.attributes
 		view.compositor = source.compositor
 		view.cull_mask = source.cull_mask
-		view.set_perspective(90.0, source.near, source.far)
+		view.set_perspective(float(projection.fov), source.near, source.far)
 		var local_basis := Basis.looking_at(DIRECTIONS[i], UP_VECTORS[i])
 		var transform := source.get_camera_transform()
 		view.global_transform = Transform3D(transform.basis.orthonormalized() * local_basis, transform.origin)

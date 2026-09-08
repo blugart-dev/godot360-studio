@@ -26,6 +26,10 @@ func _run() -> void:
 		check(not IO.validate(invalid).is_empty(), "Invalid recipe is rejected: " + str(change))
 	var empty: Dictionary = {}
 	check(not IO.validate(empty).is_empty(), "Missing job fields are rejected")
+	for border in [-0.5, 26.0, "12.5", true]:
+		var invalid := recipe.duplicate()
+		invalid.capture_border_percent = border
+		check(not IO.validate(invalid).is_empty(), "Coordinator rejects invalid capture border: " + str(border))
 	check(not IO.quality_advice(recipe).is_empty(), "Draft resolution reports limited viewing detail")
 	check(not IO.quality_advice({"width": 7680, "face_size": 512}).is_empty(), "Increasing output size alone warns about low-resolution cube faces")
 	check(IO.quality_advice({"width": 4096, "face_size": 2048}).is_empty(), "Production sampling has no draft or face-resolution warning")

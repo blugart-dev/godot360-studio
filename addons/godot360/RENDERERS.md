@@ -74,7 +74,7 @@ atlas settings at capture setup. Project-wide shader and rendering settings rema
 under Godot's control. Save runtime-specific viewport changes before the rig is
 built, using `begin_360_capture` if necessary.
 
-Projection becomes six square 90° perspective views: source FOV, orthographic
+Projection becomes six square perspective views with a retained 90° core: source FOV, orthographic
 projection and frustum lens shift cannot describe a sphere. Physical camera
 attributes retain exposure/DOF while their lens FOV is replaced. The output is
 opaque. A panorama cannot preserve the composition of a single perspective frame.
@@ -101,13 +101,55 @@ you explicitly choose a renderer that lacks them. Follow the
 and [compositor contract](https://docs.godotengine.org/en/stable/tutorials/rendering/compositor.html).
 
 Actual frame inspection found **hard glow-halo cuts at face boundaries** and
-**large exposure differences between faces with auto exposure**. The panorama
-faithfully reproduces those native face pixels; these are limitations of the
-current independent 90° views. Guard-band capture could reduce bloom cuts, while
-shared spherical exposure would require a new metering strategy. Neither is
-implemented. No large TAA trail appeared in the inspected simple motion sequence;
+**large exposure differences between faces with auto exposure**. The optional
+capture border below supplies surrounding pixels for glow. Shared spherical
+exposure still requires a new metering strategy and remains open.
+No large TAA trail appeared in the inspected simple motion sequence;
 this does not validate particles, skinned meshes or camera cuts. FSR output,
 VoxelGI, baked LightmapGI and stateful custom compositor histories remain untested.
+
+## Capture borders
+
+**Advanced → Capture border per edge (%)** adds context outside each face before
+Godot applies glow and other effects. The assembler smoothly blends overlapping
+views at face edges and corners. **0%** preserves the original capture path;
+**12.5%** is a useful starting point for testing glow cuts. The allowed range is
+0–25% per edge. This is an
+explicit recipe setting; the addon does not silently change an existing scene.
+
+For a core of `N` pixels and a border of `P` percent, each edge gets
+`ceil(N * P / 100)` extra pixels. The target grows symmetrically and its FOV expands
+to preserve the core's sampling density. At 12.5%, a 2048 core uses a 2560 target
+and a 3072 core uses 3840; both render about **56% more face pixels**. GPU memory
+and timing costs depend on the scene and effects. The panorama dimensions and
+retained frame format do not change. A new measured sample is required.
+
+Border capture can reduce an abrupt missing glow halo from a bright object just
+outside a face. Residual differences remain because glow shape, reflections,
+fog and other effects depend on projection and screen resolution. It does not
+share auto-exposure metering, reconstruct an arbitrary screen shader, or make
+stateful compositor histories interchangeable. Inspect motion and all directions.
+
+Recipes, local settings and `job.json` store `capture_border_percent`.
+`capture-settings.json` and the delivery report retain the percent, actual border
+pixels, face target dimensions and FOV. Re-encoding keeps the captured border and
+pixels; requesting a different border requires a new capture. Legacy recipes and
+jobs with no border field use zero.
+
+The repository's `tests/border_review.py` renders an emitter across an equatorial
+edge, a three-face corner and a top edge. It compares every frame against a
+zero-border render, measures edge discontinuity and checks no-glow geometry.
+`tests/motion_review.py` separately checks moving marker positions, poles, rear
+seam and audio. Current acceptance results are recorded in `docs/validation.md`.
+
+From the repository or unpacked package, use a fresh output directory:
+
+```shell
+python tests/border_review.py --godot /path/to/godot --ffmpeg /path/to/ffmpeg --ffprobe /path/to/ffprobe --output /path/to/fresh-review --method forward_plus --driver vulkan
+```
+
+Repeat with `--method mobile`. The review requires NumPy, Pillow, a working native
+GPU backend and enough disk space for four three-second 2K frame sequences.
 
 ## Estimates, retained captures and troubleshooting
 

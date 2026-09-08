@@ -3,6 +3,7 @@ const IO = preload("job_io.gd")
 const Audio = preload("audio_plan.gd")
 const Storage = preload("storage_guard.gd")
 const Renderer = preload("renderer_policy.gd")
+const CaptureProjection = preload("capture_projection.gd")
 const MATCH_KEYS = ["scene_path", "camera_path", "width", "height", "face_size", "fps",
 	"random_seed", "warmup_frames", "frame_writer", "crf", "ffmpeg", "ffprobe"]
 
@@ -39,6 +40,10 @@ static func file_size(path: String) -> int:
 static func matches(sample: Dictionary, target: Dictionary) -> bool:
 	# Old samples predate project-renderer capture and cannot predict this pipeline.
 	if str(sample.get("rendering_signature", "")) != Renderer.signature(target):
+		return false
+	if not CaptureProjection.validate(sample).is_empty() or not CaptureProjection.validate(target).is_empty():
+		return false
+	if float(sample.get("capture_border_percent", 0.0)) != float(target.get("capture_border_percent", 0.0)):
 		return false
 	for key in MATCH_KEYS:
 		if str(sample.get(key, "")) != str(target.get(key, "")):
@@ -95,9 +100,18 @@ static func resolve_reencode(request: Dictionary) -> Dictionary:
 	var capture := IO.read_json(source.path_join("capture-result.json"))
 	if recipe.is_empty() or not capture.get("ok", false) or not DirAccess.dir_exists_absolute(source.path_join("frames")):
 		return {"error": "Select an original capture folder with completed PNG frames and WAV audio."}
+	var saved_border_error := CaptureProjection.validate(recipe)
+	if not saved_border_error.is_empty():
+		return {"error": "Saved capture: " + saved_border_error}
 	for key in ["rendering_method", "rendering_driver"]:
 		if request.has(key) and str(request[key]) != str(recipe.get(key, "project")):
 			return {"error": "Re-encoding preserves the captured renderer and pixels. Start a new render to change the renderer or graphics driver."}
+	if request.has("capture_border_percent"):
+		var border_error := CaptureProjection.validate(request)
+		if not border_error.is_empty():
+			return {"error": border_error}
+		if float(request.capture_border_percent) != float(recipe.get("capture_border_percent", 0.0)):
+			return {"error": "Re-encoding preserves the original capture border and pixels. Start a new render to change the capture border."}
 	var destination: String = str(request.get("output_dir", ""))
 	var normalized_source := source.replace("\\", "/").simplify_path().trim_suffix("/").to_lower()
 	var normalized_output := destination.replace("\\", "/").simplify_path().trim_suffix("/").to_lower()

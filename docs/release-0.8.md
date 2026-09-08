@@ -1,5 +1,9 @@
 # Umbral360 0.8 beta candidate
 
+**Historical snapshot.** The owner clarified on 2026-09-08 that development stays
+private until 1.0 is tested and ready. The beta gates below no longer define the
+current work order; use the [private 1.0 checklist](release-readiness.md).
+
 Prepared locally on 2026-09-07 for Windows, Godot 4.5.1/4.6.3/4.7.2 and
 Compatibility. THRESHOLD later received positive user-reported YouTube visual
 feedback; see [the film record](threshold.md). Independent beta feedback, detailed
