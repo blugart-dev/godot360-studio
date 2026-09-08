@@ -1,5 +1,41 @@
 # Validation record — updated 2026-09-08
 
+## CPU visibility bounds follow-up — 2026-09-08
+
+The initial particle comparison below used an automatic CPU Visibility AABB and
+an explicit GPU AABB. A targeted follow-up to `8b16092` sets the same conservative
+local bounds on CPU emitters. In Windows 4.7.2 Compatibility, that removes the
+first-frame gap: **all 60 source and decoded MP4 frames match the analytic mesh
+reference exactly**. The authored workaround is now in the fixture and
+[guide](particle-capture.md); the addon changes no particle bounds itself.
+
+The scene note now applies specifically to Compatibility CPU emitters with
+automatic bounds and recommends an authored Visibility AABB. The reviewer checks
+that explicit bounds suppress this note, while `--automatic-bounds` retains the
+known failing case as an observation. Linux CI now tests both CPU and GPU
+appearance with explicit bounds, all four processing modes and the automatic-
+bounds observation. It no longer needs the earlier `--gpu-only` restriction.
+
+The final follow-up package is `.godot360/particle-review/bounds-final/candidate.zip`,
+SHA256 `d396af57e4ae9002d3831e88c32874b43cdd1e9622073f5739620a77c93d7c22`.
+Its exact unpacked source passes nine Windows 4.7.2 Compatibility exports:
+four settled CPU/GPU/reference jobs, four mode cases and one automatic-bounds
+observation. All accepted comparisons and modes pass; the observation still fails
+on frame zero. This adds 240 settled source/decoded frames and 60 observed
+source/decoded frames. Full earlier package results below remain applicable to
+capture outside inspection: this follow-up changes the note, fixture, reviewer,
+authoring/changelog text and CI selection, with no further capture-clock change.
+Two additional CPU exports on Windows Godot **4.5.1 and 4.6.3** also match their
+retained analytic references exactly in all 60 source/decoded frames each. Their
+diagnostics correctly omit the automatic-bounds note. The first 4.5.1 invocation
+failed before scene startup because the standalone helper omitted its disposable
+profile; restoring the isolated profile fixed that test invocation, with no addon
+change. It is retained as a harness failure, not counted as a passed export.
+
+The initial `8b16092` validation and narrower particle lanes are historical
+evidence, retained below. Zero/short-warmup behavior, arbitrary fixed particle
+steps, automatic-bound startup and complex particle effects remain open.
+
 ## Particle capture and processing modes — 2026-09-08
 
 Continued privately from clean `f5d9198`. The [particle fixture](particle-capture.md)

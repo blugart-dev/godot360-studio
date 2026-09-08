@@ -4,8 +4,8 @@ Capture now preserves a scene's authored processing mode. Previously, it forced
 the root to `INHERIT` at startup and after every captured frame: disabled scenes
 began running, and scenes that paused themselves resumed on the next frame.
 Warmup now restores the saved mode once. Zero warmup does not change it.
-Scene notes flag short particle warmup and the known Compatibility CPU startup
-defect so these limits are visible when reviewing an export.
+Scene notes flag short particle warmup and Compatibility CPU automatic bounds
+so these limits are visible when reviewing an export.
 
 The new fixture checks CPU and GPU particles in the shared 3D world, with eight
 opaque colored spheres moving through cube-face boundaries. A separate scene
@@ -21,7 +21,8 @@ at 45° yaw. These are rendered views of the export, with no synthetic particle 
 
 The reference uses constant unit velocity, one particle per emitter, opaque sphere
 meshes, no gravity or collisions, **particle Fixed FPS = 0**, GPU interpolation off
-and fixed GPU seeds. The scene runs once per movie frame; all six cameras see the
+and fixed GPU seeds. Both emitter types use explicit visibility bounds. The scene
+runs once per movie frame; all six cameras see the
 same simulation. The first delivered native simulation sample is one frame interval
 after emission, followed by one interval per frame. This differs from a property's
 absolute timeline sample at time zero.
@@ -43,11 +44,19 @@ could begin with missing particles or show them in only some directions. Two
 warmup frames also produced an opening difference from the settled reference.
 A GPU emitter with a separate fixed 30 Hz step repeated a particle step in a
 30 FPS export, while the same constant-velocity CPU case matched its reference.
-In Compatibility, the CPU emitter is missing from the first delivered frame even
-with eight warmup frames, then matches the reference for the remaining 59 frames.
-That startup defect remains open; Compatibility appearance coverage is limited
-to GPU particles. These observations remain recorded; the tests do not silently
-accept them as exact timeline matches.
+In Compatibility, a CPU emitter with **automatic visibility bounds** misses the
+first delivered frame even with eight warmup frames, then matches the reference
+for the remaining 59 frames. Setting an explicit **Visibility AABB** removed the
+gap: all 60 source and decoded frames matched the mesh reference exactly. The
+fixture now uses explicit bounds for both CPU and GPU emitters; the automatic-
+bounds failure is retained as a separate observation.
+
+For CPU particles in Compatibility, set **Visibility AABB** to cover the entire
+effect, including the mesh extent and full motion. This fixture uses an AABB from
+`(-2, -2, -2)` with size `(4, 8, 4)` relative to each emitter. Choose bounds suitable
+for your scene; oversized bounds cost culling efficiency and undersized bounds
+can hide visible particles. The addon preserves authored bounds. Automatic-bound
+startup remains open, with a tested authored workaround.
 
 For a particle scene, try **8–10 warmup frames** in the recipe Inspector and
 review the opening and motion. Adjust particle Fixed FPS/interpolation in the
@@ -74,12 +83,12 @@ python tests/particle_review.py --godot /path/to/godot --ffmpeg /path/to/ffmpeg 
 ```
 
 Use `--method mobile --border 12.5` for the bordered Mobile case, or
-`--method gl_compatibility --driver opengl3 --gpu-only`. The basic run exports four two-second
+`--method gl_compatibility --driver opengl3`. The basic run exports four two-second
 2K clips; `--lifecycle` adds four processing-mode clips. `--zero-warmup`,
-`--short-warmup` and `--fixed-step` add observations against the settled reference.
+`--short-warmup`, `--fixed-step` and `--automatic-bounds` add observations against the settled reference.
 `--gpu-only` omits CPU appearance comparison, retaining CPU processing-mode tests
-when `--lifecycle` is selected. Omitting it in Compatibility reproduces the known
-CPU startup failure. Those observations have their own `ok` fields under `startup` and do not gate the
+when `--lifecycle` is selected. `--automatic-bounds` reproduces the known CPU
+startup failure. Observations have their own `ok` fields under `startup` and do not gate the
 eight/ten-frame continuous-step cases. `--lifecycle-only --baseline-worker PATH`
 checks the old worker against the processing contract and must fail.
 

@@ -100,7 +100,7 @@ jobs:
         env:
           LIBGL_ALWAYS_SOFTWARE: '1'
         run: |
-          xvfb-run -a -s '-screen 0 1400x900x24' python tests/particle_review.py --godot "$GODOT" --ffmpeg "$(command -v ffmpeg)" --ffprobe "$(command -v ffprobe)" --output .godot360/ci/particles --method gl_compatibility --driver opengl3 --gpu-only --lifecycle
+          xvfb-run -a -s '-screen 0 1400x900x24' python tests/particle_review.py --godot "$GODOT" --ffmpeg "$(command -v ffmpeg)" --ffprobe "$(command -v ffprobe)" --output .godot360/ci/particles --method gl_compatibility --driver opengl3 --lifecycle --automatic-bounds
       - name: Retain review evidence
         if: always()
         uses: actions/upload-artifact@v7

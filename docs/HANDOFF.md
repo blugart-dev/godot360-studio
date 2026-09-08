@@ -1,5 +1,28 @@
 # Godot360 Studio development handoff
 
+## CPU visibility bounds follow-up — 2026-09-08
+
+Implementation `8b16092` is pushed to private `origin/main`. A follow-up found an
+authored workaround for its measured Compatibility CPU first-frame gap: set a
+conservative **Visibility AABB** covering the full effect. All 60 frames then
+match the analytic mesh reference exactly on Windows 4.7.2. The fixture now uses
+explicit bounds for both CPU and GPU emitters; `--automatic-bounds` preserves the
+failing case as a visible observation. The addon preserves authored bounds and
+narrows the Compatibility note to automatic bounds, with concrete guidance.
+
+The final follow-up ZIP is `.godot360/particle-review/bounds-final/candidate.zip`,
+SHA256 `d396af57e4ae9002d3831e88c32874b43cdd1e9622073f5739620a77c93d7c22`.
+Its exact unpacked source passes nine Compatibility exports, including CPU/GPU
+appearance and the four mode cases. CI now covers both particle types with
+explicit bounds. The earlier `--gpu-only` limitation below describes the initial
+investigation, not the current fixture. See [validation](validation.md) for all
+snapshots and [particle capture](particle-capture.md) for the authoring contract.
+The explicit-bounds CPU case also matches all source/decoded frames exactly on
+4.5.1 and 4.6.3. Keep per-review APPDATA/LOCALAPPDATA isolation in standalone
+Windows helpers; omitting it caused a 4.5.1 startup/log-directory harness failure.
+Automatic-bound startup remains open; this is an authored workaround, not an
+automatic rewrite of an arbitrary effect's culling bounds.
+
 ## Particle capture and authored processing modes — 2026-09-08
 
 Continued privately from clean `f5d9198`. `capture.gd` now preserves the authored

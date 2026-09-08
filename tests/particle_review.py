@@ -109,6 +109,8 @@ anti_aliasing/quality/msaa_3d=2
                          "cpu-zero-warmup": {"particle_kind": "cpu", "warmup_frames": 0}})
     if args.fixed_step:
         variants["gpu-fixed-30"] = {"particle_fps": 30}
+    if args.automatic_bounds:
+        variants["cpu-automatic-bounds"] = {"particle_kind": "cpu", "particle_auto_bounds": True}
     if args.short_warmup:
         variants.update({"gpu-short-warmup": {"warmup_frames": 2},
                          "cpu-short-warmup": {"particle_kind": "cpu", "warmup_frames": 2}})
@@ -136,7 +138,8 @@ anti_aliasing/quality/msaa_3d=2
         if job["warmup_frames"] < 8 and not args.baseline_worker:
             assert any("Particles may be missing" in warning for warning in report["capture_settings"]["warnings"]), name
         if args.method == "gl_compatibility" and job.get("particle_kind") == "cpu" and not args.baseline_worker:
-            assert any("Compatibility CPU particles" in warning for warning in report["capture_settings"]["warnings"]), name
+            has_note = any("Compatibility CPU particles" in warning for warning in report["capture_settings"]["warnings"])
+            assert has_note == job.get("particle_auto_bounds", False), name
         evidence["jobs"][name] = {"checks": report["checks"], "settings": report["capture_settings"],
                                   "timings": {k: v for k, v in report["capture_timings"].items() if k != "samples"}}
         evidence["processing"][name] = processing_check(output, name, job)
@@ -144,7 +147,7 @@ anti_aliasing/quality/msaa_3d=2
     for a in ["gpu", "cpu", "gpu-long-warmup"]:
         if a in jobs:
             evidence["comparisons"][a] = compare(output, a, "oracle", jobs, args.ffmpeg)
-    for name in ["gpu-zero-warmup", "cpu-zero-warmup", "gpu-fixed-30", "gpu-short-warmup", "cpu-short-warmup"]:
+    for name in ["gpu-zero-warmup", "cpu-zero-warmup", "gpu-fixed-30", "gpu-short-warmup", "cpu-short-warmup", "cpu-automatic-bounds"]:
         if name in jobs:
             evidence["startup"][name] = compare(output, name, "oracle", jobs, args.ffmpeg)
     evidence["ok"] = all(r["ok"] for r in evidence["comparisons"].values()) and all(r["ok"] for r in evidence["processing"].values())
@@ -175,7 +178,8 @@ if __name__ == "__main__":
     parser.add_argument("--border", type=float, default=0)
     parser.add_argument("--lifecycle", action="store_true")
     parser.add_argument("--lifecycle-only", action="store_true")
-    parser.add_argument("--gpu-only", action="store_true", help="Compare GPU appearance only; lifecycle mode still checks CPU pause behavior. CPU first-frame visibility in Compatibility remains an open defect.")
+    parser.add_argument("--gpu-only", action="store_true", help="Compare GPU appearance only; lifecycle mode still checks CPU pause behavior.")
+    parser.add_argument("--automatic-bounds", action="store_true", help="Record CPU automatic bounds startup against the explicit-bounds reference; the known first-frame gap remains an observation.")
     parser.add_argument("--zero-warmup", action="store_true")
     parser.add_argument("--short-warmup", action="store_true", help="Record the default two-frame warmup against the settled reference.")
     parser.add_argument("--fixed-step", action="store_true", help="Record native 30 Hz GPU quantization against the continuous reference; this observation does not gate the review.")

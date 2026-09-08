@@ -210,8 +210,8 @@ func _inspect(node: Node, warnings: Array[String]) -> void:
 		node.visible = false
 	if (node is GPUParticles3D or node is CPUParticles3D) and int(job.get("warmup_frames", 2)) < 8:
 		warnings.append("Particles may be missing or incomplete at the opening: %s. Test 8–10 warmup frames and inspect the opening and motion; warmup does not pre-roll the simulation." % str(scene.get_path_to(node)))
-	if node is CPUParticles3D and RenderingServer.get_current_rendering_method() == "gl_compatibility":
-		warnings.append("Compatibility CPU particles can miss the first delivered frame even with warmup: %s. Review the opening; GPU particles or another renderer may be needed." % str(scene.get_path_to(node)))
+	if node is CPUParticles3D and node.visibility_aabb == AABB() and RenderingServer.get_current_rendering_method() == "gl_compatibility":
+		warnings.append("Compatibility CPU particles with automatic bounds can miss the first delivered frame even with warmup: %s. Set a conservative Visibility AABB covering the effect, then review the opening." % str(scene.get_path_to(node)))
 	if node is SpriteBase3D and node.billboard != BaseMaterial3D.BILLBOARD_DISABLED:
 		warnings.append("Camera-facing sprite may produce seams: " + str(scene.get_path_to(node)))
 	if node is Label3D and node.billboard != BaseMaterial3D.BILLBOARD_DISABLED:

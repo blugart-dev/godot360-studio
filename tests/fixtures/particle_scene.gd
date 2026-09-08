@@ -56,6 +56,8 @@ func _ready() -> void:
 			emitter.gravity = Vector3.ZERO
 			emitter.initial_velocity_min = 1
 			emitter.initial_velocity_max = 1
+			if not job.get("particle_auto_bounds", false):
+				emitter.visibility_aabb = AABB(Vector3(-2, -2, -2), Vector3(4, 8, 4))
 			emitter.mesh = mesh
 			emitter.position = origin
 			add_child(emitter)

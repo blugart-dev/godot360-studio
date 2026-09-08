@@ -140,13 +140,16 @@ inspect the opening. Zero warmup can omit particles or show them in only some
 directions at first. The default two frames may also be insufficient. Warmup holds
 the ordinary scene clock; it does not simulate several seconds of particle history.
 Author an emitter's `preprocess` or a deliberate scene pre-roll when a mature effect
-is needed, and validate that separately. In Compatibility, the CPU particle
-fixture still misses the first delivered frame even with eight warmup frames;
-that startup defect remains open. The validated Compatibility appearance case
-uses GPU particles. Forward+/Mobile cover both CPU and GPU particles.
+is needed, and validate that separately. In Compatibility, CPU particles using
+automatic visibility bounds can miss the first delivered frame even with eight
+warmup frames. Set the emitter's **Visibility AABB** to cover the whole effect;
+explicit bounds removed the first-frame gap in the rendered fixture. Include the
+mesh extent and its full motion, and recheck the bounds after changing the effect.
+The addon preserves authored bounds and warns when Compatibility CPU emitters use
+automatic bounds. Automatic-bound startup remains an open engine/integration case.
 
 The regression fixture uses opaque sphere meshes, constant velocity, no collisions,
-and particle **Fixed FPS = 0**, with GPU interpolation disabled. In Movie Maker,
+explicit visibility bounds and particle **Fixed FPS = 0**, with GPU interpolation disabled. In Movie Maker,
 this lets the emitter follow the export frame clock. A separate fixed particle step
 can quantize motion; a 30 Hz GPU emitter showed a repeated step in a 30 FPS export.
 Choose the authored timing that suits the effect and inspect the result. The addon

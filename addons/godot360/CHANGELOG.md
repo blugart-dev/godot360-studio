@@ -6,6 +6,9 @@
   changes. Disabled scenes and scenes that pause themselves stay paused during export.
 - Report short-warmup and Compatibility CPU particle startup in scene notes. Document startup, fixed-step
   timing and seed limitations without changing authored particle settings.
+- Identify automatic CPU visibility bounds as a startup risk in Compatibility;
+  explicit authored bounds remove the measured first-frame gap. Narrow the note
+  to automatic bounds and add the authored workaround to the fixture and guide.
 - Add CPU/GPU particle motion against an analytic mesh reference, decoded MP4
   comparisons and rendered processing-mode regressions in the portable test suite.
 
