@@ -1,5 +1,49 @@
 # Godot360 Studio development handoff
 
+## Skeletal camera synchronization — 2026-09-08
+
+Continuing from clean private `origin/main` at `0a86e29`; the preceding hosted
+exposure run passed. Local validation of this increment is complete; hosted CI
+must be checked after the implementation push. The final reproducible candidate
+is `.godot360/skeletal-review/final/candidate.zip`, SHA256
+`103f44f37b570a6038f090ce4e0e9f87ef34fae27465eb36c263478253303e87`.
+
+The new fixture found a real one-frame delay for a Camera3D under BoneAttachment3D:
+the skin reached the sampled pose before capture copied the updated attachment.
+`capture_rig.gd` now queues camera synchronization after frame sampling, allowing
+Godot's pending skeleton updates to finish before transform notifications/drawing.
+Initial build still synchronizes immediately for its callers. Sampling, authored
+poses, saved recipes, six views and the renderer remain unchanged.
+
+Read [the illustrated result](skeletal-capture.md) and the expanded
+[authoring contract](../addons/godot360/AUTHORING.md). Cuts mean changing the selected
+camera transform; switching `current` cameras does not change capture selection.
+TAA histories are retained. Particles, imported character pipelines, modifier/IK
+chains, ragdolls, nested attachments and long temporal histories remain open.
+
+All six native rendered skeletal cases pass: Compatibility on 4.5.1/4.6.3/4.7.2,
+4.7.2 Forward+ with/without TAA, and 4.7.2 Mobile. They include parent/external
+attachments, zero/eight warmup and zero/12.5% borders. The 128 new headless checks
+pass with the fix and fail 124 checks against the old rig. The reviewer compares
+all PNG/decoded MP4 frames with independent camera and CPU-skin references.
+The Python reviewer, headless checks and fixture are in the candidate package;
+CI now includes an actual Linux external-attachment render as well.
+
+Evidence and helper scripts live in `.godot360/skeletal-review/`. The full package
+matrix passes 4,360 checks; the final package passes another 739 headless checks.
+All three ordinary motion/color/audio reviews pass. Old/new direct-camera images
+match exactly in 240 source/decoded frames, and re-encoding preserves source
+hashes/settings. Four isolated short captures take 4.4–5.7 s; they do not establish
+a speedup or production overhead. A deliberately one-frame-late skin fails the
+strengthened foreground metric, while all six accepted cases pass it. The final
+ZIP differs from the full-matrix ZIP only in that Python metric; runtime code is
+identical. See [validation](validation.md) for exact counts and limitations.
+Run `audit.py` to recheck protected hashes, links and rendered summaries. No local
+test jobs remain after this validation. Publication still requires separate
+authorization. The next work remains complex scene
+fixtures, shared adaptive exposure policy, production Forward+/Mobile 4K/8K cost
+and endurance, native Mac/Linux hardware workflows and the final private review.
+
 ## Consistent authored exposure — 2026-09-08
 
 Implementation commit `afcfbc5` is pushed to private `origin/main`. Its hosted run

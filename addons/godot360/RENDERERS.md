@@ -105,9 +105,12 @@ Actual frame inspection found **hard glow-halo cuts at face boundaries** and
 capture border below supplies surrounding pixels for glow. The fixed exposure
 option below removes independent metering; shared adaptive spherical exposure
 still requires a new metering strategy and remains open.
-No large TAA trail appeared in the inspected simple motion sequence;
-this does not validate particles, skinned meshes or camera cuts. FSR output,
-VoxelGI, baked LightmapGI and stateful custom compositor histories remain untested.
+The [skeletal capture fixture](AUTHORING.md#skeletal-animation-and-viewpoint-cuts)
+adds a keyed weighted mesh and a bone-attached camera cut. Camera synchronization
+now waits for the queued attachment update, avoiding a one-frame viewpoint delay.
+This does not establish arbitrary character, particle or temporal-effect support.
+FSR output, VoxelGI, baked LightmapGI and stateful custom compositor histories
+remain untested.
 
 ## Capture exposure
 

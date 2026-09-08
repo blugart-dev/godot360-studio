@@ -1,5 +1,120 @@
 # Validation record — updated 2026-09-08
 
+## Skeletal camera timing review — 2026-09-08
+
+Private development continues from `0a86e29`, whose preceding implementation CI
+run is green. The new [rendered comparison](skeletal-capture.md) found and corrected
+a one-frame camera delay when a selected Camera3D follows BoneAttachment3D.
+The skin was already at its sampled pose; the rig copied the attachment too early.
+Sampling remains at priority 1000, followed by deferred camera synchronization
+before the engine flushes transforms for drawing. No additional simulation step,
+skeleton evaluation, viewport, shader pass or GPU readback is introduced.
+
+### Native rendered comparisons
+
+Windows 11, RTX 3060 Ti, FFmpeg 9.0.1; 2048×1024, 512-pixel face cores, 30 FPS,
+60 delivered frames per job. The fixture includes camera translation, a discrete
+31.5° viewpoint cut at frame 30, surrounding colored markers and a two-bone
+weighted strip. Independently calculated camera transforms and CPU-deformed
+vertices supply the references.
+
+| Godot / renderer | Warmup | Border | Additional coverage | Result |
+| --- | ---: | ---: | --- | --- |
+| 4.5.1 Compatibility / OpenGL | 0 | 0% | Parent attachment | Pass |
+| 4.6.3 Compatibility / OpenGL | 8 | 12.5% | Parent attachment | Pass |
+| 4.7.2 Compatibility / OpenGL | 8 | 0% | Parent attachment | Pass |
+| 4.7.2 Forward+ / Vulkan | 8 | 0% | Old rig versus corrected rig and both references | Pass; old rig fails as expected |
+| 4.7.2 Forward+ / Vulkan | 8 | 0% | TAA, identical native skin on both camera paths | Pass |
+| 4.7.2 Mobile / Vulkan | 0 | 12.5% | External skeleton attachment | Pass |
+
+The accepted matrix contains **1,080 source and 1,080 decoded MP4 frames**, including
+the 60-frame old-rig comparison. The initial investigation retained another 180 of
+each and exposes the same delay. Every corrected frame passes source MAE <0.03,
+decoded MAE <0.1, and visible-foreground source MAE <0.25 on a 0–255 scale. A minimum
+of 200 foreground pixels rejects empty-image comparisons. Foreground analysis was
+added after rendering and rerun on all retained source pairs; the original JSON
+and the stricter `skeletal-review-foreground.json` reports are both preserved.
+
+The old Forward+ camera reaches 0.977643 whole-frame / 114.390816 foreground MAE
+at the cut. Corrected Forward+ reaches 0.000023 source / 0.017935 decoded MAE;
+its weighted skin reaches 0.000026 source / 0.019595 decoded MAE against the CPU
+reference. Across the accepted cases, foreground MAE stays below 0.00465. TAA
+uses identical native skinning on both sides because a rebuilt CPU reference mesh
+has different motion-vector history. This validates viewpoint timing under TAA,
+without claiming that the cut resets temporal history or eliminates ghosting.
+
+The 128 headless skeletal checks test all six views across 63 samples for each of
+parent/external attachments, including cut, repeated and backward samples. They
+pass with the corrected rig and fail 124 checks with the old rig; the negative
+control log is retained. The test also removes the source after scheduling a sync
+to check that a pending callback cannot access a freed camera.
+
+A separate rendered negative control delays only the CPU skin by one frame.
+Its whole-frame MAE reaches just 0.010434, which would pass the original broad
+threshold, but foreground MAE reaches 2.142772 and correctly fails the strengthened
+0.25 limit. Its 60 source frames and metrics are retained under `cost/late-skin`.
+
+### Workflow, motion and package regression
+
+- **4,360 checks pass** in the full frozen-package matrix: 872 each on 4.5.1,
+  4.6.3 and 4.7.2 Compatibility, plus 4.7.2 Forward+ and Mobile. This includes
+  actual exports, playback, audio, cancellation, failures, recovery and storage.
+- The existing analytic Motion Lab passes on 4.5.1 Compatibility and 4.7.2
+  Forward+/Mobile: **540 source and 540 decoded frames**, marker error below 0.297°
+  against a 0.45° limit, correct flash frames, and audio cue offsets below 0.71 ms.
+- Six color/lit-material groups pass native-face and panorama-assembly checks at
+  three sampled timestamps per group. These are sampled appearance checks, not
+  an exhaustive decoded-frame comparison of those six additional exports.
+- Protected project/settings/THRESHOLD recipe/master hashes match the earlier
+  preservation record. All new jobs live under `.godot360/skeletal-review`.
+
+The full matrix uses `.godot360/skeletal-review/candidate.zip` (138 members,
+831,936 bytes), SHA256
+`165145dfadf1e02fdbffa8d9f63d2199d79ec4e196d5356504e915778d08dcb4`.
+The final package at `final/candidate.zip` differs only in the Python reviewer's
+stronger foreground metric; all capture, authoring, planning and encoding code is
+identical. It has 138 members, 832,080 bytes, SHA256
+`103f44f37b570a6038f090ce4e0e9f87ef34fae27465eb36c263478253303e87`.
+An additional **739 final-package headless checks pass** and verify manifest, source
+inventory and identical rebuild. Local `final-review.json` aggregates the evidence.
+
+### Backward compatibility and measured cost
+
+Four separate Forward+ runs use the same independently positioned direct camera
+and native skin, in old/new/new/old order, after all other test jobs finish.
+Each submits 68 frames, including eight warmup frames. Capture elapsed times are
+5.703665 / 4.405480 / 4.726263 / 4.411110 seconds. The two-run means are 5.057388 s
+old and 4.565872 s new (9.7% lower in these short trials), but the first old trial
+is slower than all later ones. This is insufficient evidence for a speedup or a
+production overhead estimate. Peak VRAM and long-run costs remain unmeasured.
+The implementation adds one deferred call per process frame and no GPU work.
+
+All **240 delivered source and 240 decoded frames** in this comparison match
+exactly across old/new capture. Re-encoding a corrected capture to CRF 22 passes
+all delivery checks while preserving every source-file hash and the original
+capture settings. This brings inspected motion/skeletal/direct-camera evidence
+to 2,040 source and 2,040 decoded frames when the initial investigation is included,
+plus the separate 60 source frames of the deliberately delayed skin control.
+
+### Hosted CI
+
+The private implementation push will run the Linux/Mac workflow. In addition to
+the existing package and software-Vulkan cases, Linux now renders the skeletal
+fixture with an external attachment and zero warmup. Record its result against
+the exact implementation commit after the run completes. This does not replace
+native Mac graphical or hardware-GPU Linux validation.
+
+### Remaining scope
+
+This remains private 0.8 development. The selected camera's transform defines a
+cut; changing another camera's `current` flag does not select it for capture.
+Particles, imported character pipelines, IK/modifier chains, ragdolls, nested
+attachments, physics interpolation, long temporal histories, FSR, GI and stateful
+compositors remain outside this fixture's coverage. Shared adaptive exposure,
+production 4K/8K Forward+/Mobile endurance/VRAM, native Mac graphical and Linux
+hardware-GPU workflows, and the private final delivery review remain 1.0 work.
+No public release or upload is authorized by this increment.
+
 ## Consistent authored exposure — 2026-09-08
 
 This increment adds explicit **Fixed (authored)** capture exposure. Scene remains

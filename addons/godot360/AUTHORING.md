@@ -84,8 +84,9 @@ Warmup repeatedly samples time zero, then the first delivered frame samples zero
 again. The hook must be idempotent: set state from the supplied timestamp instead
 of adding delta or triggering one-time events on every invocation.
 
-The rig invokes sampling at process priority **1000**, then synchronizes all six
-camera transforms before Godot flushes transform notifications and draws. Competing
+The rig invokes sampling at process priority **1000**, then defers synchronization
+of all six cameras until Godot has applied queued skeleton/attachment updates.
+Camera transforms still reach the renderer before this frame draws. Competing
 scripts that write the same properties must be disabled or run before this step.
 Avoid writing authored transforms at priority 1000 or later. Sampling in
 `RenderingServer.frame_pre_draw` is too late for the tested Node3D notification path
@@ -121,6 +122,31 @@ This contract defines authored properties, not every process in a project. Physi
 particles, autoloads, shader TIME, and external logic can still vary. It does not
 establish reproducibility across engines or hardware.
 
+## Skeletal animation and viewpoint cuts
+
+Keyed Skeleton3D bone position/rotation tracks and weighted meshes can use the
+same timeline helper. A selected Camera3D below a BoneAttachment3D follows the
+sampled bone pose in the same delivered frame, including a discrete viewpoint
+change. Parent and external skeleton attachments are covered by the regression
+fixture; the camera's own local transform is preserved.
+
+Earlier internal builds copied the camera before the deferred attachment update,
+making the viewpoint one frame late while the skinned mesh was already current.
+The fix lets Godot finish its queued updates; it does not force a second skeleton
+evaluation, advance animation again, or change the authored bone poses.
+
+A cut means changing the transform of the **selected export camera**. Switching
+another camera's `current` property does not change the selected capture source.
+TAA and other temporal effects keep their per-face histories across cuts. A correct
+cut timestamp does not guarantee freedom from ghosting; inspect the cut and the
+following frames, and disable TAA if its appearance is unsuitable.
+
+This evidence covers a small keyed skeleton and a two-bone weighted mesh.
+IK/modifier chains, ragdolls, nested attachments, physics interpolation, imported
+character pipelines, particle simulation and long temporal histories still need
+representative rendered validation. Custom deferred code that changes bones after
+camera synchronization is outside this sampling contract.
+
 ## Audio and synchronization
 
 Scene audio remains the ordinary stereo mix recorded by Movie Maker. It is not
@@ -141,6 +167,13 @@ Audio-track timeline editing and ambisonics remain future work.
 `tests/timeline_checks.gd` verifies absolute seeking, camera movement, visibility,
 duration limits, and unsupported-track errors. `tests/timeline_studio_checks.gd`
 exercises the Motion lab button and a complete production export.
+
+`tests/skeletal_checks.gd` checks all six camera transforms over moving, cut and
+repeated samples, including external attachments. `tests/skeletal_review.py`
+compares actual PNG and decoded MP4 frames against an independently positioned
+camera and CPU-deformed mesh in a disposable project. Under TAA it compares the
+camera paths using identical native skinning on both sides, because rebuilding a
+CPU mesh has a different motion-vector history.
 
 For geometric and audio checks, render `tests/fixtures/motion.tscn` for six seconds
 at 2048×1024, 1024-pixel faces, and 24 or 30 FPS. The fixture substitutes a simple

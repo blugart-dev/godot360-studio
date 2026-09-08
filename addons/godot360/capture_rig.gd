@@ -54,13 +54,18 @@ func build(camera: Camera3D, face_size: int, output_size: Vector2i, border_perce
 	output.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	layer.add_child(output)
 	process_priority = 1000
-	_process(0.0)
+	if before_sync.is_valid():
+		before_sync.call()
+	sync_camera()
 
 
 func _process(_delta: float) -> void:
 	if before_sync.is_valid():
 		before_sync.call()
-	sync_camera()
+	# Skeleton3D applies its final pose and BoneAttachment3D transforms in the
+	# deferred queue. Read the camera after those updates, still before Godot
+	# flushes Node3D transforms for this draw. Sampling itself stays in _process.
+	sync_camera.call_deferred()
 
 
 func sync_camera() -> void:

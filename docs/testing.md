@@ -58,6 +58,12 @@ the installed tools. [Platform setup](../addons/godot360/PLATFORMS.md) covers bo
 
 ### Renderer appearance and motion
 
+The [skeletal camera review](skeletal-capture.md) compares moving/cut bone cameras
+and weighted skin against independent references, including decoded MP4 frames.
+Run `tests/skeletal_review.py` with Godot, FFmpeg/FFprobe and a fresh `--output`;
+the guide documents renderer and warmup/border/TAA variants. Package checks include
+`skeletal_checks.gd`, and Linux CI runs an actual external-attachment comparison.
+
 `tests/exposure_review.py` renders the moving-light exposure comparison from a
 fresh disposable project. It checks all 90 source frames against a scene authored
 with fixed exposure, decodes all video frames, compares legacy defaults, and

@@ -81,6 +81,12 @@ jobs:
         if: runner.os == 'macOS'
         run: |
           python tests/package_review.py --headless-only --package .godot360/ci/candidate.zip --godot "$GODOT" --ffmpeg "$(command -v ffmpeg)" --ffprobe "$(command -v ffprobe)" --output .godot360/ci/review
+      - name: Review rendered skeletal timing
+        if: runner.os == 'Linux'
+        env:
+          LIBGL_ALWAYS_SOFTWARE: '1'
+        run: |
+          xvfb-run -a -s '-screen 0 1400x900x24' python tests/skeletal_review.py --godot "$GODOT" --ffmpeg "$(command -v ffmpeg)" --ffprobe "$(command -v ffprobe)" --output .godot360/ci/skeletal --method gl_compatibility --driver opengl3 --external-skeleton --warmup 0
       - name: Render Forward+ and Mobile with software Vulkan
         if: runner.os == 'Linux'
         run: |
@@ -108,3 +114,6 @@ jobs:
             .godot360/ci/renderers/**/capture-settings.json
             .godot360/ci/renderers/**/capture.log
             .godot360/ci/renderers/**/contact-sheet.jpg
+            .godot360/ci/skeletal/skeletal-review.json
+            .godot360/ci/skeletal/comparison.jpg
+            .godot360/ci/skeletal/**/*.log

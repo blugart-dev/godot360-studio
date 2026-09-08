@@ -18,6 +18,7 @@ video service is needed to read the illustrated guides.
 | `capture-borders-forward.jpg`, `capture-borders-mobile.jpg` | Unmodified before/after sheets from the moving-emitter capture-border fixture; see [test and regeneration](../capture-borders.md) | Under 40 KB each |
 | `exposure-consistency.jpg` | Unmodified Scene / Fixed (authored) comparison sheet from the moving-light exposure fixture; see [test and regeneration](../exposure-consistency.md) | Under 40 KB |
 | `exposure-lit.jpg` | Unmodified Scene / Fixed (authored) sheet from the lit-material exposure experiment; see [comparison](../exposure-consistency.md) and [evidence](../validation.md) | Under 50 KB |
+| `skeletal-camera.jpg` | Unmodified baseline/fixed camera and CPU skin reference sheet at frames 15/30/31; see [test and regeneration](../skeletal-capture.md) | Under 40 KB |
 
 The film previews are **ordinary perspective views**, not interactive 360 players.
 They have no spherical metadata. This distinction is repeated beside the media

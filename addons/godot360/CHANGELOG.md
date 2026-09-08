@@ -1,5 +1,16 @@
 # Changelog
 
+## Unreleased — skeletal camera timing
+
+- Synchronize capture cameras after queued skeleton/attachment updates, fixing
+  a one-frame delay when the selected camera follows a BoneAttachment3D.
+- Preserve frame sampling, local camera offsets, authored poses and six-view
+  rendering. Add moving/cut camera, weighted-skin and external-attachment
+  regressions with independent rendered references and decoded MP4 comparisons.
+- Document that cuts apply to the selected export camera; temporal histories are
+  retained. Complex modifiers, particles and imported character workflows remain
+  outside the validated fixture scope.
+
 ## Unreleased — explicit consistent exposure
 
 - Add Advanced capture exposure: Scene (default) or Fixed (authored). Fixed uses
