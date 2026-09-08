@@ -1,5 +1,131 @@
 # Validation record — updated 2026-09-08
 
+## Consistent authored exposure — 2026-09-08
+
+This increment adds explicit **Fixed (authored)** capture exposure. Scene remains
+the default. The worker copies effective camera/world attributes, disables automatic
+metering on its copy, and follows authored exposure, physical settings and DOF each
+frame without modifying the source. This is an authored-exposure workflow; shared
+adaptive spherical metering remains open. See the [illustrated result](exposure-consistency.md)
+and [supported behavior](../addons/godot360/RENDERERS.md#capture-exposure).
+
+### Rendered comparisons and motion
+
+Windows 11 / RTX 3060 Ti / Godot 4.7.2 was used for eight comparison groups. Each
+group renders Scene, Fixed, an independently authored no-auto-exposure oracle, and
+a legacy request without the new field. Every job delivers 90 frames at
+2048×1024 / 30 FPS, with a 512 core, eight warmup frames, Fast PNG and CRF 16.
+
+| Comparison | Backend | Measured boundary discontinuity reduction |
+| --- | --- | ---: |
+| Moving emitter, camera-level practical attributes | Forward+ / Vulkan | 99.73% |
+| Same fixture, WorldEnvironment attributes | Forward+ / Vulkan | 99.73% |
+| Same fixture, physical camera attributes | Forward+ / Vulkan | 99.68% |
+| Same fixture, 12.5% borders in both versions | Forward+ / Vulkan | 57.41% additional reduction |
+| Lit/metallic spheres, transparency and shadow maps | Forward+ / Vulkan | 98.18% |
+| Moving emitter with world attributes; lit-material fixture | Mobile / Vulkan | No appearance change; native auto exposure is absent |
+| Moving emitter with physical attributes | Compatibility / OpenGL | No appearance change; native auto exposure is absent |
+
+The metric measures excess gradient at cube boundaries, including geometry/effect
+residuals; it is not a general appearance score. Borders already soften the metering
+cut, which explains their smaller additional percentage. The moving fixture includes
+camera rotation, an emitter crossing faces, a lighting cut, an exposure curve and a
+runtime attribute replacement. The lit fixture adds camera motion, an ambient-light
+cut and animated exposure to the existing material laboratory. Native perspective
+views of retained frames were visually inspected; the documentation sheets are
+unmodified copies of the accepted results. Other lighting/effect seams remain.
+
+All **2,880 source and 2,880 decoded frames** were checked. Fixed matches the authored
+oracle exactly in every group, including the delivered decoded video. Default Scene
+and legacy output also match exactly except for one Mobile repeat: source mean RGB
+difference is at most 0.00000144/255, and decoded mean RGB difference at most
+0.025318/255 per frame. Frame counts and timing match. Small native rounding changes
+can change CRF encoder decisions beyond the original pixels; a maximum decoded
+channel difference of 59 was recorded in that repeat, so byte equality is not a
+general repeated-render guarantee. The reviewer retains exact hashes and falls back
+to decoded pixel comparison with a 0.1/255 maximum frame-mean tolerance. Source
+comparisons retain their 0.02/255 frame-mean tolerance. Fixed versus oracle still
+matches exactly, without using the decoded-pixel fallback.
+
+The original Mobile strict-hash rejection remains in `appearance-mobile/exposure-review.json`;
+the accepted pixel analysis of those same retained deliveries is
+`appearance-mobile/exposure-review-pixel.json`. There was no capture-code change
+or replacement of that failed evidence. Each of the eight comparison groups also
+passes a real re-encode at CRF 22, retaining all original file hashes and the complete
+capture-settings dictionary. All 40 comparison/re-encode deliveries pass 13 checks.
+
+Five additional six-second analytic motion jobs use **Fixed** and **12.5% borders**
+with source attributes explicitly enabling auto exposure: Compatibility on Godot
+4.5.1/4.6.3/4.7.2, and Forward+/Mobile Vulkan on 4.7.2. All **900 source and 900 decoded
+frames** pass marker geometry, rear seam, pole and flash timing. Maximum angular
+error is below 0.298°, within the 0.45° tolerance; all source/encoded audio cues are
+within 0.71 ms. All five re-encodes retain source hashes and capture settings.
+These runs shared the machine with regression work and are not timing benchmarks.
+
+### Cost
+
+A separate Forward+ timing run used the moving fixture with no other test jobs
+running: two trials each, ordered Fixed / oracle / oracle / Fixed. The oracle is
+the same scene authored without auto exposure. Each trial captures 98 submitted
+frames including warmup. Fixed attribute synchronization averages **0.0238–0.0246 ms
+per submitted frame**, versus about 0.0057 ms for the existing attribute-reference
+path. It adds no viewports, render passes or image readbacks.
+
+Measured whole-capture times, including readback/writer completion and excluding
+worker startup, were **14.134 / 13.679 s for Fixed** and **13.446 / 11.792 s for the
+oracle**. The Fixed average is **10.2% slower in these short trials**. Report this
+observed cost alongside the small CPU measurement; two trials with visible timing
+variation do not establish a production overhead or explain the full elapsed-time
+difference. These are 2K fixtures, with no new peak-VRAM or 4K/8K endurance claim.
+Production profiling remains a 1.0 workstream. Evidence: `cost/review.json`.
+
+### Package, compatibility and preservation
+
+The frozen implementation passes the complete package workflow, including rendered
+export/playback, audio, cancellation, recovery, storage failures and clean-project
+release checks:
+
+| Windows engine / renderer | Checks passed |
+| --- | ---: |
+| Godot 4.5.1 / Compatibility | 744 |
+| Godot 4.6.3 / Compatibility | 744 |
+| Godot 4.7.2 / Compatibility | 744 |
+| Godot 4.7.2 / Forward+ / Vulkan | 744 |
+| Godot 4.7.2 / Mobile / Vulkan | 744 |
+
+The **3,720-check** matrix package SHA-256 is
+`55422d47a9db310529e743a17c2320a2fad4f0fa5389b62a3af5fba017945282`.
+The new 57-check exposure suite covers camera/world precedence, animation,
+replacement/removal, physical projection, source resource preservation, legacy
+defaults, portable recipes, estimates and malformed re-encode input.
+
+Visual QA found and corrected a stale border hint. The final panel then passed
+**43 usability checks per engine, 129 total**, and was visually checked at 1100×600.
+The first standalone panel harness omitted FFmpeg paths; its four setup failures
+are retained separately. The corrected harness passes with the real tool paths.
+Final-package differences from the full matrix are exactly the panel hint, the
+Python reviewer's decoded-pixel fallback described above, and changelog wording.
+Capture, projection, exposure, planning and encoding code are identical. Final ZIP:
+**134 members, 824,216 bytes**, SHA-256
+`0f91481aa7cab55bca4cb048f6ee42f0e5dc3d6914c1aa493a77a7d921fd8f6d`.
+Its manifest matches source and its extracted source rebuilds it byte-for-byte.
+
+All evidence is under `.godot360/exposure-review/`: `final-review.json`, the three
+`package-*` reviews, six `appearance-*` groups, `lit-forward` / `lit-mobile`,
+`motion-fixed`, `cost`, and `final/candidate.zip`. `run_lit.py` retains the disposable
+wrapper around the checked-in material laboratory; `run_motion.py` records the
+analytic fixture's source-attribute injection. The default exposure fixture and
+reviewer are packaged. No accepted capture contains a script/parse error; expected
+sandbox certificate-store warnings are separate from rendering failures.
+
+Original project configuration, local settings, THRESHOLD recipe and film master
+match their prior recorded hashes. The initial pre-change/default PNG comparison
+has at most 0.00000159/255 frame-mean difference and one-level channel rounding.
+The predecessor `bef3b9e` has a green [Linux/Mac hosted run](https://github.com/blugart-dev/godot360-studio/actions/runs/34235851891).
+This remains private 0.8 development. Shared adaptive exposure, complex temporal
+scenes, native Mac graphical / Linux hardware-GPU workflows, production endurance
+and the final private delivery walkthrough remain open; no public release occurred.
+
 ## Capture borders and private 1.0 development — 2026-09-08
 
 The owner clarified that the addon stays private until 1.0 is implemented, tested

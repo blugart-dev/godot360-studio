@@ -14,7 +14,7 @@ limits. It cannot mean every arbitrary shader, GPU and interactive game works.
 
 | Workstream | Remaining work | Completion evidence |
 | --- | --- | --- |
-| Capture appearance | Optional [capture borders](capture-borders.md) now reduce tested glow cuts at edges and corners. Remaining: independent auto-exposure metering, glow shape and other view-dependent effects in representative scenes. | Before/after rendered fixtures, unchanged projection/color/geometry, measured cost, and documented residual limits. |
+| Capture appearance | Optional [capture borders](capture-borders.md) reduce tested glow cuts. [Fixed authored exposure](exposure-consistency.md) removes independent automatic metering while preserving exposure animation. Remaining: shared automatic spherical adaptation, glow shape and other view-dependent effects in representative scenes. | Before/after rendered fixtures, unchanged projection/color/geometry, measured cost, and documented residual limits. |
 | Complex animated scenes | Exercise particles, skinned meshes, camera cuts, longer temporal histories, FSR, VoxelGI/LightmapGI and stateful compositors. | Deterministic fixtures with expected motion and visual comparisons; supported cases pass and exclusions are explicit. |
 | Production performance | Run representative Forward+/Mobile scenes at 4K/8K; measure render time, peak GPU memory, retained storage and behavior under pressure. | Sustained jobs complete without missing frames, audio drift or silent renderer fallback; practical budgets and limits are recorded. |
 | Native platform coverage | Graphical Mac exports and hardware-GPU Linux workflows; complete the declared Godot/renderer/driver combinations. | Clean native installation, actual capture, frame/audio inspection, playback, cancellation and recovery on the target machines. Headless/software CI remains narrower evidence. |
@@ -32,8 +32,9 @@ implemented. The README and guides now show actual results before installation.
 
 ## Order of work
 
-1. Finish exposure consistency and broaden the capture-border evidence, accepting
-   changes only after rendered comparisons show a useful improvement.
+1. Broaden fixed-exposure and capture-border evidence in representative scenes.
+   Decide the supported 1.0 boundary for automatic spherical adaptation; it remains
+   open and must not be claimed by the fixed authored-exposure option.
 2. Broaden scene fixtures and resolve the resulting rendering/capture defects.
 3. Measure production workloads and improve whichever resource limits are real.
 4. Complete native hardware and private usability/delivery reviews as the required

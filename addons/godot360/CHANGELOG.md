@@ -1,5 +1,17 @@
 # Changelog
 
+## Unreleased — explicit consistent exposure
+
+- Add Advanced capture exposure: Scene (default) or Fixed (authored). Fixed uses
+  worker-owned camera attributes with automatic metering disabled; authored
+  exposure, physical settings and DOF animation stay synchronized across faces.
+- Follow camera/world attribute replacements without changing authored resources.
+  Keep legacy behavior, persist recipes/settings, invalidate changed estimates,
+  reject malformed modes and preserve original capture evidence on re-encode.
+- Add rendered exposure/oracle comparisons, decoded-frame comparisons, source hash
+  checks and exposure synchronization timings. Shared automatic spherical
+  adaptation remains open; this option uses authored exposure.
+
 ## Unreleased — capture borders and private 1.0 development
 
 - Add optional capture borders with smooth overlap blending at face edges and

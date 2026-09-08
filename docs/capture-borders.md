@@ -46,7 +46,8 @@ rendering identical.*
 ## Limits and reproduction
 
 Each face still has its own view and effect history. Borders do not share
-auto-exposure metering or make arbitrary screen shaders, reflections, depth of
+auto-exposure metering; [Fixed (authored) capture exposure](exposure-consistency.md)
+can explicitly disable that metering. Borders do not make arbitrary screen shaders, reflections, depth of
 field and temporal effects equivalent. Inspect motion as well as stills. The
 fixture is a targeted regression case, not evidence for all production scenes.
 

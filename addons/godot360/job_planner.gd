@@ -4,6 +4,7 @@ const Audio = preload("audio_plan.gd")
 const Storage = preload("storage_guard.gd")
 const Renderer = preload("renderer_policy.gd")
 const CaptureProjection = preload("capture_projection.gd")
+const Exposure = preload("capture_exposure.gd")
 const MATCH_KEYS = ["scene_path", "camera_path", "width", "height", "face_size", "fps",
 	"random_seed", "warmup_frames", "frame_writer", "crf", "ffmpeg", "ffprobe"]
 
@@ -44,6 +45,10 @@ static func matches(sample: Dictionary, target: Dictionary) -> bool:
 	if not CaptureProjection.validate(sample).is_empty() or not CaptureProjection.validate(target).is_empty():
 		return false
 	if float(sample.get("capture_border_percent", 0.0)) != float(target.get("capture_border_percent", 0.0)):
+		return false
+	if not Exposure.validate(sample).is_empty() or not Exposure.validate(target).is_empty():
+		return false
+	if sample.get("capture_exposure_mode", "scene") != target.get("capture_exposure_mode", "scene"):
 		return false
 	for key in MATCH_KEYS:
 		if str(sample.get(key, "")) != str(target.get(key, "")):
@@ -103,6 +108,15 @@ static func resolve_reencode(request: Dictionary) -> Dictionary:
 	var saved_border_error := CaptureProjection.validate(recipe)
 	if not saved_border_error.is_empty():
 		return {"error": "Saved capture: " + saved_border_error}
+	var saved_exposure_error := Exposure.validate(recipe)
+	if not saved_exposure_error.is_empty():
+		return {"error": "Saved capture: " + saved_exposure_error}
+	if request.has("capture_exposure_mode"):
+		var exposure_error := Exposure.validate(request)
+		if not exposure_error.is_empty():
+			return {"error": exposure_error}
+		if request.capture_exposure_mode != recipe.get("capture_exposure_mode", "scene"):
+			return {"error": "Re-encoding preserves captured exposure and pixels. Start a new render to change capture exposure."}
 	for key in ["rendering_method", "rendering_driver"]:
 		if request.has(key) and str(request[key]) != str(recipe.get(key, "project")):
 			return {"error": "Re-encoding preserves the captured renderer and pixels. Start a new render to change the renderer or graphics driver."}

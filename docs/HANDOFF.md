@@ -1,5 +1,44 @@
 # Godot360 Studio development handoff
 
+## Consistent authored exposure — 2026-09-08
+
+Continue private development toward 1.0. The starting tree was clean at `bef3b9e`;
+its hosted Linux/Mac run `34235851891` has now passed. This increment adds
+**Advanced → Capture exposure → Fixed (authored)**. Scene remains the default for
+new and legacy recipes. The worker disables auto exposure on its own copy of the
+effective camera/world attributes, follows authored exposure/DOF/physical settings
+and runtime attribute replacements each frame, and leaves source resources intact.
+
+The [illustrated comparison](exposure-consistency.md) shows the reason: independent
+Forward+ metering produces large brightness blocks. Fixed matches a scene authored
+with auto exposure disabled. It does not freeze the editor's metered brightness or
+provide shared automatic spherical adaptation. Lighting cuts remain authored cuts.
+Read the [supported behavior](../addons/godot360/RENDERERS.md#capture-exposure) and
+the new [validation entry](validation.md) for accepted combinations and limitations.
+
+Recipes/settings persist `capture_exposure_mode`; changed modes invalidate sample
+estimates. Re-encoding retains original policy/evidence and source hashes and rejects
+conflicting requests. The capture adds no viewports or readbacks and records CPU
+attribute synchronization time. `tests/exposure_checks.gd` joins every package/CI
+contract run; `tests/exposure_review.py` supplies rendered before/after, oracle,
+legacy, decoded-frame and re-encode comparisons from disposable projects.
+
+Evidence is under `.godot360/exposure-review/`, with the final frozen package at
+`final/candidate.zip`. The full matrix passes 3,720 checks; the final panel adds
+129 checks. Appearance reviews inspect 2,880 source/decoded frames, and motion
+reviews inspect another 900 of each. Fixed matches its authored oracle exactly;
+the accepted Mobile legacy repeat uses the documented decoded-pixel tolerance.
+The final package differs from the full matrix only in a panel hint, the Python
+reviewer's pixel fallback and changelog text; capture code is identical.
+Standalone CPU synchronization is about 0.024 ms/frame, but two short timing pairs
+average 10.2% more whole-capture time than the authored oracle. Keep that measured
+cost and timing variation visible when planning production profiling. Authored
+scenes, saved settings, the THRESHOLD recipe and film master remain preserved.
+Next 1.0 work is broader animated/temporal scenes, representative Forward+/Mobile
+4K/8K endurance, native Mac graphical and Linux hardware-GPU workflows, and a
+private final workflow/delivery review. Define the automatic-exposure support
+boundary explicitly; shared HDR metering remains open. No public release is authorized.
+
 ## Private 1.0 development and capture borders — 2026-09-08
 
 The owner explicitly rejected pausing at a beta gate: keep building and testing

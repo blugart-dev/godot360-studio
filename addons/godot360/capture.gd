@@ -100,13 +100,15 @@ func _start() -> void:
 	if scene.has_method("sample_360_frame"):
 		rig.before_sync = _before_frame
 	root.add_child(rig)
-	rig.build(camera, int(job.face_size), Vector2i(int(job.width), int(job.height)), float(job.get("capture_border_percent", 0.0)))
+	rig.build(camera, int(job.face_size), Vector2i(int(job.width), int(job.height)), float(job.get("capture_border_percent", 0.0)), str(job.get("capture_exposure_mode", "scene")))
 	if stopped:
 		return
 	capture_settings.merge({
 		"output_width": int(job.width), "output_height": int(job.height),
 		"face_size": int(job.face_size), "msaa_3d": camera.get_viewport().msaa_3d,
 		"capture_border_percent": float(job.get("capture_border_percent", 0.0)),
+		"capture_exposure_mode": str(job.get("capture_exposure_mode", "scene")),
+		"exposure_policy": "Authored values each frame; automatic metering disabled on worker-owned camera attributes" if job.get("capture_exposure_mode", "scene") == "fixed" else "Scene camera/world attributes; native per-view metering where supported",
 		"face_texture_size": rig.projection.texture_size, "face_border_pixels": rig.projection.border_pixels,
 		"viewport_settings": rig.settings(), "warnings": warnings,
 		"color": {"source": "tone-mapped SDR sRGB RGB8/RGBA8", "face_hdr_2d": false,
@@ -228,7 +230,12 @@ func _inspect_environment(environment: Environment, warnings: Array[String]) -> 
 
 func _inspect_attributes(attributes: CameraAttributes, warnings: Array[String]) -> void:
 	if attributes != null and attributes.auto_exposure_enabled:
-		warnings.append("Auto exposure meters each cube face independently and can create brightness seams. Use authored fixed exposure for consistent 360 delivery.")
+		if job.get("capture_exposure_mode", "scene") == "fixed":
+			warnings.append("Fixed capture exposure disables automatic metering and uses authored exposure values, including animation. It does not freeze the auto-metered brightness of the editor view. Test the exposure before a full export.")
+		elif RenderingServer.get_current_rendering_method() != "forward_plus":
+			warnings.append("Auto exposure requires Forward+. This renderer uses authored exposure values without automatic metering.")
+		else:
+			warnings.append("Auto exposure meters each cube face independently and can create brightness seams. Choose Fixed (authored) capture exposure and run a new test for consistent 360 delivery.")
 	if attributes is CameraAttributesPhysical or (attributes is CameraAttributesPractical and (attributes.dof_blur_far_enabled or attributes.dof_blur_near_enabled)):
 		warnings.append("Depth of field uses face-camera depth, not spherical distance; blur may differ at cube edges. Physical lens FOV uses the capture face projection, including any border.")
 
@@ -275,6 +282,7 @@ func _write_result(success: bool, message: String = "") -> bool:
 	var timings_saved := IO.write_json(destination.path_join("capture-timings.json"), {
 		"frames": rendered, "elapsed_usec": Time.get_ticks_usec() - started_usec if started_usec > 0 else 0,
 		"readback_usec": readback_usec, "image_write_usec": image_write_usec,
+		"exposure_sync_usec": rig.exposure_sync_usec if is_instance_valid(rig) else 0,
 		"frame_writer": str(job.get("frame_writer", "png")), "samples": frame_samples, "storage_guard": storage.latest})
 	return IO.write_json(destination.path_join("capture-result.json"), {"ok": success and timings_saved,
 		"error": message if timings_saved else "Cannot save capture timing diagnostics.",

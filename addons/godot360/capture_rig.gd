@@ -16,10 +16,13 @@ var cameras: Array[Camera3D] = []
 var material: ShaderMaterial
 var before_sync: Callable
 var projection: Dictionary
+var exposure := preload("capture_exposure.gd").new()
+var exposure_sync_usec := 0
 
 
-func build(camera: Camera3D, face_size: int, output_size: Vector2i, border_percent: float = 0.0) -> void:
+func build(camera: Camera3D, face_size: int, output_size: Vector2i, border_percent: float = 0.0, exposure_mode: String = "scene") -> void:
 	source = camera
+	exposure.mode = exposure_mode
 	projection = preload("capture_projection.gd").geometry(face_size, border_percent)
 	material = ShaderMaterial.new()
 	material.shader = preload("equirectangular.gdshader")
@@ -63,10 +66,13 @@ func _process(_delta: float) -> void:
 func sync_camera() -> void:
 	if not is_instance_valid(source):
 		return
+	var started := Time.get_ticks_usec()
+	var attributes: CameraAttributes = exposure.resolve(source)
+	exposure_sync_usec += Time.get_ticks_usec() - started
 	for i in range(cameras.size()):
 		var view := cameras[i]
 		view.environment = source.environment
-		view.attributes = source.attributes
+		view.attributes = attributes
 		view.compositor = source.compositor
 		view.cull_mask = source.cull_mask
 		view.set_perspective(float(projection.fov), source.near, source.far)

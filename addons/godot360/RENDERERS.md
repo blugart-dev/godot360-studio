@@ -89,7 +89,7 @@ opaque. A panorama cannot preserve the composition of a single perspective frame
 | SDFGI / other GI | Shared scene data is retained, but convergence and visibility are renderer-dependent. Give SDFGI time to settle. VoxelGI and baked LightmapGI require separate validation. |
 | SSAO, SSIL, SSR | Forward+ features. Each face has a separate depth/color screen; missing information outside a face can produce edges and incomplete reflections. The rig cannot reconstruct that information. |
 | TAA / FSR2 | Each face accumulates independent history. Moving objects can ghost and disocclusions restart history at boundaries. Increase warmup and compare an MSAA-only test if artifacts are objectionable. |
-| Auto exposure | Separate view metering can create brightness seams. Prefer fixed authored exposure for 360 output. The addon does not silently disable it. |
+| Auto exposure | Forward+ meters each view separately, which can create brightness seams. Advanced offers explicit **Fixed (authored)** exposure; Scene remains the default. Mobile/Compatibility do not support native auto exposure. |
 | Depth of field | Uses each face camera's depth; blur can change across an edge. Review before retaining it. |
 | Custom compositor | The same effect resource can be called for multiple viewports. Store persistent history per view/render buffer, handle square targets and required attachments, and avoid assuming one call per scene frame. A stateless effect is much easier to verify. |
 | Billboards and screen textures | Face-facing geometry and screen/depth shaders can change at cube edges. Prefer world-space geometry when practical. |
@@ -102,11 +102,63 @@ and [compositor contract](https://docs.godotengine.org/en/stable/tutorials/rende
 
 Actual frame inspection found **hard glow-halo cuts at face boundaries** and
 **large exposure differences between faces with auto exposure**. The optional
-capture border below supplies surrounding pixels for glow. Shared spherical
-exposure still requires a new metering strategy and remains open.
+capture border below supplies surrounding pixels for glow. The fixed exposure
+option below removes independent metering; shared adaptive spherical exposure
+still requires a new metering strategy and remains open.
 No large TAA trail appeared in the inspected simple motion sequence;
 this does not validate particles, skinned meshes or camera cuts. FSR output,
 VoxelGI, baked LightmapGI and stateful custom compositor histories remain untested.
+
+## Capture exposure
+
+**Advanced → Capture exposure → Fixed (authored)** disables automatic exposure
+on all six capture cameras. It uses the selected camera's authored attributes,
+falling back to WorldEnvironment attributes. Exposure multiplier, sensitivity,
+physical-camera settings and depth of field continue to follow the source every
+frame, including animation and resource replacements. Camera attributes override
+world attributes, as in Godot. The worker owns a copy and never edits the originals.
+
+Use a short test to choose the authored exposure before a full render. **Fixed**
+means no automatic metering; an authored exposure curve can still change brightness.
+This does **not** freeze the editor view's auto-metered brightness. Switching to it
+can make a scene brighter or darker, and a lighting cut will stay visible unless
+you author an exposure change. Tune `CameraAttributes.exposure_multiplier` or
+physical exposure in the scene; the original tone mapper and SDR pipeline remain.
+
+**Scene (default)** preserves the previous behavior, including independent
+Forward+ metering. Legacy recipes/settings/jobs use Scene. Mobile and Compatibility
+already omit native auto exposure; Fixed is accepted there with the same authored
+exposure behavior. See Godot's [CameraAttributes contract](https://docs.godotengine.org/en/stable/classes/class_cameraattributes.html).
+Sharing attributes does not share metering: Godot's
+[renderer keeps luminance history per render buffer](https://github.com/godotengine/godot/blob/4.7.2-stable/servers/rendering/renderer_rd/renderer_scene_render_rd.cpp).
+
+`capture_exposure_mode` is `scene` or `fixed` in recipes, settings and jobs.
+Capture settings and delivery reports record the original policy. A changed mode
+invalidates the sample estimate. Re-encoding preserves the captured policy and
+pixels; a conflicting explicit request is rejected. Legacy capture evidence is
+left as recorded, without retroactively adding a policy claim.
+
+The mode adds no viewports, render passes or image readbacks. A small CPU copy of
+changed attribute values runs once per frame, and `capture-timings.json` records
+total `exposure_sync_usec`. Fixed removes native auto-exposure work in Forward+;
+short-test wall times are not a production speedup guarantee. Borders retain their
+separate pixel cost. This does not repair other view-dependent lighting/effects,
+clipped highlights, or implement automatic spherical light adaptation.
+
+`tests/exposure_review.py` compares 90 frames of uneven lighting, moving geometry
+and camera, a lighting cut, an authored exposure curve and an attribute replacement.
+Its oracle is the same scene authored with automatic metering disabled. All source
+frames are compared, all delivered video frames are decoded, and a re-encode checks
+source hashes and capture evidence. Run in a fresh folder:
+
+```shell
+python tests/exposure_review.py --godot /path/to/godot --ffmpeg /path/to/ffmpeg --ffprobe /path/to/ffprobe --output /path/to/fresh-review --method forward_plus --driver vulkan
+```
+
+Repeat with `--world-attributes`, `--physical`, `--border 12.5`, or the appropriate
+`--method mobile` / `--method gl_compatibility --driver opengl3`. Requires NumPy,
+Pillow and a working graphical backend. Dated evidence and illustrated comparisons
+are in the repository's `docs/validation.md` and `docs/exposure-consistency.md`.
 
 ## Capture borders
 

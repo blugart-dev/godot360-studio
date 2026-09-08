@@ -58,6 +58,15 @@ the installed tools. [Platform setup](../addons/godot360/PLATFORMS.md) covers bo
 
 ### Renderer appearance and motion
 
+`tests/exposure_review.py` renders the moving-light exposure comparison from a
+fresh disposable project. It checks all 90 source frames against a scene authored
+with fixed exposure, decodes all video frames, compares legacy defaults, and
+re-encodes while verifying original hashes/settings. See the
+[command and variants](../addons/godot360/RENDERERS.md#capture-exposure) and
+[illustrated result](exposure-consistency.md). `tests/exposure_checks.gd` runs in
+every package/CI contract matrix and covers camera/world attribute animation,
+resource replacement, physical projection, recipes, estimates and saved-input errors.
+
 The package/compatibility reviewers accept `--rendering-method forward_plus`
 or `--rendering-method mobile`, and `--rendering-driver vulkan` (or a native
 backend such as `d3d12`). The isolated project's saved renderer drives actual

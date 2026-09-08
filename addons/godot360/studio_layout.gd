@@ -115,6 +115,15 @@ static func _advanced(panel: Control, parent: Control) -> void:
 		panel._refresh_quality_hint()
 		panel._refresh_plan())
 	var renderer_grid := _grid(section)
+	_label(renderer_grid, "Capture exposure")
+	panel.exposure_control = OptionButton.new()
+	panel.exposure_control.add_item("Scene (default)")
+	panel.exposure_control.add_item("Fixed (authored)")
+	panel.exposure_control.tooltip_text = "Fixed disables auto exposure on all six faces. Authored exposure values and animation remain active. Run a new short test to check brightness."
+	renderer_grid.add_child(panel.exposure_control)
+	panel.exposure_control.item_selected.connect(func(index: int):
+		panel.profile.capture_exposure_mode = preload("capture_exposure.gd").MODES[index]
+		panel._refresh_plan())
 	_label(renderer_grid, "Capture renderer")
 	panel.renderer_control = OptionButton.new()
 	for name in ["Project renderer (default)", "Forward+", "Mobile", "Compatibility"]:

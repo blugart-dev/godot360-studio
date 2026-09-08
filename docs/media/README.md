@@ -16,6 +16,8 @@ video service is needed to read the illustrated guides.
 | `umbral.jpg` | A forward view at 3 s from UMBRAL's rendered film | 29 KB |
 | `../../addons/godot360/media/studio.png` | Actual current panel, THRESHOLD 8K recipe, native playback paused at 35 s | 567 KB |
 | `capture-borders-forward.jpg`, `capture-borders-mobile.jpg` | Unmodified before/after sheets from the moving-emitter capture-border fixture; see [test and regeneration](../capture-borders.md) | Under 40 KB each |
+| `exposure-consistency.jpg` | Unmodified Scene / Fixed (authored) comparison sheet from the moving-light exposure fixture; see [test and regeneration](../exposure-consistency.md) | Under 40 KB |
+| `exposure-lit.jpg` | Unmodified Scene / Fixed (authored) sheet from the lit-material exposure experiment; see [comparison](../exposure-consistency.md) and [evidence](../validation.md) | Under 50 KB |
 
 The film previews are **ordinary perspective views**, not interactive 360 players.
 They have no spherical metadata. This distinction is repeated beside the media

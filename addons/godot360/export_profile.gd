@@ -9,6 +9,7 @@ extends Resource
 @export_enum("2048", "4096", "7680") var width: String = "2048"
 @export_range(128, 4096, 128) var face_size: int = 512
 @export_range(0.0, 25.0, 0.5) var capture_border_percent: float = 0.0
+@export_enum("scene", "fixed") var capture_exposure_mode: String = "scene"
 @export_enum("24", "25", "30", "50", "60") var fps: String = "30"
 @export_range(0.1, 3600.0, 0.1) var duration: float = 10.0
 @export var random_seed: int = 360
@@ -45,6 +46,7 @@ func to_dictionary() -> Dictionary:
 		"rendering_method": rendering_method, "rendering_driver": rendering_driver,
 		"width": int(width), "height": int(width) / 2, "face_size": face_size,
 		"capture_border_percent": capture_border_percent,
+		"capture_exposure_mode": capture_exposure_mode,
 		"fps": int(fps), "frames": roundi(duration * int(fps)),
 		"random_seed": random_seed, "warmup_frames": warmup_frames, "crf": crf,
 		"frame_writer": frame_writer, "audio_mode": audio_mode, "soundtrack_path": soundtrack_path,

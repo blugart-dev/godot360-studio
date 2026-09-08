@@ -113,6 +113,12 @@ If a glow halo has a hard cut, try **Advanced → Capture border per edge (%)** 
 using about 56% more face pixels. Read [capture borders and limits](RENDERERS.md#capture-borders)
 before relying on it for a final render.
 
+If whole faces have different brightness, try **Advanced → Capture exposure →
+Fixed (authored)** and run a new short test. It disables automatic metering while
+retaining authored exposure values and animation. Adjust exposure in the scene
+if needed; this does not freeze the editor view's auto-metered brightness.
+Read [capture exposure](RENDERERS.md#capture-exposure). Scene remains the default.
+
 **Open output** opens the selected job folder. `video-360.mp4` is the verified
 delivery file; `report.json` records the technical checks. For full-resolution
 playback, you can install
