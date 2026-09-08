@@ -87,7 +87,8 @@ Each submits 68 frames, including eight warmup frames. Capture elapsed times are
 old and 4.565872 s new (9.7% lower in these short trials), but the first old trial
 is slower than all later ones. This is insufficient evidence for a speedup or a
 production overhead estimate. Peak VRAM and long-run costs remain unmeasured.
-The implementation adds one deferred call per process frame and no GPU work.
+The implementation adds one deferred call per process frame and no extra viewport
+or GPU pass.
 
 All **240 delivered source and 240 decoded frames** in this comparison match
 exactly across old/new capture. Re-encoding a corrected capture to CRF 22 passes
@@ -98,11 +99,18 @@ plus the separate 60 source frames of the deliberately delayed skin control.
 
 ### Hosted CI
 
-The private implementation push will run the Linux/Mac workflow. In addition to
-the existing package and software-Vulkan cases, Linux now renders the skeletal
-fixture with an external attachment and zero warmup. Record its result against
-the exact implementation commit after the run completes. This does not replace
-native Mac graphical or hardware-GPU Linux validation.
+Private implementation `f9e72f4` passes [hosted run 34246410434](https://github.com/blugart-dev/godot360-studio/actions/runs/34246410434).
+Linux passes **875 package/workflow checks**, three skeletal exports (180 source
+and 180 decoded frames, external attachment, zero warmup, Mesa llvmpipe), and all
+eight Forward+/Mobile color/lit/glow/compositor cases under software Vulkan. The
+skeletal foreground errors remain below 0.0042. Mac passes **741 headless checks**.
+Both platforms rebuild the exact final package hash above; reports and the Linux
+comparison sheet were downloaded and inspected under `ci-linux` and `ci-mac`.
+
+Attempt 1 was cancelled during slow downloads from the Ubuntu package mirror,
+before any addon tests started. Its log is retained as `linux-attempt1.log`.
+Retrying only the Linux job on a fresh runner completed successfully with unchanged
+source (attempt 2). This is not a native Mac graphical or hardware-GPU Linux review.
 
 ### Remaining scope
 

@@ -2,10 +2,13 @@
 
 ## Skeletal camera synchronization — 2026-09-08
 
-Continuing from clean private `origin/main` at `0a86e29`; the preceding hosted
-exposure run passed. Local validation of this increment is complete; hosted CI
-must be checked after the implementation push. The final reproducible candidate
-is `.godot360/skeletal-review/final/candidate.zip`, SHA256
+Implementation `f9e72f4` is pushed to private `origin/main`, following clean
+`0a86e29`. Local validation and hosted run `34246410434` pass: 875 Linux package/
+workflow checks, a three-export skeletal comparison, eight software-Vulkan
+appearance cases, and 741 Mac headless checks. The Linux retry used unchanged
+source after the first attempt was cancelled during slow Ubuntu mirror downloads;
+no addon tests had started in that attempt. Both hosted platforms rebuild the
+exact final package at `.godot360/skeletal-review/final/candidate.zip`, SHA256
 `103f44f37b570a6038f090ce4e0e9f87ef34fae27465eb36c263478253303e87`.
 
 The new fixture found a real one-frame delay for a Camera3D under BoneAttachment3D:
@@ -40,8 +43,8 @@ ZIP differs from the full-matrix ZIP only in that Python metric; runtime code is
 identical. See [validation](validation.md) for exact counts and limitations.
 Run `audit.py` to recheck protected hashes, links and rendered summaries. No local
 test jobs remain after this validation. Publication still requires separate
-authorization. The next work remains complex scene
-fixtures, shared adaptive exposure policy, production Forward+/Mobile 4K/8K cost
+authorization. The next work remains complex scene fixtures, shared adaptive
+exposure policy, production Forward+/Mobile 4K/8K cost
 and endurance, native Mac/Linux hardware workflows and the final private review.
 
 ## Consistent authored exposure — 2026-09-08
