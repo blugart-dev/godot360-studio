@@ -1,5 +1,14 @@
 # Changelog
 
+## Unreleased — particle capture and authored processing modes
+
+- Preserve the scene root's processing mode through warmup and honor later scene
+  changes. Disabled scenes and scenes that pause themselves stay paused during export.
+- Report short-warmup and Compatibility CPU particle startup in scene notes. Document startup, fixed-step
+  timing and seed limitations without changing authored particle settings.
+- Add CPU/GPU particle motion against an analytic mesh reference, decoded MP4
+  comparisons and rendered processing-mode regressions in the portable test suite.
+
 ## Unreleased — skeletal camera timing
 
 - Synchronize capture cameras after queued skeleton/attachment updates, fixing

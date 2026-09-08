@@ -89,6 +89,13 @@ for the 2026-09-08 capture; local evidence is under `.godot360/docs-review/`.
 
 ## Before committing refreshed media
 
+`particle-capture.jpg` is the CPU/GPU/analytic comparison from
+`tests/particle_review.py`, Godot 4.7.2 Forward+ / Vulkan on Windows, 8-frame
+warmup and zero borders. It uses delivered frames 0, 24 and 59 at 45° yaw,
+50° horizontal / 38° vertical FOV, with a 320×240 flat view per cell. The accepted
+source is `.godot360/particle-review/4.7.2-forward_plus/`; the final reviewer
+reproduces the 960×810 contact sheet. See [particle capture](../particle-capture.md).
+
 Check image legibility at README width, all four GIF excerpts, video duration and
 audio, relative Markdown links and the packaged screenshot. Keep the GIF below
 4 MB and the MP4 below 7 MB. The PNG is the only binary media included in the addon

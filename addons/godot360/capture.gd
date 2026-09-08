@@ -18,6 +18,7 @@ var frame_samples: Array[Dictionary] = []
 var writer: RefCounted
 var stopped: bool = false
 var rig: Node
+var scene_process_mode: Node.ProcessMode
 
 
 func _initialize() -> void:
@@ -124,7 +125,12 @@ func _start() -> void:
 		return
 	writer = preload("frame_writer.gd").new()
 	writer.configure(job)
-	scene.process_mode = Node.PROCESS_MODE_DISABLED if int(job.get("warmup_frames", 2)) > 0 else Node.PROCESS_MODE_INHERIT
+	# Warmup temporarily holds ordinary scene processing. Preserve the mode
+	# authored by the scene or its capture hook, including an intentionally paused
+	# scene. With zero warmup there is no mode change to undo.
+	scene_process_mode = scene.process_mode
+	if int(job.get("warmup_frames", 2)) > 0:
+		scene.process_mode = Node.PROCESS_MODE_DISABLED
 	RenderingServer.frame_post_draw.connect(_after_frame)
 	started_usec = Time.get_ticks_usec()
 
@@ -178,8 +184,8 @@ func _after_frame() -> void:
 	if rendered > 1 and FileAccess.file_exists(scratch):
 		DirAccess.remove_absolute(scratch)
 	var warmup: int = int(job.get("warmup_frames", 2))
-	if rendered >= warmup:
-		scene.process_mode = Node.PROCESS_MODE_INHERIT
+	if warmup > 0 and rendered == warmup:
+		scene.process_mode = scene_process_mode
 	if rendered % 10 == 0 or rendered == total:
 		var elapsed: float = (Time.get_ticks_usec() - started_usec) / 1000000.0
 		if not IO.write_json(destination.path_join("render-progress.json"), {"frame": rendered, "total": total,
@@ -202,6 +208,10 @@ func _after_frame() -> void:
 func _inspect(node: Node, warnings: Array[String]) -> void:
 	if node is CanvasLayer:
 		node.visible = false
+	if (node is GPUParticles3D or node is CPUParticles3D) and int(job.get("warmup_frames", 2)) < 8:
+		warnings.append("Particles may be missing or incomplete at the opening: %s. Test 8–10 warmup frames and inspect the opening and motion; warmup does not pre-roll the simulation." % str(scene.get_path_to(node)))
+	if node is CPUParticles3D and RenderingServer.get_current_rendering_method() == "gl_compatibility":
+		warnings.append("Compatibility CPU particles can miss the first delivered frame even with warmup: %s. Review the opening; GPU particles or another renderer may be needed." % str(scene.get_path_to(node)))
 	if node is SpriteBase3D and node.billboard != BaseMaterial3D.BILLBOARD_DISABLED:
 		warnings.append("Camera-facing sprite may produce seams: " + str(scene.get_path_to(node)))
 	if node is Label3D and node.billboard != BaseMaterial3D.BILLBOARD_DISABLED:

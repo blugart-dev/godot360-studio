@@ -122,6 +122,46 @@ This contract defines authored properties, not every process in a project. Physi
 particles, autoloads, shader TIME, and external logic can still vary. It does not
 establish reproducibility across engines or hardware.
 
+## Particle simulation and processing modes
+
+CPU and GPU particles belong to the scene's single World3D. The six views share
+that simulation. A sampling hook sets authored properties; it does not seek or
+restart particle simulation. Godot's Movie Maker clock drives ordinary processing.
+
+Capture now preserves the scene root's authored `process_mode`, including changes
+made by its setup hook. Warmup temporarily disables root processing and restores
+the saved mode once before delivery begins. Zero warmup leaves the mode alone.
+Later changes made by the scene remain in effect, so a deliberately disabled scene
+or a scene that pauses itself stays paused. Explicit child processing modes and
+autoloads still follow Godot's normal rules; warmup is not a global simulation pause.
+
+For particle scenes, test with **8–10 warmup frames** in the recipe Inspector and
+inspect the opening. Zero warmup can omit particles or show them in only some
+directions at first. The default two frames may also be insufficient. Warmup holds
+the ordinary scene clock; it does not simulate several seconds of particle history.
+Author an emitter's `preprocess` or a deliberate scene pre-roll when a mature effect
+is needed, and validate that separately. In Compatibility, the CPU particle
+fixture still misses the first delivered frame even with eight warmup frames;
+that startup defect remains open. The validated Compatibility appearance case
+uses GPU particles. Forward+/Mobile cover both CPU and GPU particles.
+
+The regression fixture uses opaque sphere meshes, constant velocity, no collisions,
+and particle **Fixed FPS = 0**, with GPU interpolation disabled. In Movie Maker,
+this lets the emitter follow the export frame clock. A separate fixed particle step
+can quantize motion; a 30 Hz GPU emitter showed a repeated step in a 30 FPS export.
+Choose the authored timing that suits the effect and inspect the result. The addon
+does not override particle FPS, speed, seed, interpolation or emission settings.
+
+Set a GPU emitter's `use_fixed_seed` and `seed` for repeatable random emission on
+the same configuration. The job's global random seed does not set GPU emitter
+seeds. Neither setting promises identical particles across engines or GPUs.
+Transparent/billboard particles, trails, collisions, subemitters, animated emission,
+moving emitters and long histories still require representative validation.
+
+See Godot's [GPUParticles3D reference](https://docs.godotengine.org/en/4.5/classes/class_gpuparticles3d.html)
+for fixed FPS, seeds and preprocessing. The repository's `docs/particle-capture.md`
+records the rendered fixture and exact evidence.
+
 ## Skeletal animation and viewpoint cuts
 
 Keyed Skeleton3D bone position/rotation tracks and weighted meshes can use the

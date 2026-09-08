@@ -227,6 +227,7 @@ the current machine's renderer is never substituted into their report.
 | Different exposure or washed-out colors | Check camera/environment overrides and auto exposure; compare the retained PNG to a normal view with the same renderer and tone mapper. PNGs are sRGB, MP4 is BT.709. |
 | GPU memory exhaustion | Reduce face size, lower MSAA or reduce expensive effects, then re-test. Six views and temporal histories require more VRAM than one camera. Disk estimates do not estimate VRAM. |
 | Scene script failure | Fix the `SCRIPT ERROR` in `capture.log` and start a new render. A complete PNG count alone does not prove authored scene behavior ran. |
+| Missing or uneven particle motion at the opening | Test 8–10 warmup frames and inspect particle Fixed FPS/interpolation. Warmup does not pre-roll particle history. See [particle authoring](AUTHORING.md#particle-simulation-and-processing-modes). |
 
 See the repository's `docs/validation.md` for dated measured combinations and
 local evidence. Native macOS, Linux hardware-GPU rendering and combinations not

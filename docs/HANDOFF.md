@@ -1,5 +1,38 @@
 # Godot360 Studio development handoff
 
+## Particle capture and authored processing modes — 2026-09-08
+
+Continued privately from clean `f5d9198`. `capture.gd` now preserves the authored
+scene root process mode through warmup and honors later mode changes. Previously
+it forced `INHERIT` on every frame, activating disabled scenes and undoing pauses.
+Four rendered mode tests fail against the old worker and pass with the fix.
+Read [particle capture](particle-capture.md) and the new [validation](validation.md)
+entry for precise coverage and package snapshots.
+
+CPU/GPU constant-velocity particles pass analytic PNG/decoded MP4 comparisons in
+Forward+/Mobile; GPU particles pass Compatibility on 4.5.1/4.6.3/4.7.2. Use eight/
+ten warmup, Fixed FPS 0 and the other documented fixture settings for that claim.
+**Compatibility CPU particles still miss the first delivered frame**, even at
+eight warmup. The failed report is retained. `--gpu-only` explicitly narrows the
+appearance lane and keeps CPU processing-mode cases. Zero/two warmup and separate
+fixed-step timing have further observed startup differences. Scene notes flag
+short warmup and Compatibility CPU startup; authored particle settings stay intact.
+
+`tests/particle_review.py` and its fixture ship in the package. Linux CI adds the
+GPU Compatibility comparison and four processing-mode cases. Final package is
+`.godot360/particle-review/accepted/candidate.zip`; its SHA and the distinction
+from the 3,089-check full regression snapshot are in validation. Local evidence,
+negative controls and helper scripts remain under `.godot360/particle-review/`.
+The authored scenes/settings/recipes/master hashes remain preserved.
+The exact final package passes 739 further checks plus eight rendered Compatibility
+jobs, including its final scene notes. Local package checks total 3,828. Hosted CI
+is pending for the implementation commit; record its outcome before closing out.
+
+Next work includes resolving the measured particle startup behavior, broader
+particle/character/temporal fixtures, shared adaptive exposure policy, representative
+Forward+/Mobile 4K/8K cost and endurance, native Mac/Linux hardware workflows and
+the final private walkthrough. No public release is authorized.
+
 ## Skeletal camera synchronization — 2026-09-08
 
 Implementation `f9e72f4` is pushed to private `origin/main`, following clean

@@ -58,6 +58,12 @@ the installed tools. [Platform setup](../addons/godot360/PLATFORMS.md) covers bo
 
 ### Renderer appearance and motion
 
+The [particle review](particle-capture.md) compares CPU/GPU particle motion across
+cube boundaries with an analytic mesh reference. `tests/particle_review.py` checks
+source and decoded MP4 frames plus authored processing modes. `--lifecycle` adds
+disabled, when-paused and mid-capture pause cases; Linux CI includes them.
+Optional startup/fixed-step observations are recorded separately from acceptance.
+
 The [skeletal camera review](skeletal-capture.md) compares moving/cut bone cameras
 and weighted skin against independent references, including decoded MP4 frames.
 Run `tests/skeletal_review.py` with Godot, FFmpeg/FFprobe and a fresh `--output`;

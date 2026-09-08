@@ -1,5 +1,81 @@
 # Validation record — updated 2026-09-08
 
+## Particle capture and processing modes — 2026-09-08
+
+Continued privately from clean `f5d9198`. The [particle fixture](particle-capture.md)
+found that capture overwrote the root's authored processing mode at startup and
+after every rendered frame. The fix saves that mode and restores it once after
+warmup; zero warmup and later scene changes are preserved. The old worker fails
+all four new mode cases, while the corrected worker passes them in Forward+,
+Mobile and Compatibility. Static disabled pictures and a mid-capture CPU pause
+are checked as well as scene ticks. Strengthened metrics were rerun against
+retained frames in `particle-review-hardened.json`; the original reports remain.
+
+### Native particle evidence
+
+Windows / RTX 3060 Ti / FFmpeg 9.0.1; 2048×1024, 512-pixel face cores, 30 FPS,
+60 delivered frames per job. Eight opaque sphere particles move at constant
+velocity across face boundaries, using particle Fixed FPS 0, no gravity/collisions,
+GPU interpolation off and fixed GPU seeds. Ordinary meshes provide an independent
+position reference. The normal/long warmup cases use eight/ten frames.
+
+| Godot / renderer | Appearance comparison | Other coverage | Result |
+| --- | --- | --- | --- |
+| 4.7.2 Forward+ / Vulkan | CPU and GPU vs. analytic meshes | Four processing-mode cases; short/zero warmup and fixed-30-Hz observations | Settled motion and modes pass; startup observations retain failures. |
+| 4.7.2 Mobile / Vulkan | CPU and GPU vs. analytic meshes | 12.5% border; four mode cases | Pass. |
+| 4.7.2 Compatibility / OpenGL | GPU vs. analytic meshes | Four mode cases; separate CPU comparison | GPU/modes pass; CPU first delivered frame is missing, remaining 59 match. |
+| 4.5.1 Compatibility / OpenGL | GPU vs. analytic meshes | Eight/ten warmup | Pass. |
+| 4.6.3 Compatibility / OpenGL | GPU vs. analytic meshes | Eight/ten warmup | Pass. |
+
+The settled accepted comparisons inspect **1,020 unique source and 1,020 decoded
+frames** across 17 exports. An additional 360 of each cover startup observations
+and the failed Compatibility CPU appearance case. Twelve mode exports inspect
+scene state and retained frames; four old-worker exports supply the negative
+control. The initial exploratory runs are retained separately and are not added
+to these counts. All accepted pairs meet source MAE <0.03, decoded MAE <0.1,
+foreground MAE <0.25 and >200 foreground pixels on a 0–255 scale. The largest
+accepted foreground error is below 0.06.
+
+**Open defects and limits:** zero/two-frame warmup can omit or partially initialize
+particles. Compatibility CPU startup remains wrong at eight warmup frames; the
+`--gpu-only` lane explicitly excludes that appearance claim, while retaining CPU
+pause tests. In an initial two-warmup Forward+ trial, a fixed-30-Hz GPU emitter
+repeated a step; the later eight-warmup observation matched. No general fixed-step
+or arbitrary particle determinism is claimed. Scene notes identify short warmup
+and Compatibility CPU startup. Native simulation, seeds and particle settings
+remain authored. Transparent/billboard effects, collisions, trails, preprocessed
+or moving emitters, subemitters, long histories and cross-GPU repeatability are open.
+
+### Package and regression evidence
+
+The full regression snapshot is `.godot360/particle-review/final/candidate.zip`,
+SHA256 `f1771a365247c0ef7ed3fdd8195a544200e16eeba567a1c5386de0a17f07f1ca`.
+It passes **2,217 headless package checks** across Windows Godot 4.5.1, 4.6.3 and
+4.7.2, plus **872 Forward+ package/workflow checks**, including actual exports,
+playback, cancellation, recovery and storage failures. An additional Forward+
+color/lit/motion review passes all 180 source and decoded motion frames, with
+audio cues within 0.71 ms. These jobs use disposable projects and profiles.
+
+The final candidate is `.godot360/particle-review/accepted/candidate.zip`, SHA256
+`ce1c961448fde190d16785dd5292e8a26534d67315b7480730ff75d84cc37f6f`.
+Its changes from the full snapshot are scene-inspection notes, authoring/changelog
+text and Python reviewer coverage/metrics; capture code outside inspection is
+identical. Both packages have 141 entries and reproduce byte-for-byte from their
+unpacked source. The final package passes another **739 Windows 4.7.2 checks**
+and eight Compatibility particle exports: GPU appearance at eight/ten warmup,
+four processing-mode cases and the short-warmup observation. These verify the
+final notes and strengthened static-frame metrics. Three settled clips add 180
+source and decoded frames; the short-warmup observation adds 60 of each. Local
+package checks total **3,828** across the two explicitly identified snapshots.
+Hosted validation is pending for the implementation commit.
+
+Source scene/settings/recipe/master hashes remain unchanged. Evidence lives under
+`.godot360/particle-review/`, including the failed Compatibility CPU report and
+the explicitly narrowed `particle-review-gpu.json`. The repository stays private
+and the version remains the internal 0.8 baseline. This does not close the complex
+particle, production-performance, native Mac/Linux hardware or final usability
+workstreams.
+
 ## Skeletal camera timing review — 2026-09-08
 
 Private development continues from `0a86e29`, whose preceding implementation CI
