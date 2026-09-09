@@ -30,9 +30,11 @@ Recent increments establish:
 
 Appearance/particle work is checkpointed at `d37a786` and pushed privately. Both
 hosted workflows pass: Desktop platforms `34363716312` and Combined appearance
-`34363715991`. Imported-character changes and their new workflow follow that
-checkpoint; consult the newest HANDOFF/validation entry and Git status for their
-final commit and CI state. Preserve any working-tree changes when continuing.
+`34363715991`. Imported-character source is checkpointed at `1a23a0c`. Its three
+hosted workflows are also green: characters `34366471485`, platforms `34366473025`
+and appearance `34366471526`, all on the final package hash below. Only Mobile's
+character setup was retried after slow Ubuntu downloads, with unchanged source.
+Preserve any new working-tree changes when continuing.
 
 ## Recommended order and difficulty
 

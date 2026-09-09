@@ -119,3 +119,9 @@ borders, 30 FPS; delivered frames 15, 30 and 31. Every cell uses an 85×70-degre
 flat view at 320×240; only text/panel layout is added by the reviewer. The original
 GLB and these derived views are © 2017 Cesium, CC BY 4.0; see
 [attribution and upstream mark notice](../../tests/fixtures/cesium_man/README.md).
+
+`imported-character-textured.jpg` is the unaltered two-row contact sheet from
+`.godot360/imported-character/native/textured-60-bake/`, retaining the GLB's
+original material/texture. The same Windows engine/GPU uses Forward+ Vulkan,
+60 FPS, zero warmup and 12.5% borders, with a matching 60 FPS import bake.
+The projection, sample frame numbers and Cesium attribution are the same as above.

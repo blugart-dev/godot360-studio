@@ -60,9 +60,35 @@ evaluator bytes match across all six accepted native datasets.
 `.godot360/imported-character/audit.json` verifies the reports, exact package,
 native runtime/fixture matching and the protected project/settings/recipe/master
 hashes. All three workflows pass actionlint (ShellCheck disabled). The new
-Imported characters hosted workflow is pending on this increment. IK/modifiers,
+Imported characters hosted workflow passes on this increment, as detailed below. IK/modifiers,
 nested skeleton attachments, other import/retarget pipelines, complex particles,
 production workloads and native Linux/Mac GPU reviews remain open.
+
+### Hosted validation of the exact character package
+
+Source commit `1a23a0c` is pushed privately. All three workflows pass:
+
+- [Imported characters, run 34366471485](https://github.com/blugart-dev/godot360-studio/actions/runs/34366471485):
+  five exports per renderer on Linux Mesa Compatibility, Forward+ and Mobile.
+  All 15 clips / 900 source and decoded frames are checked, including six
+  deliberately incorrect controls that are rejected as required.
+- [Desktop platforms, run 34366473025](https://github.com/blugart-dev/godot360-studio/actions/runs/34366473025):
+  875 Linux package/workflow checks, three skeletal exports, eight renderer cases
+  and 14 particle exports; 741 macOS headless checks.
+- [Combined appearance, run 34366471526](https://github.com/blugart-dev/godot360-studio/actions/runs/34366471526):
+  nine clips / 810 decoded frames and a re-encode on each renderer.
+
+All seven hosted package records match the final `3a66b1f8…` ZIP above. Downloaded
+reports, full run records and the aggregate audit are under
+`.godot360/imported-character/final/hosted/`; `verified.json` confirms outcomes,
+source revision, package hashes and negative controls.
+
+The Mobile character job was canceled during extremely slow Ubuntu package
+downloads, before package building or tests began. Only that job was rerun on
+unchanged source; Compatibility and Forward+ retained their first successful
+attempts. The canceled setup log is retained as `final/mobile-install-cancelled.log`.
+Desktop platforms and Combined appearance passed without retries. These software
+Linux and headless Mac jobs do not replace the remaining native GPU reviews.
 
 ## Appearance/particle checkpoint hosted validation — 2026-09-09
 

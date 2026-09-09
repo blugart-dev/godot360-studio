@@ -37,6 +37,12 @@ camera. Both must fail the image comparison. The camera control includes the
 late viewpoint cut. `--textured` retains the original material and texture and
 compares camera paths using identical native skinning on both sides.
 
+![Original textured character and its independent camera reference at frames 15, 30 and 31.](media/imported-character-textured.jpg)
+
+*The original material, captured at 60 FPS with zero warmup and 12.5% borders on
+Windows Forward+ Vulkan. Both rows show the same fixed viewing direction; the
+cut moves the character toward the edge of that flat view.*
+
 ## Import settings matter
 
 The first investigation used Godot's default import settings. Its optimized
@@ -60,6 +66,9 @@ source more closely is important. Godot documents these processing stages in its
 No runtime correction was required for this fixture. The existing deferred camera
 synchronization works with its imported skeleton. Read the [validation record](validation.md)
 for the final engine/renderer matrix, package hash and hosted evidence.
+The completed matrix includes 21 native Windows exports and 15 hosted Linux Mesa
+exports across Compatibility, Forward+ and Mobile, with timing controls rejected
+as required. The exact package also passes the existing platform/appearance CI.
 
 ## Use an imported clip
 

@@ -23,7 +23,16 @@ Final ZIP `.godot360/imported-character/final/candidate.zip` has SHA256
 identically. It passes five rendered Compatibility jobs. The preceding package
 passed 739 headless/failure checks; the exact difference is documented in
 validation. `audit.json` records native source matching and protected hashes.
-The new hosted character workflow is pending; actionlint passes for all three.
+
+Implementation `1a23a0c` is pushed privately. Hosted Imported characters
+`34366471485`, Desktop platforms `34366473025` and Combined appearance
+`34366471526` all pass. The character suite adds 15 hosted exports with six
+rejected timing controls. Desktop platforms passes 875 Linux / 741 Mac checks,
+three skeletal exports, eight renderer cases and 14 particle exports; both
+appearance lanes pass nine clips plus re-encoding. All seven hosted package
+records match the exact final ZIP. Mobile's character job alone was restarted
+after very slow Ubuntu downloads, before tests; source stayed unchanged.
+`final/hosted/verified.json` records the evidence. Actionlint passes for all three.
 
 Next bounded engineering task: a common skeleton modifier/IK case and nested
 skeleton attachments, using the imported fixture now established. Then complex
