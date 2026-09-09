@@ -78,8 +78,9 @@ that covers the requested duration. Select the Camera3D below the attachment as
 the export source; changing another camera's `current` property does not cut the
 export. A cut changes the selected camera's transform.
 
-This establishes one GLB/AnimationPlayer workflow. IK/modifier ordering, nested
-skeleton attachments, ragdolls, physics interpolation, animation trees,
+This establishes one GLB/AnimationPlayer workflow. The subsequent
+[head-look and nested attachment review](modifier-capture.md) covers a stateless
+custom modifier and nested mount. General IK/modifier chains, ragdolls, physics interpolation, animation trees,
 retargeting, other file formats and long temporal histories remain separate work.
 The textured check covers its original material, not arbitrary character shaders.
 The clips are silent; the existing motion/audio fixtures establish audio timing.

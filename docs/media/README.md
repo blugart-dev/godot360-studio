@@ -125,3 +125,12 @@ GLB and these derived views are © 2017 Cesium, CC BY 4.0; see
 original material/texture. The same Windows engine/GPU uses Forward+ Vulkan,
 60 FPS, zero warmup and 12.5% borders, with a matching 60 FPS import bake.
 The projection, sample frame numbers and Cesium attribution are the same as above.
+
+`modifier-capture.jpg` is the unaltered six-row contact sheet from
+`.godot360/modifier-review/native/nested-472-forward/`, showing the custom head
+look, nested skeleton mount and independent camera/skin references. The last
+three rows intentionally delay skin, camera and head-look target by one frame.
+Windows Godot 4.7.2 / RTX 3060 Ti / Forward+ Vulkan, 30 FPS, two warmup frames,
+zero border; frames 15, 30 and 31, with the same 85×70-degree 320×240 views and
+Cesium attribution as above. Reproduce it with the command in
+[modifier capture](../modifier-capture.md).

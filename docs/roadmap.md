@@ -32,8 +32,11 @@ simulation deltas, matching-rate fixed particle steps and Compatibility CPU
 automatic bounds. The supported simple-effect contract uses at least two warmup
 frames; zero-warmup GPU startup and complex effect histories remain outside it.
 The [imported-character review](imported-characters.md) adds a real GLB, head-attached
-camera and independent skin/motion references. Next: modifiers/IK, nested skeleton
-attachments and more complex particle/effect scenes.
+camera and independent skin/motion references. The [modifier review](modifier-capture.md)
+adds a stateless head look and nested skeleton attachments. Next: complex particles
+(smoke, billboards, trails and moving emitters), advanced rendering, heavy 4K/8K
+workloads, native Linux/Mac testing, a clean installation-to-delivery walkthrough,
+then freezing and validating the 1.0 package.
 
 ## Completed first-export and review increments
 

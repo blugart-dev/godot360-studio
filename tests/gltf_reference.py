@@ -119,22 +119,54 @@ class Character:
         positions = np.column_stack((self.vertices, np.ones(len(self.vertices))))
         return np.einsum("nij,nj->ni", weighted, positions)[:, :3]
 
-    def write_reference(self, output, frames, fps):
+    def write_reference(self, output, frames, fps, head_look=False, nested=False):
         output.mkdir(parents=True)
         self.indices.astype("<i4").tofile(output / "indices.bin")
         rows = []
+        calibration = self.pose(0)[self.head][:3, :3]
+        target_base = self.pose(0)[self.head][:3, 3] + [0, 0, -3]
+        nested_rest = np.eye(4)
+        nested_rest[:3, 3] = [.18, .12, 0]
         for frame in range(frames):
             poses = self.pose(frame / fps)
+            base_bones = {self.nodes[i]["name"]: pose.T.ravel().tolist()
+                          for i, pose in poses.items() if i in self.skin["joints"]}
+            target = target_base + [0.85*np.sin(frame*.17), .35*np.sin(frame*.23), 0]
+            if head_look:
+                original = poses[self.head].copy()
+                z = original[:3, 3] - target
+                z /= np.linalg.norm(z)
+                x = np.cross([0, 1, 0], z)
+                x /= np.linalg.norm(x)
+                poses[self.head] = original.copy()
+                poses[self.head][:3, :3] = np.column_stack((x, np.cross(z, x), z)) @ calibration
+                change = poses[self.head] @ np.linalg.inv(original)
+
+                def update_children(index):
+                    for child in self.nodes[index].get("children", []):
+                        poses[child] = change @ poses[child]
+                        update_children(child)
+
+                update_children(self.head)
             self.deform(poses).astype("<f4").tofile(output / f"vertices-{frame:03d}.bin")
             cut = np.eye(4)
             angle = .55 if frame >= frames//2 else 0
             cut[:3, :3] = rotation([0, np.sin(angle/2), 0, np.cos(angle/2)])
-            camera = poses[self.head] @ self.boom @ cut
+            mount = poses[self.head]
+            nested_pose = np.eye(4)
+            if nested:
+                angle = .2*np.sin(frame*.31)
+                nested_pose[:3, :3] = rotation([0, np.sin(angle/2), 0, np.cos(angle/2)])
+                mount = mount @ nested_rest @ nested_pose
+            camera = mount @ self.boom @ cut
             rows.append({"camera": camera.T.ravel().tolist(),
+                         "target": target.tolist(), "base_bones": base_bones,
+                         "nested": (poses[self.head] @ nested_rest @ nested_pose).T.ravel().tolist(),
                          "bones": {self.nodes[i]["name"]: pose.T.ravel().tolist()
                                    for i, pose in poses.items() if i in self.skin["joints"]}})
         result = {"asset_sha256": ASSET_SHA256, "vertices": len(self.vertices), "triangles": len(self.indices)//3,
                   "joints": len(self.skin["joints"]), "channels": len(self.channels),
-                  "head": HEAD, "boom": self.boom.T.ravel().tolist(), "frames": rows}
+                  "head": HEAD, "boom": self.boom.T.ravel().tolist(), "frames": rows,
+                  "calibration": calibration.T.ravel().tolist(), "target_base": target_base.tolist()}
         (output / "reference.json").write_text(json.dumps(result) + "\n", encoding="utf-8")
         return result

@@ -17,12 +17,14 @@ concurrency:
 
 jobs:
   character:
-    name: ${{ matrix.method }} / Mesa
+    name: ${{ matrix.scene }} / ${{ matrix.method }} / Mesa
     runs-on: ubuntu-24.04
     timeout-minutes: 25
     strategy:
       fail-fast: false
       matrix:
+        scene: [animation, nested-head-look]
+        method: [gl_compatibility, forward_plus, mobile]
         include:
           - method: gl_compatibility
             driver: opengl3
@@ -59,16 +61,19 @@ jobs:
         env:
           REVIEW_METHOD: ${{ matrix.method }}
           REVIEW_DRIVER: ${{ matrix.driver }}
+          REVIEW_SCENE: ${{ matrix.scene }}
           LIBGL_ALWAYS_SOFTWARE: '1'
         run: |
           for icd in /usr/share/vulkan/icd.d/lvp*json; do export VK_DRIVER_FILES="$icd"; break; done
           test -f "$VK_DRIVER_FILES"
-          xvfb-run -a -s '-screen 0 1400x900x24' python .godot360/ci-characters/unpacked/tests/imported_character_review.py --godot "$GODOT" --ffmpeg "$(command -v ffmpeg)" --ffprobe "$(command -v ffprobe)" --method "$REVIEW_METHOD" --driver "$REVIEW_DRIVER" --output .godot360/ci-characters/review --negative-control
+          extra=(--negative-control)
+          if [ "$REVIEW_SCENE" = nested-head-look ]; then extra+=(--head-look --nested); fi
+          xvfb-run -a -s '-screen 0 1400x900x24' python .godot360/ci-characters/unpacked/tests/imported_character_review.py --godot "$GODOT" --ffmpeg "$(command -v ffmpeg)" --ffprobe "$(command -v ffprobe)" --method "$REVIEW_METHOD" --driver "$REVIEW_DRIVER" --output .godot360/ci-characters/review "${extra[@]}"
       - name: Retain review evidence
         if: always()
         uses: actions/upload-artifact@v7
         with:
-          name: imported-character-${{ matrix.method }}
+          name: imported-character-${{ matrix.scene }}-${{ matrix.method }}
           retention-days: 14
           include-hidden-files: true
           path: |

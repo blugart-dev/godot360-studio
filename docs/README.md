@@ -15,7 +15,7 @@ the results, then follow the walkthrough using your own scene or an included exa
 | --- | --- |
 | Install the addon, Godot and native media tools | [Platform setup](../addons/godot360/PLATFORMS.md) |
 | Select a scene, test it and render | [First export](../addons/godot360/QUICKSTART.md) |
-| Animate a camera or prepare interactive events | [Authoring](../addons/godot360/AUTHORING.md) · [Skeletal camera timing](skeletal-capture.md) · [Imported characters](imported-characters.md) · [Particle capture](particle-capture.md) |
+| Animate a camera or prepare interactive events | [Authoring](../addons/godot360/AUTHORING.md) · [Skeletal camera timing](skeletal-capture.md) · [Imported characters](imported-characters.md) · [Head look and nested attachments](modifier-capture.md) · [Particle capture](particle-capture.md) |
 | Add a soundtrack, mix audio and adjust timing | [Audio](../addons/godot360/AUDIO.md) |
 | Understand quality, recipes and command-line use | [Addon reference](../addons/godot360/README.md) |
 | Check glow, exposure and other scene effects | [Renderers](../addons/godot360/RENDERERS.md) · [Capture borders](capture-borders.md) · [Consistent exposure](exposure-consistency.md) · [Combined appearance](combined-appearance.md) |

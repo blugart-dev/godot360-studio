@@ -4,6 +4,33 @@ For a fresh session, start with the [current recap and difficulty assessment](ne
 It identifies the local checkpoint/CI follow-up, remaining work, support decisions,
 and the next bounded engineering task. The detailed records below remain the evidence.
 
+## Head-look modifier and nested attachments — 2026-09-09
+
+Completed the requested bounded head-look/nested milestone. See
+[the supported setup and image](modifier-capture.md) and the newest
+[validation entry](validation.md). A custom stateless SkeletonModifier3D uses
+Manual sampling after the imported animation, including warmup. A nested mount
+is updated from the upstream final-pose signal. The native skin and all six
+capture cameras match independent raw-glTF/CPU references, including the cut;
+the existing addon synchronization needed no runtime fix.
+
+Native Windows 4.5.1/4.6.3/4.7.2, Compatibility/Forward+/Mobile: 26 exports and
+1,560 source/decoded frames, including six rejected timing controls. Zero warmup,
+12.5% borders and a textured 60 FPS case pass. Package checks pass 2,985 contracts
+across three engines, including two nested levels and external attachments.
+`.godot360/modifier-review/audit.json` records exact source matching and protected
+hashes. The 154-file package rebuilds identically; SHA256
+`8f0a2dd5a4b0cf6906fe41a6eb5c8ad10dcd51aace4c27a3a949b016d416b788`.
+
+The Imported characters CI matrix now covers base animation and nested head look
+on all three renderers. Actionlint passes; hosted runs of this increment await
+push. Earlier hosted evidence below remains valid for its own source revision.
+
+Next: complex particles (smoke, billboards, trails and moving emitters), advanced
+rendering, heavy 4K/8K workloads, native Linux/Mac, clean installation-to-delivery
+review, then freeze/validate 1.0. General/stateful solver chains remain outside
+the newly tested bounded setup. Continue privately; no public release is authorized.
+
 ## Imported animated character — 2026-09-09
 
 Completed the local imported-character milestone after checkpointing the prior

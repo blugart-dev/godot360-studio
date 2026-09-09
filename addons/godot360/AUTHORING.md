@@ -206,10 +206,20 @@ imported animation itself when comparing with a DCC/source-file reference.
 Use the imported AnimationPlayer's actual path and clip name with the timeline
 helper, and ensure the capture clip does not loop or end before the requested
 film. The helper samples imported position/rotation/scale tracks normally.
-IK/modifier chains, ragdolls, nested skeleton attachments, physics interpolation,
+The imported fixture also covers a stateless custom SkeletonModifier3D head look
+and a nested skeleton/camera mount. For this setup, use Manual modifier processing:
+sample animation, set the target from absolute sample time, then call
+`skeleton.advance(0.0)` in `sample_360_frame`, including repeated warmup samples.
+The final modifier pass is deferred. Observe final bones in `skeleton_updated`;
+Godot restores the base animation pose after submitting the modified skin.
+Downstream skeleton poses can be set from that callback. Parent/external
+attachments with `override_pose = false`, local camera offsets and cuts are covered.
+This is a unit-scale, full-influence, undamped custom head look. Built-in IK/LookAt
+chains, partial influence, stateful/damped modifiers, ragdolls, physics interpolation,
 other import/retarget pipelines and long temporal histories still need validation.
 Custom deferred code that changes bones after camera synchronization is outside
-this sampling contract. See the repository's `docs/imported-characters.md`.
+this sampling contract. See the repository's `docs/modifier-capture.md` and
+`docs/imported-characters.md` for the fixtures, commands and evidence.
 
 ## Audio and synchronization
 

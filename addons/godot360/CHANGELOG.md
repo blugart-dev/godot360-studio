@@ -1,5 +1,15 @@
 # Changelog
 
+## Unreleased — head-look and nested attachment validation
+
+- Add a stateless custom head-look modifier to the imported character fixture,
+  independent modified-skin references, and a nested skeleton/camera mount.
+- Check final and restored base bones, all six capture cameras, repeated warmup
+  samples and viewpoint cuts. Require delayed skin, camera and modifier controls
+  to fail, and extend headless attachment checks to two nested skeletons.
+- Document Manual modifier sampling and the supported setup. The tested cases
+  use the existing deferred capture synchronization without a runtime change.
+
 ## Unreleased — imported character validation
 
 - Add a pinned, licensed CesiumMan GLB and normal scene-import fixture with a

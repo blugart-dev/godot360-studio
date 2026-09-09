@@ -65,8 +65,9 @@ images. Inspect the cut and following frames in your own scene.
 
 The original fixture validates a small keyed skeleton, a weighted mesh and
 parent/external attachments. The subsequent [imported-character review](imported-characters.md)
-adds a real GLB and independent raw-source references. IK/modifier chains, ragdolls,
-nested skeleton attachments, physics interpolation, other import pipelines and
+adds a real GLB and independent raw-source references. The
+[modifier review](modifier-capture.md) extends it to a custom head look and nested
+skeleton attachments. General IK/modifier chains, ragdolls, physics interpolation, other import pipelines and
 long temporal histories still need validation. Read the [authoring contract](../addons/godot360/AUTHORING.md#skeletal-animation-and-viewpoint-cuts)
 before adapting an interactive scene.
 

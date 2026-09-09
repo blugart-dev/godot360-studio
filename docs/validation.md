@@ -1,5 +1,64 @@
 # Validation record — updated 2026-09-09
 
+## Head-look and nested attachment validation — 2026-09-09
+
+The next bounded scene milestone passes on native Windows 11 / RTX 3060 Ti.
+The [illustrated setup](modifier-capture.md) adds a stateless custom
+`SkeletonModifier3D` head look to the pinned imported character, plus a nested
+skeleton and camera mount. Independent raw-glTF/CPU skin references match the
+modified character, source camera, six cube cameras and viewpoint cut. There was
+no capture runtime discrepancy to fix for this setup.
+
+| Case | Engine / renderer | FPS / warmup / border | Exports |
+| --- | --- | --- | --- |
+| Nested head look + three delayed controls | 4.5.1 Compatibility / OpenGL | 30 / 2 / 0% | 6 |
+| Nested head look, opening without warmup | 4.6.3 Compatibility / OpenGL | 30 / 0 / 0% | 3 |
+| Nested head look + three delayed controls | 4.7.2 Forward+ / Vulkan | 30 / 2 / 0% | 6 |
+| Nested head look with borders | 4.7.2 Mobile / Vulkan | 30 / 2 / 12.5% | 3 |
+| Textured head look | 4.7.2 Forward+ / Vulkan | 60 / 0 / 12.5% | 2 |
+| Original animation, frozen package | 4.7.2 Compatibility / OpenGL | 30 / 2 / 0% | 3 |
+| Head look without nesting, frozen package | 4.7.2 Compatibility / OpenGL | 30 / 2 / 0% | 3 |
+
+**26 exports / 1,560 source frames and 1,560 decoded frames**, including six
+intentional negative controls. Every source and decoded frame is compared, with
+the original acceptance thresholds unchanged. Accepted comparisons reach maximum
+source MAE **0.000184**, foreground MAE **0.02394**, decoded MAE **0.03861** and
+bone/camera matrix-element error below **0.000002**. Final bones are observed in
+`skeleton_updated`; restored base bones, nested transforms and all six camera
+transforms are checked after drawing, including every warmup sample. The audit
+also verifies exactly one modifier evaluation between successive draw samples.
+
+Each negative trio delays the CPU skin, direct reference camera or modifier target
+by one frame. All six image controls fail. The late head target reaches final-bone
+error **0.0530** and foreground MAE **0.609–0.611**, while the restored base pose
+continues to match. This distinguishes modifier timing from animation sampling.
+Initial exploratory 4.7.2 Compatibility head/nested runs also passed; those six
+exports are excluded from the accepted counts above.
+
+The frozen development ZIP is `.godot360/modifier-review/package/candidate.zip`,
+SHA256 `8f0a2dd5a4b0cf6906fe41a6eb5c8ad10dcd51aace4c27a3a949b016d416b788`:
+154 files, 1,147,928 bytes, identical rebuild and exact current packaged-source
+matching. The package passes **2,985 headless/failure checks** across
+4.5.1/4.6.3/4.7.2 (995 each, including 384 skeletal checks each). Those skeletal
+checks cover parent/external attachments at zero, one and two nested levels,
+repeated samples/backward wrap and source removal. The six package character
+exports above supply rendered evidence separately from the headless matrix.
+
+Evidence: `.godot360/modifier-review/audit.json`, `native/`, `package/headless/`,
+`package/animation-472/` and `package/head-472/`. The audit confirms current
+runtime/fixture/reviewer hashes, the immutable licensed asset, and prior creative
+scene/recipe/settings/master hashes. The contact sheet is retained in Git with
+Cesium attribution. The expanded Imported characters workflow covers animation
+and nested head look on three renderers and passes actionlint (ShellCheck disabled).
+Hosted verification of this increment is pending its push.
+
+Supported scope: Manual sampling of this unit-scale, full-influence, stateless
+head look and nested mounts with attachment pose overrides disabled. General
+built-in solver chains, damping, partial influence, ragdolls, physics interpolation
+and retargeting remain separate cases. The next engineering target is complex
+particles: smoke, billboards, trails and moving emitters. This remains private
+development on the 0.8.0 baseline; no 1.0 release or publication is implied.
+
 ## Imported animated character — 2026-09-09
 
 The [illustrated imported-character review](imported-characters.md) uses the

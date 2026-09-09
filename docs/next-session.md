@@ -1,6 +1,6 @@
 # Next-session brief — private development toward 1.0
 
-Updated on 2026-09-09 after the imported-character increment.
+Updated on 2026-09-09 after the head-look/nested-attachment increment.
 This is a recap and recommended plan, not a new release or authorization to publish.
 The canonical completion criteria remain in [release readiness](release-readiness.md).
 
@@ -13,6 +13,11 @@ cancellation, diagnostics, re-encoding, recovery, storage guards, spherical play
 and recent exports are implemented. The internal version remains 0.8.0.
 
 Recent increments establish:
+
+- A stateless custom head-look modifier and nested skeleton camera mount, with
+  independent modified skin, final/base bones and six-camera pose checks. The
+  documented Manual setup uses the existing runtime synchronization. See
+  [modifier capture](modifier-capture.md) and the latest validation entry.
 
 - Combined moving lights/materials, exposure-source changes and borders on
   Forward+/Mobile. Consistent 1.0 exposure uses authored values. Shared automatic
@@ -43,18 +48,16 @@ estimate. The amount of corrective work depends on what the rendered tests revea
 
 | Order | Work | Difficulty | Why it matters | Completion evidence |
 | --- | --- | --- | --- | --- |
-| 0 | Verify the latest imported-character checkpoint and hosted CI status | Low; medium if CI exposes platform differences | Appearance/particle CI is green; preserve and verify the next reproducible revision too. | Reviewed source/media diff, reproducible package, green hosted jobs or a diagnosed and resolved failure. |
-| 1 | Common IK/modifier and nested skeleton attachment case | High for modifier order | The basic imported GLB now has skin/camera references. A modifier or nested skeleton exercises additional update-order risks. | A bounded modifier/attachment fixture matches an independent reference; any exclusions are recorded. |
-| 2 | Representative complex particles | High | Current particle coverage is deliberately simple. Transparent/billboard effects, trails, preprocessing and moving emitters are much closer to typical production effects. | Bounded cases with meaningful references for startup, motion, pause and cube-edge crossings; fix supported cases and state limits. |
-| 3 | Decide and validate the advanced rendering support boundary | High to very high for general support | Temporal upscaling, GI and custom compositors may depend on view direction or previous frames. Correct export cannot be assumed from basic geometry tests. | Selected TAA/FSR, GI and compositor cases have rendered evidence and clear setup guidance. Full support for every combination is not a prerequisite implied by this plan. |
-| 4 | Representative 4K/8K Forward+/Mobile workloads | Medium to measure; potentially high to optimize | Existing 4K/8K runs establish reliability for simpler Compatibility scenes. Heavy lighting, effects and texture content can change memory, time and storage needs substantially. | Sustained jobs with measured GPU memory, time, retained storage and audio alignment; practical budgets and failure behavior. |
-| 5 | Native Linux GPU and Mac graphical review | Medium technically; dependent on hardware access | Software/headless CI cannot establish a native GPU installation, export and playback workflow. | Actual install/export/review/cancel/recovery on each claimed platform. If hardware is unavailable, the supported release matrix requires an explicit scope decision. |
-| 6 | Private walkthrough from clean setup through delivery | Low to medium | A technically valid file can still be hard to produce or wrong in orientation, sound or spherical presentation. | Follow the published instructions with an existing scene, review the sphere and audio, reopen a job and recover a failure; resolve observed friction. |
-| 7 | Freeze and validate the exact 1.0 package | Medium, after earlier work | A release needs one consistent supported matrix, code snapshot, documentation set and reproducible artifact. | Version and migration notes updated, exact package checks pass, known supported-workflow blockers resolved. Public publication remains a separate action. |
+| 1 | Representative complex particles | High | Current particle coverage is deliberately simple. Transparent/billboard effects, trails, preprocessing and moving emitters are much closer to typical production effects. | Bounded cases with meaningful references for startup, motion, pause and cube-edge crossings; fix supported cases and state limits. |
+| 2 | Decide and validate the advanced rendering support boundary | High to very high for general support | Temporal upscaling, GI and custom compositors may depend on view direction or previous frames. Correct export cannot be assumed from basic geometry tests. | Selected TAA/FSR, GI and compositor cases have rendered evidence and clear setup guidance. Full support for every combination is not a prerequisite implied by this plan. |
+| 3 | Representative 4K/8K Forward+/Mobile workloads | Medium to measure; potentially high to optimize | Existing 4K/8K runs establish reliability for simpler Compatibility scenes. Heavy lighting, effects and texture content can change memory, time and storage needs substantially. | Sustained jobs with measured GPU memory, time, retained storage and audio alignment; practical budgets and failure behavior. |
+| 4 | Native Linux GPU and Mac graphical review | Medium technically; dependent on hardware access | Software/headless CI cannot establish a native GPU installation, export and playback workflow. | Actual install/export/review/cancel/recovery on each claimed platform. If hardware is unavailable, the supported release matrix requires an explicit scope decision. |
+| 5 | Private walkthrough from clean setup through delivery | Low to medium | A technically valid file can still be hard to produce or wrong in orientation, sound or spherical presentation. | Follow the published instructions with an existing scene, review the sphere and audio, reopen a job and recover a failure; resolve observed friction. |
+| 6 | Freeze and validate the exact 1.0 package | Medium, after earlier work | A release needs one consistent supported matrix, code snapshot, documentation set and reproducible artifact. | Version and migration notes updated, exact package checks pass, known supported-workflow blockers resolved. Public publication remains a separate action. |
 
 Hardware checks can proceed alongside independent local work when machines become
 available. Final package work should follow the scene and production reviews.
-The next engineering target is item 1, after checkpointing the current work.
+The next engineering target is item 1: smoke, billboards, trails and moving emitters.
 
 ## Scope recommendations
 
@@ -77,9 +80,10 @@ Read this brief, the latest entries in [HANDOFF](HANDOFF.md) and
 [validation](validation.md), [release readiness](release-readiness.md), and
 [skeletal capture](skeletal-capture.md). Verify the working tree before editing.
 The basic imported case is established in [imported characters](imported-characters.md).
-Begin with one modifier/IK or nested skeleton attachment using that fixture.
-Establish a trustworthy reference, reproduce any discrepancy and make the smallest
-supported correction. Do not rerun completed large matrices without a code
+The [head-look/nested setup](modifier-capture.md) is now established too.
+Begin with bounded complex particle fixtures: smoke, billboards, trails and moving
+emitters. Establish references, reproduce discrepancies and make the smallest
+supported corrections. Do not rerun completed large matrices without a code
 change, failure or unresolved concern that justifies them.
 
 `tests/fixtures/cesium_man/` now contains a pinned licensed GLB with its attribution
@@ -88,7 +92,14 @@ folders; preserve the user's creative scenes, recipes, settings and existing mas
 
 ## Local evidence and tools
 
-- Accepted package: `.godot360/imported-character/final/candidate.zip`, SHA256
+- Latest head-look/nested package: `.godot360/modifier-review/package/candidate.zip`,
+  SHA256 `8f0a2dd5a4b0cf6906fe41a6eb5c8ad10dcd51aace4c27a3a949b016d416b788`.
+  Its identical rebuild, 2,985 package checks and 26 rendered exports pass locally.
+  `.godot360/modifier-review/audit.json` records source matching and protected
+  hashes. Hosted runs for this increment await push; the earlier results below
+  describe the previous imported-character snapshot.
+
+- Previous accepted package: `.godot360/imported-character/final/candidate.zip`, SHA256
   `3a66b1f853e6f0494a56020b63731da1c7717f3af02b38183ea8feecf558bf31`.
   It is a private development snapshot, not a 1.0 release.
 - Latest audit: `.godot360/imported-character/audit.json`; full outputs and negative
@@ -112,5 +123,5 @@ Suggested opening prompt:
 > Continue private Godot360 Studio development toward 1.0. Read
 > docs/next-session.md and the latest HANDOFF/validation entries. Preserve the
 > existing work. Review the checkpoint/CI status, then implement and validate a
-> bounded modifier/IK or nested skeleton attachment case using the imported
-> character fixture. Keep the scope bounded and document the evidence.
+> bounded complex particle cases: smoke, billboards, trails and moving emitters.
+> Preserve the validated head-look/nested attachment setup. Keep the scope bounded and document the evidence.

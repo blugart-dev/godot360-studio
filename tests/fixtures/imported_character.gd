@@ -9,6 +9,12 @@ var imported_mesh: MeshInstance3D
 var cpu_mesh: MeshInstance3D
 var sampled_frame := 0
 var observations: Array[Dictionary] = []
+var look: SkeletonModifier3D
+var look_target: Node3D
+var nested: Skeleton3D
+var final_bones := {}
+var nested_final := Transform3D.IDENTITY
+var face_cameras: Array[Camera3D] = []
 
 
 func prepare_360_capture(settings: Dictionary) -> void:
@@ -39,9 +45,33 @@ func _ready() -> void:
 	# External path is relative to the attachment, whose parent is this node.
 	attachment.external_skeleton = NodePath("../" + str(get_path_to(skeleton)))
 	add_child(attachment)
+	if job.get("head_look", false):
+		look_target = Node3D.new()
+		add_child(look_target)
+		look = preload("res://tests/fixtures/head_look.gd").new()
+		look.bone_name = reference.head
+		look.target = look_target
+		var c: Array = reference.calibration
+		look.calibration = Basis(Vector3(c[0], c[1], c[2]), Vector3(c[3], c[4], c[5]), Vector3(c[6], c[7], c[8]))
+		skeleton.add_child(look)
+		skeleton.modifier_callback_mode_process = Skeleton3D.MODIFIER_CALLBACK_MODE_PROCESS_MANUAL
+	skeleton.skeleton_updated.connect(_final_pose)
+	var mount: Node3D = attachment
+	if job.get("nested", false):
+		nested = Skeleton3D.new()
+		nested.name = "NestedSkeleton"
+		attachment.add_child(nested)
+		nested.position = Vector3(0.18, 0.12, 0)
+		nested.add_bone("mount")
+		var inner := BoneAttachment3D.new()
+		inner.name = "MountAttachment"
+		inner.bone_name = "mount"
+		nested.add_child(inner)
+		mount = inner
+		nested.skeleton_updated.connect(func(): nested_final = nested.global_transform * nested.get_bone_global_pose(0))
 	boom = Node3D.new()
 	boom.name = "Boom"
-	attachment.add_child(boom)
+	mount.add_child(boom)
 	boom.transform = _transform(reference.boom)
 	camera = Camera3D.new()
 	camera.name = "Camera3D"
@@ -102,6 +132,12 @@ func sample_360_frame(frame: int, seconds: float, settings: Dictionary) -> Strin
 	if not error.is_empty():
 		return error
 	sampled_frame = frame
+	if look != null:
+		var base: Array = reference.target_base
+		var aim_frame := maxi(0, frame - int(job.get("look_delay", 0)))
+		look_target.position = Vector3(base[0] + 0.85 * sin(aim_frame * 0.17), base[1] + 0.35 * sin(aim_frame * 0.23), base[2])
+		# A manual, stateless modifier runs at the absolute sample, including warmup.
+		skeleton.advance(0.0)
 	if job.get("oracle_camera", false):
 		camera.transform = _transform(reference.frames[maxi(0, frame - int(job.get("camera_delay", 0)))].camera)
 	else:
@@ -117,11 +153,28 @@ func sample_360_frame(frame: int, seconds: float, settings: Dictionary) -> Strin
 	return ""
 
 
+func _final_pose() -> void:
+	final_bones.clear()
+	for bone in range(skeleton.get_bone_count()):
+		final_bones[skeleton.get_bone_name(bone)] = _values(skeleton.global_transform * skeleton.get_bone_global_pose(bone))
+	if nested != null:
+		# Downstream posing is queued during the upstream skeleton_updated callback.
+		nested.set_bone_pose_rotation(0, Quaternion(Vector3.UP, 0.2 * sin(sampled_frame * 0.31)))
+
+
 func _observe() -> void:
+	if face_cameras.is_empty():
+		for face in get_tree().root.find_children("Face_*", "SubViewport", true, false):
+			face_cameras.append(face.get_camera_3d())
+	var faces: Array = []
+	for face in face_cameras:
+		faces.append(_values(face.global_transform))
 	var bones := {}
 	for bone in range(skeleton.get_bone_count()):
 		bones[skeleton.get_bone_name(bone)] = _values(skeleton.global_transform * skeleton.get_bone_global_pose(bone))
-	observations.append({"frame": sampled_frame, "camera": _values(camera.global_transform), "bones": bones})
+	observations.append({"frame": sampled_frame, "camera": _values(camera.global_transform), "bones": final_bones.duplicate(true),
+		"base_bones": bones, "nested": _values(nested_final), "faces": faces,
+		"evaluations": look.evaluations if look != null else 0})
 	if sampled_frame == int(job.frames) - 1:
 		preload("res://addons/godot360/job_io.gd").write_json(str(job.output_dir).path_join("character-samples.json"),
 			{"samples": observations, "animation": str(animation_name), "bones": skeleton.get_bone_count(),

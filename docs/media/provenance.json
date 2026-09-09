@@ -67,6 +67,13 @@
     "umbral.jpg": {
       "bytes": 29128,
       "sha256": "5f08eeff62a797910967073ff2f4d5b86253fda7644e9ac6185ba7cd7af18b48"
+    },
+    "modifier-capture.jpg": {
+      "bytes": 72133,
+      "sha256": "a02af05a28bfad73efc56a9375ec2801fb100306e116b2396a7e7e03070d075a",
+      "source": ".godot360/modifier-review/native/nested-472-forward/comparison.jpg",
+      "generator": "tests/imported_character_review.py --head-look --nested --negative-control",
+      "attribution": "CesiumMan, copyright 2017 Cesium, CC BY 4.0; see tests/fixtures/cesium_man/README.md"
     }
   }
 }

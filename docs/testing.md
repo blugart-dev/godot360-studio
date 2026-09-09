@@ -304,3 +304,10 @@ skin/camera comparisons to fail; `--textured` isolates camera timing with the
 original material. The package includes the binary asset and its separate CC BY
 4.0 attribution/mark notices; the addon itself remains MIT. See
 [the illustrated review and precise import settings](imported-characters.md).
+
+Add `--head-look` for the stateless custom modifier and `--nested` for a second
+skeleton below the head attachment. `--negative-control` also requires a delayed
+modifier target to fail. Final bones, restored base poses, all six cube cameras
+and warmup samples are checked. See [modifier capture](modifier-capture.md) for
+the supported Manual callback setup and current evidence. The Imported characters
+workflow covers both base animation and the nested head look on all three methods.

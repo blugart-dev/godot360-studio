@@ -40,22 +40,43 @@ def compare(output, a, b, args):
                                               and (args.textured or r["character_pixels"] > 1000) for r in rows)}
 
 
-def transforms(output, mode, reference):
+def transforms(output, mode, reference, args):
     observations = read(output / mode / "character-samples.json")
     frames = {int(row["frame"]): row for row in observations["samples"]}
     rows = []
-    for index, expected in enumerate(reference["frames"]):
-        actual = frames[index]
+    face_bases = []
+    for direction, up in zip([[1, 0, 0], [-1, 0, 0], [0, 1, 0], [0, -1, 0], [0, 0, -1], [0, 0, 1]],
+                             [[0, 1, 0], [0, 1, 0], [0, 0, 1], [0, 0, -1], [0, 1, 0], [0, 1, 0]]):
+        z = -np.array(direction)
+        x = np.cross(up, z)
+        face = np.eye(4)
+        face[:3, :3] = np.column_stack((x, np.cross(z, x), z))
+        face_bases.append(face)
+    for actual in observations["samples"]:
+        index = int(actual["frame"])
+        expected = reference["frames"][index]
+        camera = np.array(expected["camera"]).reshape(4, 4).T
+        assert len(actual["faces"]) == 6, "All six capture views must be observed"
         rows.append({"frame": index,
+                     "face_max": max(float(np.max(abs(np.array(value).reshape(4, 4).T - camera @ face)))
+                                     for value, face in zip(actual["faces"], face_bases, strict=True)),
                      "camera_max": float(np.max(abs(np.array(actual["camera"])-expected["camera"]))),
                      "bone_max": max(float(np.max(abs(np.array(actual["bones"][name])-value)))
-                                     for name, value in expected["bones"].items())})
+                                     for name, value in expected["bones"].items()),
+                     "base_bone_max": max(float(np.max(abs(np.array(actual["base_bones"][name])-value)))
+                                          for name, value in expected["base_bones"].items()),
+                     "nested_max": float(np.max(abs(np.array(actual["nested"])-expected["nested"]))) if args.nested else 0})
     return {"frames": rows, "animation": observations["animation"], "bones": observations["bones"],
             "animation_tracks": observations["animation_tracks"],
             "max_camera_error": max(r["camera_max"] for r in rows),
+            "max_face_error": max(r["face_max"] for r in rows),
             "max_bone_error": max(r["bone_max"] for r in rows),
-            "ok": len(frames) == FRAMES and observations["bones"] == 19 and
-                  all(r["camera_max"] < .00005 and r["bone_max"] < .00005 for r in rows)}
+            "max_base_bone_error": max(r["base_bone_max"] for r in rows),
+            "max_nested_error": max(r["nested_max"] for r in rows),
+            "samples": len(rows), "modifier_evaluations": [r["evaluations"] for r in observations["samples"]],
+            "ok": len(frames) == FRAMES and len(rows) == FRAMES + args.warmup and observations["bones"] == 19 and
+                  all(r["camera_max"] < .00005 and r["bone_max"] < .00005 and r["base_bone_max"] < .00005
+                      and r["face_max"] < .00005 and r["nested_max"] < .00005 for r in rows)}
 
 
 def checkpoint(output, evidence):
@@ -82,7 +103,9 @@ rendering_device/driver.linuxbsd="{args.driver}"
 gl_compatibility/driver.windows="{args.driver}"
 anti_aliasing/quality/msaa_3d=2
 ''', encoding="utf-8")
-    reference = Character(project / "tests/fixtures/cesium_man/CesiumMan.glb").write_reference(project / "reference", FRAMES, args.fps)
+    assert not args.nested or args.head_look, "--nested requires --head-look"
+    reference = Character(project / "tests/fixtures/cesium_man/CesiumMan.glb").write_reference(
+        project / "reference", FRAMES, args.fps, args.head_look, args.nested)
     # Keep the source reference exact: the usual lossy import optimizer, vertex
     # compression and generated LODs are independent of capture synchronization.
     import_settings = '''[remap]
@@ -101,21 +124,27 @@ _subresources={"nodes": {"PATH:AnimationPlayer": {"optimizer/enabled": false}}}
     run([args.godot, "--headless", "--path", project, "--editor", "--import", "--quit"], output / "import.log")
     evidence = {"method": args.method, "driver": args.driver, "warmup": args.warmup, "border": args.border,
                 "fps": args.fps, "import_fps": args.fps, "textured": args.textured, "asset_sha256": ASSET_SHA256,
+                "head_look": args.head_look, "nested": args.nested,
                 "reference": {k: v for k, v in reference.items() if k not in ["frames", "boom"]},
                 "jobs": {}, "transforms": {}, "comparisons": {}, "ok": False}
     modes = ["capture", "camera-oracle"] if args.textured else ["capture", "camera-oracle", "full-oracle"]
     if args.negative_control:
         assert not args.textured
         modes.extend(["late-skin", "late-camera"])
+        if args.head_look:
+            modes.append("late-look")
     checkpoint(output, evidence)
     for mode in modes:
         oracle = mode != "capture"
         job = {"scene_path": "res://tests/fixtures/imported_character.tscn",
-               "camera_path": "Camera3D" if oracle else "HeadAttachment/Boom/Camera3D",
+               "camera_path": "Camera3D" if oracle else ("HeadAttachment/NestedSkeleton/MountAttachment/Boom/Camera3D"
+                                                          if args.nested else "HeadAttachment/Boom/Camera3D"),
                "width": WIDTH, "height": HEIGHT, "face_size": 512, "fps": args.fps, "frames": FRAMES,
                "warmup_frames": args.warmup, "capture_border_percent": args.border,
                "oracle_camera": oracle, "oracle_skin": mode in ["full-oracle", "late-skin"],
                "skin_delay": 1 if mode == "late-skin" else 0, "textured": args.textured,
+               "head_look": args.head_look, "nested": args.nested,
+               "look_delay": 1 if mode == "late-look" else 0,
                "camera_delay": 1 if mode == "late-camera" else 0,
                "crf": 16, "frame_writer": "fast_png", "rendering_method": args.method,
                "rendering_driver": args.driver, "output_dir": str(output / mode),
@@ -127,7 +156,7 @@ _subresources={"nodes": {"PATH:AnimationPlayer": {"optimizer/enabled": false}}}
         assert report["ok"] and all(report["checks"].values()), mode
         evidence["jobs"][mode] = {"checks": report["checks"], "settings": report["capture_settings"],
                                   "timings": {k: v for k, v in report["capture_timings"].items() if k != "samples"}}
-        evidence["transforms"][mode] = transforms(output, mode, reference)
+        evidence["transforms"][mode] = transforms(output, mode, reference, args)
         checkpoint(output, evidence)
         print(mode, "DELIVERY PASS", "TRANSFORMS", evidence["transforms"][mode]["ok"], flush=True)
     pairs = [("capture", "camera-oracle")]
@@ -135,13 +164,17 @@ _subresources={"nodes": {"PATH:AnimationPlayer": {"optimizer/enabled": false}}}
         pairs.append(("camera-oracle", "full-oracle"))
     if args.negative_control:
         pairs.extend([("late-skin", "full-oracle"), ("late-camera", "camera-oracle")])
+        if args.head_look:
+            pairs.append(("late-look", "full-oracle"))
     for a, b in pairs:
         evidence["comparisons"][a] = compare(output, a, b, args)
         checkpoint(output, evidence)
-    evidence["ok"] = all(value["ok"] for key, value in evidence["transforms"].items() if key != "late-camera") and all(
+    evidence["ok"] = all(value["ok"] for key, value in evidence["transforms"].items() if key not in ["late-camera", "late-look"]) and all(
         value["ok"] for key, value in evidence["comparisons"].items() if not key.startswith("late-"))
     if args.negative_control:
-        evidence["negative_control_rejected"] = all(not evidence["comparisons"][name]["ok"] for name in ["late-skin", "late-camera"])
+        evidence["negative_control_rejected"] = all(not value["ok"] for name, value in evidence["comparisons"].items() if name.startswith("late-"))
+        if args.head_look:
+            evidence["negative_control_rejected"] &= not evidence["transforms"]["late-look"]["ok"]
         evidence["ok"] &= evidence["negative_control_rejected"]
     sheet = Image.new("RGB", (960, len(modes)*270), "#141a22")
     draw = ImageDraw.Draw(sheet)
@@ -171,4 +204,6 @@ if __name__ == "__main__":
     parser.add_argument("--fps", type=int, choices=[30, 60], default=30)
     parser.add_argument("--textured", action="store_true")
     parser.add_argument("--negative-control", action="store_true")
+    parser.add_argument("--head-look", action="store_true")
+    parser.add_argument("--nested", action="store_true")
     raise SystemExit(main(parser.parse_args()))
