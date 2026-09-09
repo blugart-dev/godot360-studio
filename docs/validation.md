@@ -50,7 +50,18 @@ runtime/fixture/reviewer hashes, the immutable licensed asset, and prior creativ
 scene/recipe/settings/master hashes. The contact sheet is retained in Git with
 Cesium attribution. The expanded Imported characters workflow covers animation
 and nested head look on three renderers and passes actionlint (ShellCheck disabled).
-Hosted verification of this increment is pending its push.
+Implementation `2f4448f` is pushed to private `origin/main`. Hosted
+[Imported characters 34371376287](https://github.com/blugart-dev/godot360-studio/actions/runs/34371376287),
+[Desktop platforms 34371375916](https://github.com/blugart-dev/godot360-studio/actions/runs/34371375916)
+and [Combined appearance 34371376090](https://github.com/blugart-dev/godot360-studio/actions/runs/34371376090)
+all pass on the first attempt. The six character lanes add **33 exports / 1,980
+source and decoded frames**, including 15 rejected timing controls. Both appearance
+lanes pass nine clips / 810 decoded frames plus re-encoding. Desktop platforms
+passes **1131 Linux checks / 997 Mac headless checks**, three skeletal exports,
+eight renderer cases and 14 particle exports. All ten hosted candidate records
+match the exact local ZIP hash above. Reports and assertions are retained in
+`.godot360/modifier-review/hosted/verified.json`. Software Linux rendering and Mac
+headless contracts remain distinct from the native GPU testing still on the roadmap.
 
 Supported scope: Manual sampling of this unit-scale, full-influence, stateless
 head look and nested mounts with attachment pose overrides disabled. General

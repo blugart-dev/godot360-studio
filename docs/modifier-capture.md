@@ -27,8 +27,9 @@ modifier callback mode to **Manual**, update the target from the absolute sample
 then call `skeleton.advance(0.0)` in `sample_360_frame`. For example:
 
 ```gdscript
-# Configure once, after locating the imported skeleton.
-skeleton.modifier_callback_mode_process = Skeleton3D.MODIFIER_CALLBACK_MODE_PROCESS_MANUAL
+func begin_360_capture(job: Dictionary) -> String:
+    skeleton.modifier_callback_mode_process = Skeleton3D.MODIFIER_CALLBACK_MODE_PROCESS_MANUAL
+    return super.begin_360_capture(job)
 
 func sample_360_frame(frame: int, seconds: float, job: Dictionary) -> String:
     var error := super.sample_360_frame(frame, seconds, job)

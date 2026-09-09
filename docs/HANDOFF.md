@@ -23,8 +23,13 @@ hashes. The 154-file package rebuilds identically; SHA256
 `8f0a2dd5a4b0cf6906fe41a6eb5c8ad10dcd51aace4c27a3a949b016d416b788`.
 
 The Imported characters CI matrix now covers base animation and nested head look
-on all three renderers. Actionlint passes; hosted runs of this increment await
-push. Earlier hosted evidence below remains valid for its own source revision.
+on all three renderers. Implementation `2f4448f` is pushed privately. Hosted
+characters `34371376287`, platforms `34371375916` and appearance `34371376090` all
+pass without retry. Characters adds 33 exports and 15 rejected timing controls;
+Linux passes 1131 package/workflow checks, Mac 997 headless checks, and the
+existing appearance/renderer/particle suites pass. All ten hosted package records
+match the local ZIP; `hosted/verified.json` retains the audit. Actionlint passes.
+Earlier hosted evidence below remains valid for its own source revision.
 
 Next: complex particles (smoke, billboards, trails and moving emitters), advanced
 rendering, heavy 4K/8K workloads, native Linux/Mac, clean installation-to-delivery

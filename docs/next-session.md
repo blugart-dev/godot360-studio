@@ -96,13 +96,16 @@ folders; preserve the user's creative scenes, recipes, settings and existing mas
   SHA256 `8f0a2dd5a4b0cf6906fe41a6eb5c8ad10dcd51aace4c27a3a949b016d416b788`.
   Its identical rebuild, 2,985 package checks and 26 rendered exports pass locally.
   `.godot360/modifier-review/audit.json` records source matching and protected
-  hashes. Hosted runs for this increment await push; the earlier results below
-  describe the previous imported-character snapshot.
+  hashes. Checkpoint `2f4448f` is pushed privately; characters `34371376287`,
+  platforms `34371375916` and appearance `34371376090` all pass without retry.
+  `.godot360/modifier-review/hosted/verified.json` verifies all ten hosted package
+  records against the local ZIP. Earlier results below describe the previous
+  imported-character snapshot.
 
 - Previous accepted package: `.godot360/imported-character/final/candidate.zip`, SHA256
   `3a66b1f853e6f0494a56020b63731da1c7717f3af02b38183ea8feecf558bf31`.
   It is a private development snapshot, not a 1.0 release.
-- Latest audit: `.godot360/imported-character/audit.json`; full outputs and negative
+- Previous imported-character audit: `.godot360/imported-character/audit.json`; full outputs and negative
   controls are retained under that directory. The appearance evidence remains
   under `.godot360/appearance-review/`. These large outputs are ignored by Git.
 - Windows engines are under
