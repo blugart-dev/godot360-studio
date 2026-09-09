@@ -86,6 +86,8 @@ are met; no public beta is required.
   reduce tested glow cuts at edges and corners.
 - [Particle startup fixes and checks](docs/particle-capture.md) cover a fixed
   opening clock, default two-frame warmup, automatic CPU bounds and authored pauses.
+- [Imported-character checks](docs/imported-characters.md) compare a real GLB's
+  animation, weighted skin and head-attached camera against independent references.
 - [Combined appearance review](docs/combined-appearance.md) checks moving lights,
   materials, authored exposure and borders together. Shared automatic spherical
   exposure is deferred beyond the authored-exposure scope of 1.0.

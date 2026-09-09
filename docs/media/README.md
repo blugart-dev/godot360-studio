@@ -106,7 +106,16 @@ retained PNGs; the opening is empty only in the old worker.
 
 Check image legibility at README width, all four GIF excerpts, video duration and
 audio, relative Markdown links and the packaged screenshot. Keep the GIF below
-4 MB and the MP4 below 7 MB. The PNG is the only binary media included in the addon
-package; the repository previews total about 11 MB including that PNG.
+4 MB and the MP4 below 7 MB. The panel PNG and the licensed CesiumMan GLB test
+asset are the binary media included in the development package.
 Run the packager's verification and rebuild comparison after changing packaged
 guides or their assets. See [developer verification](../testing.md).
+
+`imported-character.jpg` is the unaltered contact sheet from
+`.godot360/imported-character/native/forward-472/`: native imported character,
+direct-camera oracle, CPU skin oracle, late-skin control and late-camera control.
+Windows Godot 4.7.2 / RTX 3060 Ti / Forward+ Vulkan, two warmup frames, zero
+borders, 30 FPS; delivered frames 15, 30 and 31. Every cell uses an 85×70-degree
+flat view at 320×240; only text/panel layout is added by the reviewer. The original
+GLB and these derived views are © 2017 Cesium, CC BY 4.0; see
+[attribution and upstream mark notice](../../tests/fixtures/cesium_man/README.md).

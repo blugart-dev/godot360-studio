@@ -1,5 +1,88 @@
 # Validation record — updated 2026-09-09
 
+## Imported animated character — 2026-09-09
+
+The [illustrated imported-character review](imported-characters.md) uses the
+licensed, pinned CesiumMan GLB: 19 joints, 57 LINEAR TRS channels, 3,273 vertices
+and 4,672 triangles. Godot's scene importer, AnimationPlayer, weighted skin and
+external head attachment are compared with independently evaluated raw glTF data.
+No addon runtime change was necessary. The fixture adds a camera boom and a
+31.5-degree cut at frame 30, plus late-skin and late-camera negative controls.
+
+### Native evidence
+
+Windows 11 / RTX 3060 Ti / FFmpeg 9.0.1. All clips are 2048×1024 with 512-pixel
+face cores and 60 delivered frames. The import bake rate matches the export rate;
+the raw-source reference disables animation optimization, immutable-track removal,
+mesh compression and generated LODs only in the disposable project.
+
+| Godot / renderer | FPS | Warmup | Border | Exports | Scope |
+| --- | ---: | ---: | ---: | ---: | --- |
+| 4.5.1 / Compatibility | 30 | 2 | 0% | 3 | Camera and weighted skin |
+| 4.6.3 / Compatibility | 30 | 0 | 0% | 3 | Camera and weighted skin |
+| 4.7.2 / Forward+ Vulkan | 30 | 2 | 0% | 5 | Camera, skin and both negative controls |
+| 4.7.2 / Mobile Vulkan | 30 | 2 | 12.5% | 3 | Camera and weighted skin |
+| 4.7.2 / Forward+ Vulkan | 60 | 0 | 12.5% | 2 | Original textured material, camera pair |
+| 4.7.2 / Compatibility, final unpacked ZIP | 30 | 2 | 0% | 5 | Camera, skin and both negative controls |
+
+**21 exports / 1,260 unique source and decoded video frames**: 17 accepted
+reference/capture clips and four deliberately incorrect control clips. Eleven
+accepted image pairs pass. The largest accepted source RGB MAE is 0.0001282,
+foreground MAE 0.01666 and decoded MAE 0.03267; existing skeletal comparison limits
+remain 0.03 / 0.25 / 0.1. At least 5,284 orange character pixels are present in
+every unlit reference frame. Maximum joint-matrix error is 0.00000160 and camera
+matrix error 0.00000134, below the 0.00005 requirement.
+
+Both renderer runs with negative controls reject them. Forward+ late skin reaches
+3.805 foreground MAE while whole-frame MAE is only 0.0252, demonstrating why the
+foreground condition matters. Its late camera reaches 114.46 foreground MAE,
+including the missed cut. The final Compatibility ZIP rejects the same errors.
+
+Exploratory failures remain under `initial/` (default import optimization) and
+`native/textured-472/` (60 FPS export versus a 30 FPS import bake). Maximum bone
+matrix errors were 0.0194 and 0.0269 respectively. Precise import settings and a
+matching bake rate resolve them without a capture-runtime change. The initial
+`exact-import/` success is separate exploratory evidence, not counted above.
+
+### Package and preservation
+
+Accepted ZIP: `.godot360/imported-character/final/candidate.zip`, **153 entries,
+1,144,980 bytes**, SHA256
+`3a66b1f853e6f0494a56020b63731da1c7717f3af02b38183ea8feecf558bf31`.
+Rebuilding its extracted source gives identical bytes. Its Compatibility review
+is the five-export row above. The earlier package passes **739 headless checks**,
+including injected capture/storage failures, at SHA256
+`304ba7d3243147c8bf104efb2c967a8bbf54c5dcb38c88f201c36aec51c65c50`.
+Only authoring/asset notes, the Python reviewer (explicit import bake FPS), and
+the manifest differ from that headless snapshot. Runtime, fixture and reference
+evaluator bytes match across all six accepted native datasets.
+
+`.godot360/imported-character/audit.json` verifies the reports, exact package,
+native runtime/fixture matching and the protected project/settings/recipe/master
+hashes. All three workflows pass actionlint (ShellCheck disabled). The new
+Imported characters hosted workflow is pending on this increment. IK/modifiers,
+nested skeleton attachments, other import/retarget pipelines, complex particles,
+production workloads and native Linux/Mac GPU reviews remain open.
+
+## Appearance/particle checkpoint hosted validation — 2026-09-09
+
+Checkpoint `d37a786` preserves the previously uncommitted appearance and particle
+startup work and is pushed to private `origin/main`. Both hosted workflows passed
+without a retry: [Desktop platforms, run 34363716312](https://github.com/blugart-dev/godot360-studio/actions/runs/34363716312)
+and [Combined appearance, run 34363715991](https://github.com/blugart-dev/godot360-studio/actions/runs/34363715991).
+
+Linux passed 875 package/workflow checks, three skeletal exports, eight renderer
+cases and 14 particle exports (nine appearance comparisons and 14 processing
+checks). macOS passed 741 headless checks. Each appearance renderer passed nine
+clips, 810 fully decoded video frames and its re-encode; source/authored-oracle
+and decoded-oracle differences are zero on both Mesa Vulkan lanes.
+
+Linux/macOS package reports reproduce the prior accepted ZIP SHA256
+`ad97a690a17c6859894c676b49437c4c53ee6b50a28c35f1d29d6d9273bdc2e7`.
+The downloaded reports and run records are retained under
+`.godot360/imported-character/checkpoint-ci/`. This closes the hosted-CI follow-up
+in the earlier entries; it is private development evidence, not publication.
+
 ## Particle startup and fixed capture clock — 2026-09-09
 
 Continued the ordered private 1.0 work after the combined appearance pass, retaining

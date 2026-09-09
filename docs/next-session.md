@@ -1,6 +1,6 @@
 # Next-session brief — private development toward 1.0
 
-Prepared on 2026-09-09 after the appearance and particle startup increments.
+Updated on 2026-09-09 after the imported-character increment.
 This is a recap and recommended plan, not a new release or authorization to publish.
 The canonical completion criteria remain in [release readiness](release-readiness.md).
 
@@ -12,7 +12,7 @@ short-test estimates, timeline capture, audio, spherical MP4 metadata, verificat
 cancellation, diagnostics, re-encoding, recovery, storage guards, spherical playback
 and recent exports are implemented. The internal version remains 0.8.0.
 
-The last two local increments establish:
+Recent increments establish:
 
 - Combined moving lights/materials, exposure-source changes and borders on
   Forward+/Mobile. Consistent 1.0 exposure uses authored values. Shared automatic
@@ -23,11 +23,16 @@ The last two local increments establish:
   with two warmup frames. Evidence includes 66 particle exports, three motion/audio
   reviews at 24/30/60 FPS and 1,875 headless contract checks. Zero-warmup GPU capture
   remains outside the validated contract.
+- Imported CesiumMan GLB animation, skin and a head-attached camera/cut against
+  independent raw-glTF references. Native Windows: 21 exports, including four
+  rejected timing controls, plus 739 headless package checks. Precise reference
+  import settings and matching bake FPS matter; the addon runtime needed no fix.
 
-These increments are uncommitted and unpushed. Both workflow files pass actionlint,
-but the new appearance workflow and expanded particle cases have not run hosted
-on this snapshot. Preserve the current working tree, including untracked fixtures,
-reviewers and documentation media. Inspect the diff before preparing a checkpoint.
+Appearance/particle work is checkpointed at `d37a786` and pushed privately. Both
+hosted workflows pass: Desktop platforms `34363716312` and Combined appearance
+`34363715991`. Imported-character changes and their new workflow follow that
+checkpoint; consult the newest HANDOFF/validation entry and Git status for their
+final commit and CI state. Preserve any working-tree changes when continuing.
 
 ## Recommended order and difficulty
 
@@ -36,8 +41,8 @@ estimate. The amount of corrective work depends on what the rendered tests revea
 
 | Order | Work | Difficulty | Why it matters | Completion evidence |
 | --- | --- | --- | --- | --- |
-| 0 | Checkpoint the current changes and run private hosted CI | Low; medium if CI exposes platform differences | Preserve the fixes in a reproducible revision and confirm the expanded tests run outside this machine. | Reviewed source/media diff, reproducible package, green hosted jobs or a diagnosed and resolved failure. |
-| 1 | Imported animated character, then a common IK/modifier and nested attachment case | Medium for basic import; high for modifier order | Existing skin/camera references use a small constructed skeleton. A real imported asset exercises the normal creator workflow and additional update-order risks. | Licensed, reproducible fixture; skin, motion, attached camera and cuts match an independent reference; any exclusions are recorded. |
+| 0 | Verify the latest imported-character checkpoint and hosted CI status | Low; medium if CI exposes platform differences | Appearance/particle CI is green; preserve and verify the next reproducible revision too. | Reviewed source/media diff, reproducible package, green hosted jobs or a diagnosed and resolved failure. |
+| 1 | Common IK/modifier and nested skeleton attachment case | High for modifier order | The basic imported GLB now has skin/camera references. A modifier or nested skeleton exercises additional update-order risks. | A bounded modifier/attachment fixture matches an independent reference; any exclusions are recorded. |
 | 2 | Representative complex particles | High | Current particle coverage is deliberately simple. Transparent/billboard effects, trails, preprocessing and moving emitters are much closer to typical production effects. | Bounded cases with meaningful references for startup, motion, pause and cube-edge crossings; fix supported cases and state limits. |
 | 3 | Decide and validate the advanced rendering support boundary | High to very high for general support | Temporal upscaling, GI and custom compositors may depend on view direction or previous frames. Correct export cannot be assumed from basic geometry tests. | Selected TAA/FSR, GI and compositor cases have rendered evidence and clear setup guidance. Full support for every combination is not a prerequisite implied by this plan. |
 | 4 | Representative 4K/8K Forward+/Mobile workloads | Medium to measure; potentially high to optimize | Existing 4K/8K runs establish reliability for simpler Compatibility scenes. Heavy lighting, effects and texture content can change memory, time and storage needs substantially. | Sustained jobs with measured GPU memory, time, retained storage and audio alignment; practical budgets and failure behavior. |
@@ -69,23 +74,22 @@ local checkout is optional housekeeping and is not a release blocker.
 Read this brief, the latest entries in [HANDOFF](HANDOFF.md) and
 [validation](validation.md), [release readiness](release-readiness.md), and
 [skeletal capture](skeletal-capture.md). Verify the working tree before editing.
-Begin with one imported animated character and a bone-attached export camera.
+The basic imported case is established in [imported characters](imported-characters.md).
+Begin with one modifier/IK or nested skeleton attachment using that fixture.
 Establish a trustworthy reference, reproduce any discrepancy and make the smallest
-supported correction. Add an IK/modifier or nested attachment only after the basic
-imported case is understood. Do not rerun completed large matrices without a code
+supported correction. Do not rerun completed large matrices without a code
 change, failure or unresolved concern that justifies them.
 
-No imported GLB/GLTF/FBX/Blend/OBJ asset appeared in the project source inventory
-checked for this recap. Asset choice and redistribution permission therefore need
-to be established when building the fixture. Use disposable projects and output
+`tests/fixtures/cesium_man/` now contains a pinned licensed GLB with its attribution
+and original notices; the reviewer verifies its SHA256. Use disposable projects and output
 folders; preserve the user's creative scenes, recipes, settings and existing masters.
 
 ## Local evidence and tools
 
-- Accepted package: `.godot360/particle-startup/accepted/candidate.zip`, SHA256
-  `ad97a690a17c6859894c676b49437c4c53ee6b50a28c35f1d29d6d9273bdc2e7`.
+- Accepted package: `.godot360/imported-character/final/candidate.zip`, SHA256
+  `3a66b1f853e6f0494a56020b63731da1c7717f3af02b38183ea8feecf558bf31`.
   It is a private development snapshot, not a 1.0 release.
-- Latest audit: `.godot360/particle-startup/audit.json`; full outputs and negative
+- Latest audit: `.godot360/imported-character/audit.json`; full outputs and negative
   controls are retained under that directory. The appearance evidence remains
   under `.godot360/appearance-review/`. These large outputs are ignored by Git.
 - Windows engines are under
@@ -105,6 +109,6 @@ Suggested opening prompt:
 
 > Continue private Godot360 Studio development toward 1.0. Read
 > docs/next-session.md and the latest HANDOFF/validation entries. Preserve the
-> existing uncommitted appearance and particle work. Review the checkpoint/CI
-> status, then implement and validate the imported animated-character case with
-> a bone-attached export camera. Keep the scope bounded and document the evidence.
+> existing work. Review the checkpoint/CI status, then implement and validate a
+> bounded modifier/IK or nested skeleton attachment case using the imported
+> character fixture. Keep the scope bounded and document the evidence.

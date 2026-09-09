@@ -1,5 +1,15 @@
 # Changelog
 
+## Unreleased — imported character validation
+
+- Add a pinned, licensed CesiumMan GLB and normal scene-import fixture with a
+  head-attached export camera, camera boom and a frame-30 viewpoint cut.
+- Independently evaluate raw glTF animation, hierarchy and weighted skin in
+  Python; compare joint/camera transforms and every source/decoded video frame.
+- Include delayed-camera and delayed-skin negative controls, precise import
+  settings and a textured camera comparison. Document default import optimization
+  separately from capture timing. The addon runtime is unchanged by this review.
+
 ## Unreleased — particle startup and fixed capture clock
 
 - Disable realtime physics jitter compensation in the capture worker so Movie

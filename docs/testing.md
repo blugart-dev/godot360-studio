@@ -295,3 +295,12 @@ See the [performance record](performance.md) for measurements and the
 [roadmap](roadmap.md) for the next production milestones.
 The [development handoff](HANDOFF.md) records the current state and constraints
 for continuing in a fresh session.
+
+`tests/imported_character_review.py` imports the pinned CesiumMan GLB in a fresh
+project and compares native skin and a head-attached camera against raw-glTF CPU
+references. Pass `--godot`, `--ffmpeg`, `--ffprobe` and a fresh `--output`, with
+`--method` / `--driver` selecting the renderer. `--negative-control` requires late
+skin/camera comparisons to fail; `--textured` isolates camera timing with the
+original material. The package includes the binary asset and its separate CC BY
+4.0 attribution/mark notices; the addon itself remains MIT. See
+[the illustrated review and precise import settings](imported-characters.md).

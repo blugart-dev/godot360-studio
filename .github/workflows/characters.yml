@@ -1,0 +1,81 @@
+name: Imported characters
+
+on:
+  pull_request:
+    paths: ['addons/godot360/**', 'tests/**', 'tools/package_addon.py', '.github/workflows/characters.yml']
+  push:
+    branches: [main]
+    paths: ['addons/godot360/**', 'tests/**', 'tools/package_addon.py', '.github/workflows/characters.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: characters-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  character:
+    name: ${{ matrix.method }} / Mesa
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - method: gl_compatibility
+            driver: opengl3
+          - method: forward_plus
+            driver: vulkan
+          - method: mobile
+            driver: vulkan
+    env:
+      GODOT_VERSION: 4.7.2
+      PYTHONUNBUFFERED: '1'
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.13'
+      - name: Install review tools
+        run: |
+          python -m pip install numpy pillow
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg xvfb libgl1-mesa-dri libglx-mesa0 mesa-vulkan-drivers libxrandr2 libxinerama1 libxcursor1 libxi6
+          mkdir -p .godot360/ci-characters/tools
+          curl --fail --location --retry 3 "https://github.com/godotengine/godot-builds/releases/download/${GODOT_VERSION}-stable/Godot_v${GODOT_VERSION}-stable_linux.x86_64.zip" -o .godot360/ci-characters/tools/godot.zip
+          unzip -q .godot360/ci-characters/tools/godot.zip -d .godot360/ci-characters/tools
+          chmod +x ".godot360/ci-characters/tools/Godot_v${GODOT_VERSION}-stable_linux.x86_64"
+          echo "GODOT=$PWD/.godot360/ci-characters/tools/Godot_v${GODOT_VERSION}-stable_linux.x86_64" >> "$GITHUB_ENV"
+      - name: Freeze and verify the package
+        run: |
+          python tools/package_addon.py --output .godot360/ci-characters/candidate.zip
+          python -m zipfile -e .godot360/ci-characters/candidate.zip .godot360/ci-characters/unpacked
+          python .godot360/ci-characters/unpacked/tools/package_addon.py --verify .godot360/ci-characters/candidate.zip
+      - name: Compare imported skin and camera with raw glTF references
+        env:
+          REVIEW_METHOD: ${{ matrix.method }}
+          REVIEW_DRIVER: ${{ matrix.driver }}
+          LIBGL_ALWAYS_SOFTWARE: '1'
+        run: |
+          for icd in /usr/share/vulkan/icd.d/lvp*json; do export VK_DRIVER_FILES="$icd"; break; done
+          test -f "$VK_DRIVER_FILES"
+          xvfb-run -a -s '-screen 0 1400x900x24' python .godot360/ci-characters/unpacked/tests/imported_character_review.py --godot "$GODOT" --ffmpeg "$(command -v ffmpeg)" --ffprobe "$(command -v ffprobe)" --method "$REVIEW_METHOD" --driver "$REVIEW_DRIVER" --output .godot360/ci-characters/review --negative-control
+      - name: Retain review evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: imported-character-${{ matrix.method }}
+          retention-days: 14
+          include-hidden-files: true
+          path: |
+            .godot360/ci-characters/candidate.json
+            .godot360/ci-characters/review/imported-character-review.json
+            .godot360/ci-characters/review/comparison.jpg
+            .godot360/ci-characters/review/**/*.log
+            .godot360/ci-characters/review/**/report.json
+            .godot360/ci-characters/review/**/character-samples.json
+            .godot360/ci-characters/review/**/capture-settings.json

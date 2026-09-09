@@ -31,7 +31,9 @@ The subsequent [particle startup review](particle-capture.md) fixes opening
 simulation deltas, matching-rate fixed particle steps and Compatibility CPU
 automatic bounds. The supported simple-effect contract uses at least two warmup
 frames; zero-warmup GPU startup and complex effect histories remain outside it.
-Next: representative imported characters and more complex particle/effect scenes.
+The [imported-character review](imported-characters.md) adds a real GLB, head-attached
+camera and independent skin/motion references. Next: modifiers/IK, nested skeleton
+attachments and more complex particle/effect scenes.
 
 ## Completed first-export and review increments
 

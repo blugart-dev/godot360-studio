@@ -63,10 +63,11 @@ camera current does not select a new capture source. Temporal histories remain
 active across the cut; this correction does not reset TAA or promise ghost-free
 images. Inspect the cut and following frames in your own scene.
 
-The fixture validates a small keyed skeleton, a weighted mesh and parent/external
-attachments. Imported character pipelines, IK/modifier chains, ragdolls, nested
-attachments, physics interpolation, particles and long temporal histories still
-need representative validation. Read the [authoring contract](../addons/godot360/AUTHORING.md#skeletal-animation-and-viewpoint-cuts)
+The original fixture validates a small keyed skeleton, a weighted mesh and
+parent/external attachments. The subsequent [imported-character review](imported-characters.md)
+adds a real GLB and independent raw-source references. IK/modifier chains, ragdolls,
+nested skeleton attachments, physics interpolation, other import pipelines and
+long temporal histories still need validation. Read the [authoring contract](../addons/godot360/AUTHORING.md#skeletal-animation-and-viewpoint-cuts)
 before adapting an interactive scene.
 
 ## Repeat the comparison

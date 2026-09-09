@@ -193,11 +193,23 @@ TAA and other temporal effects keep their per-face histories across cuts. A corr
 cut timestamp does not guarantee freedom from ghosting; inspect the cut and the
 following frames, and disable TAA if its appearance is unsuitable.
 
-This evidence covers a small keyed skeleton and a two-bone weighted mesh.
-IK/modifier chains, ragdolls, nested attachments, physics interpolation, imported
-character pipelines, particle simulation and long temporal histories still need
-representative rendered validation. Custom deferred code that changes bones after
-camera synchronization is outside this sampling contract.
+The rendered fixtures include a small constructed skeleton and the imported
+CesiumMan GLB: 19 joints, 57 TRS animation channels and a weighted character mesh,
+with an external head attachment, camera boom and viewpoint cut. Its raw-glTF
+reference uses precise import settings: animation optimization, immutable-track
+removal, mesh compression and generated LODs are disabled in the disposable test
+project, and the import bake FPS matches the compared export FPS. These are
+reference-test settings, not changes applied by the addon.
+Godot's default import optimization may approximate source curves; inspect the
+imported animation itself when comparing with a DCC/source-file reference.
+
+Use the imported AnimationPlayer's actual path and clip name with the timeline
+helper, and ensure the capture clip does not loop or end before the requested
+film. The helper samples imported position/rotation/scale tracks normally.
+IK/modifier chains, ragdolls, nested skeleton attachments, physics interpolation,
+other import/retarget pipelines and long temporal histories still need validation.
+Custom deferred code that changes bones after camera synchronization is outside
+this sampling contract. See the repository's `docs/imported-characters.md`.
 
 ## Audio and synchronization
 

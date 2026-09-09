@@ -4,6 +4,43 @@ For a fresh session, start with the [current recap and difficulty assessment](ne
 It identifies the local checkpoint/CI follow-up, remaining work, support decisions,
 and the next bounded engineering task. The detailed records below remain the evidence.
 
+## Imported animated character — 2026-09-09
+
+Completed the local imported-character milestone after checkpointing the prior
+work. See [the illustrated guide](imported-characters.md). A licensed CesiumMan
+GLB exercises normal scene import, 19-joint animation, weighted skin, an external
+head-attached camera with a boom and a frame-30 cut. Raw-glTF CPU references do
+not read Godot's resulting poses. No addon runtime correction was needed.
+
+Native Windows evidence covers 4.5.1/4.6.3/4.7.2 Compatibility and 4.7.2 Forward+
+and Mobile: 21 exports / 1,260 source and decoded frames, including four controls
+that are required to fail. A textured 60 FPS case passes too. Reference imports
+disable lossy optimization/compression/LODs and match the import bake rate to
+export FPS; both choices resolved measured source-vs-import discrepancies.
+
+Final ZIP `.godot360/imported-character/final/candidate.zip` has SHA256
+`3a66b1f853e6f0494a56020b63731da1c7717f3af02b38183ea8feecf558bf31` and rebuilds
+identically. It passes five rendered Compatibility jobs. The preceding package
+passed 739 headless/failure checks; the exact difference is documented in
+validation. `audit.json` records native source matching and protected hashes.
+The new hosted character workflow is pending; actionlint passes for all three.
+
+Next bounded engineering task: a common skeleton modifier/IK case and nested
+skeleton attachments, using the imported fixture now established. Then complex
+particles and the remaining rendering/production/hardware reviews. Keep the
+support boundary explicit and continue privately; no public release is authorized.
+
+## Appearance/particle checkpoint — 2026-09-09
+
+The appearance and particle startup changes are committed as `d37a786` and pushed
+to private `origin/main`. Hosted Desktop platforms `34363716312` and Combined
+appearance `34363715991` both pass without retry. Linux passes 875 package/workflow
+checks, three skeletal exports, eight renderer cases and 14 particle exports;
+macOS passes 741 headless checks. Each new appearance lane passes nine clips and
+its re-encode. Both platforms rebuild the prior accepted `ad97a690…` package.
+Reports are under `.godot360/imported-character/checkpoint-ci/`; see validation.
+The earlier "uncommitted/unpushed/hosted pending" notes below are historical.
+
 ## Particle startup and timing — 2026-09-09
 
 Completed the next ordered local increment. `capture.gd` disables realtime physics

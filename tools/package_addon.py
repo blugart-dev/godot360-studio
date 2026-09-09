@@ -11,7 +11,7 @@ import re
 from pathlib import Path
 from zipfile import ZIP_DEFLATED, ZipFile, ZipInfo
 
-TESTS = """appearance_review.py exposure_checks.gd exposure_review.py border_review.py audio_checks.gd audio_delivery_checks.py audio_formats_review.py
+TESTS = """gltf_reference.py imported_character_review.py appearance_review.py exposure_checks.gd exposure_review.py border_review.py audio_checks.gd audio_delivery_checks.py audio_formats_review.py
 audio_review.py audio_studio_checks.gd capture_lifecycle_checks.gd compatibility_review.py diagnostics_checks.gd endurance_review.py export_checks.gd
 frame_writer_checks.gd metadata_checks.gd metadata_integration.gd metadata_review.py
 motion_review.py particle_review.py planning_checks.gd planning_studio_checks.gd quality_panel_checks.gd recovery_studio_checks.gd
@@ -38,6 +38,8 @@ def inventory(root):
     paths += sorted((addon / "media").glob(".gdignore"))
     paths += [root / "tests" / name for name in TESTS]
     paths += sorted(path for path in (root / "tests/fixtures").rglob("*") if path.suffix in {".gd", ".tscn"})
+    paths += [root / "tests/fixtures/cesium_man" / name for name in
+              ["CesiumMan.glb", "LICENSE.md", "README.md", "metadata.json", "LicenseRef-LegalMark-Cesium.txt"]]
     paths += [root / "tools/package_addon.py"]
     files = {}
     for path in paths:
