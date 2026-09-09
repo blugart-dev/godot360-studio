@@ -104,7 +104,8 @@ Actual frame inspection found **hard glow-halo cuts at face boundaries** and
 **large exposure differences between faces with auto exposure**. The optional
 capture border below supplies surrounding pixels for glow. The fixed exposure
 option below removes independent metering; shared adaptive spherical exposure
-still requires a new metering strategy and remains open.
+requires a new metering strategy and is deferred beyond 1.0. The supported 1.0
+consistency workflow uses authored exposure, including animated exposure curves.
 The [skeletal capture fixture](AUTHORING.md#skeletal-animation-and-viewpoint-cuts)
 adds a keyed weighted mesh and a bone-attached camera cut. Camera synchronization
 now waits for the queued attachment update, avoiding a one-frame viewpoint delay.
@@ -127,6 +128,10 @@ This does **not** freeze the editor view's auto-metered brightness. Switching to
 can make a scene brighter or darker, and a lighting cut will stay visible unless
 you author an exposure change. Tune `CameraAttributes.exposure_multiplier` or
 physical exposure in the scene; the original tone mapper and SDR pipeline remain.
+
+For 1.0, use authored exposure when consistent brightness across faces is required.
+Shared automatic spherical adaptation is outside the 1.0 support claim. Scene
+mode remains available with its native per-face metering and documented seam risk.
 
 **Scene (default)** preserves the previous behavior, including independent
 Forward+ metering. Legacy recipes/settings/jobs use Scene. Mobile and Compatibility
@@ -227,7 +232,7 @@ the current machine's renderer is never substituted into their report.
 | Different exposure or washed-out colors | Check camera/environment overrides and auto exposure; compare the retained PNG to a normal view with the same renderer and tone mapper. PNGs are sRGB, MP4 is BT.709. |
 | GPU memory exhaustion | Reduce face size, lower MSAA or reduce expensive effects, then re-test. Six views and temporal histories require more VRAM than one camera. Disk estimates do not estimate VRAM. |
 | Scene script failure | Fix the `SCRIPT ERROR` in `capture.log` and start a new render. A complete PNG count alone does not prove authored scene behavior ran. |
-| Missing or uneven particle motion at the opening | Test 8–10 warmup frames and inspect particle Fixed FPS/interpolation. Warmup does not pre-roll particle history. See [particle authoring](AUTHORING.md#particle-simulation-and-processing-modes). |
+| Missing or uneven particle motion at the opening | Use at least two warmup frames; increase for complex effects and inspect particle Fixed FPS/interpolation. Capture corrects the opening clock and Compatibility CPU automatic bounds for setup-time emitters. Warmup does not pre-roll particle history. See [particle authoring](AUTHORING.md#particle-simulation-and-processing-modes). |
 
 See the repository's `docs/validation.md` for dated measured combinations and
 local evidence. Native macOS, Linux hardware-GPU rendering and combinations not

@@ -58,11 +58,25 @@ the installed tools. [Platform setup](../addons/godot360/PLATFORMS.md) covers bo
 
 ### Renderer appearance and motion
 
+`tests/appearance_review.py` checks combined moving lights/materials, camera motion,
+a lighting cut, camera/world exposure changes and capture borders. Nine rendered
+clips provide fixed/authored-oracle comparisons, glow-disabled observations and
+unlit geometry controls; a re-encode checks source preservation. Every MP4 is fully
+decoded. See the [combined appearance guide](combined-appearance.md) for the native
+Forward+/Mobile command and the distinction between acceptance and seam metrics.
+The separate `Combined appearance` workflow runs both methods against an unpacked
+candidate on Linux software Vulkan; this avoids extending the desktop-platform
+workflow's timeout. Prepared CI coverage is not native hardware evidence; accepted
+hosted runs must still be recorded in validation.
+
 The [particle review](particle-capture.md) compares CPU/GPU particle motion across
 cube boundaries with an analytic mesh reference. `tests/particle_review.py` checks
 source and decoded MP4 frames plus authored processing modes. `--lifecycle` adds
 disabled, when-paused and mid-capture pause cases; Linux CI includes them.
-Optional startup/fixed-step observations are recorded separately from acceptance.
+`--automatic-bounds`, `--short-warmup` and `--fixed-step` gate acceptance, including
+the opening frame; Linux CI includes them. The reviewer also checks process deltas
+and unchanged authored emitter settings. `--fps 24|30|60` selects the export and
+matching particle step rate. Zero-warmup appearance remains a separate observation.
 
 The [skeletal camera review](skeletal-capture.md) compares moving/cut bone cameras
 and weighted skin against independent references, including decoded MP4 frames.

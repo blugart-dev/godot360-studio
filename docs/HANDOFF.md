@@ -1,5 +1,79 @@
 # Godot360 Studio development handoff
 
+For a fresh session, start with the [current recap and difficulty assessment](next-session.md).
+It identifies the local checkpoint/CI follow-up, remaining work, support decisions,
+and the next bounded engineering task. The detailed records below remain the evidence.
+
+## Particle startup and timing — 2026-09-09
+
+Completed the next ordered local increment. `capture.gd` disables realtime physics
+jitter compensation in the worker, fixing incorrect opening simulation deltas and
+the repeated matching-rate particle step. It also queries Compatibility CPU
+automatic bounds after buffer submission, fixing the missing opening without
+overwriting authored bounds or stepping the effect. All earlier appearance work
+remains in the working tree. See [particle capture](particle-capture.md) and the
+latest [validation entry](validation.md) for exact scope and negative controls.
+
+The native matrix passes 66 particle exports across Windows Godot 4.5.1/4.6.3/4.7.2,
+Compatibility, Forward+ and Mobile, including selected 24/30/60 FPS combinations.
+Automatic CPU bounds match exactly at both two and eight warmup frames on all
+three engines. Source/decoded references, fixed process deltas and authored
+particle settings are checked; existing image thresholds are unchanged. Three
+Motion exports at 24/30/60 FPS pass geometry, flash timing and audio cues. Headless
+contracts pass 1,875 checks. Zero-warmup GPU startup remains a documented exclusion;
+the simple-effect contract uses at least two warmup frames.
+
+All evidence is under `.godot360/particle-startup/`; `audit.json` records package,
+runtime/fixture matching and protected user-file hashes. Accepted ZIP:
+`accepted/candidate.zip`, SHA256
+`ad97a690a17c6859894c676b49437c4c53ee6b50a28c35f1d29d6d9273bdc2e7`.
+The headless package differs only in the reviewer, renderer guide and manifest;
+both rebuild identically. No version bump, commit, push or publication was done.
+The expanded Linux particle CI passes actionlint but has not run hosted.
+
+Next: representative imported characters, modifiers/IK, nested attachments and
+complex particles/effects. Continue toward the production workloads and remaining
+native hardware/private workflow reviews after those fixtures. Keep the declared
+scene contract explicit rather than claiming arbitrary effect determinism.
+
+## Combined appearance review — 2026-09-09
+
+The user approved starting the ordered 1.0 roadmap. This increment completes the
+local combined exposure/border pass and defines consistent 1.0 exposure as authored
+values, including animation. Shared automatic spherical adaptation is deferred
+beyond 1.0; Scene defaults and native per-face metering remain unchanged. See
+[the illustrated guide](combined-appearance.md) and the new [validation](validation.md)
+entry for metrics, exact package snapshots and limitations.
+
+The new portable reviewer covers nine clips per renderer plus re-encoding, with
+full decoded-frame counts, authored exposure oracles, glow-disabled observations,
+and unlit geometry/color controls. Forward+ and Mobile pass natively on Windows
+4.7.2 / RTX 3060 Ti / Vulkan. Borders reduce the measured glow discontinuity by
+94–97% across the tested crossings; halo shape and other view-dependent effects
+remain documented limits. Source scenes, recipes, main project and addon runtime
+code are unchanged by this work.
+
+The repeated Forward+ export exposed overly strict decoded-MAE acceptance in the
+new reviewer. Isolated one-level source rounding changes coexist with decoded
+CRF differences up to 0.863 RMS. The revised test adds a maximum-one-level source
+constraint and uses a maximum-one-level decoded RMS bound, retaining the rejected
+report and the original media. The incorrect automatic-exposure control fails.
+
+Accepted package: `.godot360/appearance-review/accepted/candidate.zip`, SHA256
+`401e5c6c202c6d9fc33464295d7f91545ec9edae3ce12106c492e729a84ce130`.
+The earlier full package matrix passes 2,217 checks across three engines; only the
+Python reviewer's acceptance calculation and manifest differ in the accepted ZIP.
+Rebuilds are identical. Native datasets, reviews, profiles and audits remain under
+`.godot360/appearance-review/`. The new separate software-Vulkan CI workflow passes
+actionlint but has not yet run on hosted CI. Changes remain local; no commit,
+push or public publication was performed during this increment.
+
+Next work is the known particle opening/fixed-step behavior, then imported
+characters, complex particles and the remaining temporal/GI/compositor coverage.
+The authored Visibility AABB workaround remains the accepted Compatibility CPU
+particle guidance; it is not an automatic-bounds fix. Continue privately toward
+1.0, with native hardware and final delivery review still open.
+
 ## CPU visibility bounds follow-up — 2026-09-08
 
 Implementation `17d0abc` is pushed to private `origin/main`, following `8b16092`.

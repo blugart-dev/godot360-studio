@@ -21,6 +21,18 @@ scenes, representative production endurance, native hardware coverage, and a fin
 private end-to-end review of the exact package. Hardware-dependent checks remain
 open where hardware is unavailable; all other development continues.
 
+The 2026-09-09 [combined appearance review](combined-appearance.md) adds moving
+lights/materials, exposure-source changes and capture borders in one fixture.
+Consistent 1.0 brightness uses authored exposure, including animation; shared
+automatic spherical adaptation is deferred beyond 1.0. Scene defaults remain
+unchanged. See the guide for the decision and its technical limits.
+
+The subsequent [particle startup review](particle-capture.md) fixes opening
+simulation deltas, matching-rate fixed particle steps and Compatibility CPU
+automatic bounds. The supported simple-effect contract uses at least two warmup
+frames; zero-warmup GPU startup and complex effect histories remain outside it.
+Next: representative imported characters and more complex particle/effect scenes.
+
 ## Completed first-export and review increments
 
 On 2026-09-07 the user chose **Godot creators exporting their existing scenes** as

@@ -84,9 +84,12 @@ are met; no public beta is required.
   checks. Graphical export and Mac GPU validation remain open.
 - **New:** optional [capture borders with before/after examples](docs/capture-borders.md)
   reduce tested glow cuts at edges and corners.
-- [Particle capture checks](docs/particle-capture.md) now cover authored pauses
-  and show how explicit visibility bounds fix tested CPU particle startup.
-- **Next:** exposure and remaining effect seams, complex animated scenes, native hardware
+- [Particle startup fixes and checks](docs/particle-capture.md) cover a fixed
+  opening clock, default two-frame warmup, automatic CPU bounds and authored pauses.
+- [Combined appearance review](docs/combined-appearance.md) checks moving lights,
+  materials, authored exposure and borders together. Shared automatic spherical
+  exposure is deferred beyond the authored-exposure scope of 1.0.
+- **Next:** imported characters, complex effects, remaining effect seams, native hardware
   coverage, representative Forward+/Mobile endurance and private workflow review.
 
 Scope is **mono 360°, SDR BT.709 and stereo sound**. Six-face capture can show

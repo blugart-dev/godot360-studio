@@ -1,0 +1,73 @@
+name: Combined appearance
+
+on:
+  pull_request:
+    paths: ['addons/godot360/**', 'tests/**', 'tools/package_addon.py', '.github/workflows/appearance.yml']
+  push:
+    branches: [main]
+    paths: ['addons/godot360/**', 'tests/**', 'tools/package_addon.py', '.github/workflows/appearance.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: appearance-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  appearance:
+    name: ${{ matrix.method }} / Mesa software Vulkan
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        method: [forward_plus, mobile]
+    env:
+      GODOT_VERSION: 4.7.2
+      PYTHONUNBUFFERED: '1'
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.13'
+      - name: Install review tools
+        run: |
+          python -m pip install numpy pillow
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg xvfb libgl1-mesa-dri libglx-mesa0 mesa-vulkan-drivers libxrandr2 libxinerama1 libxcursor1 libxi6
+          mkdir -p .godot360/ci-appearance/tools
+          curl --fail --location --retry 3 "https://github.com/godotengine/godot-builds/releases/download/${GODOT_VERSION}-stable/Godot_v${GODOT_VERSION}-stable_linux.x86_64.zip" -o .godot360/ci-appearance/tools/godot.zip
+          unzip -q .godot360/ci-appearance/tools/godot.zip -d .godot360/ci-appearance/tools
+          chmod +x ".godot360/ci-appearance/tools/Godot_v${GODOT_VERSION}-stable_linux.x86_64"
+          echo "GODOT=$PWD/.godot360/ci-appearance/tools/Godot_v${GODOT_VERSION}-stable_linux.x86_64" >> "$GITHUB_ENV"
+      - name: Freeze and verify the package
+        run: |
+          python tools/package_addon.py --output .godot360/ci-appearance/candidate.zip
+          python -m zipfile -e .godot360/ci-appearance/candidate.zip .godot360/ci-appearance/unpacked
+          python .godot360/ci-appearance/unpacked/tools/package_addon.py --verify .godot360/ci-appearance/candidate.zip
+      - name: Render and compare all combined appearance cases
+        env:
+          REVIEW_METHOD: ${{ matrix.method }}
+        run: |
+          for icd in /usr/share/vulkan/icd.d/lvp*json; do export VK_DRIVER_FILES="$icd"; break; done
+          test -f "$VK_DRIVER_FILES"
+          xvfb-run -a -s '-screen 0 1400x900x24' python .godot360/ci-appearance/unpacked/tests/appearance_review.py --godot "$GODOT" --ffmpeg "$(command -v ffmpeg)" --ffprobe "$(command -v ffprobe)" --method "$REVIEW_METHOD" --driver vulkan --output .godot360/ci-appearance/review
+      - name: Retain review evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: combined-appearance-${{ matrix.method }}
+          retention-days: 14
+          include-hidden-files: true
+          path: |
+            .godot360/ci-appearance/candidate.json
+            .godot360/ci-appearance/review/appearance-review.json
+            .godot360/ci-appearance/review/comparison.jpg
+            .godot360/ci-appearance/review/**/*-decoded.md5
+            .godot360/ci-appearance/review/**/*.log
+            .godot360/ci-appearance/review/**/report.json
+            .godot360/ci-appearance/review/**/capture-settings.json

@@ -51,6 +51,10 @@ can explicitly disable that metering. Borders do not make arbitrary screen shade
 field and temporal effects equivalent. Inspect motion as well as stills. The
 fixture is a targeted regression case, not evidence for all production scenes.
 
+The [combined appearance lab](combined-appearance.md) additionally exercises
+borders and fixed exposure with moving lights, shadows, metallic materials,
+transparency and an authored lighting cut.
+
 The checked-in `tests/border_review.py` builds a disposable project and writes
 `border-review.json`, before/after views and `comparison.jpg`. It needs Godot,
 FFmpeg/FFprobe, NumPy and Pillow. See the

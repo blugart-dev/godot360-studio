@@ -19,9 +19,15 @@ var writer: RefCounted
 var stopped: bool = false
 var rig: Node
 var scene_process_mode: Node.ProcessMode
+var cpu_particles: Array[CPUParticles3D] = []
+var particle_bounds_sync_usec: int = 0
 
 
 func _initialize() -> void:
+	# Movie Maker already supplies a fixed frame clock. Realtime physics/idle
+	# jitter compensation otherwise changes opening deltas (even with --fixed-fps)
+	# and can skip a particle step. Apply only in this disposable capture worker.
+	Engine.physics_jitter_fix = 0.0
 	job = IO.read_json(IO.argument("job"))
 	if job.is_empty():
 		quit(1)
@@ -48,6 +54,8 @@ func _start() -> void:
 		"renderer": RenderingServer.get_current_rendering_method(),
 		"rendering_driver": RenderingServer.get_current_rendering_driver_name(),
 		"display_server": DisplayServer.get_name(), "os": OS.get_name(),
+		"physics_jitter_fix": Engine.physics_jitter_fix,
+		"physics_ticks_per_second": Engine.physics_ticks_per_second, "time_scale": Engine.time_scale,
 		"godot_version": Engine.get_version_info().string,
 		"video_adapter": RenderingServer.get_video_adapter_name(),
 		"video_adapter_vendor": RenderingServer.get_video_adapter_vendor()}
@@ -131,6 +139,8 @@ func _start() -> void:
 	scene_process_mode = scene.process_mode
 	if int(job.get("warmup_frames", 2)) > 0:
 		scene.process_mode = Node.PROCESS_MODE_DISABLED
+	if not cpu_particles.is_empty():
+		RenderingServer.frame_pre_draw.connect(_sync_particle_bounds)
 	RenderingServer.frame_post_draw.connect(_after_frame)
 	started_usec = Time.get_ticks_usec()
 
@@ -146,6 +156,20 @@ func _before_frame() -> void:
 	if hook_error is String and not hook_error.is_empty():
 		_fail(hook_error)
 		return
+
+
+func _sync_particle_bounds() -> void:
+	if stopped:
+		return
+	var started := Time.get_ticks_usec()
+	# CPU emitters upload their MultiMesh buffers in frame_pre_draw. Query after
+	# those callbacks so Compatibility refreshes automatic bounds before culling
+	# this draw, including the first delivered frame after warmup. This does not
+	# step/restart simulation or replace authored visibility/custom bounds.
+	for emitter in cpu_particles:
+		if is_instance_valid(emitter) and emitter.is_inside_tree() and emitter.is_visible_in_tree() and emitter.visibility_aabb == AABB() and emitter.custom_aabb == AABB():
+			RenderingServer.multimesh_get_aabb(emitter.get_base())
+	particle_bounds_sync_usec += Time.get_ticks_usec() - started
 
 
 func _after_frame() -> void:
@@ -208,10 +232,10 @@ func _after_frame() -> void:
 func _inspect(node: Node, warnings: Array[String]) -> void:
 	if node is CanvasLayer:
 		node.visible = false
-	if (node is GPUParticles3D or node is CPUParticles3D) and int(job.get("warmup_frames", 2)) < 8:
-		warnings.append("Particles may be missing or incomplete at the opening: %s. Test 8–10 warmup frames and inspect the opening and motion; warmup does not pre-roll the simulation." % str(scene.get_path_to(node)))
-	if node is CPUParticles3D and node.visibility_aabb == AABB() and RenderingServer.get_current_rendering_method() == "gl_compatibility":
-		warnings.append("Compatibility CPU particles with automatic bounds can miss the first delivered frame even with warmup: %s. Set a conservative Visibility AABB covering the effect, then review the opening." % str(scene.get_path_to(node)))
+	if (node is GPUParticles3D or node is CPUParticles3D) and int(job.get("warmup_frames", 2)) < 2:
+		warnings.append("Particles may be missing or incomplete at the opening: %s. Use at least 2 warmup frames and inspect the opening and motion; warmup does not pre-roll the simulation." % str(scene.get_path_to(node)))
+	if node is CPUParticles3D and RenderingServer.get_current_rendering_method() == "gl_compatibility":
+		cpu_particles.append(node)
 	if node is SpriteBase3D and node.billboard != BaseMaterial3D.BILLBOARD_DISABLED:
 		warnings.append("Camera-facing sprite may produce seams: " + str(scene.get_path_to(node)))
 	if node is Label3D and node.billboard != BaseMaterial3D.BILLBOARD_DISABLED:
@@ -293,6 +317,7 @@ func _write_result(success: bool, message: String = "") -> bool:
 		"frames": rendered, "elapsed_usec": Time.get_ticks_usec() - started_usec if started_usec > 0 else 0,
 		"readback_usec": readback_usec, "image_write_usec": image_write_usec,
 		"exposure_sync_usec": rig.exposure_sync_usec if is_instance_valid(rig) else 0,
+		"particle_bounds_sync_usec": particle_bounds_sync_usec,
 		"frame_writer": str(job.get("frame_writer", "png")), "samples": frame_samples, "storage_guard": storage.latest})
 	return IO.write_json(destination.path_join("capture-result.json"), {"ok": success and timings_saved,
 		"error": message if timings_saved else "Cannot save capture timing diagnostics.",

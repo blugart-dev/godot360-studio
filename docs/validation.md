@@ -1,4 +1,182 @@
-# Validation record — updated 2026-09-08
+# Validation record — updated 2026-09-09
+
+## Particle startup and fixed capture clock — 2026-09-09
+
+Continued the ordered private 1.0 work after the combined appearance pass, retaining
+its local changes. This increment changes `capture.gd`: the worker disables realtime
+physics jitter compensation before startup and refreshes Compatibility CPU automatic
+bounds after buffer submission. The [particle guide](particle-capture.md) documents
+the causes, actual before/after frames and the remaining zero-warmup GPU limit.
+Particle FPS, interpolation, speed, seeds, emission and authored bounds are preserved.
+
+### Reproduction and negative controls
+
+With two warmup frames at 30 FPS, the old clock delivered opening deltas of
+41.6667, 29.1667, 30 and 32.5 ms before settling to 33.3333 ms. Disabling OS delta
+smoothing did not fix this; setting `Engine.physics_jitter_fix = 0` did. Three/four
+warmup frames could leave a lasting position offset, so extra warmup alone was not
+a clock correction. A fixed 30 Hz GPU emitter repeated a step at frame 3.
+
+The old Compatibility CPU automatic-bounds opening was empty even with eight
+warmup frames. Querying the MultiMesh's bounds in `frame_pre_draw`, after the CPU
+buffer update, fixed it. General GPU synchronization and ignoring culling did not.
+The final implementation queries automatic bounds without assigning new ones.
+
+Retained negative controls exceed the unchanged 0.25 foreground-MAE limit:
+**149.509** for missing automatic-bound particles, **9.195** for two-frame warmup
+with variable steps, and **37.239** for the repeated fixed step. Explorations are
+under `.godot360/particle-startup/{bounds,timing-forward,clock-forward}/`; the audit
+records their metrics. These failures are not counted as accepted captures.
+
+### Accepted native particle matrix
+
+Windows 11 / RTX 3060 Ti / FFmpeg 9.0.1. Each clip has 60 delivered frames at
+2048×1024, with 512-pixel cube-face cores. Fixed particle rates match the export
+rate; continuous-step emitters use Fixed FPS 0 with GPU interpolation disabled.
+
+| Engine / renderer | Export FPS | Border | Clips | Appearance pairs | Unique decoded MP4 frames |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| 4.5.1 / Compatibility OpenGL | 30 | 0% | 10 | 9 | 600 |
+| 4.6.3 / Compatibility OpenGL | 30 | 0% | 10 | 9 | 600 |
+| 4.7.2 / Compatibility OpenGL | 30 | 0% | 16 | 9 | 720 |
+| 4.7.2 / Forward+ Vulkan | 30 | 0% | 14 | 7 | 600 |
+| 4.7.2 / Mobile Vulkan | 24 | 12.5% | 8 | 7 | 480 |
+| 4.7.2 / Forward+ Vulkan | 60 | 0% | 8 | 7 | 480 |
+
+**66 clips / 3,960 delivered frames**, with 48 accepted analytic appearance pairs
+and **3,480 unique MP4 frames decoded**. The latter includes zero-warmup observations;
+eight lifecycle clips instead check processing and stable retained PNGs. The two
+4.7.2/30 FPS renderer runs cover disabled, when-paused, `ALWAYS` and mid-capture
+pause behavior. All jobs pass delivery verification, process-delta checks and
+authored emitter-setting preservation. The tested simple effects pass with the
+default two warmup frames. GPU zero-warmup observations still fail appearance;
+they are explicitly outside acceptance, while their processing checks pass.
+
+Compatibility CPU automatic bounds pass with **two and eight warmup frames on all
+three engines**, with exact source and decoded matches. The two-frame follow-up
+jobs reuse the same disposable projects and references; their additional reports
+are in `candidate/automatic-bounds-short.json`. The reviewer and Linux CI now
+include both warmup counts as required cases. Across accepted comparisons, maximum
+source MAE is 0.000206, foreground MAE 0.0905 and decoded MAE 0.0111, on a 0–255
+scale. Existing limits remain <0.03, <0.25 and <0.1 respectively. The eight-emitter
+4.7.2 Compatibility automatic-bounds case records 1,174 microseconds of bounds
+refresh over 68 draws (about 0.0173 ms/draw); this is a small-fixture measurement.
+
+Reports, sources, requests and isolated profiles are under
+`.godot360/particle-startup/candidate/`. The first 4.7.2 Compatibility reviewer used
+the older `gpu-fixed-30` / `cpu-fixed-30` names; later reviews use `*-fixed-rate`
+and support 24/30/60 FPS. Runtime and particle fixture bytes match throughout.
+
+### Clock regressions, package and preservation
+
+Three six-second Forward+ Motion fixture exports pass source/decoded geometry,
+seam/pole crossings and exact flash frames: 30 FPS/two warmup, 60 FPS/zero warmup,
+and 24 FPS/two warmup. All **684 delivered frames** are checked as source PNGs and
+decoded video. Maximum
+source/encoded audio onset errors are 0.709, 2.042 and 7.938 ms respectively,
+within the existing 10 ms acceptance. See `motion/motion-summary.json`.
+
+The unpacked package passes **1,875 headless contract checks**, 625 on each of
+Godot 4.5.1, 4.6.3 and 4.7.2, including import, renderer, timeline, skeletal,
+audio, storage, diagnostics and playback contracts. This run does not repeat the
+prior increment's injected process/storage-failure suites. Report:
+`package/contracts/compatibility-review.json`; reviewed package SHA256:
+`8388dfe100ffa04f22ec78d8cf28124b822f28721cef2c472d7c7dca68e6db68`.
+
+Accepted package: `.godot360/particle-startup/accepted/candidate.zip`, **144 entries,
+847,343 bytes**, SHA256
+`ad97a690a17c6859894c676b49437c4c53ee6b50a28c35f1d29d6d9273bdc2e7`.
+Its only differences from the headless package are the renderer troubleshooting
+guide, Python reviewer (additional two-frame automatic-bounds case and GPU-only
+filter) and manifest. Rebuilding from its unpacked source is byte-identical;
+runtime and fixture hashes match the rendered projects. The three added
+automatic-bounds cases pass using the final review functions. `audit.json`
+records package inventory, dataset scope, negative controls and preserved hashes.
+
+The user's main project, studio settings, Threshold 8K recipe and existing master
+remain byte-identical. No version bump, commit, push or publication was performed.
+Both workflow files pass the installed actionlint; the expanded particle CI and
+new appearance workflow have not run hosted for this local snapshot. Native Linux
+GPU/Mac graphical review, complex effects and final 1.0 delivery remain open.
+
+## Combined appearance and 1.0 exposure boundary — 2026-09-09
+
+Continued from clean `2cc9aa8`. The new portable `appearance_review.py` and
+`appearance_scene` fixture combine camera motion, moving emissive geometry and
+point lighting, directional/point shadows, PBR materials, alpha transparency,
+camera/world exposure handoffs, an attribute replacement and a lighting cut.
+The [illustrated guide](combined-appearance.md) explains both the comparisons and
+the support decision: consistent 1.0 brightness uses authored exposure, including
+animation. Shared automatic spherical adaptation is deferred beyond 1.0.
+
+### Native appearance evidence
+
+Windows 11 / RTX 3060 Ti / Godot 4.7.2 / Vulkan / FFmpeg 9.0.1. Each renderer has
+nine 2048×1024/30 FPS jobs, 90 delivered frames each, 512-pixel face cores and eight
+warmup frames, plus a source-preserving re-encode. All 810 MP4 frames per renderer
+are fully decoded and counted. Two source/decoded oracle pairs per renderer cover
+fixed exposure with zero and 12.5% borders; unlit controls isolate projection and
+glow-disabled lit captures separate halo contributions from geometry/shadow edges.
+
+| Measurement | Forward+ | Mobile |
+| --- | ---: | ---: |
+| Front/right glow boundary reduction | 96.8% | 95.1% |
+| Three-face corner with lighting cut | 95.5% | 94.0% |
+| Rear/left glow boundary reduction | 97.0% | 95.6% |
+| Maximum unlit border frame MAE, RGB 0–255 | 0.0021 | 0.0021 |
+| Maximum fixed/authored-oracle source MAE | <0.000004 | 0 |
+| Maximum fixed/authored-oracle decoded RMSE | <0.863 | 0 |
+
+Accepted rendered evidence is under `.godot360/appearance-review/final/forward/`
+and `mobile/`. Both use the final fixture and runtime bytes. The initial
+`forward-initial/` investigation has another 810 frames and exact oracle matches;
+it is separate evidence, not counted again in the two-renderer totals above.
+The checked-in sheets come from that initial Forward+ review and the Mobile review.
+Borders still alter halo shape, and lit glow-disabled frames differ by up to
+0.056 mean RGB as the frusta change. The unlit controls separate that observation
+from a projection/color defect. Boundary scores describe these fixtures, not all
+scene appearance. The scene is silent, so audio cue timing is not newly established.
+
+The repeated Forward+ run exposed a **reviewer acceptance problem**. At most a few
+source channels per frame differ by one RGB level, while decoded CRF output
+differs by up to 0.191 mean RGB / 0.863 RMS. The original decoded-MAE limit of 0.1
+rejected it. The reviewer now requires source MAE <0.02 **and source maximum ≤1**,
+plus decoded RMS <1 RGB level. It retains both decoded metrics and every frame's
+source maximum. This strengthens the source constraint while allowing small
+lossy-encoding differences. The original failed report remains at
+`final/forward/appearance-review-rejected-decoded-mae.json`; the revised reviewer
+reanalyzes the original files without re-rendering or altering the delivered media.
+The deliberately incorrect Scene-versus-authored-oracle control is rejected
+(source MAE up to 61.08), so the revised source constraint still detects the
+brightness defect. See `negative-control.json` and `codec-observation.json`.
+
+### Package and checks
+
+The full three-engine headless package review is
+`.godot360/appearance-review/final/package-headless/package-review.json`:
+**2,217 passing checks**, 739 each on Godot 4.5.1, 4.6.3 and 4.7.2. It verifies
+imports, contracts, actual process/storage failures, manifest contents, source
+preservation and byte-identical rebuilding. That snapshot's SHA256 is
+`514dedf780c20c40504967870aef1a0cf1e5ff24981d39f21bccae7836322015`.
+Its unpacked source also supplies the nine-job repeated Forward+ render above.
+
+The accepted package is `.godot360/appearance-review/accepted/candidate.zip`,
+144 entries, 845,995 bytes; SHA256
+`401e5c6c202c6d9fc33464295d7f91545ec9edae3ce12106c492e729a84ce130`.
+It differs from the full-matrix snapshot **only in `tests/appearance_review.py`
+and the manifest**, incorporating the reviewed source/decoded acceptance change.
+Its own unpacked builder reproduces identical bytes. Its reviewer rechecks both
+native datasets; the original Mobile runtime and fixture files match the accepted
+package. See `accepted/package-diff.json` and `audit.json` for the inventory audit.
+No addon runtime GDScript or shader changes were needed for this increment.
+
+The new `.github/workflows/appearance.yml` prepares separate Forward+/Mobile
+Linux software-Vulkan jobs against an unpacked candidate. Its actionlint check
+passes; a hosted execution of this new workflow has **not** been recorded yet.
+This does not extend the existing native hardware claims. Native Mac graphical,
+Linux hardware-GPU, production 4K/8K endurance and private final workflow/delivery
+reviews remain open. Next local development is particle startup and fixed-step
+timing, followed by the broader animated/effect scene matrix.
 
 ## CPU visibility bounds follow-up — 2026-09-08
 

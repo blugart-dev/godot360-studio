@@ -37,7 +37,8 @@ def compare(output, a, b, jobs, ffmpeg):
 
 
 def processing_check(output, name, job):
-    samples = read(output / name / "particle-samples.json")["samples"]
+    evidence = read(output / name / "particle-samples.json")
+    samples = evidence["samples"]
     # Frame zero is sampled more than once during build/warmup. Keep its last
     # observation, which is made before the first delivered draw.
     by_frame = {s["frame"]: s for s in samples}
@@ -66,7 +67,13 @@ def processing_check(output, name, job):
         ok = ok and max(frozen) == 0 and int((first.max(axis=2) > 100).sum()) > 200
     else:
         frozen = []
-    return {"ok": ok, "samples": rows, "max_frozen_frame_mae": max(frozen) if frozen else None}
+    settings_unchanged = evidence["authored_emitters"] == evidence["final_emitters"]
+    deltas = evidence["process_deltas"]
+    clock_ok = all(abs(delta - 1 / job["fps"]) < 1e-10 for delta in deltas)
+    return {"ok": ok and settings_unchanged and clock_ok, "samples": rows,
+            "authored_particle_settings_unchanged": settings_unchanged,
+            "fixed_frame_deltas": clock_ok, "process_deltas": deltas,
+            "max_frozen_frame_mae": max(frozen) if frozen else None}
 
 
 def main(args):
@@ -108,22 +115,25 @@ anti_aliasing/quality/msaa_3d=2
         variants.update({"gpu-zero-warmup": {"warmup_frames": 0},
                          "cpu-zero-warmup": {"particle_kind": "cpu", "warmup_frames": 0}})
     if args.fixed_step:
-        variants["gpu-fixed-30"] = {"particle_fps": 30}
+        variants.update({"gpu-fixed-rate": {"particle_fps": args.fps, "warmup_frames": 2},
+                         "cpu-fixed-rate": {"particle_kind": "cpu", "particle_fps": args.fps, "warmup_frames": 2}})
     if args.automatic_bounds:
-        variants["cpu-automatic-bounds"] = {"particle_kind": "cpu", "particle_auto_bounds": True}
+        variants.update({"cpu-automatic-bounds": {"particle_kind": "cpu", "particle_auto_bounds": True},
+                         "cpu-automatic-bounds-short": {"particle_kind": "cpu", "particle_auto_bounds": True, "warmup_frames": 2}})
     if args.short_warmup:
         variants.update({"gpu-short-warmup": {"warmup_frames": 2},
                          "cpu-short-warmup": {"particle_kind": "cpu", "warmup_frames": 2}})
     if args.gpu_only:
         variants.pop("cpu-zero-warmup", None)
         variants.pop("cpu-short-warmup", None)
-    evidence = {"method": args.method, "driver": args.driver, "border": args.border,
+        variants.pop("cpu-fixed-rate", None)
+    evidence = {"method": args.method, "driver": args.driver, "border": args.border, "fps": args.fps,
                 "gpu_only_appearance": args.gpu_only,
                 "jobs": {}, "comparisons": {}, "processing": {}, "startup": {}}
     jobs = {}
     for name, extra in variants.items():
         job = {"scene_path": "res://tests/fixtures/particle_scene.tscn", "camera_path": "Camera3D",
-               "width": 2048, "height": 1024, "face_size": 512, "fps": 30, "frames": 60,
+               "width": 2048, "height": 1024, "face_size": 512, "fps": args.fps, "frames": 60,
                "warmup_frames": 8, "capture_border_percent": args.border,
                "crf": 16, "frame_writer": "fast_png", "rendering_method": args.method,
                "rendering_driver": args.driver, "output_dir": str(output / name),
@@ -135,19 +145,19 @@ anti_aliasing/quality/msaa_3d=2
              "--", "--job=" + str(request)], output / (name + ".log"))
         report = read(output / name / "report.json")
         assert report["ok"] and all(report["checks"].values()), name
-        if job["warmup_frames"] < 8 and not args.baseline_worker:
+        if job["warmup_frames"] < 2 and not args.baseline_worker:
             assert any("Particles may be missing" in warning for warning in report["capture_settings"]["warnings"]), name
         if args.method == "gl_compatibility" and job.get("particle_kind") == "cpu" and not args.baseline_worker:
             has_note = any("Compatibility CPU particles" in warning for warning in report["capture_settings"]["warnings"])
-            assert has_note == job.get("particle_auto_bounds", False), name
+            assert not has_note, name
         evidence["jobs"][name] = {"checks": report["checks"], "settings": report["capture_settings"],
                                   "timings": {k: v for k, v in report["capture_timings"].items() if k != "samples"}}
         evidence["processing"][name] = processing_check(output, name, job)
         print(name, "DELIVERY PASS", "PROCESSING", evidence["processing"][name]["ok"], flush=True)
-    for a in ["gpu", "cpu", "gpu-long-warmup"]:
+    for a in ["gpu", "cpu", "gpu-long-warmup", "gpu-fixed-rate", "cpu-fixed-rate", "gpu-short-warmup", "cpu-short-warmup", "cpu-automatic-bounds", "cpu-automatic-bounds-short"]:
         if a in jobs:
             evidence["comparisons"][a] = compare(output, a, "oracle", jobs, args.ffmpeg)
-    for name in ["gpu-zero-warmup", "cpu-zero-warmup", "gpu-fixed-30", "gpu-short-warmup", "cpu-short-warmup", "cpu-automatic-bounds"]:
+    for name in ["gpu-zero-warmup", "cpu-zero-warmup"]:
         if name in jobs:
             evidence["startup"][name] = compare(output, name, "oracle", jobs, args.ffmpeg)
     evidence["ok"] = all(r["ok"] for r in evidence["comparisons"].values()) and all(r["ok"] for r in evidence["processing"].values())
@@ -176,12 +186,13 @@ if __name__ == "__main__":
     parser.add_argument("--method", choices=["forward_plus", "mobile", "gl_compatibility"], default="forward_plus")
     parser.add_argument("--driver", default="vulkan")
     parser.add_argument("--border", type=float, default=0)
+    parser.add_argument("--fps", type=int, choices=[24, 30, 60], default=30)
     parser.add_argument("--lifecycle", action="store_true")
     parser.add_argument("--lifecycle-only", action="store_true")
     parser.add_argument("--gpu-only", action="store_true", help="Compare GPU appearance only; lifecycle mode still checks CPU pause behavior.")
-    parser.add_argument("--automatic-bounds", action="store_true", help="Record CPU automatic bounds startup against the explicit-bounds reference; the known first-frame gap remains an observation.")
+    parser.add_argument("--automatic-bounds", action="store_true", help="Require CPU automatic bounds to match the reference, including the first delivered frame.")
     parser.add_argument("--zero-warmup", action="store_true")
-    parser.add_argument("--short-warmup", action="store_true", help="Record the default two-frame warmup against the settled reference.")
-    parser.add_argument("--fixed-step", action="store_true", help="Record native 30 Hz GPU quantization against the continuous reference; this observation does not gate the review.")
+    parser.add_argument("--short-warmup", action="store_true", help="Require the default two-frame warmup to match the settled reference.")
+    parser.add_argument("--fixed-step", action="store_true", help="Require CPU/GPU fixed steps matching the export FPS, with two warmup frames, to match the reference.")
     parser.add_argument("--baseline-worker", type=Path)
     raise SystemExit(main(parser.parse_args()))

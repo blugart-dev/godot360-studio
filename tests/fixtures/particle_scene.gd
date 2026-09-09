@@ -6,7 +6,9 @@ var markers: Array[MeshInstance3D] = []
 var origins: Array[Vector3] = []
 var velocities: Array[Vector3] = []
 var process_ticks := 0
+var process_deltas: Array[float] = []
 var samples: Array[Dictionary] = []
+var authored_emitters: Array[Dictionary] = []
 
 
 func prepare_360_capture(settings: Dictionary) -> void:
@@ -83,6 +85,7 @@ func _ready() -> void:
 			emitter.draw_pass_1 = mesh
 			emitter.position = origin
 			add_child(emitter)
+	authored_emitters = _emitter_settings()
 
 
 func sample_360_frame(frame_index: int, _time_seconds: float, settings: Dictionary) -> String:
@@ -92,10 +95,27 @@ func sample_360_frame(frame_index: int, _time_seconds: float, settings: Dictiona
 		markers[index].position = origins[index] + velocities[index] * (float(frame_index) + float(settings.get("particle_offset", 1))) / float(settings.fps)
 	samples.append({"frame": frame_index, "process_ticks": process_ticks, "mode": process_mode})
 	if frame_index == int(settings.frames) - 1:
-		if not preload("res://addons/godot360/job_io.gd").write_json(str(settings.output_dir).path_join("particle-samples.json"), {"samples": samples}):
+		if not preload("res://addons/godot360/job_io.gd").write_json(str(settings.output_dir).path_join("particle-samples.json"), {
+			"samples": samples, "process_deltas": process_deltas,
+			"authored_emitters": authored_emitters, "final_emitters": _emitter_settings()}):
 			return "Cannot save particle fixture timing evidence."
 	return ""
 
 
 func _process(_delta: float) -> void:
 	process_ticks += 1
+	process_deltas.append(_delta)
+
+
+func _emitter_settings() -> Array[Dictionary]:
+	var result: Array[Dictionary] = []
+	for child in get_children():
+		if child is CPUParticles3D or child is GPUParticles3D:
+			var settings := {"name": str(child.name), "fixed_fps": child.fixed_fps,
+				"visibility_aabb": str(child.visibility_aabb), "custom_aabb": str(child.custom_aabb),
+				"speed_scale": child.speed_scale, "emitting": child.emitting,
+				"preprocess": child.preprocess, "fract_delta": child.fract_delta}
+			if child is GPUParticles3D:
+				settings.merge({"interpolate": child.interpolate, "use_fixed_seed": child.use_fixed_seed, "seed": child.seed})
+			result.append(settings)
+	return result

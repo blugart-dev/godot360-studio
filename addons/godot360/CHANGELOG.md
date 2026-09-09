@@ -1,5 +1,29 @@
 # Changelog
 
+## Unreleased — particle startup and fixed capture clock
+
+- Disable realtime physics jitter compensation in the capture worker so Movie
+  Maker's fixed FPS also produces fixed opening simulation deltas. This fixes the
+  measured two-frame warmup mismatch and repeated matching-rate particle step.
+- Refresh Compatibility CPU particle automatic bounds after buffer submission,
+  fixing the measured missing first delivered frame without replacing bounds or
+  advancing simulation. Record the bounds refresh cost in capture timings.
+- Gate particle reviews on opening frames, matching-rate fixed steps, unchanged
+  authored emitter settings and actual process deltas. Keep zero-warmup GPU
+  startup outside the validated contract; scene notes request at least two frames.
+- Earlier retained captures keep their original timing when re-encoded. Render
+  again to apply the corrected clock; project and particle settings are preserved.
+
+## Unreleased — combined appearance validation
+
+- Add a portable combined material/light fixture and reviewer for camera motion,
+  lighting cuts, camera/world exposure handoffs, glow and capture borders.
+- Compare source and decoded frames with independently authored fixed-exposure
+  scenes; isolate projection with unlit controls and glow with disabled baselines.
+- Define consistent 1.0 exposure as authored values, including animation. Shared
+  automatic spherical adaptation is deferred beyond 1.0; Scene defaults and saved
+  recipes keep their existing behavior.
+
 ## Unreleased — particle capture and authored processing modes
 
 - Preserve the scene root's processing mode through warmup and honor later scene

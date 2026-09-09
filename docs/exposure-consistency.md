@@ -50,6 +50,11 @@ contain each face's tone mapping and clipping. The implemented option therefore
 provides an explicit authored-exposure workflow, with no guessed brightness target
 or additional image readbacks. Shared HDR metering remains a separate renderer task.
 
+The [combined moving-light/material review](combined-appearance.md) tests fixed
+exposure together with capture borders, shadows, transparency and camera/world
+attribute changes. It also records the 1.0 support boundary: consistent exposure
+uses authored values; shared automatic spherical adaptation is deferred beyond 1.0.
+
 - Fixed uses authored exposure values. It does not freeze the brightness calculated
   by auto exposure in the editor, so switching modes may change overall brightness.
 - A light cut stays visible unless you author an exposure change. Automatic

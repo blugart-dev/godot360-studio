@@ -127,6 +127,10 @@ establish reproducibility across engines or hardware.
 CPU and GPU particles belong to the scene's single World3D. The six views share
 that simulation. A sampling hook sets authored properties; it does not seek or
 restart particle simulation. Godot's Movie Maker clock drives ordinary processing.
+The capture worker disables realtime physics jitter compensation so the opening
+process deltas follow that fixed clock too. At normal time scale, each process
+step is `1 / export_fps`. Authored physics tick rate and time scale remain in effect.
+This is local to the worker; it does not change the project's settings or editor.
 
 Capture now preserves the scene root's authored `process_mode`, including changes
 made by its setup hook. Warmup temporarily disables root processing and restores
@@ -135,25 +139,30 @@ Later changes made by the scene remain in effect, so a deliberately disabled sce
 or a scene that pauses itself stays paused. Explicit child processing modes and
 autoloads still follow Godot's normal rules; warmup is not a global simulation pause.
 
-For particle scenes, test with **8–10 warmup frames** in the recipe Inspector and
-inspect the opening. Zero warmup can omit particles or show them in only some
-directions at first. The default two frames may also be insufficient. Warmup holds
+Use **at least two warmup frames** for particle scenes and inspect the opening.
+The simple fixture now matches its reference with the default two frames. More
+complex effects may need additional warmup. Zero warmup can omit GPU particles or
+show them in only some directions at first. Warmup holds
 the ordinary scene clock; it does not simulate several seconds of particle history.
 Author an emitter's `preprocess` or a deliberate scene pre-roll when a mature effect
-is needed, and validate that separately. In Compatibility, CPU particles using
-automatic visibility bounds can miss the first delivered frame even with eight
-warmup frames. Set the emitter's **Visibility AABB** to cover the whole effect;
-explicit bounds removed the first-frame gap in the rendered fixture. Include the
-mesh extent and its full motion, and recheck the bounds after changing the effect.
-The addon preserves authored bounds and warns when Compatibility CPU emitters use
-automatic bounds. Automatic-bound startup remains an open engine/integration case.
+is needed, and validate that separately. Compatibility CPU emitters present at
+capture setup now have automatic bounds refreshed before drawing, removing the
+measured first-frame gap. Authored **Visibility AABB** and custom bounds remain
+unchanged. If you author bounds, include the mesh extent and full motion, and
+recheck them after changing the effect. Dynamically created or reactivated effects
+need their own review.
 
 The regression fixture uses opaque sphere meshes, constant velocity, no collisions,
 explicit visibility bounds and particle **Fixed FPS = 0**, with GPU interpolation disabled. In Movie Maker,
-this lets the emitter follow the export frame clock. A separate fixed particle step
-can quantize motion; a 30 Hz GPU emitter showed a repeated step in a 30 FPS export.
+this lets the emitter follow the export frame clock. Matching-rate fixed CPU/GPU
+steps are also checked against the same reference. Different particle/export rates
+can legitimately quantize motion; interpolation, preprocess and effect history
+need separate references. The old repeated 30 Hz step at 30 FPS was caused by
+startup clock compensation, which capture now disables.
 Choose the authored timing that suits the effect and inspect the result. The addon
 does not override particle FPS, speed, seed, interpolation or emission settings.
+Previously retained PNG sequences keep their original timing during re-encoding;
+render the scene again to apply the corrected clock.
 
 Set a GPU emitter's `use_fixed_seed` and `seed` for repeatable random emission on
 the same configuration. The job's global random seed does not set GPU emitter

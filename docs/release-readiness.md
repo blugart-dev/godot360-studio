@@ -14,8 +14,8 @@ limits. It cannot mean every arbitrary shader, GPU and interactive game works.
 
 | Workstream | Remaining work | Completion evidence |
 | --- | --- | --- |
-| Capture appearance | Optional [capture borders](capture-borders.md) reduce tested glow cuts. [Fixed authored exposure](exposure-consistency.md) removes independent automatic metering while preserving exposure animation. Remaining: shared automatic spherical adaptation, glow shape and other view-dependent effects in representative scenes. | Before/after rendered fixtures, unchanged projection/color/geometry, measured cost, and documented residual limits. |
-| Complex animated scenes | [Keyed skin and bone-camera cuts](skeletal-capture.md) and [simple particle motion/pausing](particle-capture.md) have rendered references. Remaining: complex particle effects and startup/step timing, imported characters, modifiers/IK, nested attachments, longer temporal histories, FSR, VoxelGI/LightmapGI and stateful compositors. | Deterministic fixtures with expected motion and visual comparisons; supported cases pass and exclusions are explicit. |
+| Capture appearance | [Capture borders](capture-borders.md) and [fixed authored exposure](exposure-consistency.md) now have a [combined moving-light/material review](combined-appearance.md). Consistent 1.0 exposure uses authored values; shared automatic spherical adaptation is deferred beyond 1.0. Remaining: document and review residual glow shape and other view-dependent effects in the supported scene matrix. | Before/after rendered fixtures, unchanged projection/color/geometry, measured cost, and documented residual limits. |
+| Complex animated scenes | [Keyed skin and bone-camera cuts](skeletal-capture.md) and [simple particle startup/motion/pausing](particle-capture.md) have rendered references. Fixed opening deltas and Compatibility automatic bounds are implemented; the simple particle contract uses at least two warmup frames. Remaining: complex particle effects, imported characters, modifiers/IK, nested attachments, longer temporal histories, FSR, VoxelGI/LightmapGI and stateful compositors. | Deterministic fixtures with expected motion and visual comparisons; supported cases pass and exclusions are explicit. |
 | Production performance | Run representative Forward+/Mobile scenes at 4K/8K; measure render time, peak GPU memory, retained storage and behavior under pressure. | Sustained jobs complete without missing frames, audio drift or silent renderer fallback; practical budgets and limits are recorded. |
 | Native platform coverage | Graphical Mac exports and hardware-GPU Linux workflows; complete the declared Godot/renderer/driver combinations. | Clean native installation, actual capture, frame/audio inspection, playback, cancellation and recovery on the target machines. Headless/software CI remains narrower evidence. |
 | Private end-to-end usability and delivery | Follow the published instructions from a clean setup; export an existing scene, review it, reopen it and recover a failure. Review final orientation, seams, detail and sound. | Completed private walkthrough and itemized delivery review against the final candidate, with blocking findings resolved. Independent feedback can help but is not a prerequisite for continuing implementation. |
@@ -29,17 +29,19 @@ MP4 metadata, output verification, cancellation, saved-job recovery, re-encoding
 storage guards, diagnostics, native spherical review and recent exports are
 implemented. The README and guides now show actual results before installation.
 [Validation](validation.md) records what has been tested and on which snapshots.
+The combined Forward+/Mobile exposure-and-border review now passes locally. The
+consistent-exposure boundary for 1.0 is defined in [its guide](combined-appearance.md).
 
 ## Order of work
 
-1. Broaden fixed-exposure and capture-border evidence in representative scenes.
-   Decide the supported 1.0 boundary for automatic spherical adaptation; it remains
-   open and must not be claimed by the fixed authored-exposure option.
-2. Broaden scene fixtures and resolve the resulting rendering/capture defects.
-3. Measure production workloads and improve whichever resource limits are real.
-4. Complete native hardware and private usability/delivery reviews as the required
+1. Broaden scene fixtures: imported characters, modifiers/IK, complex particles and
+   effects. Resolve the resulting rendering/capture defects. The local combined
+   exposure/border and simple particle startup passes have defined support limits;
+   shared automatic spherical adaptation remains a future extension.
+2. Measure production workloads and improve whichever resource limits are real.
+3. Complete native hardware and private usability/delivery reviews as the required
    machines become available, while continuing all independent development work.
-5. Freeze and validate the 1.0 candidate. Publication is a separate final action;
+4. Freeze and validate the 1.0 candidate. Publication is a separate final action;
    nothing is published publicly during this development phase.
 
 Stereoscopic ODS, ambisonics, automatic uploads and resuming arbitrary partially
