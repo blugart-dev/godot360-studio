@@ -33,6 +33,17 @@ code, reference geometry and acceptance thresholds are unchanged. The failed
 logs and saved bake reports are retained under
 `.godot360/checkpoint-review/hosted/lightmap-failed/`.
 
+Desktop platforms `34524857929` passed its package workflows but rejected the
+older Mobile stateless compositor fixture. Its direct image binding lacks
+`TEXTURE_USAGE_STORAGE_BIT`; previous successful encodes could omit the tint in
+both reference and captured images. The earlier Mobile tint-preservation claims
+are withdrawn. The fixture now uses sampled input, per-view writable storage and
+copy-back with its authored 4x MSAA. The reviewer adds an untinted baseline and
+requires reduced red/blue with unchanged green across all six faces at three
+sampled times. Addon error rejection remains strict; thresholds for reference
+matching and delivery are unchanged. The original failure evidence is retained
+under `.godot360/checkpoint-review/hosted/platforms-failed/`.
+
 The next engineering scope is defined in the [continuation brief](next-session.md#starting-the-next-engineering-task).
 This checkpoint preserves the private 0.8.0 version and creative scenes/masters.
 

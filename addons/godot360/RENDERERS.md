@@ -26,6 +26,17 @@ cannot establish rendering support.
 | Same Windows machine / 4.7.2 | Compatibility / OpenGL 3 and ANGLE | Full existing calibration/Motion Lab workflow with OpenGL; two appearance exports through ANGLE/D3D11. |
 | Ubuntu 26.04, WSLg/X11, llvmpipe, Godot 4.7.2 | Forward+ and Mobile / software Vulkan | Four appearance exports per renderer: color, lighting/transparency, glow and compute compositor. Functional software-rendered evidence, not GPU performance. |
 
+Correction from the 2026-09-10 checkpoint review: the earlier Mobile stateless
+compositor rows did not prove the tint was present. The fixture wrote directly
+to a color attachment without storage-image support; matching reference/capture
+images could both omit the effect. Those earlier compositor claims are withdrawn.
+The fixture now samples into per-view writable storage and copies back with
+authored 4x MSAA. Its reviewer requires red/blue tint contribution and unchanged
+green on all six faces at three times against a disabled baseline. See the latest
+source-repository `docs/validation.md` entry for the corrected backend results;
+do not infer new D3D12 evidence from a Vulkan run. Other measured cases retain
+their original scope.
+
 Complete package workflows additionally pass on Windows Forward+/Vulkan with
 Godot 4.5.1, 4.6.3 and 4.7.2 (522 checks each), Windows 4.7.2 Mobile/Vulkan and
 Compatibility/OpenGL (522 each), and Linux 4.7.2 Forward+/Mobile software Vulkan

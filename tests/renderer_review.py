@@ -102,7 +102,12 @@ viewport/hdr_2d=true
 ''', encoding="utf-8")
     run([args.godot, "--headless", "--path", project, "--editor", "--import", "--quit"], args.output / "import.log")
     results = []
-    for feature in args.features.split(","):
+    features = args.features.split(",")
+    if any(feature in features for feature in ["compositor", "world_compositor"]):
+        # A matching native/face pair can otherwise pass with the effect missing
+        # in both. Always establish the otherwise-identical untinted scene first.
+        features = ["lit"] + [feature for feature in features if feature != "lit"]
+    for feature in features:
         folder = args.output / feature
         request = args.output / (feature + "-request.json")
         job = {"scene_path": "res://tests/fixtures/renderer_lab.tscn", "camera_path": "Camera3D",
@@ -121,6 +126,22 @@ viewport/hdr_2d=true
             native_limit = 0.1
             ok = report["ok"] and all(report["checks"].values()) and all(m["native_face_mae"] < native_limit and m["native_face_p99"] <= 2 and m["assembly_smooth_p99"] <= 3 for m in measurements)
             result = {"feature": feature, "ok": ok, "capture_settings": settings, "measurements": measurements, "delivery_checks": report["checks"]}
+            if feature in ["compositor", "world_compositor"]:
+                presence = []
+                for index in (0, job["frames"] // 2, job["frames"] - 1):
+                    for face in ["right", "left", "up", "down", "front", "back"]:
+                        filename = f"references/{face}-{index:03d}.png"
+                        baseline = pixels(args.output / "lit" / filename)
+                        tinted = pixels(folder / filename)
+                        delta = baseline - tinted
+                        presence.append({"frame": index, "face": face,
+                                         "red_reduction": float(delta[:, :, 0].mean()),
+                                         "blue_reduction": float(delta[:, :, 2].mean()),
+                                         "green_mae": float(abs(delta[:, :, 1]).mean())})
+                result["tint_presence"] = presence
+                result["tint_presence_ok"] = all(p["red_reduction"] > .5 and p["blue_reduction"] > .5
+                                                 and p["green_mae"] < .2 for p in presence)
+                result["ok"] &= result["tint_presence_ok"]
         except (RuntimeError, OSError, KeyError, subprocess.TimeoutExpired) as error:
             result = {"feature": feature, "ok": False, "error": str(error)}
         results.append(result)
