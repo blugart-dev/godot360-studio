@@ -53,7 +53,7 @@ def main(args):
     repeat = output / "repeat.zip"
     subprocess.run([sys.executable, str(extracted / "tools/package_addon.py"), "--root", str(extracted),
                     "--output", str(repeat)], check=True)
-    assert repeat.read_bytes() == package.read_bytes(), "Rebuilding extracted package changed ZIP bytes"
+    assert repeat.read_bytes() == package.read_bytes(), "Rebuilding changed ZIP bytes; build and review with the same Python/zlib runtime"
     command = [sys.executable, str(extracted / "tests/compatibility_review.py"), "--project", str(extracted),
                "--capture-failures", "--storage-failures",
                "--ffmpeg", str(args.ffmpeg.resolve()), "--ffprobe", str(args.ffprobe.resolve()),

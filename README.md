@@ -12,8 +12,12 @@ stereo music. This silent GIF shows four short, flat views of the 360° output.*
 · [Still-image gallery](docs/showcase.md#four-worlds-one-film)
 · [How the film was made](docs/threshold.md)
 
-**New: [LUMEN — a 24-second 4K orbital observatory](docs/lumen.md)** with native
+**[LUMEN — a 24-second 4K orbital observatory](docs/lumen.md)** with native
 light trails, soft vapor and an original score. [Watch its flat tour](docs/media/lumen-tour.mp4).
+
+**[AFTERGLOW — a one-minute disco ritual](docs/afterglow.md)**: an original bass-led
+score, dancing glass tiles, swaying architecture and a mirror crown surrounded by orbiting lights.
+[Watch the complete preview with sound](docs/media/afterglow-tour.mp4).
 
 **[Export your first scene →](addons/godot360/QUICKSTART.md)**
 · [Take the visual tour](docs/showcase.md)
@@ -62,23 +66,24 @@ the addon itself needs no .NET runtime, compiler, Python or Godot export templat
 
 ## Try the included examples
 
-Godot360 Studio is the tool; **UMBRAL**, **THRESHOLD** and **LUMEN** are examples made with it.
+Godot360 Studio is the tool; **UMBRAL**, **THRESHOLD**, **LUMEN** and **AFTERGLOW** are examples made with it.
 Open this repository's `project.godot` to try them; the plugin is already enabled.
 
 | Example | See what it does | Open it |
 | --- | --- | --- |
 | **THRESHOLD** | [Four procedural worlds, moving scenery and an original score](docs/showcase.md#four-worlds-one-film) | `scenes/films/Threshold.tscn` → F6; load `export_profiles/threshold-8k.tres`. [Film guide](docs/threshold.md). |
 | **LUMEN** | [An orbital observatory for immersive music and installations](docs/lumen.md) | Load `export_profiles/lumen-4k.tres` for its Forward+ 4K film. [Film and live-preview guide](docs/lumen.md). |
+| **AFTERGLOW** | [A one-minute disco ritual with music-synchronized scenery](docs/afterglow.md) | Load `export_profiles/afterglow-4k.tres` for its Forward+ 4K film. [Film and live-preview guide](docs/afterglow.md). |
 | **UMBRAL** | [A small installation with gaze-driven discoveries](docs/showcase.md#an-interactive-scene-prepared-for-film) | F5 to explore; load `export_profiles/umbral-film.tres` for its authored 12-second film. [Scene guide](docs/umbral.md). |
 | **Motion lab** | An editable camera path and animation timeline | Panel → Recipes and examples → **Motion lab**. [Authoring guide](addons/godot360/AUTHORING.md). |
 | **Calibration** | Six labeled directions and a test tone | Panel → Recipes and examples → **Calibration defaults**. Start here to check orientation and sound. |
 
 ## Where the project stands
 
-**Private development toward 1.0, currently on the 0.8 code baseline.**
+**Pre-1.0 development, currently on the 0.8 code baseline.**
 Onboarding, rendering, playback and recent-export improvements are implemented.
-Development and testing continue privately until the [1.0 completion criteria](docs/release-readiness.md)
-are met; no public beta is required.
+The [1.0 completion criteria](docs/release-readiness.md) describe the remaining
+engineering and validation work. This source snapshot is not a stable 1.0 release.
 
 - **Windows:** tested exports and review on Godot 4.5.1, 4.6.3 and 4.7.2;
   Forward+/Mobile also have Windows Vulkan and Direct3D 12 visual evidence.
@@ -86,7 +91,7 @@ are met; no public beta is required.
   including hosted CI. Hardware GPU validation remains open.
 - **macOS:** Apple Silicon headless CI passes, including playback and recovery
   checks. Graphical export and Mac GPU validation remain open.
-- **New:** optional [capture borders with before/after examples](docs/capture-borders.md)
+- Optional [capture borders with before/after examples](docs/capture-borders.md)
   reduce tested glow cuts at edges and corners.
 - [Particle startup fixes and checks](docs/particle-capture.md) cover a fixed
   opening clock, default two-frame warmup, automatic CPU bounds and authored pauses.
@@ -132,9 +137,15 @@ explains looking around by dragging.
 | Recover an export or manage disk space | [Recovery](addons/godot360/RECOVERY.md) · [Storage](addons/godot360/STORAGE.md) |
 | Review motion and sound inside Godot | [Playback](addons/godot360/PLAYBACK.md) |
 | Prepare a YouTube delivery | [Production workflow](docs/youtube-360-production.md) |
-| Develop or contribute | [Documentation index](docs/README.md#development-and-project-status) |
+| Develop or contribute | [Contributing](CONTRIBUTING.md) · [Developer verification](docs/testing.md) |
 
-The addon is [MIT licensed](addons/godot360/LICENSE). Curated documentation previews
+All original project content is [MIT licensed](LICENSE), including the addon,
+examples, documentation, artwork and music. Separately sourced materials retain
+their [third-party notices](THIRD_PARTY_NOTICES.md). Curated documentation previews
 are included in the repository; full renders, settings and tool binaries stay
 local. See [repository contents](docs/repository.md) and [media sources](docs/media/README.md).
 Project code, interface text and documentation are in English.
+
+For bugs and proposals, use the repository's issue forms. For sensitive reports,
+follow the [security policy](SECURITY.md). Maintainers preparing a release should
+use the [publication checklist](docs/publishing.md).

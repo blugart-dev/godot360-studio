@@ -11,5 +11,11 @@
 *.svg text eol=lf
 *.import text eol=lf
 *.glb binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.mp4 binary
+*.wav binary
 # Preserve the upstream notice verbatim, including its original trailing spaces.
 tests/fixtures/cesium_man/LicenseRef-LegalMark-Cesium.txt -whitespace

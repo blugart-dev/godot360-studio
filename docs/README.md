@@ -22,9 +22,12 @@ the results, then follow the walkthrough using your own scene or an included exa
 | Play, seek and listen inside Godot | [Playback](../addons/godot360/PLAYBACK.md) |
 | Reopen work, re-encode or reclaim space | [Recovery](../addons/godot360/RECOVERY.md) · [Storage](../addons/godot360/STORAGE.md) |
 | Plan a larger render and final delivery | [Job planning](job-planning.md) · [YouTube production](youtube-360-production.md) |
-| Report a reproducible problem | [Diagnostics](../addons/godot360/DIAGNOSTICS.md) · [Beta report](../addons/godot360/BETA-REPORT.md) |
+| Report a reproducible problem | [Contributing and issue reports](../CONTRIBUTING.md) · [Diagnostics](../addons/godot360/DIAGNOSTICS.md) |
 
 ## Explore the examples
+
+- **[AFTERGLOW](afterglow.md):** one minute of original disco-funk, dancing glass
+  tiles, swaying architecture and orbiting lights; a Forward+ 4K film and 360° player.
 
 - **[LUMEN](lumen.md):** an orbital observatory with native light trails, soft
   vapor and an original score; a complete Forward+ 4K film and local 360° player.
@@ -37,7 +40,7 @@ the results, then follow the walkthrough using your own scene or an included exa
 
 ## Development and project status
 
-The source is in **private development toward 1.0**, on the 0.8 version baseline.
+The source is in **pre-1.0 development**, on the 0.8 version baseline.
 Start with the [remaining work and completion criteria](release-readiness.md) and
 the [roadmap](roadmap.md) for completed work; use the
 [validation record](validation.md) for the exact evidence behind support claims.
@@ -45,7 +48,9 @@ the [roadmap](roadmap.md) for completed work; use the
 | Topic | Reference |
 | --- | --- |
 | Developer setup and verification | [Testing](testing.md) |
-| Current development context | [Handoff](HANDOFF.md) |
+| Contribution guidelines and licensing | [Contributing](../CONTRIBUTING.md) · [Third-party notices](../THIRD_PARTY_NOTICES.md) |
+| Publication preparation and checks | [Publishing](publishing.md) · [Preparation review](publication-review.md) |
+| Development history and continuation notes | [Handoff](HANDOFF.md) · [Engineering brief](next-session.md) |
 | Historical 0.8 candidate | [Candidate record](release-0.8.md) |
 | Measured performance and capture costs | [Performance](performance.md) |
 | Source, local artifacts and repository policy | [Repository contents](repository.md) |

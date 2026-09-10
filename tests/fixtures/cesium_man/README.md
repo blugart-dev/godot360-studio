@@ -10,8 +10,9 @@ This asset is a test fixture; it is not Godot360 branding or an endorsement.
 - Pinned revision: `81e8b567643b5166e6ff40024e4ff71ad4b18676`.
 - SHA256: `b7001eaeea8254bd44773bcd247e78696d94169388fbb2a1800fc69434e777d9`.
 - The GLB and upstream `LICENSE.md`, `metadata.json`, and
-  `LicenseRef-LegalMark-Cesium.txt` are unmodified. The license's relative mark
-  link resolves to the notice included here as `LicenseRef-LegalMark-Cesium.txt`.
+  `LicenseRef-LegalMark-Cesium.txt` are unmodified. Relative links in the original
+  license refer to the upstream repository layout. The local copy of the
+  [Cesium mark notice](LicenseRef-LegalMark-Cesium.txt) is included alongside it.
 
 The review uses the normal Godot scene importer. Only its disposable project
 disables animation optimization, immutable-track removal, mesh compression and

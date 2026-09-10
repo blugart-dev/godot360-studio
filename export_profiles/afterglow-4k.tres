@@ -1,0 +1,19 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://addons/godot360/export_profile.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+scene_path = "res://scenes/films/Afterglow.tscn"
+camera_path = NodePath("Camera3D")
+rendering_method = "forward_plus"
+width = "4096"
+face_size = 1536
+capture_border_percent = 12.5
+fps = "30"
+duration = 60.0
+random_seed = 116360
+crf = 17
+frame_writer = "fast_png"
+audio_mode = "soundtrack"
+soundtrack_path = "res://assets/audio/afterglow-score.wav"

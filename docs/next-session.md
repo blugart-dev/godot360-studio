@@ -1,7 +1,7 @@
-# Next-session brief — private development toward 1.0
+# Engineering brief — development toward 1.0
 
-Updated on 2026-09-10 after complex particles and the LUMEN demo.
-This is a recap and recommended plan, not a new release or authorization to publish.
+Updated on 2026-09-10. This is a development recap; the
+[publication preparation review](publication-review.md) records repository cleanup.
 The canonical completion criteria remain in [release readiness](release-readiness.md).
 
 ## Current position
@@ -24,6 +24,10 @@ Recent increments establish:
   original score, portable recipe, source scene and local spherical player. It
   demonstrates native trails and point-facing vapor in an immersive music or
   installation setting. Final outputs live in `renders/lumen-4k-final/`.
+
+- [AFTERGLOW](afterglow.md): a one-minute Forward+ 4K film with an original
+  disco-funk score, choreography, portable recipe, seeking checks and GPU pedestal
+  clearance regression. Preserve its scene, score/cues, shaders and render masters.
 
 - A stateless custom head-look modifier and nested skeleton camera mount, with
   independent modified skin, final/base bones and six-camera pose checks. The
@@ -130,23 +134,17 @@ folders; preserve the user's creative scenes, recipes, settings and existing mas
 - Previous imported-character audit: `.godot360/imported-character/audit.json`; full outputs and negative
   controls are retained under that directory. The appearance evidence remains
   under `.godot360/appearance-review/`. These large outputs are ignored by Git.
-- Windows engines are under
-  `C:/Users/ignac/Game Development/Godot/Versions/`, using the
-  `Godot_v4.7.2-stable_win64.exe/Godot_v4.7.2-stable_win64_console.exe` layout,
-  with corresponding 4.5.1 and 4.6.3 installations.
-- FFmpeg/FFprobe are under
-  `.godot360/tools/ffmpeg/ffmpeg-9.0.1-essentials_build/bin/`.
-- Python with NumPy/Pillow:
-  `C:/Users/ignac/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/python.exe`.
-  The default `C:/Python314/python.exe` lacks those review dependencies.
+- Install the tools using [platform setup](../addons/godot360/PLATFORMS.md).
+  Pass absolute executable paths to the reviewers; keep machine-specific locations
+  in local settings rather than committed documentation.
+- Create a Python environment using [developer setup](testing.md) and install
+  `requirements-dev.txt` for NumPy/Pillow. Packaging and repository hygiene checks
+  use the standard library only.
 - Isolate APPDATA/LOCALAPPDATA per disposable Windows review, as the existing
   particle reviewer does. Native graphics workers are required for rendered
   evidence; headless coordinator/contracts have narrower coverage.
 
-Suggested opening prompt:
-
-> Continue private Godot360 Studio development toward 1.0. Read
-> docs/next-session.md and the latest HANDOFF/validation entries. Preserve the
-> existing work and the LUMEN demo. Review the checkpoint/CI status, then establish
-> a bounded advanced rendering case: temporal effects, GI or a compositor.
-> Preserve the validated character/particle setups. Keep the scope bounded and document the evidence.
+The evidence folders above are maintainer-local archives, not downloadable source
+assets. Follow the linked test guides to produce equivalent reports in a fresh
+checkout. Historical package hashes identify their original snapshots and do not
+certify later changes.

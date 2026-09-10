@@ -144,8 +144,9 @@ native backend are outside the first release's support claim.
 | 1.0 — Delivery review | User-reviewed YouTube navigation, orientation, detail, seams and audio on a current candidate | Positive user visual review of THRESHOLD on YouTube, 2026-09-07; individual playback checks are not yet recorded |
 | 1.0 — Release | Final reproducible package/manifest, accurate supported limits and release notes; explicit approval before public publication | Pending implementation, native/private validation and final package acceptance in the [1.0 checklist](release-readiness.md) |
 
-The original [12-second candidate film](../renders/delivery-080-8k/video-360.mp4)
-remains verified local evidence. The subsequent [THRESHOLD film](threshold.md),
+The original 12-second candidate film at `renders/delivery-080-8k/video-360.mp4`
+remains local evidence, described in the [candidate record](release-0.8.md).
+The subsequent [THRESHOLD film](threshold.md),
 produced with the unchanged 0.8 addon, adds 60 seconds at 8K and positive user
 feedback on its appearance in YouTube. See its guide for the exact report and
 scope; no playback device/resolution or itemized checklist was supplied. Native

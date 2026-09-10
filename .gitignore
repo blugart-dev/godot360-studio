@@ -5,8 +5,15 @@
 .umbral360/
 renders/
 dist/
+/SOURCE-MANIFEST.json
 __pycache__/
 *.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
 .agents/
 .codex/
 
@@ -30,3 +37,6 @@ id_ed25519
 *.exe
 Thumbs.db
 .DS_Store
+.idea/
+.vscode/
+*.bak

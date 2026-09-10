@@ -8,7 +8,7 @@ Godot, FFmpeg and FFprobe are needed for export checks; follow the
 [README's download and setup steps](../README.md#download-the-dependencies).
 Using the addon in Godot requires no Python installation.
 
-For the Python media reviewers, install [Python 3 for Windows](https://www.python.org/downloads/windows/)
+For the Python media reviewers, install [Python 3.11 or newer for Windows](https://www.python.org/downloads/windows/)
 using the [official Windows installation guide](https://docs.python.org/3/using/windows.html).
 Open a new PowerShell window and confirm `py --version` works. From the repository
 root, create an isolated environment and install [NumPy](https://numpy.org/install/)
@@ -16,7 +16,7 @@ and [Pillow](https://pillow.readthedocs.io/en/stable/installation/basic-installa
 
 ```powershell
 py -m venv .godot360/venv
-& .\.godot360\venv\Scripts\python.exe -m pip install numpy pillow
+& .\.godot360\venv\Scripts\python.exe -m pip install -r requirements-dev.txt
 & .\.godot360\venv\Scripts\python.exe -c "import numpy, PIL; print('Media-review dependencies ready')"
 ```
 
@@ -31,7 +31,7 @@ the equivalent virtual environment:
 
 ```sh
 python3 -m venv .godot360/venv
-.godot360/venv/bin/python -m pip install numpy pillow
+.godot360/venv/bin/python -m pip install -r requirements-dev.txt
 .godot360/venv/bin/python -c "import numpy, PIL; print('Media-review dependencies ready')"
 ```
 
@@ -53,6 +53,22 @@ Pass that executable to `--godot`, not the outer `Godot.app` folder. On Linux,
 pass the extracted executable and ensure it has execute permission. Reviewers take
 **absolute executable paths**; `command -v ffmpeg` and `command -v ffprobe` locate
 the installed tools. [Platform setup](../addons/godot360/PLATFORMS.md) covers both.
+
+## Repository checks
+
+Before sharing changes, run:
+
+```sh
+python -m unittest discover -s tests -p repository_review_checks.py
+python tools/repository_review.py --output .godot360/repository-review.json
+git diff --check
+```
+
+These standard-library checks cover source inventory, portable links/resources,
+syntax, privacy patterns, source media sizes and recorded preview hashes. They
+include intentional untracked files. They do not render scenes or certify native
+GPU support. The Repository hygiene workflow also rebuilds the addon ZIP and
+compares it byte-for-byte with the original candidate.
 
 ## Platform verification and CI
 
@@ -158,6 +174,9 @@ python tests/package_review.py --package .godot360/candidate.zip --godot /path/t
 ```
 
 Repeat `--godot` for additional engines. Use new destinations on each run. Avoid
+switching Python environments between building and reviewing a candidate:
+byte-for-byte ZIP reproduction requires the same Python/zlib compression runtime.
+The manifest's file hashes remain comparable across runtimes. Avoid
 editing source during source-mode reviews: the reviewer intentionally detects any
 addon changes, including documentation. The package reviewer tests a frozen copy.
 

@@ -1,0 +1,22 @@
+{
+  "duration": 60,
+  "sample_rate": 48000,
+  "channels": 2,
+  "bpm": 116,
+  "peak": 0.8899999856948853,
+  "rms_dbfs": -17.861644744873047,
+  "sha256": "528f3ecdc05031c412efd27e9db03b4c4242b9cd98ca327f5f7dd7f5054d5c0d",
+  "soundfont_sha256": "9575028c7a1f589f5770fccc8cff2734566af40cd26ed836944e9a5152688cfe",
+  "soundfont": "GeneralUser GS 2.0.3, S. Christian Collins",
+  "original_composition": true,
+  "note_counts": {
+    "bass": 213,
+    "guitar": 548,
+    "muted_guitar": 216,
+    "keys": 305,
+    "strings": 36,
+    "brass": 53,
+    "drums": 548,
+    "percussion": 228
+  }
+}

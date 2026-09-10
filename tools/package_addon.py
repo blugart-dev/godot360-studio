@@ -8,6 +8,8 @@ import argparse
 import hashlib
 import json
 import re
+import platform
+import zlib
 from pathlib import Path
 from zipfile import ZIP_DEFLATED, ZipFile, ZipInfo
 
@@ -17,6 +19,27 @@ frame_writer_checks.gd metadata_checks.gd metadata_integration.gd metadata_revie
 motion_review.py particle_review.py particle_checks.gd smoke_review.py trail_review.py planning_checks.gd planning_studio_checks.gd quality_panel_checks.gd recovery_studio_checks.gd
 studio_checks.gd timeline_checks.gd skeletal_checks.gd skeletal_review.py timeline_studio_checks.gd storage_checks.gd storage_failure_checks.gd release_workflow_checks.gd usability_checks.gd platform_checks.gd renderer_checks.gd renderer_review.py json_lock_review.py package_review.py playback_checks.gd recent_exports_checks.gd""".split()
 ADDON_SUFFIXES = {".md", ".gd", ".uid", ".gdshader", ".tscn", ".tres", ".cfg"}
+PACKAGE_README = """# Godot360 Studio
+
+This is a pre-1.0 development candidate, not a stable 1.0 release.
+
+Copy `addons/godot360` into your Godot project and enable Godot360 Studio in
+Project Settings > Plugins. Start with [Quick start](addons/godot360/QUICKSTART.md)
+and [platform setup](addons/godot360/PLATFORMS.md).
+
+The addon uses external Godot, FFmpeg and FFprobe executables. No tools are
+downloaded automatically. The `tests/` and `tools/` folders are optional maintainer
+verification sources; they do not need to be copied into your project.
+Python media reviews use the packages pinned in `requirements-dev.txt`.
+
+Original project content is [MIT licensed](LICENSE). The included Cesium Man test
+fixture has its own [CC BY 4.0 attribution and mark notice](tests/fixtures/cesium_man/README.md).
+
+`manifest.json` records every payload file's size and SHA-256. Verify this ZIP with
+`python tools/package_addon.py --verify PATH_TO_ZIP` from the unpacked directory.
+The full examples, developer instructions and security policy are in the
+[source repository](https://github.com/blugart-dev/godot360-studio).
+"""
 
 
 def digest(data):
@@ -37,10 +60,12 @@ def inventory(root):
     paths += sorted((addon / "media").glob("*.png"))
     paths += sorted((addon / "media").glob(".gdignore"))
     paths += [root / "tests" / name for name in TESTS]
-    paths += sorted(path for path in (root / "tests/fixtures").rglob("*") if path.suffix in {".gd", ".tscn"})
+    paths += [root / "tests" / (name + ".uid") for name in TESTS
+              if name.endswith(".gd") and (root / "tests" / (name + ".uid")).is_file()]
+    paths += sorted(path for path in (root / "tests/fixtures").rglob("*") if path.suffix in {".gd", ".tscn", ".uid"})
     paths += [root / "tests/fixtures/cesium_man" / name for name in
               ["CesiumMan.glb", "LICENSE.md", "README.md", "metadata.json", "LicenseRef-LegalMark-Cesium.txt"]]
-    paths += [root / "tools/package_addon.py"]
+    paths += [root / name for name in ["tools/package_addon.py", "LICENSE", "requirements-dev.txt"]]
     files = {}
     for path in paths:
         assert path.is_file() and not path.is_symlink(), path
@@ -48,6 +73,7 @@ def inventory(root):
         assert name not in files, name
         files[name] = path.read_bytes()
     assert "addons/godot360/LICENSE" in files
+    files["README.md"] = PACKAGE_README.encode("utf-8")
     manifest = {"version": version, "files": {name: {"bytes": len(data), "sha256": digest(data)}
                                              for name, data in sorted(files.items())}}
     files["manifest.json"] = (json.dumps(manifest, indent=2, sort_keys=True) + "\n").encode()
@@ -84,6 +110,7 @@ def main(args):
     verify(destination, files)
     report = {"path": str(destination), "version": version, "files": len(files),
               "bytes": destination.stat().st_size, "sha256": digest(destination.read_bytes()),
+              "python_version": platform.python_version(), "zlib_version": zlib.ZLIB_RUNTIME_VERSION,
               "all_entries_match_source": True, "manifest": "manifest.json"}
     with report_path.open("x", encoding="utf-8") as file:
         file.write(json.dumps(report, indent=2) + "\n")

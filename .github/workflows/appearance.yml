@@ -2,10 +2,10 @@ name: Combined appearance
 
 on:
   pull_request:
-    paths: ['addons/godot360/**', 'tests/**', 'tools/package_addon.py', '.github/workflows/appearance.yml']
+    paths: ['addons/godot360/**', 'tests/**', 'tools/package_addon.py', 'requirements-dev.txt', '.github/workflows/appearance.yml']
   push:
     branches: [main]
-    paths: ['addons/godot360/**', 'tests/**', 'tools/package_addon.py', '.github/workflows/appearance.yml']
+    paths: ['addons/godot360/**', 'tests/**', 'tools/package_addon.py', 'requirements-dev.txt', '.github/workflows/appearance.yml']
   workflow_dispatch:
 
 permissions:
@@ -36,7 +36,7 @@ jobs:
           python-version: '3.13'
       - name: Install review tools
         run: |
-          python -m pip install numpy pillow
+          python -m pip install -r requirements-dev.txt
           sudo apt-get update
           sudo apt-get install -y ffmpeg xvfb libgl1-mesa-dri libglx-mesa0 mesa-vulkan-drivers libxrandr2 libxinerama1 libxcursor1 libxi6
           mkdir -p .godot360/ci-appearance/tools

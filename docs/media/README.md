@@ -1,5 +1,20 @@
 # Documentation media
 
+## AFTERGLOW
+
+The complete documentation tour is 1280×720 with the original encoded stereo
+audio, approximately 20 MB. Its 900p local preview and 4K spherical master stay
+in the render folder. `tools/build_afterglow_media.py` applies the smaller
+documentation encoding and updates the provenance hash when regenerating it.
+
+`afterglow.jpg`, `afterglow-suspended.jpg`, `afterglow-rear.jpg`,
+`afterglow-crown.jpg`, `afterglow-panorama.jpg` and `afterglow-tour.mp4` come from
+the one-minute Forward+ 4K delivery in `renders/afterglow-clearance-4k/`.
+The documentation tour is a 1280×720 fixed forward view with the original disco-funk score.
+The 3K browser sphere and full master remain local. `tools/build_afterglow_media.py`
+regenerates the previews and [records their provenance](afterglow-provenance.json).
+See [the film guide](../afterglow.md) for score credits, source and playback.
+
 ## LUMEN
 
 `lumen.jpg`, `lumen-orbits.jpg`, `lumen-rear.jpg`, `lumen-panorama.jpg` and
@@ -119,7 +134,8 @@ retained PNGs; the opening is empty only in the old worker.
 
 Check image legibility at README width, all four GIF excerpts, video duration and
 audio, relative Markdown links and the packaged screenshot. Keep the GIF below
-4 MB and the MP4 below 7 MB. The panel PNG and the licensed CesiumMan GLB test
+4 MB and THRESHOLD's MP4 below 7 MB; all source assets must stay below the
+repository's 25 MiB per-file budget. The panel PNG and the licensed CesiumMan GLB test
 asset are the binary media included in the development package.
 Run the packager's verification and rebuild comparison after changing packaged
 guides or their assets. See [developer verification](../testing.md).

@@ -2,10 +2,10 @@ name: Desktop platforms
 
 on:
   pull_request:
-    paths: ['addons/godot360/**', 'tests/**', 'tools/**', '.github/workflows/platforms.yml']
+    paths: ['addons/godot360/**', 'tests/**', 'tools/**', 'requirements-dev.txt', '.github/workflows/platforms.yml']
   push:
     branches: [main]
-    paths: ['addons/godot360/**', 'tests/**', 'tools/**', '.github/workflows/platforms.yml']
+    paths: ['addons/godot360/**', 'tests/**', 'tools/**', 'requirements-dev.txt', '.github/workflows/platforms.yml']
   workflow_dispatch:
 
 permissions:
@@ -42,7 +42,7 @@ jobs:
         with:
           python-version: '3.13'
       - name: Install review libraries
-        run: python -m pip install numpy pillow
+        run: python -m pip install -r requirements-dev.txt
       - name: Install Linux tools
         if: runner.os == 'Linux'
         run: |

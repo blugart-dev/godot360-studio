@@ -6,8 +6,10 @@ and vapor rises around the instrument.
 
 [![LUMEN's artificial star, gyroscope and luminous observatory.](media/lumen.jpg)](media/lumen-tour.mp4)
 
-**[Watch the flat tour with sound](media/lumen-tour.mp4)** ·
-[Full 4K spherical film, after rendering locally](../renders/lumen-4k-final/film/video-360.mp4)
+**[Watch the flat tour with sound](media/lumen-tour.mp4)**
+
+The full spherical film is generated locally at
+`renders/lumen-4k-final/film/video-360.mp4`; follow [Reproduce the delivery and previews](#reproduce-the-delivery-and-previews).
 
 ## What it can be used for
 
