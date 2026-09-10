@@ -44,6 +44,16 @@ sampled times. Addon error rejection remains strict; thresholds for reference
 matching and delivery are unchanged. The original failure evidence is retained
 under `.godot360/checkpoint-review/hosted/platforms-failed/`.
 
+The second LightmapGI run `34525595690` passed editor preparation but its Mobile
+and Compatibility lanes exceeded the 600-second per-export deadline. A short
+local Linux/llvmpipe capture of the same hosted bake completed 20 submitted
+frames in 46.53 seconds without a graphics error. Reducing the real-time shadow
+atlas produced only a small change (43.33 seconds), so that experiment was not
+adopted. The original scene, shadow atlas, clip size and thresholds remain.
+Software CI now allows 1,200 seconds per export and retains render progress,
+capture results and status files, within a 90-minute workflow limit. The short
+diagnostic is not a replacement for the full hosted image matrix.
+
 The next engineering scope is defined in the [continuation brief](next-session.md#starting-the-next-engineering-task).
 This checkpoint preserves the private 0.8.0 version and creative scenes/masters.
 

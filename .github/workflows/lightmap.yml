@@ -19,7 +19,7 @@ jobs:
   lightmap:
     name: ${{ matrix.method }} / baked scene
     runs-on: ubuntu-24.04
-    timeout-minutes: 60
+    timeout-minutes: 90
     strategy:
       fail-fast: false
       matrix:
@@ -63,7 +63,7 @@ jobs:
         run: |
           for icd in /usr/share/vulkan/icd.d/lvp*json; do export VK_DRIVER_FILES="$icd"; break; done
           test -f "$VK_DRIVER_FILES"
-          xvfb-run -a -s '-screen 0 1400x900x24' python .godot360/ci-lightmap/unpacked/tests/lightmap_review.py --godot "$GODOT" --ffmpeg "$(command -v ffmpeg)" --ffprobe "$(command -v ffprobe)" --method "$REVIEW_METHOD" --border "$REVIEW_BORDER" --output .godot360/ci-lightmap/review
+          xvfb-run -a -s '-screen 0 1400x900x24' python .godot360/ci-lightmap/unpacked/tests/lightmap_review.py --godot "$GODOT" --ffmpeg "$(command -v ffmpeg)" --ffprobe "$(command -v ffprobe)" --method "$REVIEW_METHOD" --border "$REVIEW_BORDER" --capture-timeout 1200 --output .godot360/ci-lightmap/review
       - name: Retain review evidence
         if: always()
         uses: actions/upload-artifact@v7
@@ -81,3 +81,6 @@ jobs:
             .godot360/ci-lightmap/review/**/lightmap-samples.json
             .godot360/ci-lightmap/review/**/temporal-samples.json
             .godot360/ci-lightmap/review/**/capture-settings.json
+            .godot360/ci-lightmap/review/**/render-progress.json
+            .godot360/ci-lightmap/review/**/capture-result.json
+            .godot360/ci-lightmap/review/**/status.json

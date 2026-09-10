@@ -115,6 +115,10 @@ Use `--border 12.5` for expanded capture faces. `--method mobile` and
 prepare the bake with Forward+/Vulkan. To reuse exactly the same saved bake,
 pass `--baked-from .godot360/lightmap-new/project/generated` with a fresh output.
 `--warmup` accepts zero through ten; a changed value requires its own review.
+Native reviews default to a 600-second limit per export. Software-renderer CI
+uses `--capture-timeout 1200` with a 90-minute workflow limit; the capture settings,
+72-frame clips and acceptance thresholds are unchanged. Progress and capture
+result files are retained to distinguish slow jobs from incomplete capture.
 
 `--analyze` recomputes an existing review, verifies its captured source/bake
 hashes and decodes the existing delivery/reference MP4s. It does not render or

@@ -158,7 +158,7 @@ def main(args):
             request = output / f"{name}.json"
             request.write_text(json.dumps(job))
             run([args.godot, "--headless", "--path", project, "--script", "res://addons/godot360/pipeline.gd",
-                 "--", "--job=" + str(request)], output / f"{name}.log")
+                 "--", "--job=" + str(request)], output / f"{name}.log", args.capture_timeout)
         folder = output / name
         report = read(folder / "report.json")
         assert report["ok"] and all(report["checks"].values()), name
@@ -199,6 +199,8 @@ if __name__ == "__main__":
     parser.add_argument("--method", choices=["forward_plus", "mobile", "gl_compatibility"], default="forward_plus")
     parser.add_argument("--border", type=float, choices=[0, 12.5], default=0)
     parser.add_argument("--warmup", type=int, choices=range(11), default=8)
+    parser.add_argument("--capture-timeout", type=int, choices=[600, 1200], default=600,
+                        help="Per-export timeout in seconds; software CI allows 1200")
     parser.add_argument("--baked-from", type=Path, help="Reuse a generated/ directory from a previous review")
     parser.add_argument("--analyze", action="store_true")
     raise SystemExit(main(parser.parse_args()))
