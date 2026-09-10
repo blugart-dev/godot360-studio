@@ -16,10 +16,20 @@ recorded snapshots; no large native matrix was rerun for documentation/CI change
 Previous commit `3fbac56` had an overlooked Combined appearance failure:
 run `34498588684` lost its Godot download connection before package/tests began.
 The appearance and new temporal/lightmap workflows now retry connection errors
-with bounded connection and transfer timeouts. All three pass local actionlint;
-hosted checkpoint execution is pending. See the latest [validation](validation.md)
-entry for the final push and CI status. Earlier "uncommitted" notes below record
-the state at the end of those sessions.
+with bounded connection and transfer timeouts. Local actionlint passes. Work is
+pushed through `739cf95`; repository, temporal, appearance, characters, particles
+and desktop-platform CI pass on their recorded commits. LightmapGI's full hosted
+rerun is in progress after a silent-editor fix and longer software-renderer
+timeouts. Earlier "uncommitted" notes below record the state at those sessions.
+
+The new graphics-error guard also exposed the old Mobile tint fixture's invalid
+storage-image binding. Its earlier tint-preservation claim is withdrawn. The
+corrected fixture uses sampled input/copy-back and proves visible red/blue tint
+against a baseline on all six faces. Nine native exports pass; desktop CI includes
+both camera and world compositors. The current package is
+`.godot360/checkpoint-review/ci-timeout.zip`, hash
+`d2f4a810c722927a35e4f7189c2b151d3de7b87412877ada2bc93ca3a840f89b`.
+See [validation](validation.md) for the tested package hashes and failed attempts.
 
 Next engineering work is the [bounded combined-effects fixture](next-session.md#starting-the-next-engineering-task),
 then measured Forward+/Mobile 4K/8K workloads. Native Linux/Mac GPU coverage,

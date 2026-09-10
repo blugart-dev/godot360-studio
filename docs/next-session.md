@@ -4,6 +4,13 @@ Updated on 2026-09-10. This is a development recap; the
 [publication preparation review](publication-review.md) records repository cleanup.
 The canonical completion criteria remain in [release readiness](release-readiness.md).
 
+The reviewed work is committed and pushed privately: runtime/fixture checkpoint
+`12e8872`, silent bake-editor fix `c26c919`, corrected Mobile tint validation
+`0cde68f`, and bounded software-CI timeouts `739cf95`. Six hosted workflows pass;
+the full LightmapGI rerun is still in progress. Finish that CI follow-up before
+starting the combined-effects milestone below. See [validation](validation.md)
+for exact runs, package mappings and the corrected historical compositor claim.
+
 ## Current position
 
 Godot360 Studio is a working editor addon for exporting a saved, authored Godot
@@ -140,11 +147,16 @@ folders; preserve the user's creative scenes, recipes, settings and existing mas
 
 ## Local evidence and tools
 
-- Latest package: `.godot360/lightmap-review/package/reviewed.zip`, SHA256
-  `9308a68209faede3a7444148bc42bb6b25a1eac4a5f6bf40f107f71a176a3802`.
-  Its identical rebuild and 3,075 headless/failure checks pass. The audit maps
-  all sixteen native LightmapGI clips to current runtime/fixture/reviewer source.
-  Detailed results and excluded development attempts are in [validation](validation.md).
+- Latest package: `.godot360/checkpoint-review/ci-timeout.zip`, SHA256
+  `d2f4a810c722927a35e4f7189c2b151d3de7b87412877ada2bc93ca3a840f89b`.
+  It adds only the reviewer's optional timeout to the corrected compositor package
+  `46eb3cc45721e41ef20d23869fe08cfff0514f0e311d0ac5a810f97ee9d3b685`,
+  which rebuilds identically and passes 3,075 local checks, 1,161 Linux checks and
+  1,027 Mac headless checks. Nine native tint exports pass on Forward+/Vulkan,
+  Mobile/Vulkan and Mobile/D3D12. All addon runtime files remain identical to
+  `12e8872`; the [validation record](validation.md) maps the different test snapshots.
+  Earlier LightmapGI archive `9308a68209faede3a7444148bc42bb6b25a1eac4a5f6bf40f107f71a176a3802`
+  retains the original sixteen native clips and its own 3,075 package checks.
 
 - Current complex-particle package: `.godot360/particles-complete/package/candidate.zip`,
   SHA256 `2f4482e7da16d46ec89682d0d96a63b4e6510b2c6cea8b57f2bc5d6b67be1162`.

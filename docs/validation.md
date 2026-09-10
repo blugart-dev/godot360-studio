@@ -2,6 +2,43 @@
 
 ## Temporal and LightmapGI checkpoint review — 2026-09-10
 
+The previous work is committed and pushed to private `origin/main`. The relevant
+checkpoints are `12e8872` (temporal/LightmapGI), `c26c919` (silent editor bake),
+`0cde68f` (visible Mobile compositor) and `739cf95` (software-CI time budget).
+
+| Hosted workflow | Tested commit | Result |
+| --- | --- | --- |
+| [Repository hygiene 34527898973](https://github.com/blugart-dev/godot360-studio/actions/runs/34527898973) | `739cf95` | Pass; source checks and reproducible package. |
+| [Temporal rendering 34524857939](https://github.com/blugart-dev/godot360-studio/actions/runs/34524857939) | `12e8872` | Pass; 13 completed clips / 936 decoded frames, two rejected history controls and one separate graphics-error control. |
+| [Combined appearance 34524857521](https://github.com/blugart-dev/godot360-studio/actions/runs/34524857521) | `12e8872` | Pass on Forward+ and Mobile. |
+| [Imported characters 34524858114](https://github.com/blugart-dev/godot360-studio/actions/runs/34524858114) | `12e8872` | Pass on all six animation/nested-head-look lanes. |
+| [Complex particles 34524858045](https://github.com/blugart-dev/godot360-studio/actions/runs/34524858045) | `12e8872` | Pass on all three renderers. |
+| [Desktop platforms 34526340694](https://github.com/blugart-dev/godot360-studio/actions/runs/34526340694) | `0cde68f` | Pass; 1,161 Linux package/workflow checks, 1,027 Mac headless checks and corrected camera/world compositor cases. |
+| [Baked LightmapGI 34527895921](https://github.com/blugart-dev/godot360-studio/actions/runs/34527895921) | `739cf95` | In progress; full image-matrix acceptance is not yet established on hosted software rendering. |
+
+The latest 227-member package is `.godot360/checkpoint-review/ci-timeout.zip`,
+SHA256 `d2f4a810c722927a35e4f7189c2b151d3de7b87412877ada2bc93ca3a840f89b`.
+It differs only in the LightmapGI reviewer's optional timeout from
+`.godot360/checkpoint-review/tint-fixed.zip`, SHA256
+`46eb3cc45721e41ef20d23869fe08cfff0514f0e311d0ac5a810f97ee9d3b685`.
+That corrected compositor package rebuilds identically and passes **3,075**
+local headless/failure checks across 4.5.1/4.6.3/4.7.2, plus the hosted desktop
+checks above. Its nine native Windows/4.7.2 exports cover baseline, camera tint
+and world tint on Forward+/Vulkan, Mobile/Vulkan and Mobile/D3D12. The 270
+delivered frames are inspected at three times per clip; **108 sampled cube-face
+tint comparisons** prove reduced red/blue and unchanged green. This is sampled
+image evidence, not an every-frame decoded comparison. See
+`.godot360/checkpoint-review/final-local.json` for source and report hashes.
+
+All addon runtime files are identical across these pushed checkpoints. Fifteen
+downloaded package records from the five completed rendering/platform workflows
+match their expected snapshots: thirteen use the original `9308a682...` package,
+and two use `46eb3cc...`. The differences are renderer documentation, the tint
+fixture/reviewer and LightmapGI editor/timeout preparation. The source audit is
+`.godot360/checkpoint-review/hosted/partial-source-audit.json`; the pending
+LightmapGI workflow is not counted. Software Linux rendering and Mac headless
+contracts do not close the native Linux/Mac GPU release gates.
+
 Rechecked the retained reports and source snapshots for both milestones: temporal
 **22 complete clips / 1,584 decoded frames** plus the separate graphics-error
 control, and saved LightmapGI **16 clips / 1,152 decoded frames**. The 31 normal
@@ -10,7 +47,7 @@ job are rejected. This recheck verifies the existing evidence, not a new render.
 Both archived ZIPs pass manifest/CRC verification. Local audit:
 `.godot360/checkpoint-review/local-evidence.json`.
 
-The current 227-member package rebuilds byte-for-byte to the previously reviewed
+The initial checkpoint's 227-member package rebuilds byte-for-byte to the reviewed
 LightmapGI candidate, SHA256
 `9308a68209faede3a7444148bc42bb6b25a1eac4a5f6bf40f107f71a176a3802`.
 Its saved **3,075** headless/failure checks remain applicable. The prior temporal
@@ -22,7 +59,7 @@ Review of prior hosted runs found Combined appearance `34498588684` failed on
 `3fbac56` because curl's Godot download lost its connection (exit 35), before
 any package or rendering test. The three workflows now retry connection errors
 with 30-second connection and 300-second per-attempt transfer limits. Hosted
-validation of this checkpoint is pending; no new hosted success is claimed here.
+results are recorded in the table above; the LightmapGI follow-up remains pending.
 
 Checkpoint `12e8872` was pushed privately. Its first Baked LightmapGI run
 `34524857480` completed all three editor bakes but failed the strict log check:
