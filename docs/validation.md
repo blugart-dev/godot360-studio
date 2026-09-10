@@ -24,6 +24,15 @@ any package or rendering test. The three workflows now retry connection errors
 with 30-second connection and 300-second per-attempt transfer limits. Hosted
 validation of this checkpoint is pending; no new hosted success is claimed here.
 
+Checkpoint `12e8872` was pushed privately. Its first Baked LightmapGI run
+`34524857480` completed all three editor bakes but failed the strict log check:
+the Linux runner had no ALSA output device, so editor startup emitted an audio
+error before falling back to Dummy. The reviewer now selects Dummy explicitly
+for the silent bake editor. This changes only editor preparation; capture-runtime
+code, reference geometry and acceptance thresholds are unchanged. The failed
+logs and saved bake reports are retained under
+`.godot360/checkpoint-review/hosted/lightmap-failed/`.
+
 The next engineering scope is defined in the [continuation brief](next-session.md#starting-the-next-engineering-task).
 This checkpoint preserves the private 0.8.0 version and creative scenes/masters.
 

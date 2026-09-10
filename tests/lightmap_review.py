@@ -76,7 +76,9 @@ rendering_device/driver.linuxbsd="vulkan"
         (plugin / "plugin.cfg").write_text('[plugin]\nname="Lightmap review bake"\ndescription="Disposable helper"\n'
                                            'author="Godot360"\nversion="1.0"\nscript="plugin.gd"\n')
         (project / "project.godot").write_text(config + '\n[editor_plugins]\nenabled=PackedStringArray("res://addons/review_bake/plugin.cfg")\n')
-        run([args.godot, "--editor", "--minimized", "--path", project, "--language", "en"], output / "bake.log", 300)
+        # Baking is silent; choose Dummy explicitly on workers without audio hardware.
+        run([args.godot, "--editor", "--minimized", "--audio-driver", "Dummy",
+             "--path", project, "--language", "en"], output / "bake.log", 300)
     bake = read(project / "generated/bake.json")
     assert bake["ok"] and bake["users"] == 10 and bake["textures"] > 0 and bake["probe_points"] > 0 and bake["directional"], bake
     (project / "project.godot").write_text(config.replace('"forward_plus"', f'"{args.method}"'))

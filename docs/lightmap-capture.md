@@ -90,6 +90,8 @@ uses another renderer. This is a desktop editor preparation step with a graphics
 device; headless import or a runtime capture cannot substitute for it. The helper
 uses the editor's English Bake Lightmaps action and save dialog, and fails if
 those controls or the resulting baked resources are unavailable.
+The disposable bake editor explicitly uses Godot's Dummy audio driver because
+baking needs no audio device. Capture and delivery audio settings are unchanged.
 
 The fixture is one small enclosed layout, with ten static receivers, one atlas
 and one moving probe receiver. It does not cover streamed/multiple LightmapGI
