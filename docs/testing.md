@@ -78,6 +78,19 @@ the opening frame; Linux CI includes them. The reviewer also checks process delt
 and unchanged authored emitter settings. `--fps 24|30|60` selects the export and
 matching particle step rate. Zero-warmup appearance remains a separate observation.
 
+The [moving smoke review](smoke-capture.md) runs `tests/smoke_review.py` against
+analytic transparent quads on Compatibility, Forward+ and Mobile. Its full run
+checks 16 clips, native processing and actual face transforms, including pauses,
+camera cuts, two/eight-frame warmup and zero-warmup observations. Wrong orientation,
+position and opacity controls must fail. `particle_checks.gd` adds saved-scene
+billboard-material inspection to the package contract matrix.
+
+`tests/trail_review.py` adds native tube/cross-ribbon trails, comparing the
+spherical export with a simultaneous diagonal perspective view. It checks
+Forward+/Mobile feature presence and Compatibility's expected missing history,
+along with startup, pause, cut, decoded images and delayed-reference controls.
+See [trail capture](trail-capture.md) for the narrower reference scope and thresholds.
+
 The [skeletal camera review](skeletal-capture.md) compares moving/cut bone cameras
 and weighted skin against independent references, including decoded MP4 frames.
 Run `tests/skeletal_review.py` with Godot, FFmpeg/FFprobe and a fresh `--output`;

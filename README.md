@@ -12,6 +12,9 @@ stereo music. This silent GIF shows four short, flat views of the 360° output.*
 · [Still-image gallery](docs/showcase.md#four-worlds-one-film)
 · [How the film was made](docs/threshold.md)
 
+**New: [LUMEN — a 24-second 4K orbital observatory](docs/lumen.md)** with native
+light trails, soft vapor and an original score. [Watch its flat tour](docs/media/lumen-tour.mp4).
+
 **[Export your first scene →](addons/godot360/QUICKSTART.md)**
 · [Take the visual tour](docs/showcase.md)
 · [Browse the documentation](docs/README.md)
@@ -59,12 +62,13 @@ the addon itself needs no .NET runtime, compiler, Python or Godot export templat
 
 ## Try the included examples
 
-Godot360 Studio is the tool; **UMBRAL** and **THRESHOLD** are examples made with it.
+Godot360 Studio is the tool; **UMBRAL**, **THRESHOLD** and **LUMEN** are examples made with it.
 Open this repository's `project.godot` to try them; the plugin is already enabled.
 
 | Example | See what it does | Open it |
 | --- | --- | --- |
 | **THRESHOLD** | [Four procedural worlds, moving scenery and an original score](docs/showcase.md#four-worlds-one-film) | `scenes/films/Threshold.tscn` → F6; load `export_profiles/threshold-8k.tres`. [Film guide](docs/threshold.md). |
+| **LUMEN** | [An orbital observatory for immersive music and installations](docs/lumen.md) | Load `export_profiles/lumen-4k.tres` for its Forward+ 4K film. [Film and live-preview guide](docs/lumen.md). |
 | **UMBRAL** | [A small installation with gaze-driven discoveries](docs/showcase.md#an-interactive-scene-prepared-for-film) | F5 to explore; load `export_profiles/umbral-film.tres` for its authored 12-second film. [Scene guide](docs/umbral.md). |
 | **Motion lab** | An editable camera path and animation timeline | Panel → Recipes and examples → **Motion lab**. [Authoring guide](addons/godot360/AUTHORING.md). |
 | **Calibration** | Six labeled directions and a test tone | Panel → Recipes and examples → **Calibration defaults**. Start here to check orientation and sound. |
@@ -91,7 +95,9 @@ are met; no public beta is required.
 - [Combined appearance review](docs/combined-appearance.md) checks moving lights,
   materials, authored exposure and borders together. Shared automatic spherical
   exposure is deferred beyond the authored-exposure scope of 1.0.
-- **Next:** imported characters, complex effects, remaining effect seams, native hardware
+- [Moving smoke](docs/smoke-capture.md) and [native particle trails](docs/trail-capture.md)
+  now have bounded rendered references, including pause/camera cuts and renderer exclusions.
+- **Next:** advanced rendering effects, remaining effect seams, native hardware
   coverage, representative Forward+/Mobile endurance and private workflow review.
 
 Scope is **mono 360°, SDR BT.709 and stereo sound**. Six-face capture can show

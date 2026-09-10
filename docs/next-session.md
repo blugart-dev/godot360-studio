@@ -1,6 +1,6 @@
 # Next-session brief — private development toward 1.0
 
-Updated on 2026-09-09 after the head-look/nested-attachment increment.
+Updated on 2026-09-10 after complex particles and the LUMEN demo.
 This is a recap and recommended plan, not a new release or authorization to publish.
 The canonical completion criteria remain in [release readiness](release-readiness.md).
 
@@ -13,6 +13,17 @@ cancellation, diagnostics, re-encoding, recovery, storage guards, spherical play
 and recent exports are implemented. The internal version remains 0.8.0.
 
 Recent increments establish:
+
+- Moving CPU/GPU smoke and native tube/ribbon trails with bounded rendered
+  references. All twelve completed trail jobs pass, including pause/camera cuts
+  and enabled/disabled controls; Compatibility lacks trail history. The 48
+  retained smoke jobs pass, with nine rejected controls and six separately
+  recorded zero-warmup observations. The exact package passes 3,018 headless and
+  failure checks. See the newest [validation entry](validation.md).
+- [LUMEN](lumen.md): a complete 24-second 4K Forward+ orbital-observatory film,
+  original score, portable recipe, source scene and local spherical player. It
+  demonstrates native trails and point-facing vapor in an immersive music or
+  installation setting. Final outputs live in `renders/lumen-4k-final/`.
 
 - A stateless custom head-look modifier and nested skeleton camera mount, with
   independent modified skin, final/base bones and six-camera pose checks. The
@@ -48,7 +59,7 @@ estimate. The amount of corrective work depends on what the rendered tests revea
 
 | Order | Work | Difficulty | Why it matters | Completion evidence |
 | --- | --- | --- | --- | --- |
-| 1 | Representative complex particles | High | Current particle coverage is deliberately simple. Transparent/billboard effects, trails, preprocessing and moving emitters are much closer to typical production effects. | Bounded cases with meaningful references for startup, motion, pause and cube-edge crossings; fix supported cases and state limits. |
+| 1 | Representative complex particles — bounded smoke/trail cases complete | High for remaining general cases | Moving transparent smoke and native trails now have rendered references. Lit/intersecting transparency, preprocessing and arbitrary temporal histories remain separate cases. | Completed native matrices and package checks are in the latest validation record. |
 | 2 | Decide and validate the advanced rendering support boundary | High to very high for general support | Temporal upscaling, GI and custom compositors may depend on view direction or previous frames. Correct export cannot be assumed from basic geometry tests. | Selected TAA/FSR, GI and compositor cases have rendered evidence and clear setup guidance. Full support for every combination is not a prerequisite implied by this plan. |
 | 3 | Representative 4K/8K Forward+/Mobile workloads | Medium to measure; potentially high to optimize | Existing 4K/8K runs establish reliability for simpler Compatibility scenes. Heavy lighting, effects and texture content can change memory, time and storage needs substantially. | Sustained jobs with measured GPU memory, time, retained storage and audio alignment; practical budgets and failure behavior. |
 | 4 | Native Linux GPU and Mac graphical review | Medium technically; dependent on hardware access | Software/headless CI cannot establish a native GPU installation, export and playback workflow. | Actual install/export/review/cancel/recovery on each claimed platform. If hardware is unavailable, the supported release matrix requires an explicit scope decision. |
@@ -57,7 +68,9 @@ estimate. The amount of corrective work depends on what the rendered tests revea
 
 Hardware checks can proceed alongside independent local work when machines become
 available. Final package work should follow the scene and production reviews.
-The next engineering target is item 1: smoke, billboards, trails and moving emitters.
+The bounded smoke/trail cases in item 1 are now complete. The next engineering
+target is item 2: advanced rendering support boundaries. The LUMEN demo adds a
+composed 4K scene; it does not establish heavy production endurance.
 
 ## Scope recommendations
 
@@ -81,8 +94,8 @@ Read this brief, the latest entries in [HANDOFF](HANDOFF.md) and
 [skeletal capture](skeletal-capture.md). Verify the working tree before editing.
 The basic imported case is established in [imported characters](imported-characters.md).
 The [head-look/nested setup](modifier-capture.md) is now established too.
-Begin with bounded complex particle fixtures: smoke, billboards, trails and moving
-emitters. Establish references, reproduce discrepancies and make the smallest
+Continue with selected temporal, GI and compositor cases. Establish references,
+reproduce discrepancies and make the smallest
 supported corrections. Do not rerun completed large matrices without a code
 change, failure or unresolved concern that justifies them.
 
@@ -92,7 +105,16 @@ folders; preserve the user's creative scenes, recipes, settings and existing mas
 
 ## Local evidence and tools
 
-- Latest head-look/nested package: `.godot360/modifier-review/package/candidate.zip`,
+- Current complex-particle package: `.godot360/particles-complete/package/candidate.zip`,
+  SHA256 `2f4482e7da16d46ec89682d0d96a63b4e6510b2c6cea8b57f2bc5d6b67be1162`.
+  It rebuilds identically and passes 3,018 headless/failure checks; all twelve
+  native trail exports match its runtime/fixture/reviewer source. The audit
+  explains the sole two-line warning difference from the earlier smoke matrix.
+- Current creative demo: `scenes/films/Lumen.tscn`,
+  `export_profiles/lumen-4k.tres`, and `docs/lumen.md`. Run
+  `python tools/play_lumen.py` after building its local browser copy.
+
+- Previous head-look/nested package: `.godot360/modifier-review/package/candidate.zip`,
   SHA256 `8f0a2dd5a4b0cf6906fe41a6eb5c8ad10dcd51aace4c27a3a949b016d416b788`.
   Its identical rebuild, 2,985 package checks and 26 rendered exports pass locally.
   `.godot360/modifier-review/audit.json` records source matching and protected
@@ -125,6 +147,6 @@ Suggested opening prompt:
 
 > Continue private Godot360 Studio development toward 1.0. Read
 > docs/next-session.md and the latest HANDOFF/validation entries. Preserve the
-> existing work. Review the checkpoint/CI status, then implement and validate a
-> bounded complex particle cases: smoke, billboards, trails and moving emitters.
-> Preserve the validated head-look/nested attachment setup. Keep the scope bounded and document the evidence.
+> existing work and the LUMEN demo. Review the checkpoint/CI status, then establish
+> a bounded advanced rendering case: temporal effects, GI or a compositor.
+> Preserve the validated character/particle setups. Keep the scope bounded and document the evidence.

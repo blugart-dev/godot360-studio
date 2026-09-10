@@ -35,6 +35,16 @@ left mouse button and drag to look around. To export, load
 `export_profiles/threshold-8k.tres` under **Recipes and examples**. Use **Test 1 second**
 to measure cost before a full 8K render. [Film, music and authoring details](threshold.md).
 
+## An orbital observatory for immersive music
+
+[![LUMEN's artificial star inside a mechanical observatory.](media/lumen.jpg)](media/lumen-tour.mp4)
+
+**LUMEN** is a 24-second 4K film with an original stereo score. Native particle
+trails circle the room, vapor rises around a gyroscope and luminous rings cross
+the open roof. It demonstrates a scene for an immersive music film, installation
+or planetarium sequence. [Watch the flat tour](media/lumen-tour.mp4) or
+[open the scene, recipe and spherical player](lumen.md).
+
 ## What makes it 360°?
 
 The export stores **the whole sphere** as a flat, 2:1 equirectangular image.

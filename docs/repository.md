@@ -3,7 +3,7 @@
 The project is **Godot360 Studio**. Its addon folder is `addons/godot360`; local
 settings, tools and validation output live in `.godot360`. Project configuration,
 scenes, recipes, tests, documentation and package contents use those paths.
-UMBRAL and THRESHOLD are the names of the two creative examples.
+UMBRAL, THRESHOLD and LUMEN are the names of the creative examples.
 
 Older installations should follow the [folder migration guide](../addons/godot360/MIGRATION.md).
 The original name remains only where needed for migration, original copyright
@@ -27,8 +27,9 @@ for account/repository operations and authentication.
 ## Upload contents
 
 Source code, Godot scenes/resources, shaders, SVG artwork, documentation, tests,
-portable export recipes and the original THRESHOLD WAV/score generator belong in
-Git. The WAV is a required original project asset, approximately 11.5 MB.
+portable export recipes and the original THRESHOLD/LUMEN WAVs and score generators
+belong in Git. The WAVs are required original project assets, approximately
+11.5 MB and 4.6 MB respectively.
 
 Curated previews in `docs/media/` and the small panel screenshot in
 `addons/godot360/media/` also belong in Git. They let readers see the tool and its

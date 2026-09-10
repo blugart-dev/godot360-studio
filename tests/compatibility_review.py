@@ -15,7 +15,7 @@ from pathlib import Path
 
 from audio_review import run, sha, snapshot, tones, write_wav
 
-CONTRACTS = ("export_checks", "planning_checks", "metadata_checks", "timeline_checks", "skeletal_checks", "audio_checks", "frame_writer_checks", "storage_checks", "diagnostics_checks", "usability_checks", "platform_checks", "renderer_checks", "exposure_checks", "playback_checks", "recent_exports_checks")
+CONTRACTS = ("export_checks", "planning_checks", "metadata_checks", "timeline_checks", "skeletal_checks", "particle_checks", "audio_checks", "frame_writer_checks", "storage_checks", "diagnostics_checks", "usability_checks", "platform_checks", "renderer_checks", "exposure_checks", "playback_checks", "recent_exports_checks")
 
 
 def command(args, engine, project, name, options, timeout=120):

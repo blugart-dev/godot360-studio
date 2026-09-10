@@ -232,6 +232,15 @@ func _after_frame() -> void:
 func _inspect(node: Node, warnings: Array[String]) -> void:
 	if node is CanvasLayer:
 		node.visible = false
+	if node is GPUParticles3D or node is CPUParticles3D:
+		var meshes: Array = [node.mesh] if node is CPUParticles3D else []
+		if node is GPUParticles3D:
+			for pass_index in range(node.draw_passes):
+				meshes.append(node.get_draw_pass_mesh(pass_index))
+		if preload("particle_notes.gd").has_face_billboard(meshes, node.material_override, node.material_overlay):
+			warnings.append(preload("particle_notes.gd").billboard_note(str(scene.get_path_to(node))))
+		if node is GPUParticles3D and node.trail_enabled and RenderingServer.get_current_rendering_method() == "gl_compatibility":
+			warnings.append(preload("particle_notes.gd").trail_note(str(scene.get_path_to(node))))
 	if (node is GPUParticles3D or node is CPUParticles3D) and int(job.get("warmup_frames", 2)) < 2:
 		warnings.append("Particles may be missing or incomplete at the opening: %s. Use at least 2 warmup frames and inspect the opening and motion; warmup does not pre-roll the simulation." % str(scene.get_path_to(node)))
 	if node is CPUParticles3D and RenderingServer.get_current_rendering_method() == "gl_compatibility":

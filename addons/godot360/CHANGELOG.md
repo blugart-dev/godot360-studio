@@ -1,5 +1,20 @@
 # Changelog
 
+## Unreleased — moving smoke and particle material guidance
+
+- Add an optional point-facing smoke shader that keeps particle orientation
+  consistent across the six cube views. Existing authored materials are preserved.
+- Flag native particle billboard materials in saved-scene notes and capture
+  reports, including draw passes, overrides, overlays and chained materials.
+- Compare continuous moving CPU/GPU smoke with analytic mesh references through
+  recycling, local/world motion, opaque occlusion, warmup, pausing and camera cuts.
+  Require incorrect orientation, position and opacity controls to fail.
+- Document emission-boundary precision and early/late pause ordering, alongside
+  the existing two-frame particle warmup contract.
+- Add tube/cross-ribbon trail fixtures with native diagonal-view references,
+  pause/cut checks and enabled/disabled controls. Explain that native trail
+  history requires Forward+ or Mobile in scene notes and Compatibility reports.
+
 ## Unreleased — head-look and nested attachment validation
 
 - Add a stateless custom head-look modifier to the imported character fixture,

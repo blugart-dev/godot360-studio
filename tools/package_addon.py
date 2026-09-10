@@ -14,7 +14,7 @@ from zipfile import ZIP_DEFLATED, ZipFile, ZipInfo
 TESTS = """gltf_reference.py imported_character_review.py appearance_review.py exposure_checks.gd exposure_review.py border_review.py audio_checks.gd audio_delivery_checks.py audio_formats_review.py
 audio_review.py audio_studio_checks.gd capture_lifecycle_checks.gd compatibility_review.py diagnostics_checks.gd endurance_review.py export_checks.gd
 frame_writer_checks.gd metadata_checks.gd metadata_integration.gd metadata_review.py
-motion_review.py particle_review.py planning_checks.gd planning_studio_checks.gd quality_panel_checks.gd recovery_studio_checks.gd
+motion_review.py particle_review.py particle_checks.gd smoke_review.py trail_review.py planning_checks.gd planning_studio_checks.gd quality_panel_checks.gd recovery_studio_checks.gd
 studio_checks.gd timeline_checks.gd skeletal_checks.gd skeletal_review.py timeline_studio_checks.gd storage_checks.gd storage_failure_checks.gd release_workflow_checks.gd usability_checks.gd platform_checks.gd renderer_checks.gd renderer_review.py json_lock_review.py package_review.py playback_checks.gd recent_exports_checks.gd""".split()
 ADDON_SUFFIXES = {".md", ".gd", ".uid", ".gdshader", ".tscn", ".tres", ".cfg"}
 

@@ -21,6 +21,15 @@ static func inspect(path: String) -> Dictionary:
 			result.cameras.append({"path": node_path, "current": bool(node.get("current", false))})
 		if type == "CanvasLayer":
 			result.warnings.append("2D UI under %s is hidden during capture. Use 3D titles to include it." % node_path)
+		if type in ["CPUParticles3D", "GPUParticles3D"]:
+			var meshes: Array = [node.get("mesh")] if type == "CPUParticles3D" else []
+			if type == "GPUParticles3D":
+				for pass_index in range(int(node.get("draw_passes", 1))):
+					meshes.append(node.get("draw_pass_%d" % (pass_index + 1)))
+			if preload("particle_notes.gd").has_face_billboard(meshes, node.get("material_override"), node.get("material_overlay")):
+				result.warnings.append(preload("particle_notes.gd").billboard_note(node_path))
+			if type == "GPUParticles3D" and node.get("trail_enabled", false):
+				result.warnings.append(preload("particle_notes.gd").trail_note(node_path))
 		if type in ["Sprite3D", "AnimatedSprite3D", "Label3D"] and int(node.get("billboard", 0)) != 0:
 			result.warnings.append("%s faces the camera and may create seams. Disable billboarding or review a test." % node_path)
 		var environment = node.get("environment")
@@ -66,7 +75,7 @@ static func _collect(state: SceneState, prefix: String, nodes: Dictionary, depth
 			node.placeholder = true
 		for property in range(state.get_node_property_count(index)):
 			var name := str(state.get_node_property_name(index, property))
-			if name in ["current", "billboard", "environment", "attributes", "camera_attributes", "compositor"]:
+			if name in ["current", "billboard", "environment", "attributes", "camera_attributes", "compositor", "mesh", "draw_passes", "draw_pass_1", "draw_pass_2", "draw_pass_3", "draw_pass_4", "material_override", "material_overlay", "trail_enabled"]:
 				node[name] = state.get_node_property_value(index, property)
 		nodes[path] = node
 

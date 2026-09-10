@@ -167,8 +167,36 @@ render the scene again to apply the corrected clock.
 Set a GPU emitter's `use_fixed_seed` and `seed` for repeatable random emission on
 the same configuration. The job's global random seed does not set GPU emitter
 seeds. Neither setting promises identical particles across engines or GPUs.
-Transparent/billboard particles, trails, collisions, subemitters, animated emission,
-moving emitters and long histories still require representative validation.
+The moving-smoke fixture adds continuous transparent quads, local/world emission,
+recycling, opaque occlusion, pausing and a translated/rotated camera cut. The
+optional `examples/spherical_smoke.gdshader` faces each particle toward the shared
+camera position with world-up roll. Assign it to a QuadMesh ShaderMaterial for
+uniform-tint unlit smoke. Conventional screen-aligned billboards turn separately
+for each face; capture now flags native billboard materials in scene notes.
+The shader is an authored appearance choice and is never applied automatically.
+
+Smoke reference settings use Fixed FPS zero, fractional delta off, GPU
+interpolation off, explicit bounds and at least two warmup frames. A parent
+`_process` pause before the particle children run stops CPU/GPU at the same sample;
+a late capture-hook pause can fall between their simulation updates. Exact
+emission times at frame boundaries can also differ with native CPU/GPU floating
+point phase accumulation. Choose a reference appropriate to the authored effect.
+The fixture deliberately places births between frame boundaries.
+
+Different transparent colors/depth sorting, lit smoke, arbitrary interpolation,
+preprocessing, collisions, subemitters and long histories need separate review.
+The point shader's world-up fallback near vertical alignment can change roll;
+camera-coincident particles and arbitrary mirrored/nonuniform transforms are not
+covered. See the repository's `docs/smoke-capture.md` for settings and evidence.
+
+Native TubeTrailMesh/cross-RibbonTrailMesh history is checked separately with
+GPUParticles3D on Forward+/Mobile: enable both `trail_enabled` and the material's
+`use_particle_trails`. The test uses Fixed FPS 30 at 30 FPS export, interpolation
+off, 0.4-second trails, explicit bounds and two warmup frames. Compatibility
+cannot render native trail history; scene notes flag this requirement. CPU
+particles do not provide this skinning feature. The smoke shader does not skin
+trail meshes. See `docs/trail-capture.md` for the single-view reference, pause/cut
+checks and limits; long/curved/transparent trails remain separate cases.
 
 See Godot's [GPUParticles3D reference](https://docs.godotengine.org/en/4.5/classes/class_gpuparticles3d.html)
 for fixed FPS, seeds and preprocessing. The repository's `docs/particle-capture.md`

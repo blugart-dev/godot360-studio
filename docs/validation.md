@@ -1,4 +1,58 @@
-# Validation record — updated 2026-09-09
+# Validation record — updated 2026-09-10
+
+## Complex particles and LUMEN — 2026-09-10
+
+The interrupted native trail review is complete on Windows 11 / RTX 3060 Ti,
+Godot 4.7.2: Forward+/Vulkan, Mobile/Vulkan with 12.5% borders, and
+Compatibility/OpenGL. Each method exports tube, cross-ribbon, paused tube and
+disabled-trail controls: **12 exports / 864 source and decoded frames**. Every
+frame is compared with a simultaneous native perspective reference across a
+cube edge. Geometry coverage, centroids, process timing, unchanged particle
+settings and all six camera transforms pass. The paused case includes a camera
+cut. Delayed-reference controls are rejected.
+
+Native trail history is visibly different from the disabled control on
+Forward+/Mobile (maximum full-panorama MAE 0.5923/0.5901). Compatibility's enabled
+and disabled frames are exactly equal: its passing review establishes the
+documented exclusion, not native trail support. Across the twelve jobs, maximum
+source-view MAE is 0.3211 and decoded MAE is 0.4799. Existing thresholds are
+unchanged. See [native trails](trail-capture.md).
+
+The retained [moving-smoke matrix](smoke-capture.md) passes **48 exports / 3,456
+source and decoded frames** across the same three methods, including nine
+rejected orientation/position/opacity controls and six zero-warmup observations
+outside acceptance. CPU/GPU world/local motion, recycling, warmup and early
+pausing match analytic mesh references. Its fixture, reviewer and shader hashes
+match current source. The capture runtime differs solely by the two-line
+Compatibility trail warning added afterward; the audit checks that exact diff.
+The new trail matrix matches current runtime/fixture/reviewer hashes exactly.
+
+The frozen addon ZIP is `.godot360/particles-complete/package/candidate.zip`,
+**163 entries / 1,165,026 bytes**, SHA256
+`2f4482e7da16d46ec89682d0d96a63b4e6510b2c6cea8b57f2bc5d6b67be1162`.
+Its extracted source reproduces identical bytes and passes **3,018 headless and
+injected-failure checks** on 4.5.1/4.6.3/4.7.2 (1,006 each). This includes the new
+eleven material/scene-note checks per engine. `.godot360/particles-complete/audit.json`
+records the evidence boundaries and hashes. The new Complex particles hosted
+workflow covers the three software-rendered Linux methods; hosted execution is
+recorded separately after the private checkpoint.
+
+[LUMEN](lumen.md) adds a complete 24-second 4K Forward+ film using native trails,
+point-facing vapor, moving geometry, authored exposure, capture borders and an
+original stereo score. Its final job and review live under
+`renders/lumen-4k-final/`; documentation stills and the flat tour are derived from
+that delivery. The final render took 232.48 seconds and retained 2,900,935,272
+bytes (2.70 GiB). All 722 source images are present in order, all 13 delivery
+checks pass, and decoded audio matches the original at 3/11/20 seconds with
+zero sample lag and correlations above 0.9998. The audit confirms current
+source (apart from trailing blank-line cleanup in three new files) and unchanged
+protected project/settings hashes. The browser player
+passes playback, seeking, mute and drag-to-look review. The demo is compositional evidence, distinct from the analytic
+particle fixtures and the still-open heavy-production endurance gate.
+
+This remains private development on 0.8.0. Advanced temporal/GI/compositor
+coverage, representative 4K/8K pressure/endurance, native Linux/Mac hardware and
+the final private installation/delivery review remain open.
 
 ## Head-look and nested attachment validation — 2026-09-09
 

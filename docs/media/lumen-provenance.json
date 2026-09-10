@@ -1,0 +1,52 @@
+{
+  "source": "renders/lumen-4k-final/film/video-360.mp4",
+  "source_sha256": "c3a801ce2fb86e294d87a9409a7e22a4221a75f3e7388608fdb200c63a5a8305",
+  "tour_views": [
+    [
+      0,
+      6,
+      0,
+      10
+    ],
+    [
+      6,
+      12,
+      70,
+      25
+    ],
+    [
+      12,
+      18,
+      175,
+      45
+    ],
+    [
+      18,
+      24,
+      0,
+      10
+    ]
+  ],
+  "files": {
+    "lumen-tour.mp4": {
+      "bytes": 14777459,
+      "sha256": "40258666f11cf38a55fd10b0a00159aaf149d1f1f56fc8e1a62cf2c6e96ee2f9"
+    },
+    "lumen.jpg": {
+      "bytes": 203125,
+      "sha256": "408f111a5718dcc511f42a6edd13ed51dc643812785bc7669a1327b6b44d4f41"
+    },
+    "lumen-orbits.jpg": {
+      "bytes": 150354,
+      "sha256": "6c8edcfaa3f209e84785ddf6f7d03681a3da683e52cd5eeabc758e411ac552a8"
+    },
+    "lumen-rear.jpg": {
+      "bytes": 156953,
+      "sha256": "be572174fea7653096befc377253014a8b0e56f1a0f5b00237568ac4bef7917e"
+    },
+    "lumen-panorama.jpg": {
+      "bytes": 165872,
+      "sha256": "4b2bcf6eb04a67e1d22995ea9ac36ae07b297fba6ee7296e3013dc0b2563fd0c"
+    }
+  }
+}

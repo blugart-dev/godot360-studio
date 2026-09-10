@@ -15,7 +15,7 @@ limits. It cannot mean every arbitrary shader, GPU and interactive game works.
 | Workstream | Remaining work | Completion evidence |
 | --- | --- | --- |
 | Capture appearance | [Capture borders](capture-borders.md) and [fixed authored exposure](exposure-consistency.md) now have a [combined moving-light/material review](combined-appearance.md). Consistent 1.0 exposure uses authored values; shared automatic spherical adaptation is deferred beyond 1.0. Remaining: document and review residual glow shape and other view-dependent effects in the supported scene matrix. | Before/after rendered fixtures, unchanged projection/color/geometry, measured cost, and documented residual limits. |
-| Complex animated scenes | [Keyed skin and bone-camera cuts](skeletal-capture.md), [an imported GLB character](imported-characters.md), [a custom head look and nested skeleton mounts](modifier-capture.md), and [simple particle startup/motion/pausing](particle-capture.md) have rendered references. Fixed opening deltas and Compatibility automatic bounds are implemented; the simple particle contract uses at least two warmup frames. Remaining: complex particle effects, general/stateful IK/modifier chains, other import/retarget pipelines, longer temporal histories, FSR, VoxelGI/LightmapGI and stateful compositors. | Deterministic fixtures with expected motion and visual comparisons; supported cases pass and exclusions are explicit. |
+| Complex animated scenes | [Keyed skin and bone-camera cuts](skeletal-capture.md), [an imported GLB character](imported-characters.md), [a custom head look and nested skeleton mounts](modifier-capture.md), [simple particle startup/motion/pausing](particle-capture.md), [moving smoke](smoke-capture.md) and [native trails](trail-capture.md) have rendered references. Fixed opening deltas and Compatibility automatic bounds are implemented; the particle contract uses at least two warmup frames. Remaining: lit/intersecting transparency, general/stateful IK/modifier chains, other import/retarget pipelines, longer temporal histories, FSR, VoxelGI/LightmapGI and stateful compositors. | Deterministic fixtures with expected motion and visual comparisons; supported cases pass and exclusions are explicit. |
 | Production performance | Run representative Forward+/Mobile scenes at 4K/8K; measure render time, peak GPU memory, retained storage and behavior under pressure. | Sustained jobs complete without missing frames, audio drift or silent renderer fallback; practical budgets and limits are recorded. |
 | Native platform coverage | Graphical Mac exports and hardware-GPU Linux workflows; complete the declared Godot/renderer/driver combinations. | Clean native installation, actual capture, frame/audio inspection, playback, cancellation and recovery on the target machines. Headless/software CI remains narrower evidence. |
 | Private end-to-end usability and delivery | Follow the published instructions from a clean setup; export an existing scene, review it, reopen it and recover a failure. Review final orientation, seams, detail and sound. | Completed private walkthrough and itemized delivery review against the final candidate, with blocking findings resolved. Independent feedback can help but is not a prerequisite for continuing implementation. |
@@ -34,8 +34,11 @@ consistent-exposure boundary for 1.0 is defined in [its guide](combined-appearan
 
 ## Order of work
 
-1. Continue with complex particles (smoke, billboards, trails and moving emitters),
-   then advanced temporal effects, GI and compositors. The custom head-look and
+1. Continue with advanced temporal effects, GI and compositors. The
+   [moving smoke](smoke-capture.md) and [native trail](trail-capture.md) increments
+   establish their documented particle settings, including renderer exclusions.
+   [LUMEN](lumen.md) now demonstrates those effects in a complete 4K film.
+   The custom head-look and
    nested attachment increment is validated within its documented setup. Resolve the resulting rendering/capture defects. The local combined
    exposure/border and simple particle startup passes have defined support limits;
    shared automatic spherical adaptation remains a future extension.

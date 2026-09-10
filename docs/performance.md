@@ -1,5 +1,21 @@
 # Capture performance
 
+## LUMEN composed Forward+ scene — 2026-09-10
+
+The [LUMEN observatory](lumen.md) renders 24 seconds at 4096×2048 / 30 FPS,
+with 2048-pixel face cores, 12.5% borders, 4× MSAA, authored exposure, glow,
+native trails and point-facing vapor. Windows 11 / Godot 4.7.2 Forward+/Vulkan /
+RTX 3060 Ti / FFmpeg 9.0.1: **232.48 seconds** through verified delivery,
+**2.70 GiB retained**, all 720 delivered frames present. Three decoded-audio
+windows show zero sample lag. Exact observations and hashes are in
+`renders/lumen-4k-final/render-review.json` and `audit.json`.
+
+This adds a composed 4K example. Peak per-process GPU memory, long-run pressure,
+heavy texture/GI workloads, Mobile production endurance and 8K versions remain
+unmeasured. The earlier experimental render used a different sky and is excluded
+from this accepted measurement. Do not treat a single successful demo as the
+completion of the production-performance release gate.
+
 ## Original 0.2 comparison
 
 Windows, Godot 4.7.2, Compatibility / OpenGL, NVIDIA RTX 3060 Ti, and FFmpeg 9.0.1.

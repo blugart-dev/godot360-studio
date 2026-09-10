@@ -95,6 +95,11 @@ scene processing and does not create a mature effect: emitter preprocessing or a
 deliberate authored pre-roll requires its own review. Explicit child process modes
 and autoloads follow Godot's normal rules.
 
+The subsequent [moving smoke review](smoke-capture.md) adds transparent billboard
+quads, moving emitters, recycling, local/world coordinates, pausing and camera cuts.
+Its optional point-facing shader resolves the measured face-orientation mismatch.
+That is a separate, explicitly authored effect contract.
+
 GPU randomness needs the emitter's own fixed seed; the job's global random seed
 does not configure it. Preprocessing, random emission, trails, transparency,
 billboards, collisions, subemitters, moving/animated emitters, temporal antialiasing

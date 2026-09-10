@@ -4,6 +4,34 @@ For a fresh session, start with the [current recap and difficulty assessment](ne
 It identifies the local checkpoint/CI follow-up, remaining work, support decisions,
 and the next bounded engineering task. The detailed records below remain the evidence.
 
+## Complex particles and LUMEN — 2026-09-10
+
+Completed the previously interrupted smoke/trail increment and added the
+[LUMEN orbital-observatory demo](lumen.md), following the owner's request to
+continue development and build useful creative demonstrations.
+
+Native trails: all four cases on three renderers pass (12 exports, 864 frames),
+including pause/camera cuts and disabled-feature controls. Compatibility is
+explicitly unsupported for trail history. The 48 retained smoke exports pass;
+their runtime differs only by the later two-line trail warning, verified by the
+audit. The exact 163-file addon package rebuilds identically and passes 3,018
+headless/failure checks across Godot 4.5.1/4.6.3/4.7.2. Package SHA256:
+`2f4482e7da16d46ec89682d0d96a63b4e6510b2c6cea8b57f2bc5d6b67be1162`.
+See `.godot360/particles-complete/audit.json` and the newest validation entry.
+
+LUMEN supplies a 24-second Forward+ 4K recipe, procedural observatory, native
+light trails, point-facing vapor, original shaders/music, isolated render helper,
+curated preview generator and an allowlisted loopback spherical player. The
+final output is `renders/lumen-4k-final/`. Initial drafts remain separate; the
+visual review replaced the first sky background before final delivery. Existing
+UMBRAL/THRESHOLD scenes, masters and saved studio settings are preserved.
+
+Next: advanced rendering support boundaries (temporal effects, GI, compositors),
+then representative heavy 4K/8K workloads and remaining native/private reviews.
+The demo is a useful composed scene, not completion of the production endurance
+gate. Hosted complex-particle validation belongs to the private checkpoint;
+no public publication or version bump is authorized by this increment.
+
 ## Head-look modifier and nested attachments — 2026-09-09
 
 Completed the requested bounded head-look/nested milestone. See
