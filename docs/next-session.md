@@ -14,6 +14,23 @@ and recent exports are implemented. The internal version remains 0.8.0.
 
 Recent increments establish:
 
+- [Saved LightmapGI](lightmap-capture.md): 16 clips / 1,152 source and decoded
+  frames on native 4.7.2 Forward+/Mobile/Compatibility. Twelve clips pass; four
+  missing-map controls are rejected. A saved bake covers static surfaces and a
+  moving dynamic probe receiver, with cuts and borders. The reproducible package
+  passes 3,075 headless/failure checks across three engines. No capture-runtime
+  change was needed. Hosted checkpoint results belong in the latest validation
+  entry; local native evidence and hosted software rendering have separate scope.
+
+- [Temporal rendering](temporal-capture.md): 22 completed clips (19 accepted and
+  three deliberately corrupted controls), plus a correctly rejected graphics-error
+  job. TAA/FSR, camera/world history and VoxelGI have bounded native evidence.
+  Mobile uses authored 4x MSAA and a writable per-view compositor texture.
+  Engine rendering errors now prevent encoding even after a complete capture.
+  The exact package passes 3,208 checks; source mapping and failed development
+  attempts are recorded in the newest [validation entry](validation.md).
+  The checkpoint includes this increment together with the saved LightmapGI work.
+
 - Moving CPU/GPU smoke and native tube/ribbon trails with bounded rendered
   references. All twelve completed trail jobs pass, including pause/camera cuts
   and enabled/disabled controls; Compatibility lacks trail history. The 48
@@ -64,7 +81,7 @@ estimate. The amount of corrective work depends on what the rendered tests revea
 | Order | Work | Difficulty | Why it matters | Completion evidence |
 | --- | --- | --- | --- | --- |
 | 1 | Representative complex particles — bounded smoke/trail cases complete | High for remaining general cases | Moving transparent smoke and native trails now have rendered references. Lit/intersecting transparency, preprocessing and arbitrary temporal histories remain separate cases. | Completed native matrices and package checks are in the latest validation record. |
-| 2 | Decide and validate the advanced rendering support boundary | High to very high for general support | Temporal upscaling, GI and custom compositors may depend on view direction or previous frames. Correct export cannot be assumed from basic geometry tests. | Selected TAA/FSR, GI and compositor cases have rendered evidence and clear setup guidance. Full support for every combination is not a prerequisite implied by this plan. |
+| 2 | Extend the advanced rendering boundary — selected temporal/compositor/GI cases complete | High for remaining general cases | Selected saved LightmapGI now passes too. Larger GI layouts, combined effects and longer histories still need bounded references. | The temporal guide records 23 native jobs and explicit Mobile buffer requirements; the LightmapGI guide adds 16 clips. Complete further selected cases with clear setup guidance. Full support for every combination is not a prerequisite implied by this plan. |
 | 3 | Representative 4K/8K Forward+/Mobile workloads | Medium to measure; potentially high to optimize | Existing 4K/8K runs establish reliability for simpler Compatibility scenes. Heavy lighting, effects and texture content can change memory, time and storage needs substantially. | Sustained jobs with measured GPU memory, time, retained storage and audio alignment; practical budgets and failure behavior. |
 | 4 | Native Linux GPU and Mac graphical review | Medium technically; dependent on hardware access | Software/headless CI cannot establish a native GPU installation, export and playback workflow. | Actual install/export/review/cancel/recovery on each claimed platform. If hardware is unavailable, the supported release matrix requires an explicit scope decision. |
 | 5 | Private walkthrough from clean setup through delivery | Low to medium | A technically valid file can still be hard to produce or wrong in orientation, sound or spherical presentation. | Follow the published instructions with an existing scene, review the sphere and audio, reopen a job and recover a failure; resolve observed friction. |
@@ -73,7 +90,9 @@ estimate. The amount of corrective work depends on what the rendered tests revea
 Hardware checks can proceed alongside independent local work when machines become
 available. Final package work should follow the scene and production reviews.
 The bounded smoke/trail cases in item 1 are now complete. The next engineering
-target is item 2: advanced rendering support boundaries. The LUMEN demo adds a
+target is item 2's selected combined rendering cases. Saved LightmapGI now has
+its own bounded review; selected TAA/FSR, persistent compositors and VoxelGI are
+established in the temporal guide. The LUMEN demo adds a
 composed 4K scene; it does not establish heavy production endurance.
 
 ## Scope recommendations
@@ -98,9 +117,21 @@ Read this brief, the latest entries in [HANDOFF](HANDOFF.md) and
 [skeletal capture](skeletal-capture.md). Verify the working tree before editing.
 The basic imported case is established in [imported characters](imported-characters.md).
 The [head-look/nested setup](modifier-capture.md) is now established too.
-Continue with selected temporal, GI and compositor cases. Establish references,
-reproduce discrepancies and make the smallest
-supported corrections. Do not rerun completed large matrices without a code
+The next bounded engineering milestone is a saved LightmapGI room with a moving
+probe receiver, lit intersecting transparency and persistent compositor history.
+Start with Forward+ using authored exposure, eight warmup draws and 12.5% borders;
+include a camera cut and a longer history than the existing 72-frame fixture.
+Use independent reference worlds, disabled-feature baselines and deliberately
+incorrect history/lightmap controls. Check every source and decoded delivery
+frame, feature contribution, graphics errors and behavior at the cut. Then review
+the corresponding Mobile setup with its documented 4x MSAA/writable-texture
+requirements. Establish thresholds before accepting results and document any
+remaining boundary artifacts. This is planned work, not completed evidence.
+
+After that milestone, use a representative Forward+/Mobile scene for sustained
+4K/8K exports, measuring peak GPU memory, elapsed time, retained disk use and
+audio alignment. Reproduce discrepancies and make the smallest supported
+corrections. Do not rerun completed large matrices without a code
 change, failure or unresolved concern that justifies them.
 
 `tests/fixtures/cesium_man/` now contains a pinned licensed GLB with its attribution
@@ -108,6 +139,12 @@ and original notices; the reviewer verifies its SHA256. Use disposable projects 
 folders; preserve the user's creative scenes, recipes, settings and existing masters.
 
 ## Local evidence and tools
+
+- Latest package: `.godot360/lightmap-review/package/reviewed.zip`, SHA256
+  `9308a68209faede3a7444148bc42bb6b25a1eac4a5f6bf40f107f71a176a3802`.
+  Its identical rebuild and 3,075 headless/failure checks pass. The audit maps
+  all sixteen native LightmapGI clips to current runtime/fixture/reviewer source.
+  Detailed results and excluded development attempts are in [validation](validation.md).
 
 - Current complex-particle package: `.godot360/particles-complete/package/candidate.zip`,
   SHA256 `2f4482e7da16d46ec89682d0d96a63b4e6510b2c6cea8b57f2bc5d6b67be1162`.

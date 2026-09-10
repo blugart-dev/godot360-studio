@@ -37,8 +37,11 @@ adds a stateless head look and nested skeleton attachments. The [moving smoke](s
 and [native trail](trail-capture.md) fixtures now cover bounded complex-particle
 cases, with a point-facing smoke shader and explicit renderer limits. The
 [LUMEN observatory](lumen.md) demonstrates them in a complete 24-second 4K film
-with an original score. Next:
-advanced rendering, heavy 4K/8K
+with an original score. The [temporal review](temporal-capture.md) now covers
+selected TAA/FSR, persistent camera/world compositors and VoxelGI, and rejects
+graphics-engine errors before delivery. The [saved LightmapGI review](lightmap-capture.md)
+adds static lightmaps and a moving probe receiver with a real editor bake and
+independent-world references. Next: the [bounded combined-effects milestone](next-session.md#starting-the-next-engineering-task), heavy 4K/8K
 workloads, native Linux/Mac testing, a clean installation-to-delivery walkthrough,
 then freezing and validating the 1.0 package.
 

@@ -4,6 +4,68 @@ For a fresh session, start with the [current recap and difficulty assessment](ne
 It identifies the local checkpoint/CI follow-up, remaining work, support decisions,
 and the next bounded engineering task. The detailed records below remain the evidence.
 
+## Temporal and LightmapGI checkpoint review — 2026-09-10
+
+Reviewed both previously uncommitted milestones, including the retained native
+reports, package manifests, comparison images and runtime changes. A fresh package
+rebuild matches the LightmapGI ZIP exactly:
+`9308a68209faede3a7444148bc42bb6b25a1eac4a5f6bf40f107f71a176a3802`.
+The saved 3,075 LightmapGI and 3,208 temporal package checks remain valid for their
+recorded snapshots; no large native matrix was rerun for documentation/CI changes.
+
+Previous commit `3fbac56` had an overlooked Combined appearance failure:
+run `34498588684` lost its Godot download connection before package/tests began.
+The appearance and new temporal/lightmap workflows now retry connection errors
+with bounded connection and transfer timeouts. All three pass local actionlint;
+hosted checkpoint execution is pending. See the latest [validation](validation.md)
+entry for the final push and CI status. Earlier "uncommitted" notes below record
+the state at the end of those sessions.
+
+Next engineering work is the [bounded combined-effects fixture](next-session.md#starting-the-next-engineering-task),
+then measured Forward+/Mobile 4K/8K workloads. Native Linux/Mac GPU coverage,
+private usability/delivery review and the exact 1.0 candidate remain open.
+
+## Saved LightmapGI — 2026-09-10
+
+Completed the next bounded rendering milestone: sixteen 72-frame clips on native
+Windows / RTX 3060 Ti / Godot 4.7.2, with Forward+ at zero/12.5% borders, Mobile
+at 12.5%, and Compatibility at zero. Twelve normal clips pass; four missing-map
+controls are correctly rejected. All 1,152 source and decoded frames are reviewed.
+A real saved editor bake covers ten static receivers and 396 probes;
+independent-world references check the moving object, camera cut and delivery.
+The negative control caught an early reference-world wiring error, now corrected.
+The addon capture runtime needed no change. See [the guide](lightmap-capture.md)
+and the newest [validation entry](validation.md).
+
+Final ZIP: `.godot360/lightmap-review/package/reviewed.zip`, SHA256
+`9308a68209faede3a7444148bc42bb6b25a1eac4a5f6bf40f107f71a176a3802`.
+The 227-member package rebuilds identically and passes 3,075 headless/failure
+checks across 4.5.1/4.6.3/4.7.2. Native LightmapGI evidence is limited to 4.7.2.
+The audit maps every final review to the package; failed development attempts are
+retained. New CI passes local actionlint but has not run remotely. All changes,
+including the previous temporal milestone, remain local and uncommitted.
+Next: selected combined rendering cases, then representative heavy 4K/8K workloads.
+Preserve creative scenes, masters, saved settings and the existing local changes.
+
+## Temporal rendering and graphics failures — 2026-09-10
+
+Completed selected TAA/FSR, persistent camera/world history and VoxelGI reviews:
+22 complete clips, 1,584 source/decoded delivery frames, three rejected history
+controls, and one additional graphics-error job correctly stopped before encoding.
+The pipeline now rejects engine rendering/backend errors despite a complete frame
+count. Mobile's tested compositor authors 4x MSAA and uses a writable per-view
+texture with sampled input/copy-back. See [the guide](temporal-capture.md) and
+[the newest validation record](validation.md) for limits and failed experiments.
+
+Final local ZIP: `.godot360/temporal-review/package/reviewed.zip`, SHA256
+`ef7aeb5e57113032a382c5e7f9c4372d84e75b76590c6efaf5d55b41b5c27a77`.
+It rebuilds identically and passes 3,208 checks (1,158 full 4.7.2; 1,025 each
+4.5.1/4.6.3 headless/failure). The audit verifies the native source mapping.
+Work remains uncommitted; no hosted execution or publication is claimed. The
+new Temporal rendering workflow passes local actionlint. Preserve these changes.
+Next bounded target is baked LightmapGI, followed by remaining combined cases
+and heavy production workloads; the other 1.0 acceptance work remains open.
+
 ## Complex particles and LUMEN — 2026-09-10
 
 Completed the previously interrupted smoke/trail increment and added the

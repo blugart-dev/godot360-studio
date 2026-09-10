@@ -40,7 +40,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y ffmpeg xvfb libgl1-mesa-dri libglx-mesa0 mesa-vulkan-drivers libxrandr2 libxinerama1 libxcursor1 libxi6
           mkdir -p .godot360/ci-appearance/tools
-          curl --fail --location --retry 3 "https://github.com/godotengine/godot-builds/releases/download/${GODOT_VERSION}-stable/Godot_v${GODOT_VERSION}-stable_linux.x86_64.zip" -o .godot360/ci-appearance/tools/godot.zip
+          curl --fail --location --retry 3 --retry-all-errors --connect-timeout 30 --max-time 300 "https://github.com/godotengine/godot-builds/releases/download/${GODOT_VERSION}-stable/Godot_v${GODOT_VERSION}-stable_linux.x86_64.zip" -o .godot360/ci-appearance/tools/godot.zip
           unzip -q .godot360/ci-appearance/tools/godot.zip -d .godot360/ci-appearance/tools
           chmod +x ".godot360/ci-appearance/tools/Godot_v${GODOT_VERSION}-stable_linux.x86_64"
           echo "GODOT=$PWD/.godot360/ci-appearance/tools/Godot_v${GODOT_VERSION}-stable_linux.x86_64" >> "$GITHUB_ENV"

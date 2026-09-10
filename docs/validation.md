@@ -1,5 +1,164 @@
 # Validation record — updated 2026-09-10
 
+## Temporal and LightmapGI checkpoint review — 2026-09-10
+
+Rechecked the retained reports and source snapshots for both milestones: temporal
+**22 complete clips / 1,584 decoded frames** plus the separate graphics-error
+control, and saved LightmapGI **16 clips / 1,152 decoded frames**. The 31 normal
+clips pass; seven deliberately incorrect completed clips and the graphics-error
+job are rejected. This recheck verifies the existing evidence, not a new render.
+Both archived ZIPs pass manifest/CRC verification. Local audit:
+`.godot360/checkpoint-review/local-evidence.json`.
+
+The current 227-member package rebuilds byte-for-byte to the previously reviewed
+LightmapGI candidate, SHA256
+`9308a68209faede3a7444148bc42bb6b25a1eac4a5f6bf40f107f71a176a3802`.
+Its saved **3,075** headless/failure checks remain applicable. The prior temporal
+candidate's **3,208** checks describe that earlier package, as detailed below.
+Repository hygiene and all seven guard tests pass. The changed appearance,
+temporal and lightmap workflows pass actionlint 1.7.12 with ShellCheck disabled.
+
+Review of prior hosted runs found Combined appearance `34498588684` failed on
+`3fbac56` because curl's Godot download lost its connection (exit 35), before
+any package or rendering test. The three workflows now retry connection errors
+with 30-second connection and 300-second per-attempt transfer limits. Hosted
+validation of this checkpoint is pending; no new hosted success is claimed here.
+
+The next engineering scope is defined in the [continuation brief](next-session.md#starting-the-next-engineering-task).
+This checkpoint preserves the private 0.8.0 version and creative scenes/masters.
+
+## Saved LightmapGI — 2026-09-10
+
+The [saved LightmapGI review](lightmap-capture.md) passes on Windows 11 /
+RTX 3060 Ti / Godot 4.7.2. Forward+/Vulkan runs with zero and 12.5% borders;
+Mobile/Vulkan uses 12.5%; Compatibility/OpenGL uses zero. Each matrix includes
+lightmaps enabled, lightmaps disabled, dynamic probes disabled and a deliberately
+missing captured lightmap. **16 completed clips / 1,152 source and decoded frames**
+include **four correctly rejected missing-map controls** and twelve accepted clips.
+
+The real editor Bake Lightmaps action produces one directional atlas, ten static
+mesh users and 396 probes. The editor closes, all files are imported into fresh
+review projects, and runtime workers reopen the saved scene without rebaking.
+All four matrices use identical scene/EXR/import/LightmapGIData bytes. A second
+World3D supplies six independent native face views and a diagonal perspective.
+Every warmup/delivered draw checks the actual reference-camera world, both GI
+states, object transforms, camera poses and viewport settings. Frame 36 cuts the
+camera. CPU projection, full delivery/reference MP4 decoding and all thirteen
+pipeline delivery checks pass. Disabled features visibly differ in every frame;
+delayed references fail in every clip.
+
+Maximum accepted face MAE is **0.000039/255**, face p99
+**0.000000**, panorama MAE **0.143860/255**,
+panorama p99 **0.705399**, and decoded RMS
+**1.186252/255**. Original thresholds are unchanged.
+Diagonal-view/boundary metrics remain observations, not seamlessness claims.
+
+The initial negative control exposed an oracle wiring error: `own_world_3d`
+creates a private world while the viewport's `world_3d` property remains null.
+Assigning that null property made the reference cameras inherit the captured
+world. The corrected fixture uses the room's actual World3D and checks every
+reference camera's world on every draw. The two early matrices are excluded from
+acceptance; the corrected missing-map controls reject large lighting errors.
+Early editor-helper attempts also found the minimum atlas size, the need to
+index the generated directory before baking, the explicit bake save dialog, and
+editor-scene cleanup before exit. These failed attempts remain under the local
+evidence folder. None required an addon rendering-runtime change.
+
+Frozen package: `.godot360/lightmap-review/package/reviewed.zip`, **227 members /
+1,201,479 bytes**, SHA256
+`9308a68209faede3a7444148bc42bb6b25a1eac4a5f6bf40f107f71a176a3802`.
+Manifest verification, identical rebuild and unchanged payload pass. The exact
+package passes **3,075 headless/failure checks** on 4.5.1/4.6.3/4.7.2, 1,025 each,
+including the existing graphics-error rejection and storage-failure cases.
+This increment does not repeat the previous full recovery/first-export matrix.
+One existing temporal baseline was re-analyzed after adding the shared review
+option; it still passes with GPU-buffer inspection required by default.
+
+Evidence: `.godot360/lightmap-review/final-forward/`, `final-border/`,
+`final-mobile/`, `final-compatibility/`, `package/headless/` and `audit.json`.
+The audit verifies captured-source integrity, identical saved bake bytes,
+current runtime/fixture/reviewer bytes and package mapping. The first Forward+
+snapshot differs only in the two addon Markdown guides finalized during review;
+the other matrices match current source exactly. Comparison-sheet provenance is
+in `docs/media/lightmap-provenance.json`.
+
+Baked LightmapGI and Temporal rendering workflows pass actionlint 1.7.12 with
+ShellCheck disabled. Repository checks and all seven hygiene unit tests pass.
+No hosted run, commit, push, public publication or version bump is claimed.
+Broader combined rendering cases and heavy 4K/8K workloads are next; native
+Linux/Mac GPU and private end-to-end release reviews remain open.
+
+## Temporal rendering and graphics-error rejection — 2026-09-10
+
+The [temporal review](temporal-capture.md) passes on Windows 11 / RTX 3060 Ti /
+Godot 4.7.2 / Vulkan. Forward+ runs nine cases each with zero and 12.5% borders:
+baseline, TAA, FSR1/FSR2 at 67% internal resolution, camera/world persistent
+history, deliberately shared history, and VoxelGI off/on. Mobile adds baseline,
+camera/world history and the shared-history control with authored 4x MSAA and
+12.5% borders, plus one direct-buffer graphics-failure job without MSAA.
+
+**22 completed exports / 1,584 source and 1,584 decoded delivery frames**:
+19 accepted clips and three correctly rejected shared-history controls. Every
+clip uses 72 delivered frames at 1024×512/30 FPS, 256-pixel face cores and eight
+warmup draws. Independent native cameras/viewports/compositor resources share
+the world; all six face transforms/settings and actual TAA/FSR render buffers are
+observed. A CPU projector builds the native reference panorama. Every delivery
+and reference MP4 is decoded; all thirteen delivery checks pass. Delayed native
+references fail, and every enabled feature has visible contribution.
+
+Maximum accepted per-face source MAE is **0.048301/255**, with p99 at most two
+levels; independent panorama MAE is **0.055929/255**, p99 below 0.498. Maximum
+decoded RMS is **1.372080/255**. These pass the initial thresholds. The separate
+diagonal perspective has different screen/history behavior: its boundary-strip
+measurements are observations, not a seamlessness or temporal-quality guarantee.
+
+The initial VoxelGI reference used a different shadow-atlas resolution. Matching
+that native setting fixed the oracle; no capture geometry change was required.
+Native-resolution buffer probes report the engine's disabled-scaler sentinel
+255; the reviewer accepts that only with native-size buffers, while FSR modes
+and internal resolution must match exactly. Initial reports remain retained.
+
+Mobile revealed a real delivery defect: graphics-engine errors could leave a
+complete PNG count and successful worker exit, allowing an effect-free delivery.
+`renderer_policy.gd` now classifies rendering/backend error origins from the
+worker log; `pipeline.gd` saves a failed capture result and stops before encoding.
+The direct-buffer control verifies all 80 requested images can exist while no
+final MP4 is created and recovery correctly requires a new render. Synthetic
+lifecycle injection also checks this on all three engines. The regression run
+identified optional disk shader-cache unavailability as nonfatal; its exact
+diagnostic is exempt alongside unrelated OS certificate-store messages. Other
+rendering errors remain failures.
+
+Mobile's color attachment cannot be bound as a compute storage image. The fixture
+uses authored 4x MSAA, samples the resolved color into per-view writable storage,
+then copies it back. Without MSAA the attachment also lacks the copy-destination
+flag. Intermediate failed direct-write/copy experiments are retained and are not
+counted as accepted exports. This is a bounded compositor implementation with
+extra storage/copy costs, not automatic support for arbitrary custom effects.
+
+The final addon is `.godot360/temporal-review/package/reviewed.zip`, **221 members /
+1,192,224 bytes**, SHA256
+`ef7aeb5e57113032a382c5e7f9c4372d84e75b76590c6efaf5d55b41b5c27a77`.
+Its manifest, identical rebuild and unchanged payload pass. The exact package
+passes **3,208 checks**: full 4.7.2 Compatibility workflow **1,158**, plus
+4.5.1/4.6.3 headless/failure suites **1,025 each**. These include capture failure,
+storage failure, audio, playback and the full 4.7.2 recovery/first-export workflow.
+
+Evidence is under `.godot360/temporal-review/`: `final-forward/`, `final-border/`,
+`mobile-msaa-copy/`, `package/reviewed-full/`, `package/reviewed-headless/` and
+`audit.json`. The audit verifies current packaged bytes and all native fixture/
+capture hashes. Mobile matches current source exactly. The Forward+ snapshots
+differ only in two Markdown guides and the four-line optional shader-cache
+exception; their logs contain no such diagnostic or other rendering error, and
+their capture/fixture/shader bytes match exactly. The package suites exercise
+the final exception without repeating unchanged native image matrices.
+
+The new Temporal rendering workflow passes actionlint with ShellCheck disabled.
+No hosted CI run, commit, push, publication or version bump is claimed for this
+increment. Baked LightmapGI, longer/combined effect histories, broader transparency
+and animation cases, heavy 4K/8K budgets, native Mac/Linux hardware and the final
+private delivery review remain open. Next bounded target: baked LightmapGI.
+
 ## Complex particles and LUMEN — 2026-09-10
 
 The interrupted native trail review is complete on Windows 11 / RTX 3060 Ti,

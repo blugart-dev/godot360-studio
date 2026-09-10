@@ -74,6 +74,22 @@ compares it byte-for-byte with the original candidate.
 
 ### Renderer appearance and motion
 
+`tests/lightmap_review.py` creates and saves a real editor LightmapGI bake, then
+exports static-lightmap and dynamic-probe cases against independent native
+worlds. Every source and decoded frame is checked, including cuts, borders and a
+missing-map control. See [saved LightmapGI](lightmap-capture.md) for commands and
+the distinction between editor baking and runtime capture. The Baked LightmapGI
+workflow prepares software-renderer coverage; hosted execution is recorded
+separately from native results.
+
+`tests/temporal_review.py` compares every source and decoded frame with native
+viewports for TAA/FSR, persistent compositors and VoxelGI. It checks active GPU
+buffer settings, camera cuts and delayed/shared-history controls. The Mobile
+direct-buffer control exercises graphics-error rejection in the actual pipeline.
+See [temporal capture](temporal-capture.md) for commands, thresholds and scope.
+The separate Temporal rendering workflow prepares software-Vulkan coverage;
+hosted execution must be recorded separately from local native evidence.
+
 `tests/appearance_review.py` checks combined moving lights/materials, camera motion,
 a lighting cut, camera/world exposure changes and capture borders. Nine rendered
 clips provide fixed/authored-oracle comparisons, glow-disabled observations and

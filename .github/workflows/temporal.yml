@@ -1,0 +1,81 @@
+name: Temporal rendering
+
+on:
+  pull_request:
+    paths: ['addons/godot360/**', 'tests/**', 'tools/package_addon.py', 'requirements-dev.txt', '.github/workflows/temporal.yml']
+  push:
+    branches: [main]
+    paths: ['addons/godot360/**', 'tests/**', 'tools/package_addon.py', 'requirements-dev.txt', '.github/workflows/temporal.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: temporal-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  temporal:
+    name: ${{ matrix.method }} / Mesa software Vulkan
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - method: forward_plus
+            cases: baseline,taa,fsr1,fsr2,history,history-world,shared-history-control,voxel-off,voxel
+            border: '0'
+          - method: mobile
+            cases: baseline,history,history-world,shared-history-control,mobile-buffer-control
+            border: '12.5'
+    env:
+      GODOT_VERSION: 4.7.2
+      PYTHONUNBUFFERED: '1'
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.13'
+      - name: Install review tools
+        run: |
+          python -m pip install -r requirements-dev.txt
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg xvfb libgl1-mesa-dri libglx-mesa0 mesa-vulkan-drivers libxrandr2 libxinerama1 libxcursor1 libxi6
+          mkdir -p .godot360/ci-temporal/tools
+          curl --fail --location --retry 3 --retry-all-errors --connect-timeout 30 --max-time 300 "https://github.com/godotengine/godot-builds/releases/download/${GODOT_VERSION}-stable/Godot_v${GODOT_VERSION}-stable_linux.x86_64.zip" -o .godot360/ci-temporal/tools/godot.zip
+          unzip -q .godot360/ci-temporal/tools/godot.zip -d .godot360/ci-temporal/tools
+          chmod +x ".godot360/ci-temporal/tools/Godot_v${GODOT_VERSION}-stable_linux.x86_64"
+          echo "GODOT=$PWD/.godot360/ci-temporal/tools/Godot_v${GODOT_VERSION}-stable_linux.x86_64" >> "$GITHUB_ENV"
+      - name: Freeze and verify the package
+        run: |
+          python tools/package_addon.py --output .godot360/ci-temporal/candidate.zip
+          python -m zipfile -e .godot360/ci-temporal/candidate.zip .godot360/ci-temporal/unpacked
+          python .godot360/ci-temporal/unpacked/tools/package_addon.py --verify .godot360/ci-temporal/candidate.zip
+      - name: Render and compare every temporal frame
+        env:
+          REVIEW_METHOD: ${{ matrix.method }}
+          REVIEW_CASES: ${{ matrix.cases }}
+          REVIEW_BORDER: ${{ matrix.border }}
+        run: |
+          for icd in /usr/share/vulkan/icd.d/lvp*json; do export VK_DRIVER_FILES="$icd"; break; done
+          test -f "$VK_DRIVER_FILES"
+          xvfb-run -a -s '-screen 0 1400x900x24' python .godot360/ci-temporal/unpacked/tests/temporal_review.py --godot "$GODOT" --ffmpeg "$(command -v ffmpeg)" --ffprobe "$(command -v ffprobe)" --method "$REVIEW_METHOD" --driver vulkan --cases "$REVIEW_CASES" --border "$REVIEW_BORDER" --output .godot360/ci-temporal/review
+      - name: Retain review evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: temporal-${{ matrix.method }}
+          retention-days: 14
+          include-hidden-files: true
+          path: |
+            .godot360/ci-temporal/candidate.json
+            .godot360/ci-temporal/review/temporal-review.json
+            .godot360/ci-temporal/review/comparison.jpg
+            .godot360/ci-temporal/review/**/*.log
+            .godot360/ci-temporal/review/**/report.json
+            .godot360/ci-temporal/review/**/temporal-samples.json
+            .godot360/ci-temporal/review/**/capture-settings.json

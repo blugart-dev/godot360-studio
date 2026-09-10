@@ -1,5 +1,32 @@
 # Changelog
 
+## Unreleased — saved LightmapGI validation
+
+- Add a disposable editor bake and saved-scene review for static lightmaps and
+  a moving dynamic probe receiver, with camera cuts and capture borders.
+- Compare every face, source panorama and decoded MP4 frame with independent
+  native cameras in a second world. Require disabled-lighting contribution tests,
+  delayed references and a missing-map negative control.
+- Package the reproducible reviewer and prepare a separate Baked LightmapGI
+  workflow. This adds bounded validation and authoring guidance; the capture
+  runtime is unchanged.
+
+## Unreleased — temporal rendering and graphics failure detection
+
+- Reject completed captures when the worker log records an engine rendering or
+  graphics-backend error. Keep the failed capture result and diagnostics, require
+  a new render, and do not encode or publish a final video with a missing effect.
+  Existing script-error handling is retained; unrelated certificate-store
+  diagnostics, optional shader-cache unavailability and renderer warnings do not
+  trigger this failure.
+- Add every-frame native references for TAA, FSR1/FSR2, persistent camera/world
+  compositor history and a bounded baked VoxelGI scene, with camera cuts,
+  enabled/disabled comparisons and deliberately failing controls.
+- Inspect actual render buffers and every decoded MP4 frame. Document the
+  distinction between effect preservation and view-dependent boundary artifacts.
+- Include the reviewer in reproducible addon packages and add a separate
+  Temporal rendering workflow. Native and hosted evidence remain distinct.
+
 ## Unreleased — moving smoke and particle material guidance
 
 - Add an optional point-facing smoke shader that keeps particle orientation

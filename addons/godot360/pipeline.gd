@@ -276,9 +276,10 @@ func _capture() -> bool:
 	# A PackedScene can instantiate even when its attached script fails to parse.
 	# Such a render is missing authored behavior, despite a complete PNG count.
 	var capture_log := FileAccess.get_file_as_string(folder.path_join("capture.log"))
-	if capture.get("ok", false) and capture_log.contains("SCRIPT ERROR:"):
+	var log_error := preload("renderer_policy.gd").capture_log_error(capture_log)
+	if capture.get("ok", false) and not log_error.is_empty():
 		capture.ok = false
-		capture.error = "Scene script failed during capture. See SCRIPT ERROR in capture.log; fix the scene and start a new render."
+		capture.error = log_error
 		_required_json("capture-result.json", capture)
 	if not capture.get("ok", false):
 		_fail(str(capture.get("error", "Rendering worker exited (exit %d) before completing capture. See capture.log." % worker_exit)))

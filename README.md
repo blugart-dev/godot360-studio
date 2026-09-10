@@ -102,8 +102,13 @@ engineering and validation work. This source snapshot is not a stable 1.0 releas
   exposure is deferred beyond the authored-exposure scope of 1.0.
 - [Moving smoke](docs/smoke-capture.md) and [native particle trails](docs/trail-capture.md)
   now have bounded rendered references, including pause/camera cuts and renderer exclusions.
-- **Next:** advanced rendering effects, remaining effect seams, native hardware
-  coverage, representative Forward+/Mobile endurance and private workflow review.
+- [Temporal rendering](docs/temporal-capture.md) now has every-frame TAA/FSR,
+  persistent compositor and VoxelGI references. Graphics-engine errors prevent
+  a successful delivery even when every frame was written.
+- [Saved LightmapGI](docs/lightmap-capture.md) now has static-lightmap and dynamic-probe
+  evidence, with saved editor baking, camera cuts and missing-map controls.
+- **Next:** combined effects and remaining seams, heavy 4K/8K workloads, native hardware
+  coverage and private workflow review.
 
 Scope is **mono 360°, SDR BT.709 and stereo sound**. Six-face capture can show
 seams with glow, auto exposure and other screen-space effects; inspect a test

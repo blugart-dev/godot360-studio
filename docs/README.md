@@ -18,7 +18,7 @@ the results, then follow the walkthrough using your own scene or an included exa
 | Animate a camera or prepare interactive events | [Authoring](../addons/godot360/AUTHORING.md) · [Skeletal camera timing](skeletal-capture.md) · [Imported characters](imported-characters.md) · [Head look and nested attachments](modifier-capture.md) · [Particle capture](particle-capture.md) · [Moving smoke](smoke-capture.md) |
 | Add a soundtrack, mix audio and adjust timing | [Audio](../addons/godot360/AUDIO.md) |
 | Understand quality, recipes and command-line use | [Addon reference](../addons/godot360/README.md) |
-| Check glow, exposure and other scene effects | [Renderers](../addons/godot360/RENDERERS.md) · [Capture borders](capture-borders.md) · [Consistent exposure](exposure-consistency.md) · [Combined appearance](combined-appearance.md) |
+| Check glow, exposure and other scene effects | [Renderers](../addons/godot360/RENDERERS.md) · [Capture borders](capture-borders.md) · [Consistent exposure](exposure-consistency.md) · [Combined appearance](combined-appearance.md) · [Temporal effects](temporal-capture.md) · [Saved LightmapGI](lightmap-capture.md) |
 | Play, seek and listen inside Godot | [Playback](../addons/godot360/PLAYBACK.md) |
 | Reopen work, re-encode or reclaim space | [Recovery](../addons/godot360/RECOVERY.md) · [Storage](../addons/godot360/STORAGE.md) |
 | Plan a larger render and final delivery | [Job planning](job-planning.md) · [YouTube production](youtube-360-production.md) |

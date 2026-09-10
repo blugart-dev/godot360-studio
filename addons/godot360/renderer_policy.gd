@@ -48,3 +48,28 @@ static func mismatch(selection: Dictionary, method: String, driver: String) -> S
 	if method != str(selection.resolved_method) or driver != str(selection.resolved_driver):
 		return "Renderer fallback: requested %s / %s, started %s / %s. Capture stopped to preserve appearance. Check capture.log, fix the graphics driver or explicitly select the renderer/driver you intend to use, then run a new test." % [selection.resolved_method, selection.resolved_driver, method, driver]
 	return ""
+
+
+static func capture_log_error(log_text: String) -> String:
+	if log_text.contains("SCRIPT ERROR:"):
+		return "Scene script failed during capture. See SCRIPT ERROR in capture.log; fix the scene and start a new render."
+	# RenderingDevice can reject a compositor dispatch while the scene keeps
+	# drawing valid-sized frames and exits successfully. Such frames are missing
+	# an authored effect. Attribute engine errors to their rendering/backend
+	# origin; unrelated OS certificate-store messages are not capture failures.
+	var message := ""
+	for raw_line in log_text.split("\n"):
+		var line := raw_line.strip_edges()
+		if line.begins_with("ERROR:"):
+			message = line.trim_prefix("ERROR:").strip_edges()
+			# Compatibility explicitly continues without its optional disk cache.
+			# This does not omit a draw/effect and must not invalidate the video.
+			if message.begins_with("Can't create shader cache folder, no shader caching will happen:"):
+				message = ""
+		elif line.begins_with("WARNING:"):
+			message = ""
+		elif not message.is_empty() and line.begins_with("at: "):
+			if line.contains("(servers/rendering/") or line.contains("(drivers/vulkan/") or line.contains("(drivers/d3d12/") or line.contains("(drivers/metal/") or line.contains("(drivers/gles3/"):
+				return "Renderer failed during capture: %s See capture.log; fix the effect or graphics configuration and start a new render." % message
+			message = ""
+	return ""

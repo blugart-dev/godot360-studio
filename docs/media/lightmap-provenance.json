@@ -1,0 +1,29 @@
+{
+  "description": "Unmodified sheets from accepted saved-LightmapGI reviews; the last row is an intentionally incorrect missing-map control.",
+  "files": {
+    "lightmap-forward.jpg": {
+      "bytes": 68440,
+      "sha256": "4f240619be394c90805e36e57d7f2f70deadd43b9bc53b9a1db658ea923d9b0c",
+      "source": ".godot360/lightmap-review/final-forward/comparison.jpg",
+      "review_sha256": "fb7a344dcfafd1a36b75d5abe9611cbe2647cd7eed85f302dfaec2ec147110ea"
+    },
+    "lightmap-border.jpg": {
+      "bytes": 68453,
+      "sha256": "eca420dc819e664fc2268993b9511bbb57d1290869e0cf8f9462b2892ad57f07",
+      "source": ".godot360/lightmap-review/final-border/comparison.jpg",
+      "review_sha256": "872bb5673cdbf785ba0df717f59e3551db36dbd0d7f681cb112df074ad5a65fd"
+    },
+    "lightmap-mobile.jpg": {
+      "bytes": 68626,
+      "sha256": "8afafd39ba3effed8f11eeb733adee5d991fd49752969c1707590e1cd7a33172",
+      "source": ".godot360/lightmap-review/final-mobile/comparison.jpg",
+      "review_sha256": "d23f42a3403be0ab4c27473033bf88898b10c3e9ac16021fcd62ea28bf2de94e"
+    },
+    "lightmap-compatibility.jpg": {
+      "bytes": 71995,
+      "sha256": "12eb489ecf3605e8c73545d22d46574bb0b210e7de83f5fa05d43321691d16e2",
+      "source": ".godot360/lightmap-review/final-compatibility/comparison.jpg",
+      "review_sha256": "475322ea0bb0297636f71808111f0458c468570f3d583c4dfc7bc3be1c613cd4"
+    }
+  }
+}

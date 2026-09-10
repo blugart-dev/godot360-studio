@@ -86,7 +86,7 @@ opaque. A panorama cannot preserve the composition of a single perspective frame
 | Lighting, shadow maps, PBR and alpha transparency | Use the selected renderer's native implementation. Specular reflections, transparency sorting and directional shadow cascades can depend on face direction. |
 | Glow | Preserved where the renderer supports it; a face cannot bloom from an emitter just outside its view. Bright objects crossing cube edges can reveal a cut in the halo. |
 | Depth/volumetric fog | Camera depth and temporal fog history differ per face. Inspect horizon, cube edges and moving lights. Volumetric fog requires Forward+. |
-| SDFGI / other GI | Shared scene data is retained, but convergence and visibility are renderer-dependent. Give SDFGI time to settle. VoxelGI and baked LightmapGI require separate validation. |
+| SDFGI / other GI | Shared scene data is retained, but convergence and visibility are renderer-dependent. Give SDFGI time to settle. Bounded VoxelGI and saved LightmapGI reviews are described below; larger or combined layouts still need review. |
 | SSAO, SSIL, SSR | Forward+ features. Each face has a separate depth/color screen; missing information outside a face can produce edges and incomplete reflections. The rig cannot reconstruct that information. |
 | TAA / FSR2 | Each face accumulates independent history. Moving objects can ghost and disocclusions restart history at boundaries. Increase warmup and compare an MSAA-only test if artifacts are objectionable. |
 | Auto exposure | Forward+ meters each view separately, which can create brightness seams. Advanced offers explicit **Fixed (authored)** exposure; Scene remains the default. Mobile/Compatibility do not support native auto exposure. |
@@ -110,7 +110,7 @@ The [skeletal capture fixture](AUTHORING.md#skeletal-animation-and-viewpoint-cut
 adds a keyed weighted mesh and a bone-attached camera cut. Camera synchronization
 now waits for the queued attachment update, avoiding a one-frame viewpoint delay.
 This does not establish arbitrary character, particle or temporal-effect support.
-FSR output, VoxelGI, baked LightmapGI and stateful custom compositor histories
+Broader FSR, GI and stateful custom compositor combinations
 remain untested.
 
 ## Capture exposure
@@ -210,6 +210,56 @@ python tests/border_review.py --godot /path/to/godot --ffmpeg /path/to/ffmpeg --
 
 Repeat with `--method mobile`. The review requires NumPy, Pillow, a working native
 GPU backend and enough disk space for four three-second 2K frame sequences.
+
+## Temporal and GI review
+
+The repository's `tests/temporal_review.py` checks TAA, FSR1/FSR2 at 67% internal
+resolution, a persistent camera/world compositor and a small baked VoxelGI scene.
+It compares every frame with independently owned native viewports, checks actual
+render-buffer modes/resolutions, reprojects reference pixels independently and
+fully decodes both MP4s. Motion crosses cube boundaries and includes a camera cut.
+Incorrect shared history and delayed references must fail. See the dated results
+in the repository's `docs/temporal-capture.md` and `docs/validation.md`.
+
+Compositors must check the color texture's usage flags. With the fixture's authored
+4x MSAA, Mobile's color attachment is sampleable and accepts copies but cannot be
+bound directly as a compute storage image. Without MSAA it also lacks the required
+copy-destination flag. The Mobile history fixture therefore uses authored 4x MSAA
+and a per-viewport writable working texture, reads through a sampler, then copies
+its result back. The exporter preserves those authored settings.
+This adds storage and copy work whose production cost has not been profiled.
+Do not generalize this bounded effect to arbitrary third-party compositors.
+
+TAA/FSR2 keep separate histories per face; preserving them does not guarantee
+identical appearance at boundaries. Inspect disocclusions and cuts with the
+intended settings. Larger GI layouts and longer/combined effect
+histories still require separate review. These small clips do not establish
+4K/8K endurance, native Linux/Mac GPU support or the entire 1.0 scene matrix.
+
+The pipeline now rejects engine rendering/backend errors recorded in
+`capture.log`, even when every PNG exists and the worker exits successfully.
+The failed result retains the original diagnostic and requires a new render;
+it is not offered as a reusable completed capture. Script errors continue to
+fail as before. This log check cannot detect every incorrect custom effect;
+visual review remains necessary.
+
+## Saved LightmapGI
+
+The repository's `tests/lightmap_review.py` creates a real editor bake, saves its
+scene, atlas and probe data, then reopens them in fresh capture workers. Its
+small room has ten static receivers and a moving sphere. Separate captured and
+native worlds check every delivered frame, including a camera cut and borders.
+Disabled-lightmap and disabled-probe cases establish feature contribution; a
+missing-map control and delayed references must fail image acceptance. See
+`docs/lightmap-capture.md` and `docs/validation.md` in the source repository for
+the dated renderer evidence and thresholds.
+
+Bake and save before exporting. Keep the `.lmbake`, EXR and import settings with
+the scene; static receivers need UV2 and Static GI mode. Dynamic objects need
+probes covering their path. The fixture bakes with Forward+/Vulkan in the editor,
+then captures using the selected renderer. The exporter does not bake lightmaps
+or validate whether an absent lightmap was intentional. Multiple/streamed GI
+layouts, shadowmask combinations and large-atlas budgets need separate review.
 
 ## Estimates, retained captures and troubleshooting
 

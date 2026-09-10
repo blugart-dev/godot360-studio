@@ -21,6 +21,14 @@ func _run() -> void:
 	check(Policy.mismatch(selection, "forward_plus", "vulkan").is_empty(), "Matching worker accepted")
 	check(Policy.mismatch(selection, "gl_compatibility", "opengl3").contains("fallback"), "Renderer fallback is a visible failure")
 	check(Policy.mismatch(selection, "forward_plus", "d3d12").contains("fallback"), "Driver fallback is also a visible failure")
+	for location in ["servers/rendering/rendering_device.cpp:4555", "drivers/vulkan/rendering_device_driver_vulkan.cpp:42", "drivers/d3d12/rendering_device_driver_d3d12.cpp:42", "drivers/metal/rendering_device_driver_metal.mm:42", "drivers/gles3/storage/texture_storage.cpp:42"]:
+		var log_text := "ERROR: Invalid render buffer.\n   at: bind_buffer (%s)\n" % location
+		check(Policy.capture_log_error(log_text).contains("Renderer failed during capture: Invalid render buffer."), "Graphics error cannot produce a successful delivery: " + location)
+	check(Policy.capture_log_error("ERROR: Failed to read the root certificate store.\n   at: get_system_ca_certificates (platform/windows/os_windows.cpp:2582)\n").is_empty(), "OS certificate-store diagnostics do not invalidate rendered frames")
+	check(Policy.capture_log_error("ERROR: Can't create shader cache folder, no shader caching will happen: user://\n   at: RasterizerGLES3 (drivers/gles3/rasterizer_gles3.cpp:345)\n").is_empty(), "Compatibility can render correctly without its optional disk shader cache")
+	check(Policy.capture_log_error("WARNING: A rendering advisory.\n   at: advise (servers/rendering/rendering_device.cpp:10)\n").is_empty(), "Renderer warnings are not treated as engine errors")
+	check(Policy.capture_log_error("ERROR: Unrelated diagnostic.\n   at: other (core/io/file_access.cpp:1)\n   at: trace (servers/rendering/rendering_device.cpp:10)\n").is_empty(), "Only the error origin is classified, not a later stack entry")
+	check(Policy.capture_log_error("SCRIPT ERROR: Broken authored scene").contains("Scene script failed"), "Existing script failure classification is retained")
 	var sample := Planner.test_job(recipe)
 	check(Planner.matches(sample, recipe), "Fresh renderer sample matches")
 	var old_sample := sample.duplicate(true)

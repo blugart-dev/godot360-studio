@@ -1,0 +1,23 @@
+{
+  "description": "Unmodified comparison sheets from accepted temporal reviews; local reports identify the exact source and controls.",
+  "files": {
+    "temporal-forward.jpg": {
+      "bytes": 143803,
+      "sha256": "bbb3d3ddd5f0e252d71354b6690e0ea2ec44e5d5ae67b4c38df427785e3d57a2",
+      "source": ".godot360/temporal-review/final-forward/comparison.jpg",
+      "review_sha256": "37122528fe50edf4fd20e5d1b665caab2118147ac667766f67acb88d734c00dd"
+    },
+    "temporal-border.jpg": {
+      "bytes": 143238,
+      "sha256": "a97ad3f921eabedcc51e51e296cb902daa8ecc565e574c6b74e663a91f10b333",
+      "source": ".godot360/temporal-review/final-border/comparison.jpg",
+      "review_sha256": "eef29fac584c3648678706e6a6098bb8fef511e75a9183e1af3880e3b840a2b8"
+    },
+    "temporal-mobile.jpg": {
+      "bytes": 85665,
+      "sha256": "3baab7b59a15004a7f18ad28d64e9fdd160293ba49d53e99cde434f81b46df47",
+      "source": ".godot360/temporal-review/mobile-msaa-copy/comparison.jpg",
+      "review_sha256": "d15deffea1f5a33752930567710728bccf282b368bebd15074cf4d663bd7451e"
+    }
+  }
+}
