@@ -3,6 +3,7 @@ extends CompositorEffect
 ## The shared-history switch is an intentional failing control, never addon code.
 var shared_history := false
 var direct_only := false
+var history_weight := 0.65
 var shader := RID()
 var pipeline := RID()
 var shared_textures := {}
@@ -42,7 +43,7 @@ void main() {
     #else
     vec4 c = imageLoad(target, p);
     #endif
-    if (params.values.x > 0.5) c.rgb = mix(c.rgb, imageLoad(history, p).rgb, 0.65);
+    if (params.values.x > 0.5) c.rgb = mix(c.rgb, imageLoad(history, p).rgb, params.values.y);
     imageStore(history, p, c);
     imageStore(target, p, c);
 }
@@ -100,7 +101,7 @@ void main() {
 	var list := rd.compute_list_begin()
 	rd.compute_list_bind_compute_pipeline(list, pipeline)
 	rd.compute_list_bind_uniform_set(list, set_id, 0)
-	rd.compute_list_set_push_constant(list, PackedFloat32Array([1.0 if initialized else 0.0, 0, 0, 0]).to_byte_array(), 16)
+	rd.compute_list_set_push_constant(list, PackedFloat32Array([1.0 if initialized else 0.0, history_weight, 0, 0]).to_byte_array(), 16)
 	rd.compute_list_dispatch(list, ceili(size.x / 8.0), ceili(size.y / 8.0), 1)
 	rd.compute_list_end()
 	if target != original:

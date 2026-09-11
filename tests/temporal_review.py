@@ -93,11 +93,13 @@ def diagonal_view(panorama):
 
 
 def compare(folder, job, ffmpeg, analyze, *, require_render_buffers=True):
+    # Combined-effect reviews retain longer histories than the original fixture.
+    frames = int(job["frames"])
     rows, previous = [], None
     maps = projection(job["face_size"], job["capture_border_percent"])
     oracle = folder / "oracle"
     oracle.mkdir(exist_ok=True)
-    for i in range(FRAMES):
+    for i in range(frames):
         native = [pixels(folder / f"native/{name}-{i:03d}.png") for name in NAMES]
         faces = [pixels(folder / f"faces/{name}-{i:03d}.png") for name in NAMES]
         errors = [np.abs(a - b) for a, b in zip(native, faces)]
@@ -126,28 +128,28 @@ def compare(folder, job, ffmpeg, analyze, *, require_render_buffers=True):
         rows[i]["decoded_rms"] = float(np.sqrt(np.square(actual.astype(np.float32) - expected).mean()))
         decoded_count += 1
     samples = read(folder / "temporal-samples.json")
-    processing = (len(samples["samples"]) == FRAMES + job["warmup_frames"]
+    processing = (len(samples["samples"]) == frames + job["warmup_frames"]
                   and samples["initial"] == samples["final"]
                   and all(s["frame"] == max(0, n - job["warmup_frames"]) and s["settings_unchanged"] and len(s["faces"]) == 6 and all(
                       f["pose_error"] < 1e-5 and f["settings"] == samples["initial"] for f in s["faces"])
                       for n, s in enumerate(samples["samples"])))
     history = samples["history_counts"]
     history_ok = not job["feature"].startswith("history") or (
-        len(history) >= 6 and all(count == FRAMES + job["warmup_frames"] for count in history.values()))
+        len(history) >= 6 and all(count == frames + job["warmup_frames"] for count in history.values()))
     voxel_ok = not job["feature"].startswith("voxel") or samples["voxel_baked"]
     buffers = samples["render_buffers"]
     face_size = job["face_size"] + 2 * int(np.ceil(job["face_size"] * job["capture_border_percent"] / 100))
     face_buffers = [r for r in buffers.values() if r["target_width"] == face_size]
     mode = {"fsr1": 1, "fsr2": 2}.get(job["feature"], 0)
     buffer_ok = not require_render_buffers or job["feature"].startswith("history") or (len(face_buffers) == 6 and all(
-        r["count"] == FRAMES + job["warmup_frames"]
+        r["count"] == frames + job["warmup_frames"]
         # At native resolution this engine reports its internal disabled-scaler
         # sentinel (255), not the requested bilinear enum. FSR must be exact.
         and r["scaling_mode"] in ([mode] if mode else [0, 255])
         and r["taa"] == (job["feature"] == "taa")
         and abs(r["internal_width"] - face_size * (.67 if mode else 1)) <= 1 for r in face_buffers))
     control_rejected = max(r["delayed_face_mae"] for r in rows) > SOURCE_MAE
-    return {"ok": decoded_count == FRAMES and processing and history_ok and voxel_ok and buffer_ok and control_rejected and all(
+    return {"ok": decoded_count == frames and processing and history_ok and voxel_ok and buffer_ok and control_rejected and all(
                 r["face_mae"] < SOURCE_MAE and r["face_p99"] <= SOURCE_P99
                 and r["assembly_mae"] < .2 and r["assembly_p99"] <= 2 and r["decoded_rms"] < DECODED_RMS for r in rows),
             "processing_ok": processing, "history_ok": history_ok, "history_counts": history,

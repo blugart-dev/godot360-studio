@@ -1,8 +1,58 @@
 # Godot360 Studio development handoff
 
 For a fresh session, start with the [current recap and difficulty assessment](next-session.md).
-It identifies the local checkpoint/CI follow-up, remaining work, support decisions,
+It identifies the completed checkpoint, remaining work, support decisions,
 and the next bounded engineering task. The detailed records below remain the evidence.
+
+## Production workload milestone — 2026-09-11
+
+Checkpoint review on 2026-09-11 confirms the current package inventory matches
+the retained production candidate (236 members, SHA256 below). Repository
+hygiene passes for 467 files, 566 local links and 30 media hashes; all seven
+guard tests and `git diff --check` pass. The combined and production increments
+are checkpointed together. Next work is the clean private editor walkthrough.
+
+Completed the [Forward+/Mobile 4K/8K review](production-performance.md): four
+one-minute native Windows / 4.7.2 / RTX 3060 Ti exports, 7,200 source and decoded
+frames, all delivery/frame/audio/history checks passing. Five short probes,
+sampled CPU/GPU/system memory, time/storage forecasts and controlled capacity
+failures establish practical budgets. The full 8K encodes reach about 13 GiB of
+resident process memory; short-probe RAM cannot establish a longer job's budget.
+Forward+ 8K uses disabled MSAA after a 4× probe showed substantial shared GPU
+memory use. Other sustained profiles retain 4×. These settings and the single
+machine/one-minute scope are explicit in the guide.
+
+Capture/encode capacity failures behave correctly, and a full 4K recovery passes
+all 1,800 decoded frames and audio without changing any original capture file.
+The existing 150-frame endurance regression passes. The 236-member package
+rebuilds identically and passes 1,025 headless/failure checks; SHA256
+`0c5bc4da8b41cf16030317ba4dd44d0c68a6cf0ab130a9a19db18497d94cbdda`.
+The source/asset/package audit is `.godot360/production-review/audit.json`.
+Runtime, user settings, recipes and creative scenes remain unchanged.
+
+These and the preceding combined-effects changes are checkpointed locally,
+with version 0.8.0. Next: a private clean-installation walkthrough through
+existing-scene export, delivery review, reopening and recovery. Native Linux/Mac
+GPU coverage and final support/candidate decisions remain open. Preserve the
+large retained evidence; do not rerun the completed matrices without cause.
+
+## Combined-effects milestone — 2026-09-11
+
+Closed the successful LightmapGI hosted evidence record, retaining all three
+artifacts and matching the bake/source/package hashes. Then completed the
+[combined-effects review](combined-effects.md): 16 native Forward+/Mobile clips,
+2,304 source and decoded frames, twelve accepted normal cases and four rejected
+lighting/history controls. Continuous camera motion, the frame-72 cut, lit
+intersecting transparency, probe lighting and long per-view history all pass.
+The capture runtime needed no change. The exact 230-member package rebuilds
+identically and passes 1,025 4.7.2 headless/failure checks; its hash is
+`c5b6a7dd1dfddcc9a085da05c27f107c7f4b924610010c456e13f4e6f114845f`.
+See [validation](validation.md) for source mappings and limits.
+
+These new changes are local and uncommitted; the Combined rendering workflow is
+prepared but has not run remotely. Next: representative Forward+/Mobile 4K/8K
+workloads with GPU/system memory, timing, storage and audio measurements. The
+native platform and final delivery/1.0 gates remain open.
 
 ## Temporal and LightmapGI checkpoint review — 2026-09-10
 
@@ -19,8 +69,9 @@ The appearance and new temporal/lightmap workflows now retry connection errors
 with bounded connection and transfer timeouts. Local actionlint passes. Work is
 pushed through `739cf95`; repository, temporal, appearance, characters, particles
 and desktop-platform CI pass on their recorded commits. LightmapGI's full hosted
-rerun is in progress after a silent-editor fix and longer software-renderer
-timeouts. Earlier "uncommitted" notes below record the state at those sessions.
+rerun also passed; its three artifacts were retained and source/package-matched
+on 2026-09-11 (12 clips / 864 decoded frames, three rejected controls). See the
+latest validation entry. Earlier "uncommitted" notes below record the state at those sessions.
 
 The new graphics-error guard also exposed the old Mobile tint fixture's invalid
 storage-image binding. Its earlier tint-preservation claim is withdrawn. The
@@ -31,7 +82,7 @@ both camera and world compositors. The current package is
 `d2f4a810c722927a35e4f7189c2b151d3de7b87412877ada2bc93ca3a840f89b`.
 See [validation](validation.md) for the tested package hashes and failed attempts.
 
-Next engineering work is the [bounded combined-effects fixture](next-session.md#starting-the-next-engineering-task),
+The next work at this checkpoint was the [bounded combined-effects fixture](combined-effects.md),
 then measured Forward+/Mobile 4K/8K workloads. Native Linux/Mac GPU coverage,
 private usability/delivery review and the exact 1.0 candidate remain open.
 

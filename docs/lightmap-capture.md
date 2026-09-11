@@ -34,8 +34,10 @@ sheets are retained too.*
 The exact 227-member addon package rebuilds identically and passes **3,075
 headless/failure checks**: 1,025 each on Godot 4.5.1, 4.6.3 and 4.7.2. Those
 cross-version checks do not extend native LightmapGI evidence beyond 4.7.2.
-The Baked LightmapGI workflow passes local actionlint. See [validation](validation.md)
-for the latest hosted checkpoint status, source hashes and failed fixture
+The Baked LightmapGI hosted workflow passes on all three software-renderer lanes:
+12 clips / 864 decoded frames, including three rejected controls. Its artifacts
+were retained and matched to the tested package on 2026-09-11. See [validation](validation.md)
+for the checkpoint status, source hashes and failed fixture
 experiments. Development remains on the private 0.8.0 baseline.
 
 ## What the review checks

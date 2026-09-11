@@ -74,6 +74,19 @@ compares it byte-for-byte with the original candidate.
 
 ### Renderer appearance and motion
 
+`tests/production_review.py` prepares a textured load scene and measures native
+4K/8K capture, encoding and verification, with Windows process/GPU memory and
+storage telemetry. It checks every source/decoded frame ID and audiovisual cue.
+`tests/production_recovery.py` interrupts an encoder and verifies a fresh
+re-encode against the retained production source. See [production budgets](production-performance.md)
+for accepted profiles, resource limits, evidence scope and reproduction commands.
+
+`tests/combined_review.py` combines saved lightmaps, a moving probe receiver,
+lit intersecting transparency and long per-view history in 144-frame clips.
+Separate native worlds, continuous camera movement, a cut, disabled effects and
+deliberately wrong lighting/history establish the bounded acceptance contract.
+See [combined effects](combined-effects.md) for commands, thresholds and limits.
+
 `tests/lightmap_review.py` creates and saves a real editor LightmapGI bake, then
 exports static-lightmap and dynamic-probe cases against independent native
 worlds. Every source and decoded frame is checked, including cuts, borders and a

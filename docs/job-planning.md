@@ -46,6 +46,10 @@ new retained storage. See the [audio guide](../addons/godot360/AUDIO.md).
 These are first-second extrapolations. A quiet opening cannot predict the cost or
 compressed size of a busy later scene. Encoder startup also affects short samples.
 The figures help plan work; they are not deadlines or guaranteed disk bounds.
+The short test does not estimate GPU or system RAM. In the native
+[production workload](production-performance.md), a full 8K encode used more
+than twice the short probe's sampled resident memory. Check a representative
+longer export before relying on a memory budget.
 
 ### Local 4K sample
 

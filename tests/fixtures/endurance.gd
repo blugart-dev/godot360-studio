@@ -28,7 +28,7 @@ func _ready() -> void:
 	cues.sort()
 	# Same explicitly measured warmup compensation as Motion Lab. The reviewer
 	# independently measures actual cue alignment and drift instead of assuming it.
-	var preroll: float = float(maxi(0, int(job.get("warmup_frames", 2)) - 1)) / float(job.get("fps", 60))
+	var preroll: float = _audio_preroll()
 	var sound := AudioStreamWAV.new()
 	sound.format = AudioStreamWAV.FORMAT_16_BITS
 	sound.mix_rate = rate
@@ -47,6 +47,10 @@ func _ready() -> void:
 	sound.data = samples
 	$Audio.stream = sound
 	$Audio.play()
+
+
+func _audio_preroll() -> float:
+	return float(maxi(0, int(job.get("warmup_frames", 2)) - 1)) / float(job.get("fps", 60))
 
 
 func _quad(position_at: Vector3) -> MeshInstance3D:

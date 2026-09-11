@@ -238,7 +238,9 @@ bound directly as a compute storage image. Without MSAA it also lacks the requir
 copy-destination flag. The Mobile history fixture therefore uses authored 4x MSAA
 and a per-viewport writable working texture, reads through a sampler, then copies
 its result back. The exporter preserves those authored settings.
-This adds storage and copy work whose production cost has not been profiled.
+This adds storage and copy work. The repository's `docs/production-performance.md`
+records demanding 4K/8K workloads that include this path; they do not isolate
+the compositor's copy overhead from the rest of the scene.
 Do not generalize this bounded effect to arbitrary third-party compositors.
 
 TAA/FSR2 keep separate histories per face; preserving them does not guarantee
@@ -271,6 +273,24 @@ probes covering their path. The fixture bakes with Forward+/Vulkan in the editor
 then captures using the selected renderer. The exporter does not bake lightmaps
 or validate whether an absent lightmap was intentional. Multiple/streamed GI
 layouts, shadowmask combinations and large-atlas budgets need separate review.
+
+## Combined authored effects
+
+The repository's `tests/combined_review.py` combines the saved room and moving
+probe receiver with lit intersecting transparency, continuous camera movement,
+a cut and persistent per-view compositor history. Its 144-frame clips include
+disabled-effect baselines and deliberately wrong lighting/history controls.
+See `docs/combined-effects.md` and the dated `docs/validation.md` results for
+the tested snapshot; the fixture is not a promise for arbitrary effect stacks.
+
+Keep exposure authored, save the bake with its textures, cover moving receivers
+with probes and keep compositor history per view. The Mobile setup requires
+authored 4x MSAA plus sampled input and a writable texture copied back to the
+color attachment. Intersecting alpha surfaces can sort differently between
+views, and histories can differ across face joins. Inspect motion and cuts;
+adjust the geometry, material strategy or custom effect when these differences
+are visible. Borders blend overlap but cannot enforce identical alpha ordering
+or reset arbitrary authored histories at cuts.
 
 ## Estimates, retained captures and troubleshooting
 

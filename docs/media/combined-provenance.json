@@ -1,0 +1,17 @@
+{
+  "description": "Unmodified sheets from accepted combined GI/alpha/history reviews; the last two rows are intentionally incorrect lighting/history controls.",
+  "files": {
+    "combined-forward.jpg": {
+      "bytes": 132113,
+      "sha256": "9265451bf2d55222fc1e4e0b3826a70888b6bf56cb458bb5f837a1d15085575e",
+      "source": ".godot360/combined-review/dev-forward/comparison.jpg",
+      "review_sha256": "9b848d41718971e52e35806104250f505932c90af6eb81b183068f659c2c2239"
+    },
+    "combined-mobile.jpg": {
+      "bytes": 132203,
+      "sha256": "8f68f2dc8eec1f0b97bd1d8f2d5d053e7f1b9414ee1f7a66e9609db1caf26c7b",
+      "source": ".godot360/combined-review/final-mobile/comparison.jpg",
+      "review_sha256": "2aaf14fb88994225c08b5964bff6bd0344f25c4bf73b2309fe750e9b8d3d7c65"
+    }
+  }
+}

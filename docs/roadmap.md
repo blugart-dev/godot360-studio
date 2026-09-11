@@ -41,9 +41,15 @@ with an original score. The [temporal review](temporal-capture.md) now covers
 selected TAA/FSR, persistent camera/world compositors and VoxelGI, and rejects
 graphics-engine errors before delivery. The [saved LightmapGI review](lightmap-capture.md)
 adds static lightmaps and a moving probe receiver with a real editor bake and
-independent-world references. Next: the [bounded combined-effects milestone](next-session.md#starting-the-next-engineering-task), heavy 4K/8K
-workloads, native Linux/Mac testing, a clean installation-to-delivery walkthrough,
-then freezing and validating the 1.0 package.
+independent-world references. The [combined-effects review](combined-effects.md)
+now adds lit intersecting transparency and 144-frame persistent history, with
+continuous camera motion, a cut and rejected lighting/history controls on native
+Forward+/Mobile. The [production workload review](production-performance.md)
+now adds four one-minute 4K/8K exports with 7,200 source and decoded frames,
+sampled process/GPU/system memory, disk/time forecasts and capacity-failure
+recovery. Its profiles and hardware limits remain explicit. Next: a clean private
+installation-to-delivery walkthrough, native Linux/Mac testing as hardware is
+available, then freezing and validating the 1.0 package.
 
 ## Completed first-export and review increments
 

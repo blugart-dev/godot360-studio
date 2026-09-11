@@ -1,4 +1,149 @@
-# Validation record — updated 2026-09-10
+# Validation record — updated 2026-09-11
+
+## Production 4K/8K workloads — 2026-09-11
+
+The [production performance review](production-performance.md) completes four
+one-minute exports on native Windows 11 / Godot 4.7.2 / Vulkan / RTX 3060 Ti
+(8 GiB, driver 610.74), i9-11900K and 32 GiB RAM. Forward+ and Mobile each
+deliver 4096×2048 with 1536-pixel face cores and 7680×3840 with 3072-pixel
+cores. All use 30 FPS, eight warmup draws and 12.5% borders. Forward+ 8K
+disables MSAA; the other three profiles use 4×. This measures selected
+production profiles, not a controlled renderer-speed comparison.
+
+All **7,200 source PNGs and 7,200 decoded video frames** pass independent frame
+identifier and flash checks. All thirteen product delivery checks pass per run,
+with the requested actual renderer/driver/MSAA and six histories of 1,808 draws.
+Five chirps per run have a constant **66-sample / 1.375 ms** offset and zero
+drift; AAC adds zero cue lag and measures 55.37 dB against retained source audio.
+The fixture includes 768 textured instances, 24 original 2048-pixel maps, six
+dynamic shadowed lights, lit alpha surfaces, GPU particles, per-view history,
+continuous camera motion and a cut at 30 seconds. Marker crops test delivery;
+they are not a whole-scene appearance reference.
+
+Whole pipelines take **710.08 / 704.41 seconds at 4K** and **1531.25 / 1482.46
+seconds at 8K** for Forward+ / Mobile. Retained captures use **13.96 / 14.33
+GiB** and **41.64 / 42.37 GiB** respectively. Two-second native process/GPU
+sampling and engine allocation counters record stage-specific memory use.
+Full 8K encoding reaches **12.91 / 12.86 GiB working set**, substantially above
+the corresponding short probe; a one-second test cannot certify full-job RAM.
+Dedicated/shared GPU medians remain level in the observed rendering windows,
+apart from a 1.8 MiB dedicated decrease in Forward+ 4K. Private commit medians
+decrease in all four. These are bounded observations, not an unlimited-duration
+or minimum-hardware claim.
+
+Five one-second probes also pass, including Forward+ 8K with 4× MSAA. That
+probe reaches 6.32 GiB dedicated and 4.43 GiB shared GPU memory; disabling AA
+reduces these to 5.44 and 0.38 GiB. The full Forward+ 8K profile therefore uses
+disabled AA, with an explicit quality tradeoff. No full-minute 4× Forward+ 8K
+claim is made. Actual product-planner forecasts overestimate full-pipeline
+time by 10.9–22.3%; retained-storage errors range from −1.4% to +1.5%, and
+all suggested free-space allowances cover the measured retained files.
+
+Injected capacity failures pass during capture (45 submitted frames) and after
+the actual encoder launches. Both report explicit disk-space failures with
+diagnostics and no final MP4. Partial capture correctly requires a new render;
+the interrupted encode identifies its complete source as re-encodable. A fresh
+full 4K retry passes **1,800 additional decoded frames** and audio checks in
+130.03 seconds, without recapture. Every original capture file's SHA-256 is
+unchanged. No physical disk filling, OOM or device-loss test is claimed.
+Reversed/duplicated-frame and delayed/silent-audio controls are rejected.
+The existing five-second endurance fixture passes 150 source and decoded
+frames after its unchanged preroll expression is extracted into a helper.
+
+The **236-member / 1,225,600-byte** package is
+`.godot360/production-review/package/candidate.zip`, SHA256
+`0c5bc4da8b41cf16030317ba4dd44d0c68a6cf0ab130a9a19db18497d94cbdda`.
+It rebuilds identically and passes **1,025 headless/failure checks** on 4.7.2.
+All addon runtime files match the prior combined-effects package byte-for-byte.
+The full matrix's used runtime/fixture/reviewer sources match this package.
+Earlier 4× probe sources differ only in equivalent fixed/default-4× MSAA
+parameterization and the preparation list's unused estimate helper; the audit
+checks those exact differences. Generated UID metadata and unused helper/guide
+differences are retained in the per-run snapshots. The final helper separately
+checks planner settings against each probe/full pair.
+
+Evidence lives under `.godot360/production-review/`: `full-*/`, `probe-*/`,
+`failure-capture/`, `recovery-full-4k/`, `legacy-regression/`, `package/headless/`,
+`hardware.json` and `audit.json`. The audit verifies snapshots, actual reviewers,
+generated assets and protected project/settings/recipe hashes. Four failed
+development pilots are excluded and explained in the guide. Repository hygiene
+and its seven guard tests pass. Changes remain local and uncommitted, version
+0.8.0. Next: a private clean-installation-to-delivery walkthrough. Native
+Linux/Mac hardware, broader selected support decisions and final 1.0 acceptance
+remain open.
+
+## Combined GI, transparency and history — 2026-09-11
+
+The [combined-effects review](combined-effects.md) passes on Windows 11 / RTX
+3060 Ti (8 GiB, NVIDIA driver 610.74) / Godot 4.7.2 / Vulkan. Forward+ and Mobile
+each run eight 144-frame clips with 12.5% borders and eight warmup draws. Mobile
+authors 4x MSAA and the documented sampled-input/writable-texture compositor.
+Total: **16 clips / 2,304 source and decoded frames**: twelve accepted normal
+clips and four correctly rejected lighting/history controls. Every clip passes
+all thirteen delivery checks, including the deliberately incorrect image cases.
+
+The fixture combines the saved LightmapGI room, moving probe receiver, eight lit
+intersecting alpha surfaces and a 95%-retained per-view afterimage. Continuous
+camera motion and a cut at frame 72 exercise both worlds and every history.
+Independent native reference worlds, CPU projection, full delivery decoding,
+per-draw poses/settings/exposure/history counts, delayed-reference rejection and
+every-frame feature contribution all pass. No capture-runtime fix was needed.
+
+Maximum accepted face MAE is **0.008428/255**, face p99
+**0.000000**, panorama MAE **0.127209/255**,
+panorama p99 **0.519946** and decoded RMS
+**1.377712/255**, within thresholds fixed before acceptance.
+The afterimages persist through the cut as authored. Diagonal-view/edge-strip
+differences remain observations; this is not a guarantee of seamless alpha
+sorting or arbitrary view-dependent effects. The guide records practical limits.
+
+The **230-member / 1,209,146-byte** package is
+`.godot360/combined-review/package/candidate.zip`, SHA256
+`c5b6a7dd1dfddcc9a085da05c27f107c7f4b924610010c456e13f4e6f114845f`.
+It rebuilds identically and passes **1,025 headless/failure
+checks** on 4.7.2. The parameterized frame reviewer also passes re-analysis of
+the original 72-frame temporal baseline. These checks do not extend the new
+native combined-effects evidence to older engines.
+
+Evidence is retained under `.godot360/combined-review/dev-forward/`,
+`final-mobile/`, `package/headless/` and `audit.json`. Mobile runs from the
+unpacked candidate. All captured runtime/fixture/reviewer files match the package;
+Forward+ differs only in renderer-guide text completed during the run. Both use
+identical saved bake bytes. The capture runtime matches the previous checkpoint
+byte-for-byte. Comparison-sheet hashes are in `docs/media/combined-provenance.json`.
+
+The manual Combined rendering workflow passes actionlint; it has not been run
+remotely. Repository hygiene and its seven guard tests pass. Work remains local,
+with the private version at 0.8.0. Production 4K/8K workloads are next; native
+Linux/Mac GPU, broader appearance/animation boundaries, delivery and final 1.0
+candidate acceptance remain open.
+
+## LightmapGI hosted evidence closed — 2026-09-11
+
+[Baked LightmapGI 34527895921](https://github.com/blugart-dev/godot360-studio/actions/runs/34527895921)
+completed successfully on 2026-09-10 at 21:25 UTC, on `739cf95`. All three
+artifacts are now retained and inspected. Forward+, Mobile and Compatibility
+each contain four completed 72-frame clips: three accepted cases and one
+correctly rejected missing-map control. Total: **12 clips / 864 source and
+decoded frames**, nine accepted cases and three rejected controls. All delivery,
+world-isolation, feature-presence and delayed-reference checks pass.
+
+Every lane's package record matches the retained 227-member ZIP, SHA256
+`d2f4a810c722927a35e4f7189c2b151d3de7b87412877ada2bc93ca3a840f89b`.
+Each report's 99 source hashes match its package manifest; all retained generated
+bake files match the captured hashes. The ZIP passes CRC and manifest checks.
+Maximum accepted face MAE is 0.000041/255, panorama MAE 0.150395/255 and decoded
+RMS 1.277953/255, within the original thresholds. Evidence and the audit are in
+`.godot360/checkpoint-review/hosted/lightmap-success/` and
+`.godot360/checkpoint-review/hosted/lightmap-success-audit.json`.
+
+This closes the pending hosted checkpoint. Together with the fifteen previously
+audited records below, all eighteen rendering/platform package records now map
+to their tested snapshots. The run uses Godot 4.7.2 and Linux llvmpipe software
+rendering; it does not close native Linux or Mac GPU acceptance. The corrected
+Mobile compositor evidence and withdrawal of the old tint claim remain below.
+These are historical development checkpoints, not certification of a final 1.0
+candidate or later combined-effects changes.
 
 ## Temporal and LightmapGI checkpoint review — 2026-09-10
 
@@ -14,7 +159,7 @@ checkpoints are `12e8872` (temporal/LightmapGI), `c26c919` (silent editor bake),
 | [Imported characters 34524858114](https://github.com/blugart-dev/godot360-studio/actions/runs/34524858114) | `12e8872` | Pass on all six animation/nested-head-look lanes. |
 | [Complex particles 34524858045](https://github.com/blugart-dev/godot360-studio/actions/runs/34524858045) | `12e8872` | Pass on all three renderers. |
 | [Desktop platforms 34526340694](https://github.com/blugart-dev/godot360-studio/actions/runs/34526340694) | `0cde68f` | Pass; 1,161 Linux package/workflow checks, 1,027 Mac headless checks and corrected camera/world compositor cases. |
-| [Baked LightmapGI 34527895921](https://github.com/blugart-dev/godot360-studio/actions/runs/34527895921) | `739cf95` | In progress; full image-matrix acceptance is not yet established on hosted software rendering. |
+| [Baked LightmapGI 34527895921](https://github.com/blugart-dev/godot360-studio/actions/runs/34527895921) | `739cf95` | Pass; 12 clips / 864 decoded frames, three rejected missing-map controls. Artifacts audited 2026-09-11 above. |
 
 The latest 227-member package is `.godot360/checkpoint-review/ci-timeout.zip`,
 SHA256 `d2f4a810c722927a35e4f7189c2b151d3de7b87412877ada2bc93ca3a840f89b`.
@@ -35,8 +180,8 @@ downloaded package records from the five completed rendering/platform workflows
 match their expected snapshots: thirteen use the original `9308a682...` package,
 and two use `46eb3cc...`. The differences are renderer documentation, the tint
 fixture/reviewer and LightmapGI editor/timeout preparation. The source audit is
-`.godot360/checkpoint-review/hosted/partial-source-audit.json`; the pending
-LightmapGI workflow is not counted. Software Linux rendering and Mac headless
+`.godot360/checkpoint-review/hosted/partial-source-audit.json`; that historical
+partial audit excludes LightmapGI, now covered by the closure above. Software Linux rendering and Mac headless
 contracts do not close the native Linux/Mac GPU release gates.
 
 Rechecked the retained reports and source snapshots for both milestones: temporal
@@ -59,7 +204,7 @@ Review of prior hosted runs found Combined appearance `34498588684` failed on
 `3fbac56` because curl's Godot download lost its connection (exit 35), before
 any package or rendering test. The three workflows now retry connection errors
 with 30-second connection and 300-second per-attempt transfer limits. Hosted
-results are recorded in the table above; the LightmapGI follow-up remains pending.
+results are recorded in the table above; the LightmapGI follow-up is now closed.
 
 Checkpoint `12e8872` was pushed privately. Its first Baked LightmapGI run
 `34524857480` completed all three editor bakes but failed the strict log check:

@@ -1,5 +1,9 @@
 # Capture performance
 
+For the current textured Forward+/Mobile workload, memory accounting and
+4K/8K budgets, see [demanding production exports](production-performance.md).
+The dated results below retain their original scene and package scope.
+
 ## LUMEN composed Forward+ scene — 2026-09-10
 
 The [LUMEN observatory](lumen.md) renders 24 seconds at 4096×2048 / 30 FPS,
@@ -10,11 +14,11 @@ RTX 3060 Ti / FFmpeg 9.0.1: **232.48 seconds** through verified delivery,
 windows show zero sample lag. Exact observations and hashes are in
 `renders/lumen-4k-final/render-review.json` and `audit.json`.
 
-This adds a composed 4K example. Peak per-process GPU memory, long-run pressure,
-heavy texture/GI workloads, Mobile production endurance and 8K versions remain
-unmeasured. The earlier experimental render used a different sky and is excluded
-from this accepted measurement. Do not treat a single successful demo as the
-completion of the production-performance release gate.
+This adds a composed 4K example. That review did not measure process GPU memory,
+pressure, Mobile or 8K. The later [production workload review](production-performance.md)
+adds those measurements for a separate textured fixture; heavier GI remains
+outside that evidence. The earlier experimental LUMEN render used a different
+sky and is excluded from this accepted measurement.
 
 ## Original 0.2 comparison
 

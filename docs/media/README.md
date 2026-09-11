@@ -193,3 +193,13 @@ lightmaps, disabled lightmaps, disabled dynamic probes and an intentionally
 incorrect missing-map control. Geometry and lighting are original procedural test
 assets. `lightmap-provenance.json` records source-report and image hashes.
 Reproduce using [saved LightmapGI](../lightmap-capture.md).
+
+`combined-forward.jpg` and `combined-mobile.jpg` are the unmodified eight-row
+comparison sheets from `.godot360/combined-review/dev-forward/` and
+`final-mobile/`. Windows / Godot 4.7.2 / RTX 3060 Ti / Vulkan, 1024×512 at 30 FPS,
+eight warmup draws, 12.5% borders; delivered frames 0, 71, 72 and 143. Mobile uses
+4x MSAA. Rows show enabled effects, disabled lightmaps/probes/transparency,
+unlit transparency, disabled history and two intentionally incorrect lighting/
+history controls. All geometry and lighting are original procedural test assets.
+`combined-provenance.json` records image and report hashes. Reproduce with the
+[combined-effects guide](../combined-effects.md).
