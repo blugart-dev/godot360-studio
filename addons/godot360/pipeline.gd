@@ -57,10 +57,14 @@ func _run() -> void:
 		return
 	# A job owns a fresh folder. Never mix frames with an earlier render.
 	var existing := DirAccess.get_files_at(folder)
-	for allowed in ["job.json", "pipeline.log"]:
+	for allowed in ["job.json", "pipeline.log", ".gdignore"]:
 		existing.erase(allowed)
 	if not existing.is_empty() or not DirAccess.get_directories_at(folder).is_empty():
 		push_error("Output folder already contains a job. Choose a new folder.")
+		quit(1)
+		return
+	if not IO.exclude_output_from_import(folder):
+		push_error("Cannot exclude the output folder from Godot asset import. Check folder access.")
 		quit(1)
 		return
 	session = Session.new()

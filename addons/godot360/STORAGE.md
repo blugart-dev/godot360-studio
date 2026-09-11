@@ -7,6 +7,11 @@ best estimate of the full render's file sizes and time.
 
 ## Space needed
 
+New job folders contain `.gdignore`, so Godot does not import the exported
+images and sound into its asset cache when the destination is inside your
+project. Use **Open output** to browse these files in the system file manager.
+The marker applies only to that job folder; other project assets remain visible.
+
 The guard keeps a 256 MiB reserve. Capture adds a conservative allowance for four
 uncompressed RGBA images plus PNG overhead and stereo 32-bit PCM for the full
 capture duration. The image allowance covers frame delivery and Movie Maker's

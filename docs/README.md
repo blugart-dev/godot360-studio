@@ -48,6 +48,7 @@ the [roadmap](roadmap.md) for completed work; use the
 | Topic | Reference |
 | --- | --- |
 | Developer setup and verification | [Testing](testing.md) |
+| Clean native editor integration | [Editor workflow](editor-workflow.md) |
 | Contribution guidelines and licensing | [Contributing](../CONTRIBUTING.md) · [Third-party notices](../THIRD_PARTY_NOTICES.md) |
 | Publication preparation and checks | [Publishing](publishing.md) · [Preparation review](publication-review.md) |
 | Development history and continuation notes | [Handoff](HANDOFF.md) · [Engineering brief](next-session.md) |

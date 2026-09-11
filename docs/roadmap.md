@@ -48,7 +48,9 @@ Forward+/Mobile. The [production workload review](production-performance.md)
 now adds four one-minute 4K/8K exports with 7,200 source and decoded frames,
 sampled process/GPU/system memory, disk/time forecasts and capacity-failure
 recovery. Its profiles and hardware limits remain explicit. Next: a clean private
-installation-to-delivery walkthrough, native Linux/Mac testing as hardware is
+installation-to-delivery walkthrough; [automated native editor integration](editor-workflow.md)
+now passes and fixes progress-read errors and capture-folder imports. Actual
+UI navigation remains open, alongside native Linux/Mac testing as hardware is
 available, then freezing and validating the 1.0 package.
 
 ## Completed first-export and review increments

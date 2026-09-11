@@ -1,5 +1,18 @@
 # Changelog
 
+## Unreleased — clean editor export and recovery
+
+- Exclude each new export folder from Godot asset import before writing media.
+  Reopening a project with exports inside it no longer imports retained PNG/WAV
+  files or adds import sidecars to those captures. Parent folders and older jobs
+  are not changed; use Open output to find delivery files.
+- Treat unavailable, empty or malformed progress JSON as an unavailable
+  checkpoint without emitting editor parser errors. Polling retries normally;
+  invalid saved data still cannot establish a completed export.
+- Add an addon-only native editor integration review across two editor processes:
+  authored scene saving, 4K sample/export, stereo playback and seeking, history,
+  cancellation, diagnostics and recovery with source preservation.
+
 ## Unreleased — saved LightmapGI validation
 
 - Add a disposable editor bake and saved-scene review for static lightmaps and

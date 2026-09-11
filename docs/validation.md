@@ -1,5 +1,61 @@
 # Validation record — updated 2026-09-11
 
+## Clean native editor export and recovery — 2026-09-11
+
+The [editor workflow](editor-workflow.md) starts with an addon-only package,
+empty settings and a saved authored scene without capture hooks. Two native
+Windows 11 / Godot 4.7.2 / Forward+ Vulkan / RTX 3060 Ti editor processes pass
+**44 integration checks**: scene saving, camera discovery, sibling-tool selection,
+preflight, a one-second 4K test, four-second 4K export, stereo playback, paused
+forward/backward seeking, history after restart, cancellation during capture and
+encoding, diagnostics and recovery. Quality uses the standard Production preset:
+4096×2048, 2048-pixel face cores, 30 FPS, two warmup frames and zero borders.
+
+Two reproducible findings are fixed. Unavailable progress JSON now returns an
+unavailable checkpoint without editor parser errors. Each new job directory
+receives `.gdignore` before media is written, preventing Godot from importing
+retained PNG/WAV files when reopening a project. The old package produced **158
+import sidecars** across its sample and full capture; the fixed package produces
+**zero**. The fix marks only the new job directory, preserving parent assets and
+older captures. No capture-rendering or encoding-pixel change was needed.
+
+The **239-member / 1,236,188-byte** final package is
+`.godot360/clean-editor-fixes/final-reviewed/candidate.zip`, SHA256
+`e3ed1dc5053a91e9645d4796702516f67b23ba892c4f469685be5648ea5982bc`.
+It rebuilds identically and passes **1,033 headless/failure checks**. The actual
+native addon and driver/reviewer snapshots match this exact archive; all packaged
+source files match the checkout. Three real Windows sharing-lock cases pass:
+transient replacement retries, permanent replacement preserves the old file,
+and an exclusively locked reader returns unavailable immediately without errors.
+
+The sample, full export and recovered export each pass all thirteen delivery
+checks. An additional complete FFmpeg decode reads **270 frames** (30/120/120)
+without errors. Decoded stereo peaks remain **440 Hz left / 660 Hz right**, with
+about **0.0396 RMS** per channel. Native player mix-bus peaks exceed 0.18 on both
+channels. Six native spherical directions show their expected labels; paused
+0.3/2.3/0.3-second image checks confirm forward motion and repeatable backward
+seeking. All **154 original capture files** retain their hashes after playback,
+editor restart and recovery. Re-encoding creates no new capture frames.
+
+Evidence: `.godot360/clean-editor-fixes/final-reviewed/audit.json`, `native/`,
+`headless/`, decoded frame hashes and `review-sheet.jpg`. The source audit helper
+is retained at `.godot360/clean-editor-fixes/audit_final.py`. The earlier
+`candidate.zip` in the parent folder also passed, before final guide and reviewer
+housekeeping; final acceptance uses only the archive identified above.
+
+Five development pilots are excluded: a driver type error, path/number formatting
+assertions, and reentrant editor saving from a test timer were corrected before
+acceptance. Pilot 5 retains the actual progress-parser and import-sidecar
+regressions. A first sharing-lock attempt used the default Windows profile and
+hit sandbox access errors; the reviewer now isolates that profile and all three
+cases pass against the final package.
+
+This is automated native editor integration, not a completed human walkthrough.
+The Windows UI helper could see the Godot window but failed to bind it after
+recovery, so actual click-through navigation and subjective listening remain
+open. Native Linux/Mac GPU checks and the final 1.0 support/package decisions
+remain open. The version stays 0.8.0 and no public publication occurred.
+
 ## Production 4K/8K workloads — 2026-09-11
 
 The [production performance review](production-performance.md) completes four

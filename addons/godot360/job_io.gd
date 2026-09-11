@@ -2,10 +2,18 @@ extends RefCounted
 
 
 static func read_json(path: String) -> Dictionary:
-	if not FileAccess.file_exists(path):
+	# Polling may race a replacement or encounter an unreadable/partial saved
+	# checkpoint. Treat it as unavailable and retry on the next poll. The static
+	# parse_string helper reports engine errors even though callers expect {}.
+	var file := FileAccess.open(path, FileAccess.READ)
+	if file == null:
 		return {}
-	var value = JSON.parse_string(FileAccess.get_file_as_string(path))
-	return value if value is Dictionary else {}
+	var contents := file.get_as_text()
+	file.close()
+	var json := JSON.new()
+	if json.parse(contents) != OK:
+		return {}
+	return json.data if json.data is Dictionary else {}
 
 
 static func write_json(path: String, value: Dictionary) -> bool:
@@ -36,6 +44,14 @@ static func write_text(path: String, value: String) -> bool:
 	file.store_string(value)
 	file.flush()
 	return file.get_error() == OK
+
+
+static func exclude_output_from_import(folder: String) -> bool:
+	# The default destination is inside res://. Retained frames are delivery
+	# files, not project assets: importing them on restart adds sidecars and
+	# large texture/audio caches. Only mark this job, never the parent folder.
+	var marker := folder.path_join(".gdignore")
+	return FileAccess.file_exists(marker) or write_text(marker, "")
 
 
 static func argument(name: String) -> String:

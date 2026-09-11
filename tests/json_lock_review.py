@@ -18,6 +18,11 @@ def main(args):
     project, output = args.project.resolve(), args.output.resolve()
     output.relative_to(project)
     output.mkdir(parents=True)
+    env = os.environ.copy()
+    for name in ["APPDATA", "LOCALAPPDATA"]:
+        profile = output / "profile" / name
+        profile.mkdir(parents=True)
+        env[name] = str(profile)
     script = output / "writer.gd"
     script.write_text('''extends SceneTree
 const IO = preload("res://addons/godot360/job_io.gd")
@@ -45,7 +50,7 @@ func _initialize():
         assert handle not in (None, ctypes.c_void_p(-1).value), ctypes.get_last_error()
         try:
             with (folder / "godot.log").open("wb") as log:
-                child = subprocess.Popen([str(args.godot.resolve()), "--headless", "--path", str(project), "--log-file", str(folder / "engine.log"), "--script", "res://" + script.relative_to(project).as_posix(), "--", "--folder=" + str(folder)], stdout=log, stderr=subprocess.STDOUT)
+                child = subprocess.Popen([str(args.godot.resolve()), "--headless", "--path", str(project), "--log-file", str(folder / "engine.log"), "--script", "res://" + script.relative_to(project).as_posix(), "--", "--folder=" + str(folder)], env=env, stdout=log, stderr=subprocess.STDOUT)
                 started = time.monotonic()
                 while not (folder / "started").exists() and child.poll() is None and time.monotonic() - started < 15:
                     time.sleep(.005)
@@ -64,6 +69,35 @@ func _initialize():
         else:
             assert result["ok"] and json.loads(target.read_text()) == {"new": True} and 150 <= result["elapsed_ms"] < 1500
         results.append({"case": folder.name, **result, "accepted": True})
+    # A poll during an exclusive read lock is unavailable, not a parser error.
+    folder = output / "blocked-reader"
+    folder.mkdir()
+    target = folder / "target.json"
+    target.write_text('{"available":true}', encoding="utf-8")
+    reader = output / "reader.gd"
+    reader.write_text('''extends SceneTree
+const IO = preload("res://addons/godot360/job_io.gd")
+func _initialize():
+    var folder = IO.argument("folder")
+    var start = Time.get_ticks_msec()
+    var value = IO.read_json(folder.path_join("target.json"))
+    IO.write_json(folder.path_join("result.json"), {"unavailable": value.is_empty(), "elapsed_ms": Time.get_ticks_msec() - start})
+    quit()
+''', encoding="utf-8")
+    handle = kernel.CreateFileW(str(target), 0x80000000, 0, None, 3, 0, None)
+    assert handle not in (None, ctypes.c_void_p(-1).value), ctypes.get_last_error()
+    try:
+        with (folder / "godot.log").open("wb") as log:
+            completed = subprocess.run([str(args.godot.resolve()), "--headless", "--path", str(project),
+                "--log-file", str(folder / "engine.log"), "--script", "res://" + reader.relative_to(project).as_posix(),
+                "--", "--folder=" + str(folder)], env=env, stdout=log, stderr=log, timeout=15)
+        result = json.loads((folder / "result.json").read_text())
+        errors = [s for s in (folder / "godot.log").read_text(errors="replace").splitlines()
+                  if s.startswith(("ERROR:", "SCRIPT ERROR:")) and s != "ERROR: Failed to read the root certificate store."]
+        assert completed.returncode == 0 and result["unavailable"] and result["elapsed_ms"] < 500 and not errors, (result, errors)
+    finally:
+        kernel.CloseHandle(handle)
+    results.append({"case": "blocked-reader", **result, "accepted": True})
     (output / "json-lock-review.json").write_text(json.dumps(results, indent=2))
     print(json.dumps(results, indent=2))
 

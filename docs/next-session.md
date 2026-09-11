@@ -21,6 +21,15 @@ and recent exports are implemented. The internal version remains 0.8.0.
 
 Recent increments establish:
 
+- [Clean native editor integration](editor-workflow.md): a fresh addon-only
+  project and two actual editor processes validate authored scene saving, 4K
+  sample/export, stereo playback/seek, history, cancellation and recovery.
+  Forty-four editor checks pass. Two runtime fixes prevent transient progress
+  JSON parser errors and exclude new job folders from Godot asset import.
+  Original source hashes remain unchanged after restart and recovery. Actual
+  click-through navigation and subjective delivery review remain open: the
+  desktop automation helper could not bind to the Godot window in this session.
+
 - [Production workloads](production-performance.md): four one-minute native
   Forward+/Mobile 4K/8K exports, 7,200 source frames and 7,200 decoded frames,
   all delivery/frame/audio/history checks passing. Measured CPU/GPU/system
@@ -165,7 +174,12 @@ folders; preserve the user's creative scenes, recipes, settings and existing mas
 
 ## Local evidence and tools
 
-- Latest package: `.godot360/production-review/package/candidate.zip`, SHA256
+- Latest package: `.godot360/clean-editor-fixes/final-reviewed/candidate.zip`,
+  SHA256 `e3ed1dc5053a91e9645d4796702516f67b23ba892c4f469685be5648ea5982bc`.
+  The exact package and native editor records are mapped in [validation](validation.md).
+  The earlier combined/production work is checkpointed at `9779e38`.
+
+- Previous production package: `.godot360/production-review/package/candidate.zip`, SHA256
   `0c5bc4da8b41cf16030317ba4dd44d0c68a6cf0ab130a9a19db18497d94cbdda`.
   It rebuilds identically and passes 1,025 4.7.2 headless/failure checks.
   `.godot360/production-review/audit.json` maps all four full workloads,

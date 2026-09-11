@@ -4,6 +4,33 @@ For a fresh session, start with the [current recap and difficulty assessment](ne
 It identifies the completed checkpoint, remaining work, support decisions,
 and the next bounded engineering task. The detailed records below remain the evidence.
 
+## Clean editor integration and two runtime fixes — 2026-09-11
+
+The combined/production checkpoint was reviewed and committed as `9779e38`.
+The next [native editor integration pass](editor-workflow.md) then found and fixed
+progress JSON parser noise and unwanted import of retained captures inside the
+project. New job folders receive `.gdignore`; unavailable JSON remains pending
+without parser errors. Runtime changes are limited to `job_io.gd`, `pipeline.gd`
+and the panel's output preparation.
+
+The final 0.8.0 package at
+`.godot360/clean-editor-fixes/final-reviewed/candidate.zip` has SHA256
+`e3ed1dc5053a91e9645d4796702516f67b23ba892c4f469685be5648ea5982bc`.
+It rebuilds identically, passes 1,033 headless/failure checks, 44 actual-editor
+checks across two processes and three real Windows sharing-lock controls. Full
+decoding checks 270 delivery frames and the 440/660 Hz stereo channels. All 154
+original capture files remain unchanged after restart and recovery; zero import
+sidecars replace the baseline's 158. See [validation](validation.md) for exact
+source mapping and excluded development pilots. Creative scenes and recipes
+were not edited.
+
+Continue with actual UI navigation and subjective delivery review when the
+desktop helper can bind Godot, and native Linux/Mac GPU coverage when hardware
+is available. The automated pass does not close those acceptance requirements.
+The reusable preparation command can open an isolated scene for the private
+walkthrough. The source/package audit and all large evidence remain under
+`.godot360/clean-editor-fixes/`. No public publication or version bump was made.
+
 ## Production workload milestone — 2026-09-11
 
 Checkpoint review on 2026-09-11 confirms the current package inventory matches

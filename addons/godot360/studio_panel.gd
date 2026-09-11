@@ -530,7 +530,7 @@ func _launch(recipe: Dictionary) -> void:
 	recovery_source = ""
 	active_job = recipe.duplicate(true)
 	_save_settings()
-	if DirAccess.make_dir_recursive_absolute(folder) != OK or not IO.write_json(folder.path_join("job.json"), recipe):
+	if DirAccess.make_dir_recursive_absolute(folder) != OK or not IO.exclude_output_from_import(folder) or not IO.write_json(folder.path_join("job.json"), recipe):
 		status.text = "Cannot write to the output folder."
 		return
 	recent_exports.remember(folder)

@@ -72,6 +72,14 @@ compares it byte-for-byte with the original candidate.
 
 ## Platform verification and CI
 
+### Native editor integration
+
+`tests/editor_review.py` installs an exact package in a clean project and drives
+the actual plugin through two native editor processes. It covers saving an
+ordinary authored scene, 4K sample/export, stereo playback and seeking, restart,
+history, cancellation and recovery. [Editor workflow](editor-workflow.md) records
+commands and the distinction from the remaining private UI click-through.
+
 ### Renderer appearance and motion
 
 `tests/production_review.py` prepares a textured load scene and measures native
