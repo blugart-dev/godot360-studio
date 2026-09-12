@@ -7,9 +7,7 @@ func prepare_360_capture(settings: Dictionary) -> void:
 	job = settings
 	var folder := str(job.output_dir)
 	var scenario := folder.get_file()
-	if scenario == "status-write":
-		DirAccess.make_dir_recursive_absolute(folder.path_join("status.json.tmp"))
-	elif scenario == "capture-result-write":
+	if scenario == "capture-result-write":
 		DirAccess.make_dir_recursive_absolute(folder.path_join("capture-result.json.tmp"))
 	elif scenario == "capture-progress-write":
 		DirAccess.make_dir_recursive_absolute(folder.path_join("render-progress.json.tmp"))

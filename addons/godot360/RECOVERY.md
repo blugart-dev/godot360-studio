@@ -13,7 +13,7 @@ retained sources again. See [storage checks](STORAGE.md).
 ## Reopen a job
 
 The panel inspects its last saved job when it starts. Choose an entry under
-**Recent exports** and click **Open**, or use **Open saved job…** for another
+**Library → Recent exports** and click **Open**, or use **Open saved job…** for another
 export folder. **Forget** only removes a history entry; it never deletes files.
 Unavailable entries can be retried after reconnecting a drive. Locate moved
 folders with Open saved job. This keeps the current recipe and audio controls; it

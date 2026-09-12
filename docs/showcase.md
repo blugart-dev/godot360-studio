@@ -67,10 +67,11 @@ gameplay. [Prepare camera movement and interactive scenes for capture](../addons
 
 ## The workflow inside Godot
 
-![The actual Godot360 panel: THRESHOLD's 8K recipe on the left and spherical video review with seeking and sound on the right.](../addons/godot360/media/studio.png)
+![The actual Godot360 panel: current recipe beside a completed calibration sample, with still and video review controls.](../addons/godot360/media/studio.png)
 
-*Current panel captured in an isolated Godot project, with the completed film
-open at 35 seconds. The 8K delivery is reviewed through the native 2K / 30 FPS copy.*
+*Current panel captured in an isolated Godot project, with a one-second calibration
+sample open as a full-resolution still beside an eight-second editable recipe.
+Video playback uses a separate native copy limited to 2K / 30 FPS.*
 
 1. **Select a scene and Camera3D.** Use your current scene or choose another saved scene.
 2. **Choose quality, duration and audio.** Keep basic settings together; expand timing,

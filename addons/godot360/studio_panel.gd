@@ -80,6 +80,20 @@ var playback: Control
 var effects_label: Label
 var effects_scroll: ScrollContainer
 var recent_exports: VBoxContainer
+var workspace_tabs: TabContainer
+var readiness_summary: Label
+var tool_summary: Label
+var tool_logs_button: Button
+var export_summary: Label
+var preview_kind: Label
+var preview_focus: ReferenceRect
+var still_button: Button
+var delivery_button: Button
+var details_button: Button
+var ffprobe_deliberate := false
+var tool_notice := ""
+var cancelling := false
+var recipe_feedback: Label
 
 
 func _ready() -> void:
@@ -92,7 +106,10 @@ func _ready() -> void:
 	_refresh_scene_cameras(false)
 	_refresh_quality_hint()
 	for field in recipe_fields.values() + [ffmpeg, ffprobe, output]:
-		field.text_changed.connect(func(_value: String): _refresh_plan())
+		field.text_changed.connect(func(_value: String):
+			recipe_feedback.hide()
+			_refresh_plan())
+	ffprobe.text_changed.connect(func(_value: String): ffprobe_deliberate = not ffprobe.text.strip_edges().is_empty())
 	recipe_fields.scene_path.text_changed.connect(func(_value: String): scene_dirty = true)
 	recipe_fields.camera_path.text_changed.connect(func(_value: String): _sync_camera_picker())
 	_refresh_plan()
@@ -104,8 +121,11 @@ func _field(parent: Control, label_text: String, value: String) -> LineEdit:
 	parent.add_child(label)
 	var edit := LineEdit.new()
 	edit.text = value
+	edit.caret_column = value.length()
 	edit.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	edit.custom_minimum_size.x = 240
+	edit.custom_minimum_size.x = 160
+	edit.tooltip_text = value
+	edit.text_changed.connect(func(text: String): edit.tooltip_text = text)
 	parent.add_child(edit)
 	return edit
 
@@ -119,9 +139,6 @@ func _button(parent: Control, label: String, action: Callable) -> Button:
 
 
 func _build_audio_controls(parent: Control) -> void:
-	var title := Label.new()
-	title.text = "Audio"
-	parent.add_child(title)
 	var grid := GridContainer.new()
 	grid.columns = 2
 	parent.add_child(grid)
@@ -140,7 +157,9 @@ func _build_audio_controls(parent: Control) -> void:
 	soundtrack_widgets.append(grid.get_child(grid.get_child_count() - 2))
 	soundtrack_widgets.append(soundtrack_field)
 	soundtrack_field.placeholder_text = "res://audio/music.wav or an absolute path"
-	soundtrack_field.text_changed.connect(func(_value: String): _refresh_plan())
+	soundtrack_field.text_changed.connect(func(_value: String):
+			recipe_feedback.hide()
+			_refresh_plan())
 	var row := HBoxContainer.new()
 	parent.add_child(row)
 	soundtrack_widgets.append(row)
@@ -232,8 +251,17 @@ func _refresh_quality_hint() -> void:
 		return
 	var width: int = int(recipe_fields.width.text)
 	var advice: Array[String] = IO.quality_advice({"width": width, "face_size": int(recipe_fields.face_size.text)})
-	quality_hint.text = "\n".join(advice) if not advice.is_empty() else "Viewing detail: about %d pixels across a 90° view." % (width / 4)
-	quality_hint.tooltip_text = "The output covers the whole sphere. Perspective playback and the player's selected quality also affect sharpness."
+	quality_hint.text = "%d×%d · About %d px per 90° view" % [width, width / 2, width / 4]
+	if width < 4096:
+		quality_hint.text = "%d×%d · Draft resolution · %d px per 90°" % [width, width / 2, width / 4]
+	var preset_dimensions := false
+	for key in quality_buttons:
+		var preset := Profile.new()
+		preset.apply_quality_preset(key)
+		preset_dimensions = preset_dimensions or (width == int(preset.width) and int(recipe_fields.face_size.text) == preset.face_size)
+	if not preset_dimensions and advice.any(func(note: String): return note.begins_with("Cube faces limit")):
+		quality_hint.text += "\nCube faces limit detail. Increase face size in Advanced."
+	quality_hint.tooltip_text = "\n".join(advice) + "\nThe output covers the whole sphere. Perspective playback and the player's selected quality also affect sharpness."
 	for preset in quality_buttons:
 		var comparison := Profile.new()
 		comparison.apply_quality_preset(preset)
@@ -251,7 +279,7 @@ func _use_current_scene() -> void:
 		return
 	var scene: Node = current_scene_provider.call()
 	if scene == null or scene.scene_file_path.is_empty():
-		status.text = "Save your scene in Godot first (%s), then choose Use current scene." % ("Cmd+S" if OS.get_name() == "macOS" else "Ctrl+S")
+		_recipe_message("Save your scene in Godot first (%s), then choose Use current scene." % ("Cmd+S" if OS.get_name() == "macOS" else "Ctrl+S"))
 		return
 	if not _save_editor_scene(scene.scene_file_path):
 		return
@@ -259,7 +287,7 @@ func _use_current_scene() -> void:
 	_refresh_scene_cameras(true)
 	_update_profile()
 	_refresh_plan()
-	status.text = "Current scene saved and selected. Choose a camera, then Test 1 second."
+	_recipe_message("Current scene saved and selected. Choose a camera, then Test 1 second.")
 
 
 func _save_editor_scene(path: String) -> bool:
@@ -268,9 +296,10 @@ func _save_editor_scene(path: String) -> bool:
 	var scene: Node = current_scene_provider.call()
 	if scene != null and scene.scene_file_path == path:
 		if int(save_current_scene.call()) != OK:
-			status.text = "Godot could not save the current scene. Save it successfully before exporting."
+			_recipe_message("Godot could not save the current scene. Save it successfully before exporting.")
 			return false
 	return true
+
 
 
 func _refresh_scene_cameras(choose_camera: bool = false) -> void:
@@ -325,16 +354,25 @@ func _camera_selected(index: int) -> void:
 
 
 func _detect_tools(explicit: bool = true) -> void:
-	var encoder := Setup.find_executable("ffmpeg" if explicit else ffmpeg.text)
-	if not encoder.is_empty():
+	# Discovery only fills empty/default commands. A missing deliberate path is
+	# still a selection, not permission to substitute an unrelated PATH build.
+	var encoder := Setup.find_executable(ffmpeg.text if not ffmpeg.text.is_empty() else "ffmpeg")
+	if ffmpeg.text.strip_edges() in ["", "ffmpeg"] and not encoder.is_empty():
 		ffmpeg.text = encoder
-	var probe := Setup.find_executable("ffprobe" if explicit else ffprobe.text)
-	if probe.is_empty() and not encoder.is_empty():
-		probe = Setup.find_executable(encoder.get_base_dir().path_join("ffprobe.exe" if OS.get_name() == "Windows" else "ffprobe"))
-	if not probe.is_empty():
-		ffprobe.text = probe
+	var probe := Setup.find_executable(ffprobe.text if not ffprobe.text.is_empty() else "ffprobe")
+	if ffprobe.text.strip_edges() in ["", "ffprobe"]:
+		var sibling := Setup.find_executable(encoder.get_base_dir().path_join("ffprobe.exe" if OS.get_name() == "Windows" else "ffprobe")) if not encoder.is_empty() else ""
+		if not sibling.is_empty():
+			probe = sibling
+		if not probe.is_empty():
+			ffprobe.text = probe
+		ffprobe_deliberate = false
 	if encoder.is_empty() or probe.is_empty():
 		sections.tools.toggle.button_pressed = true
+		workspace_tabs.current_tab = 1
+	if explicit:
+		tool_notice = "Discovery filled empty/default fields only. Selected paths were kept. Check setup to verify them."
+		_save_settings()
 	_refresh_readiness()
 
 
@@ -357,6 +395,7 @@ func _check_readiness() -> void:
 		checked_tools = signature
 		if not result.ok:
 			sections.tools.toggle.button_pressed = true
+			workspace_tabs.current_tab = 1
 	check_button.disabled = false
 	check_button.text = "Check setup"
 	_update_profile()
@@ -465,8 +504,16 @@ func _refresh_readiness() -> void:
 	var renderer := Renderer.resolve(profile.to_dictionary())
 	var renderer_name: String = {"forward_plus": "Forward+", "mobile": "Mobile", "gl_compatibility": "Compatibility"}.get(renderer.resolved_method, renderer.resolved_method)
 	var renderer_note := "Capture: %s / %s · unexpected fallback stops the job." % [renderer_name, renderer.resolved_driver]
-	var heading_text := "Ready for a 1-second test · scene, tools and output checked." if issues.is_empty() else "Before your first render"
+	var heading_text := "Ready for a 1-second test · scene, tools and output checked." if issues.is_empty() else "Current recipe needs attention"
 	readiness_label.text = heading_text + "\n" + renderer_note + "\n" + "\n".join(issues + notes)
+	readiness_summary.text = "Ready · Test 1 second" if issues.is_empty() else issues[0]
+	readiness_summary.tooltip_text = readiness_label.text + "\nFull setup details are in Tools."
+	if setup_checker != null and setup_checker.busy:
+		readiness_summary.text = "Checking scene, tools and output…"
+	elif process_id > 0 or not pending_session.is_empty():
+		readiness_summary.text = "Export running · Edits apply to the next render."
+	_refresh_tool_summary()
+	_refresh_export_summary()
 
 
 func _render(test_run: bool = false) -> void:
@@ -477,11 +524,12 @@ func _render(test_run: bool = false) -> void:
 	_refresh_scene_cameras(inspected_scene != recipe_fields.scene_path.text.strip_edges())
 	var input_error := _numeric_error()
 	if not input_error.is_empty():
-		status.text = input_error
+		_recipe_message(input_error)
 		return
 	if recipe_fields.camera_path.text.strip_edges().is_empty():
-		status.text = "Choose a camera before rendering. Runtime-created cameras can use a manual path under Advanced."
+		_recipe_message("Choose a camera before rendering. Runtime-created cameras can use a manual path under Advanced.")
 		return
+	recipe_feedback.hide()
 	_update_profile()
 	var recipe: Dictionary = profile.to_dictionary()
 	recipe.merge({"ffmpeg": ffmpeg.text.strip_edges(), "ffprobe": ffprobe.text.strip_edges(),
@@ -489,6 +537,7 @@ func _render(test_run: bool = false) -> void:
 	if test_run:
 		recipe = Planner.test_job(recipe)
 	_launch(recipe)
+
 
 
 func _test_render() -> void:
@@ -517,7 +566,7 @@ func _reencode(source: String) -> void:
 func _launch(recipe: Dictionary) -> void:
 	var error: String = IO.validate(recipe)
 	if not error.is_empty():
-		status.text = error
+		_recipe_message(error)
 		return
 	playback.clear()
 	_show_effect_notes([])
@@ -525,10 +574,15 @@ func _launch(recipe: Dictionary) -> void:
 	preview.material = null
 	preview_material = null
 	preview_empty.show()
+	preview_kind.text = "360° review · Waiting for an image"
 	reconnected = false
 	session_owner = {}
 	recovery_source = ""
 	active_job = recipe.duplicate(true)
+	delivery_button.disabled = true
+	still_button.disabled = true
+	cancelling = false
+	_refresh_export_summary()
 	_save_settings()
 	if DirAccess.make_dir_recursive_absolute(folder) != OK or not IO.exclude_output_from_import(folder) or not IO.write_json(folder.path_join("job.json"), recipe):
 		status.text = "Cannot write to the output folder."
@@ -544,6 +598,7 @@ func _launch(recipe: Dictionary) -> void:
 	_set_busy(true)
 	cancel_button.disabled = false
 	status.text = "Starting…"
+	preview_empty.text = "Rendering your scene…\nThe opening frame appears when the export completes."
 	progress.value = 0
 
 
@@ -580,6 +635,9 @@ func _process(delta: float) -> void:
 			# Encoder startup dominates the first few frames; wait for a useful sample.
 			if int(encoding.frames) >= maxi(10, ceili(float(encoding.total) * 0.1)) and float(encoding.get("remaining_seconds", -1)) >= 0:
 				status.text += " · about " + _duration_label(float(encoding.remaining_seconds)) + " remaining in encode"
+		if cancelling:
+			status.text = "Cancelling export… Waiting for the worker to stop. Captured files are retained."
+		status.tooltip_text = status.text
 	# Reopened coordinators are not children of this editor. Their saved PID
 	# cannot establish liveness; rely on fresh replies and terminal evidence.
 	if (reconnected and state.get("stage") in Session.TERMINAL) or (not reconnected and not OS.is_process_running(process_id)):
@@ -598,6 +656,8 @@ func _cancel() -> void:
 		status.text = "Cannot request cancellation: the output folder is not writable. Check drive access and retry."
 		return
 	status.text = "Cancelling… Capture stops at a frame boundary; an active encoder or verifier is stopped. Files are retained."
+	cancelling = true
+	cancel_button.disabled = true
 
 
 func _set_busy(busy: bool) -> void:
@@ -606,6 +666,9 @@ func _set_busy(busy: bool) -> void:
 		button.disabled = busy
 	reuse_button.disabled = busy or recovery_source.is_empty()
 	cancel_button.disabled = not busy
+	cancel_button.visible = busy
+	progress.visible = busy
+	_refresh_plan()
 
 
 func _open_job(path: String, remember: bool = true) -> void:
@@ -613,18 +676,21 @@ func _open_job(path: String, remember: bool = true) -> void:
 		return
 	var record := Session.review(path)
 	if record.has("error"):
-		status.text = str(record.error)
+		_show_action_error("Could not open export", str(record.error))
 		return
 	playback.clear()
 	_show_effect_notes([])
 	folder = path
 	output_button.disabled = false
 	active_job = record.job
+	cancelling = false
+	_refresh_export_summary()
 	recovery_source = ""
 	preview.material = null
 	preview_material = null
 	preview_empty.show()
 	if remember:
+		preview_kind.text = "360° review · No verified image"
 		recent_exports.remember(path)
 	_save_settings()
 	if record.terminal or record.delivered:
@@ -674,6 +740,7 @@ func _poll_session() -> void:
 func _finish_saved_job(record: Dictionary) -> void:
 	process_id = -1
 	reconnected = false
+	cancelling = false
 	var state: Dictionary = record.get("state", {})
 	var recovery: Dictionary = record.get("recovery", {})
 	recovery_source = str(recovery.get("source_dir", "")) if recovery.get("can_reencode", false) else ""
@@ -684,7 +751,7 @@ func _finish_saved_job(record: Dictionary) -> void:
 		playback.select_job(folder)
 		if FileAccess.file_exists(folder.path_join("preview.png")):
 			_show_preview()
-		status.text = "Complete · video-360.mp4 and report.json are ready. YouTube playback still needs a manual check."
+		status.text = "Complete · Delivery MP4 verified. Play the review copy or open the delivery."
 		if active_job.get("mode") == "test":
 			sample_record = Planner.load_sample(folder)
 			_refresh_plan()
@@ -693,11 +760,6 @@ func _finish_saved_job(record: Dictionary) -> void:
 		elif active_job.get("mode") == "reencode":
 			status.text = "Re-encode complete · Original capture preserved. The new video and report are ready."
 		var report := IO.read_json(folder.path_join("report.json"))
-		var captured: Dictionary = report.get("capture_settings", {})
-		if not captured.is_empty():
-			status.text += "\nCaptured with %s / %s." % [captured.get("renderer", "unknown"), captured.get("rendering_driver", "unknown")]
-		else:
-			status.text += "\nLegacy capture: renderer evidence is in the original capture-settings.json or capture.log."
 		_show_effect_notes(report.get("scene_checks", {}).get("warnings", []))
 	elif record.get("terminal", false):
 		status.text = str(state.get("stage", "Stopped")) + " · " + str(state.get("error", ""))
@@ -708,6 +770,11 @@ func _finish_saved_job(record: Dictionary) -> void:
 		status.text = "No live coordinator confirmed. Saved stage: %s.\n%s\nThe exporter may still be working. Reopen this job to check again." % [str(state.get("stage", "Unknown")), str(recovery.get("next_step", ""))]
 	if not record.get("delivered", false):
 		sections.jobs.toggle.button_pressed = true
+		preview_empty.text = "No verified delivery for this export.\nOpen Export details for the recovery step."
+	status.tooltip_text = status.text
+	delivery_button.disabled = not record.get("delivered", false)
+	still_button.disabled = preview_material == null
+	_refresh_export_summary()
 	recent_exports.refresh()
 
 
@@ -720,6 +787,8 @@ func _show_preview() -> void:
 	preview_material.set_shader_parameter("panorama", ImageTexture.create_from_image(image))
 	preview.material = preview_material
 	preview_empty.hide()
+	preview_kind.text = "Full-resolution still · opening frame"
+	still_button.disabled = false
 	heading = Vector2.ZERO
 	_update_preview()
 
@@ -730,6 +799,7 @@ func _video_texture(texture: Texture2D) -> void:
 	preview_material.set_shader_parameter("panorama", texture)
 	preview.material = preview_material
 	preview_empty.hide()
+	preview_kind.text = "Playback copy · up to 2K / 30 FPS"
 	_update_preview()
 
 
@@ -738,15 +808,29 @@ func _show_effect_notes(warnings: Array) -> void:
 	for warning in warnings:
 		if not str(warning) in unique:
 			unique.append(str(warning))
-	effects_label.text = "Scene notes · Review these throughout playback\n" + "\n".join(unique)
-	effects_scroll.visible = not unique.is_empty()
+	effects_label.text = "Scene notes · Review these throughout playback\n" + "\n".join(unique) if not unique.is_empty() else ""
+	effects_scroll.hide()
+	details_button.text = "Export details" if unique.is_empty() else "Export details · %d notes" % unique.size()
 
 
 func _preview_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.pressed:
+		preview.grab_focus()
 	if preview_material != null and event is InputEventMouseMotion and event.button_mask & MOUSE_BUTTON_MASK_LEFT:
 		heading.x -= event.relative.x * 0.006
 		heading.y = clampf(heading.y + event.relative.y * 0.006, -PI * 0.49, PI * 0.49)
 		_update_preview()
+	if preview_material != null and event is InputEventKey and event.pressed:
+		match event.keycode:
+			KEY_LEFT: heading.x -= 0.12
+			KEY_RIGHT: heading.x += 0.12
+			KEY_UP: heading.y -= 0.12
+			KEY_DOWN: heading.y += 0.12
+			KEY_HOME: heading = Vector2.ZERO
+			_: return
+		heading.y = clampf(heading.y, -PI * 0.49, PI * 0.49)
+		_update_preview()
+		preview.accept_event()
 
 
 func _update_preview() -> void:
@@ -796,9 +880,15 @@ func _selected(kind: String, path: String) -> void:
 		"ffmpeg":
 			ffmpeg.text = path
 			var sibling := path.get_base_dir().path_join("ffprobe.exe" if OS.get_name() == "Windows" else "ffprobe")
-			if FileAccess.file_exists(sibling):
+			if (not ffprobe_deliberate or ffprobe.text.strip_edges().is_empty()) and FileAccess.file_exists(sibling):
 				ffprobe.text = sibling
-		"ffprobe": ffprobe.text = path
+				tool_notice = "FFprobe was filled from the selected FFmpeg folder. Check setup to verify both."
+			else:
+				tool_notice = "FFmpeg selected. Your FFprobe selection was kept. Check setup to verify both."
+		"ffprobe":
+			ffprobe.text = path
+			ffprobe_deliberate = true
+			tool_notice = "FFprobe selected. Check setup to verify this pair."
 		"folder": output.text = path
 		"reencode": _reencode(path)
 		"job": _open_job(path)
@@ -807,15 +897,23 @@ func _selected(kind: String, path: String) -> void:
 			if loaded != null and loaded.get_script() == Profile:
 				profile = loaded.duplicate()
 				_refresh_fields()
+				workspace_tabs.current_tab = 0
 			else:
-				status.text = "Select a Godot360 export recipe."
+				_recipe_message("Select a Godot360 export recipe.")
 		"save":
 			var error := _numeric_error()
 			if not error.is_empty():
-				status.text = error
+				_recipe_message(error)
 				return
 			_update_profile()
-			status.text = "Recipe saved." if ResourceSaver.save(profile, path) == OK else "Could not save recipe."
+			_recipe_message("Recipe saved." if ResourceSaver.save(profile, path) == OK else "Could not save recipe.")
+	if kind in ["ffmpeg", "ffprobe", "folder", "scene", "soundtrack", "load"]:
+		for field in [ffmpeg, ffprobe, output, recipe_fields.scene_path, soundtrack_field]:
+			if not field.has_focus():
+				field.caret_column = field.text.length()
+		_refresh_plan()
+		_save_settings()
+
 
 
 func _save_diagnostics(path: String) -> void:
@@ -828,6 +926,7 @@ func _save_settings() -> void:
 	var config := ConfigFile.new()
 	config.set_value("tools", "ffmpeg", ffmpeg.text)
 	config.set_value("tools", "ffprobe", ffprobe.text)
+	config.set_value("tools", "ffprobe_deliberate", ffprobe_deliberate)
 	config.set_value("export", "output", output.text)
 	config.set_value("export", "last_folder", folder)
 	config.set_value("export", "sample_folder", sample_record.get("folder", ""))
@@ -847,6 +946,8 @@ func _load_settings() -> void:
 		return
 	ffmpeg.text = str(config.get_value("tools", "ffmpeg", "ffmpeg"))
 	ffprobe.text = str(config.get_value("tools", "ffprobe", "ffprobe"))
+	# Old saved absolute paths represent a selection; preserve them on upgrade.
+	ffprobe_deliberate = bool(config.get_value("tools", "ffprobe_deliberate", ffprobe.text not in ["", "ffprobe"]))
 	output.text = str(config.get_value("export", "output", output.text))
 	for key in recipe_fields:
 		recipe_fields[key].text = str(config.get_value("recipe", key, recipe_fields[key].text))
@@ -879,8 +980,9 @@ func _refresh_plan() -> void:
 		return
 	_refresh_quality_hint()
 	_refresh_readiness()
+	planning_label.visible = not sample_record.is_empty()
 	if sample_record.is_empty():
-		planning_label.text = "Test the first second to estimate export time and disk space at these settings."
+		planning_label.text = "Test 1 second to estimate time and disk space."
 		return
 	if not _numeric_error().is_empty():
 		planning_label.text = "Correct the video settings to update the estimate."
@@ -893,8 +995,10 @@ func _refresh_plan() -> void:
 	var folder_changed: bool = str(sample_record.folder).get_base_dir().replace("\\", "/").simplify_path() != output.text.strip_edges().replace("\\", "/").simplify_path()
 	var estimate := Planner.estimate(sample, sample_record.report, sample_record.storage, target)
 	if estimate.is_empty() or scene_changed or folder_changed:
-		planning_label.text = "Settings, renderer, engine, soundtrack, saved project/scene, or output folder changed. Run Test 1 second again for a current estimate."
+		planning_label.text = "Settings changed · Run Test 1 second for a new estimate."
 		return
+	if readiness_summary.text.begins_with("Ready"):
+		readiness_summary.text = "Ready · Render after reviewing the sample"
 	var available: int = -1
 	var directory := DirAccess.open(output.text.strip_edges())
 	if directory != null:
@@ -906,4 +1010,100 @@ func _refresh_plan() -> void:
 		planning_label.text += " · Available: %.2f GiB" % (available / 1073741824.0)
 		if available < int(estimate.suggested_free_bytes):
 			planning_label.text += "\nAvailable space is below the estimate."
-	planning_label.text += "\nBased on the first second; later content may differ. Re-test after scene or asset edits."
+	planning_label.text += "\nFirst-second estimate; later content may differ."
+
+
+func _refresh_tool_summary() -> void:
+	if tool_summary == null:
+		return
+	var current: bool = checked_tools == [ffmpeg.text.strip_edges(), ffprobe.text.strip_edges()] and not tool_result.is_empty()
+	tool_logs_button.disabled = str(tool_result.get("logs", "")).is_empty()
+	ffmpeg.tooltip_text = ffmpeg.text
+	ffprobe.tooltip_text = ffprobe.text
+	if not current:
+		tool_summary.text = tool_notice + "\nSelected tools have not been checked." if not tool_notice.is_empty() else "Selected tools have not been checked. Clear a field to find an installed tool."
+		return
+	var versions := str(tool_result.get("ffmpeg_version", "FFmpeg version unavailable")) + "\n" + str(tool_result.get("ffprobe_version", "FFprobe version unavailable"))
+	tool_summary.text = versions + "\n" + ("Delivery: H.264 + AAC ready." if tool_result.get("ok", false) else str(tool_result.get("error", "Check setup again.")))
+	if tool_result.get("ok", false):
+		tool_summary.text += "\nPlayback: Theora + Vorbis available; each copy is fully decoded before use." if tool_result.get("playback", false) else "\nPlayback unavailable: choose a build with libtheora and libvorbis. Delivery export is available."
+	tool_summary.tooltip_text = tool_notice
+
+
+func _open_setup_logs() -> void:
+	var path := str(tool_result.get("logs", ""))
+	if not path.is_empty():
+		OS.shell_open(path)
+
+
+func _refresh_export_summary() -> void:
+	if export_summary == null:
+		return
+	details_button.disabled = folder.is_empty()
+	if active_job.is_empty() or folder.is_empty():
+		export_summary.text = "No export open · Render a sample or browse Library."
+		return
+	var scene := str(active_job.get("scene_path", "Unknown scene"))
+	var width := int(active_job.get("width", 0))
+	var fps := int(active_job.get("fps", 0))
+	var duration := float(active_job.get("frames", 0)) / maxf(fps, 1.0)
+	var audio_name: String = {"scene": "Scene audio", "soundtrack": "Soundtrack", "mix": "Scene + soundtrack"}.get(active_job.get("audio_mode", "scene"), "Scene audio")
+	var kind: String = {"test": "1-second sample", "reencode": "Re-encode"}.get(active_job.get("mode", ""), "Export")
+	export_summary.text = "%s · %s\n%d×%d · %s s · %d FPS · %s" % [kind, scene.get_file(), width, width / 2, String.num(duration, 3).trim_suffix(".0"), fps, audio_name]
+	export_summary.tooltip_text = "Opened export: " + folder + "\nScene: " + scene + "\nCamera: " + str(active_job.get("camera_path", "")) + "\nThese saved settings stay unchanged when you edit the current recipe."
+	if process_id > 0 or not pending_session.is_empty():
+		delivery_button.disabled = true
+		still_button.disabled = true
+
+
+func _review_still() -> void:
+	if not FileAccess.file_exists(folder.path_join("preview.png")):
+		return
+	playback.pause_for_still()
+	_show_preview()
+
+
+func _open_delivery() -> void:
+	if not delivery_button.disabled and FileAccess.file_exists(folder.path_join("video-360.mp4")):
+		OS.shell_open(folder.path_join("video-360.mp4"))
+
+
+func _show_export_details() -> void:
+	var dialog := AcceptDialog.new()
+	dialog.title = "Opened export · Details and recovery"
+	dialog.min_size = Vector2i(520, 300)
+	var text := TextEdit.new()
+	text.editable = false
+	text.add_theme_color_override("font_readonly_color", get_theme_color("font_color", "Label"))
+	text.wrap_mode = TextEdit.LINE_WRAPPING_BOUNDARY
+	text.custom_minimum_size = Vector2(520, 300)
+	text.text = export_summary.text + "\n\n" + export_summary.tooltip_text + "\n\n" + status.text
+	if not effects_label.text.is_empty():
+		text.text += "\n\n" + effects_label.text
+	var report := IO.read_json(folder.path_join("report.json"))
+	if not report.get("capture_settings", {}).is_empty():
+		text.text += "\n\nCapture settings\n" + JSON.stringify(report.capture_settings, "  ")
+	text.text += "\n\nOpen folder for report.json and logs. Library → Saved exports and recovery offers re-encoding and Save diagnostics."
+	dialog.add_child(text)
+	add_child(dialog)
+	dialog.confirmed.connect(dialog.queue_free)
+	dialog.canceled.connect(dialog.queue_free)
+	dialog.popup_centered_ratio(0.65)
+
+
+func _recipe_message(message: String) -> void:
+	recipe_feedback.text = message
+	recipe_feedback.tooltip_text = message
+	recipe_feedback.show()
+	workspace_tabs.current_tab = 0
+
+
+func _show_action_error(title: String, message: String) -> void:
+	var dialog := AcceptDialog.new()
+	dialog.title = title
+	dialog.dialog_text = message
+	dialog.dialog_autowrap = true
+	add_child(dialog)
+	dialog.confirmed.connect(dialog.queue_free)
+	dialog.canceled.connect(dialog.queue_free)
+	dialog.popup_centered(Vector2i(520, 220))

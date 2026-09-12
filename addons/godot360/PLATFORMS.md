@@ -30,11 +30,11 @@ and sandboxed editor distributions are outside this support scope.
    Choose **release builds → ffmpeg-release-essentials.zip**, then **Extract All**.
 3. Keep the extracted folder somewhere permanent, such as your user folder's
    `Tools` directory. Its `bin` folder contains both `ffmpeg.exe` and `ffprobe.exe`.
-4. In **Godot360 → Tool setup**, select **FFmpeg…** and choose `bin/ffmpeg.exe`.
+4. In **Godot360 → Tools → Tool setup**, select **FFmpeg…** and choose `bin/ffmpeg.exe`.
    FFprobe is filled in when beside it; otherwise select `bin/ffprobe.exe` yourself.
 
 Selecting the files is enough. Optionally add the extracted **bin directory** to
-your user `Path`, restart Godot, and click **Find installed tools**. In a new
+your user `Path`, restart Godot, and click **Find missing tools**. In a new
 PowerShell window, `ffmpeg -version` and `ffprobe -version` should print versions.
 The recorded Windows tests use FFmpeg/FFprobe **9.0.1 essentials**.
 
@@ -66,7 +66,7 @@ The recorded Windows tests use FFmpeg/FFprobe **9.0.1 essentials**.
    distributions, use your distribution's package manager or a native build linked
    by [FFmpeg](https://ffmpeg.org/download.html). Codec availability can differ;
    **Check setup** tells you what your installed build is missing.
-4. Reopen Godot, choose **Find installed tools**, then **Check setup**. Standard
+4. Reopen Godot, choose **Find missing tools**, then **Check setup**. Standard
    package installs normally resolve to `/usr/bin/ffmpeg` and `/usr/bin/ffprobe`.
    Use `command -v ffmpeg` and `command -v ffprobe` to locate custom installs, then
    select their absolute paths in the panel if needed.
@@ -104,11 +104,11 @@ editor for this workflow instead of changing sandbox permissions blindly.
    echo "$(brew --prefix ffmpeg-full)/bin/ffprobe"
    ```
 
-5. Paste those two paths into **Godot360 → Tool setup → FFmpeg / FFprobe**.
+5. Paste those two paths into **Godot360 → Tools → Tool setup → FFmpeg / FFprobe**.
    Select the executables, not a folder or `.app` bundle. Choose a writable output
    folder and run **Check setup**, then try **Play video** after a short export.
 
-**Find installed tools** searches PATH and common Homebrew/MacPorts directories.
+**Find missing tools** searches PATH and common Homebrew/MacPorts directories.
 It may find the basic `ffmpeg` package if both are installed; keep the explicit
 `ffmpeg-full` paths above for playback. The basic package can export H.264/AAC
 but currently lacks `libtheora`. These tool paths also work in Finder-launched
@@ -152,7 +152,7 @@ preparing it requires FFmpeg's libtheora and libvorbis encoders.
 | FFmpeg or FFprobe cannot be found | Select each executable by its absolute path. Both must be installed on this computer. |
 | Linux/macOS reports permission denied | Check file properties and execute permission. Use a trusted native build; a binary on a `noexec` filesystem must be moved to an executable location. |
 | Wrong executable format or CPU architecture | Replace the Windows/Linux/macOS or Intel/ARM binary with one for this machine. Run it in a terminal to see the system error. |
-| A tool works in Terminal but not Godot | Restart Godot and choose **Find installed tools**, or paste the absolute path reported by `command -v`. |
+| A tool works in Terminal but not Godot | Restart Godot and choose **Find missing tools**, or paste the absolute path reported by `command -v`. |
 | Missing encoders or filters | Select a build containing the capabilities named by **Check setup**. FFmpeg's source archive is not an executable package. |
 | Output folder is not writable | Select a local folder you can write to and check free space. On macOS, check any system folder-access prompt. |
 | Capture cannot open a display | Use a desktop session with a working native driver for the requested renderer. Inspect requested/actual selection and `capture.log`; see [renderer troubleshooting](RENDERERS.md#estimates-retained-captures-and-troubleshooting). |

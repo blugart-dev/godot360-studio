@@ -1,5 +1,32 @@
 # Changelog
 
+## Unreleased — studio workflow and interface
+
+- Separate Current recipe, Tools and Library from the Opened export review.
+  Saved export metadata stays visible while editing the next recipe. Keep setup,
+  sample and render actions together, and cancellation beside job progress.
+- Remove nested preview scrolling; show complete status, paths and scene notes
+  in Export details. Add direct delivery opening, still/video identification,
+  return to the original still, keyboard sphere controls and visible focus.
+- Keep deliberate executable selections through discovery and restarts. Show
+  tool versions, separate delivery/playback capabilities and accessible logs.
+- Keep full-copy decoding and corrupt-copy rejection. Playback errors offer
+  Tool setup, logs and Retry playback while verified delivery remains available.
+- Keep cancellation visible until acknowledged; preserve previous export status
+  when recipe validation or opening a different job fails.
+- Add native UI state/screenshot checks and refresh the guides. Author remains
+  Blugart; version remains the private 0.8.0 development baseline.
+
+## Unreleased — reject corrupt playback copies
+
+- Decode the complete review video and audio before making it playable or caching
+  it. Some Windows Theora encoder builds return success but write corrupt motion
+  packets; format and duration checks alone previously accepted these copies.
+- Explain how to select another FFmpeg build and rebuild playback while preserving
+  the delivered MP4. Existing copies from before this check are rebuilt on first use.
+- Add a malformed-video-packet regression that retains valid Ogg checksums and
+  passes the earlier format checks, then verifies rejection, cleanup and retry.
+
 ## Unreleased — clean editor export and recovery
 
 - Exclude each new export folder from Godot asset import before writing media.

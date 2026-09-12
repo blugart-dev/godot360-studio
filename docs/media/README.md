@@ -50,7 +50,7 @@ video service is needed to read the illustrated guides.
 | `tidal-archive.jpg`, `glass-desert.jpg`, `sky-garden.jpg`, `star-engine.jpg` | Individual forward views at 8, 20, 35 and 49 s | 41–87 KB each |
 | `sky-garden-panorama.jpg` | The entire sphere at 35 s, flattened to 1280×640 | 70 KB |
 | `umbral.jpg` | A forward view at 3 s from UMBRAL's rendered film | 29 KB |
-| `../../addons/godot360/media/studio.png` | Actual current panel, THRESHOLD 8K recipe, native playback paused at 35 s | 567 KB |
+| `../../addons/godot360/media/studio.png` | Actual panel, editable recipe and completed calibration sample | Under 200 KB |
 | `capture-borders-forward.jpg`, `capture-borders-mobile.jpg` | Unmodified before/after sheets from the moving-emitter capture-border fixture; see [test and regeneration](../capture-borders.md) | Under 40 KB each |
 | `exposure-consistency.jpg` | Unmodified Scene / Fixed (authored) comparison sheet from the moving-light exposure fixture; see [test and regeneration](../exposure-consistency.md) | Under 40 KB |
 | `exposure-lit.jpg` | Unmodified Scene / Fixed (authored) sheet from the lit-material exposure experiment; see [comparison](../exposure-consistency.md) and [evidence](../validation.md) | Under 50 KB |
@@ -88,41 +88,27 @@ scene content. See [THRESHOLD's guide](../threshold.md) to reproduce that source
 
 ## Refresh the panel screenshot
 
-`tools/capture_docs_panel.gd` renders the real panel in a **disposable project**.
-It opens a successfully verified THRESHOLD export, loads its recipe, prepares or
-reuses the normal playback cache and seeks to 35 seconds. It refuses to run in
-a project whose name is not `Godot360 documentation capture`.
+The current screenshot and state series come from `tests/ui_review.py`, using
+native Godot in a disposable project with no owner settings. Run:
 
-1. Create a fresh folder under `.godot360/` and copy `addons`, `assets`, `scenes`,
-   `scripts`, `export_profiles` and `tools` into it. Do not copy user settings.
-2. Create the following `project.godot` in that disposable folder:
+```powershell
+python tests/ui_review.py --godot GODOT --ffmpeg FFMPEG --ffprobe FFPROBE --output .godot360/ui-review-new
+```
 
-   ```ini
-   config_version=5
-   [application]
-   config/name="Godot360 documentation capture"
-   [rendering]
-   renderer/rendering_method="gl_compatibility"
-   environment/defaults/default_clear_color=Color(0.12, 0.13, 0.16, 1)
-   ```
+Quote executable paths containing spaces. Inspect the generated state PNGs and
+`ui-review.json`; use `project/.godot360/ui-evidence/completed-1440.png` as
+`addons/godot360/media/studio.png`. Update [UI provenance](ui-provenance.json)
+when copying refreshed images. This is actual native panel rendering and
+automated integration, not a human click-through. The default Godot theme is
+used, with editor chrome outside the image. Use current scene is disabled in
+standalone captures; the separate native editor test exercises that callback.
 
-3. Import that project, then capture with a graphical Godot 4.7.2 session. Replace
-   the uppercase placeholders with absolute paths; quote paths containing spaces:
-
-   ```powershell
-   & GODOT --headless --editor --path DISPOSABLE_PROJECT --import --quit
-   & GODOT --path DISPOSABLE_PROJECT --audio-driver Dummy --script res://tools/capture_docs_panel.gd -- --source=THRESHOLD_EXPORT_FOLDER --ffmpeg=FFMPEG --ffprobe=FFPROBE --output=SCREENSHOT_PNG
-   ```
-
-4. Inspect the result, then use it as `addons/godot360/media/studio.png`. The first
-   playback preparation can take several minutes. Playback codecs and limits are
-   documented in [Playback](../../addons/godot360/PLAYBACK.md).
-
-This is a standalone rendering of the panel, with the normal Godot control theme;
-the editor chrome is outside the image. **Use current scene** is disabled because
-there is no editor scene callback in this capture. The example recipe and source
-film are genuine. Source settings, recipe and master hashes were checked unchanged
-for the 2026-09-08 capture; local evidence is under `.godot360/docs-review/`.
+The UI audit includes unmodified before/after images of the calibration sample,
+and empty, ready, running, completed, cancelled, failed, details and scaled states.
+The playback-error and failed-export presentation images are explicitly controlled
+states; actual corrupt packet rejection is verified separately by playback tests.
+The older `tools/capture_docs_panel.gd` THRESHOLD capture helper is retained as
+a film-specific alternative, not the generator of the current screenshot.
 
 ## Before committing refreshed media
 

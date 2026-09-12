@@ -10,6 +10,7 @@ var picker: OptionButton
 var open_button: Button
 var forget_button: Button
 var details: Label
+var location: LineEdit
 var busy := false
 
 
@@ -34,7 +35,15 @@ func _ready() -> void:
 	row.add_child(forget_button)
 	details = Label.new()
 	details.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	details.max_lines_visible = 4
+	details.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	add_child(details)
+	location = LineEdit.new()
+	location.editable = false
+	location.add_theme_color_override("font_uneditable_color", get_theme_color("font_color", "Label"))
+	location.placeholder_text = "Selected export folder"
+	location.tooltip_text = "Select and copy the complete folder path. Opening an entry keeps your current recipe."
+	add_child(location)
 	refresh()
 
 
@@ -93,8 +102,10 @@ func _show_selection() -> void:
 	picker.disabled = busy or paths.is_empty()
 	open_button.disabled = busy or not info.get("can_open", false)
 	forget_button.disabled = busy or paths.is_empty()
-	details.text = "Your last 12 launched or opened exports appear here." if path.is_empty() else str(info.details)
-	details.tooltip_text = path
+	details.text = "Your last 12 launched or opened exports appear here." if path.is_empty() else str(info.details).trim_suffix("\n" + path)
+	details.tooltip_text = str(info.get("details", ""))
+	location.text = path
+	location.visible = not path.is_empty()
 
 
 func _open_selected() -> void:
@@ -175,6 +186,8 @@ static func describe(path: String) -> Dictionary:
 		summary += " · " + String.num(float(job.fps), 2).trim_suffix(".0") + " FPS"
 	if _number(job.get("duration")):
 		summary += " · " + String.num(float(job.duration), 3).trim_suffix(".0") + " s"
+	elif _number(job.get("frames")) and _number(job.get("fps")) and float(job.fps) > 0:
+		summary += " · " + String.num(float(job.frames) / float(job.fps), 3).trim_suffix(".0") + " s"
 	if label.begins_with("Unconfirmed"):
 		summary += "\nOpen to check the coordinator and recovery options."
 	return {"can_open": true, "state": mode + " · " + label, "details": summary + "\n" + path}

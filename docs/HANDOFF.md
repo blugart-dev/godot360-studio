@@ -1,8 +1,42 @@
 # Godot360 Studio development handoff
 
+## Studio UI/UX audit — 2026-09-13
+
+Implemented the [complete workflow audit](ui-ux-audit.md), including before/after
+screenshots and Blugart's short verification walkthrough. Current recipe, Tools
+and Library are separate from Opened export; tool choices persist; still/video
+and verified delivery are explicit; preview errors have their own retry/logs;
+keyboard review and compact layout are improved. The prior uncommitted playback
+fix remains intact. Author Blugart and private development version 0.8.0 remain.
+
+See [validation](validation.md#studio-uiux-audit--2026-09-13) for packaged headless,
+native playback/UI/editor evidence, source mappings and failed test-development
+attempts. This private checkpoint includes the prior playback fix. Preserve the
+evidence under `.godot360/ui-ux-review/`; no public release or version bump was made.
+Next owner action is the short human walkthrough; automated integration and
+screenshots do not close subjective delivery, accessibility or platform gates.
+
 For a fresh session, start with the [current recap and difficulty assessment](next-session.md).
 It identifies the completed checkpoint, remaining work, support decisions,
 and the next bounded engineering task. The detailed records below remain the evidence.
+
+## Private walkthrough playback corruption — 2026-09-12
+
+The owner found colored corruption around the moving sphere during in-editor
+playback, with a visually correct delivery MP4. The existing Gyan 8.0.1 full
+build produced an invalid Theora cache; strict decoding rejects it. The tested
+Gyan 9.0.1 essentials build regenerates clean playback from the same MP4.
+`playback_review.gd` now decodes the entire copy before loading/caching it and
+invalidates older unvalidated cache formats. Failure guidance directs the user
+to select another tool build and retry. No capture or shader changes.
+
+The targeted suite passes 50 native and 44 headless checks, including a malformed
+packet control, decode-stage cancellation, cleanup and retry. Native screenshots
+of the actual clip are clean and its delivery hash is unchanged. See the newest
+[validation entry](validation.md) for the exact candidate and local evidence.
+The owner has confirmed that playback works perfectly with the updated walkthrough
+and tested FFmpeg build. Continue the remaining manual checks. Do not mark the
+whole walkthrough or platform/release acceptance complete from this fix.
 
 ## Clean editor integration and two runtime fixes — 2026-09-11
 

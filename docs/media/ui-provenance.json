@@ -1,0 +1,117 @@
+{
+  "date": "2026-09-13",
+  "engine": "Godot 4.7.2, native Forward+ Vulkan, RTX 3060 Ti, Windows",
+  "capture": "Unmodified native viewport PNGs; programmatic controls, no human click-through.",
+  "before": ".godot360/ui-ux-review/before",
+  "after": ".godot360/ui-ux-review/final-ui-verified",
+  "controlled_states": [
+    "playback-failed-1100",
+    "export-failed-1100"
+  ],
+  "source_delivery_sha256": "ba73f3ef1a506e86fa39946ff132e115de87bf64916c2047c62654875fd46a69",
+  "runtime_hashes": {
+    "addons/godot360/audio_plan.gd": "685ceba9270847ffee0b60e606ff37c729b573361c29b8457ab3454f99ff6b27",
+    "addons/godot360/capture.gd": "0c75a0ee6bf08bfa01e16caf69318079b6d59dc27fa05b265d37f53b63d82d5a",
+    "addons/godot360/capture_exposure.gd": "67568d33058f045ccf5684fdd2a4ae57ee82812b8c0d096604eff42eeb8ee4c7",
+    "addons/godot360/capture_projection.gd": "05acac3ced0047fb94933b2ca61f9426619f3a05ecd00a8bf12f590eda8ad4e8",
+    "addons/godot360/capture_rig.gd": "3c7dd4680fbe97033bf423fa01b95951a8d1bf130ef1a0b83aa7da69cca79fce",
+    "addons/godot360/diagnostics.gd": "cecf9b707111b7502bd20ebd73bd6c85cb1942d149c5ee18448ab9a5fa3988e6",
+    "addons/godot360/equirectangular.gdshader": "1ca0206a3c8af0d310d8425720ed35905149a42eb88ca2e38b0cc9dcf67393c7",
+    "addons/godot360/export_profile.gd": "864bac30835eb02c9c6987b8827fedf907e3c1b95b94dac9d241713c8b8b3bad",
+    "addons/godot360/frame_writer.gd": "2c9b9ca3de7fece712216338e392501ee24f3733cc96c2c05365ab46cb0e7d04",
+    "addons/godot360/job_io.gd": "303240d2497294774c0fd3b3d89b7cfa8adf988579b45ef05d1fb527acd02296",
+    "addons/godot360/job_planner.gd": "50f7964b8b57f0b081d60bd567e254b7a2cddf2bf426810fd8e06fd1a854f680",
+    "addons/godot360/job_session.gd": "03d6e17181591ca81112f4a6b5eca4a5b24c8d06cd99269604781c6d2cb0ee65",
+    "addons/godot360/particle_notes.gd": "c64970dde5dab8cc82915aec53ee28760034ae247454a4c278806c4020d0dcae",
+    "addons/godot360/pipeline.gd": "42d9b075742dc3c1281b40e630dcd40001ded8b911508890d63f701988eba436",
+    "addons/godot360/playback_review.gd": "97c6210fbc50977c0c57207fb5492b2e8349fc2807926b4d167e01a6abca236d",
+    "addons/godot360/plugin.cfg": "235b39fbe59ec5fe84bec94d7cab7c90da5d04c5e53a4afbca739a07bb70aed6",
+    "addons/godot360/plugin.gd": "44d6aa7c47dc16570cea9df36115e3035219eaf06ddb992b8d1e946ba0ea1448",
+    "addons/godot360/preview.gdshader": "65c52e359f492d9be20d0919de30b1b056d045b321106c761dca3fc1dc8b28e4",
+    "addons/godot360/process_runner.gd": "3f027da571a7df4ed86bdd1e695708b600a6eb4012d3e9e2898cb33e01daebd7",
+    "addons/godot360/recent_exports.gd": "1992278657c816685cd57afd8dcc0b10d68ebdc0a0c53909ded34206c2d08aa9",
+    "addons/godot360/renderer_policy.gd": "0701ca6ac14f8d57474111f4406aec23253b01ae3395bb6dc568f61bedb59139",
+    "addons/godot360/scene_inspector.gd": "07c0e8b6e20fcb01a520863182070befe8c1a0bbc86e4420bea6ad48b265d72d",
+    "addons/godot360/setup_check.gd": "17d0946d653f144e3e0f01524e986b5f2ea7221ea77c67bc8ea3c800a484cc22",
+    "addons/godot360/spherical_metadata.gd": "d24de9199a39ca840971fbf69cda417a8ac59600f592d961d29c3c5e47a9600c",
+    "addons/godot360/storage_guard.gd": "9cf4acdab4107848165c7f85855fffab6ab7c642a0f7e1fdc74052d9e9ee6a45",
+    "addons/godot360/studio_layout.gd": "3b85100250abf656f37617d798d637137b34c35f2d06c055fe684662086a16cd",
+    "addons/godot360/studio_panel.gd": "c98399188f1c2ff03a4ff4d4afc6e8fe5540c565df36fbcb7aa0604410d17ddc",
+    "addons/godot360/timeline_scene.gd": "8ee1d395cb80c78c4f77b70c42ad8832052322aff2f5b0bc78dd82964e203690",
+    "addons/godot360/tool_paths.gd": "8049ba4d43832aa465c2f7ef10eb86f9fda9cad0972a6bb18198b28802c4e9ab",
+    "addons/godot360/examples/calibration.gd": "f80a25973c2665e9f541ada4e9bda714f9f786ff6faa0056135ab3902b2cdc9f",
+    "addons/godot360/examples/spherical_smoke.gdshader": "de609ffd9de6406a5b7a81a9f1df286f2a77620b4b718e4be2b4cc7e54aba0e5",
+    "addons/godot360/examples/timeline.gd": "3f9d654dea0bda354d2f5c29864577bf8fde9a08d0cd8eb59297932d689f65da"
+  },
+  "outputs": {
+    "ui-cancelled-1100.png": {
+      "bytes": 130392,
+      "sha256": "e629ee7d19332a7f58d6826cfbfbe11c4f31aaca2043836213224960de79da8c"
+    },
+    "ui-cancelling-1100.png": {
+      "bytes": 127804,
+      "sha256": "72cd88eb262153e8fbba28cdf57fa9ae6f9d429f681840cbd39b026e0ba1eadc"
+    },
+    "ui-completed-1100.png": {
+      "bytes": 137084,
+      "sha256": "6d3ef2ab5780081b9aa3169e761e586cb2497935d36c183f5dbd4799445fa433"
+    },
+    "ui-completed-1440.png": {
+      "bytes": 194071,
+      "sha256": "6ccf67d171e748bf6595e430e38892ad4e9df024a0d504101ddd56e774ff3432"
+    },
+    "ui-details-1100.png": {
+      "bytes": 137151,
+      "sha256": "fc7b2c6677e20fba03122928662a46957bc39eeefb75c6bc6336bc850df9a15e"
+    },
+    "ui-empty-1100.png": {
+      "bytes": 111839,
+      "sha256": "4ec06bfc5120d240f9dc91fbaec267db0028de380f570dd9b9a3cde3988c21b6"
+    },
+    "ui-export-failed-1100.png": {
+      "bytes": 129865,
+      "sha256": "dd079a06be7fc7becc0844d6c021d4900820ebb58f71da0accc24cd6357d410b"
+    },
+    "ui-library-1100.png": {
+      "bytes": 172066,
+      "sha256": "f8fc95a3f18ce68f308a68d209a7106e09e806112d6182473725193a462db824"
+    },
+    "ui-playback-failed-1100.png": {
+      "bytes": 171919,
+      "sha256": "8745c3e7ebdd05578f70ffc911684e0661407a8892afbe7ec7d2a84500dc7475"
+    },
+    "ui-ready-1100.png": {
+      "bytes": 113168,
+      "sha256": "f4cfa44a07a270884ad21d486b8ea217fe8ded97935a713a96284bf7d4fb2b59"
+    },
+    "ui-running-1100.png": {
+      "bytes": 117238,
+      "sha256": "da8f1e6888d35e700d58472c08a8d51fa032819d4c7a329282e18e39c28fa891"
+    },
+    "ui-scaled-125-percent.png": {
+      "bytes": 164433,
+      "sha256": "300badac1d79993afdb26be80bcb4675824ae3f23f1ddf6a76d1e37d147a897f"
+    },
+    "ui-tools-1100.png": {
+      "bytes": 122356,
+      "sha256": "f41246f4bb3e9c14cd7089eb150ff4ef621c48bbd30eb965b930809d4dc8cc5d"
+    },
+    "ui-before-completed.png": {
+      "bytes": 153811,
+      "sha256": "be59ae3cc41eec1481ceb3547085cffd66d6d0c4c0306946f1af062ed0b497df"
+    },
+    "ui-before-ready.png": {
+      "bytes": 140447,
+      "sha256": "bf03d118656138b16f1990911d7e47222f5a339620d5187f0c31d694f984638b"
+    },
+    "ui-native-editor.png": {
+      "bytes": 250918,
+      "sha256": "7c2465fd01088b042836f9b1ca0193dd92e697659ed9fa5322eee56b40f61372"
+    }
+  },
+  "native_editor": {
+    "source": ".godot360/ui-ux-review/delivery-native",
+    "kind": "Unmodified native editor viewport; programmatically driven panel.",
+    "addon_matches_final_candidate": true
+  }
+}

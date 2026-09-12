@@ -23,6 +23,11 @@ limits. It cannot mean every arbitrary shader, GPU and interactive game works.
 
 ## Already working
 
+The [2026-09-13 UI/UX audit](ui-ux-audit.md) separates current recipes from opened
+exports, stabilizes tool selection, improves compact native layout and keyboard
+review, and adds explicit playback recovery. Its state screenshots and automated
+native/editor checks do not close the human click-through or other platform gates.
+
 Scene/camera selection, grouped settings, setup checks, 2K/4K/8K recipes, short-test
 estimates, authored camera/timeline capture, scene and attached audio, spherical
 MP4 metadata, output verification, cancellation, saved-job recovery, re-encoding,

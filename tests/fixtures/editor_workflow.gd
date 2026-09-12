@@ -117,6 +117,9 @@ func _first() -> void:
 		for second in [0.3, 2.3, 0.3]:
 			panel.playback.seek_to(second)
 			await get_tree().create_timer(0.35).timeout
+			# An idle editor can stop drawing between paused seeks. Explicitly
+			# request the evidence frame instead of waiting for unrelated input.
+			panel.preview.queue_redraw()
 			await RenderingServer.frame_post_draw
 			var picture: Image = panel.playback.player.get_video_texture().get_image()
 			picture.save_png("res://.godot360/editor-review/seek-%d.png" % signatures.size())
@@ -160,7 +163,20 @@ func _reopen() -> void:
 	panel._open_job(evidence.source)
 	panel.reuse_button.pressed.emit()
 	await _wait_stage("Encoding H.264 + AAC", 30000)
-	check(FileAccess.file_exists(panel.folder.path_join("encode.log")), "Recovery control reaches the actual encoder")
+	# The stage precedes tool/audio preparation, and the saved process PID is
+	# refreshed only when FFmpeg emits frame progress. Its MP4 header proves the
+	# encoder has started even while frame progress is still buffered.
+	var encoder_deadline := Time.get_ticks_msec() + 10000
+	var encoder_started := false
+	while Time.get_ticks_msec() < encoder_deadline and panel.process_id > 0:
+		var encoded := FileAccess.open(panel.folder.path_join("encoded.mp4"), FileAccess.READ)
+		encoder_started = encoded != null and encoded.get_length() > 0 and IO.read_json(panel.folder.path_join("status.json")).get("stage") == "Encoding H.264 + AAC"
+		if encoded != null:
+			encoded.close()
+		if encoder_started:
+			break
+		await get_tree().create_timer(0.05).timeout
+	check(encoder_started, "Recovery control reaches the actual encoder")
 	panel.cancel_button.pressed.emit()
 	await _wait_job()
 	evidence.cancelled_encode = panel.folder

@@ -1,17 +1,19 @@
 # Guide screenshot
 
-`studio.png` shows the actual Godot360 panel on Godot 4.7.2 / Windows,
-captured on 2026-09-08 from the unreleased source following commit `91d0a9e`.
-The source panel code is unchanged by this documentation pass.
+`studio.png` is an unmodified 1440×900 viewport capture of the actual Godot360
+Studio panel on native Windows / Godot 4.7.2 / Forward+ Vulkan / RTX 3060 Ti,
+2026-09-13. It shows an eight-second editable Draft recipe beside a completed
+one-second calibration sample, in the original full-resolution still view.
+Calibration is included in addon-only installations.
 
-The full repository's THRESHOLD 8K recipe is selected, with its completed film
-open at 35 seconds through the native 2K / 30 FPS review copy. A disposable
-project isolates capture settings from the user's project. The panel is rendered
-standalone, so editor-provided **Use current scene** is disabled in this image.
-In the editor, that button is connected to the current scene.
+The capture is automated in a fresh isolated project. It uses Godot's default
+control theme; editor chrome is outside the image and Use current scene is
+disabled because this standalone panel has no editor save callback. Actual
+editor integration is validated separately. This is not a human walkthrough.
 
-The screenshot is 1440×900 and contains project-relative display paths. It is
-included in the addon ZIP so the README, quick start and playback guide remain
-illustrated after extraction. `.gdignore` keeps it out of Godot's asset import.
-In the full source repository, `docs/media/README.md` describes regeneration with
-`tools/capture_docs_panel.gd`.
+Regenerate with `tests/ui_review.py` from the full repository or development
+package; copy its `.godot360/ui-evidence/completed-1440.png` after inspecting all
+state images and its passing report. The repository's `docs/media/ui-provenance.json`
+records source/runtime hashes and screenshots. Local evidence remains under
+`.godot360/ui-ux-review/final-ui-verified/`. The PNG is included in the addon ZIP;
+`.gdignore` prevents asset import. Render masters and user settings are untouched.

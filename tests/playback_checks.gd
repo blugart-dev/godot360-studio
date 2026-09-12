@@ -63,7 +63,7 @@ func _run() -> void:
 	audio_capture.buffer_length = 0.2
 	AudioServer.add_bus_effect(0, audio_capture)
 	check(not review.play_button.disabled and review.source == source, "Opening a completed export enables playback")
-	check(panel.effects_scroll.visible and panel.effects_label.text.contains("brightness seams"), "The panel shows actual capture warnings without opening JSON")
+	check(panel.details_button.text.contains("notes") and panel.effects_label.text.contains("brightness seams"), "Export details exposes actual capture warnings without opening JSON")
 	review.toggle()
 	check(review.phase == "encode", "Play starts asynchronous review preparation")
 	await _wait_ready()
@@ -139,9 +139,10 @@ func _run() -> void:
 	review.tools_provider = func(): return {"ffmpeg": ffprobe, "ffprobe": ffprobe}
 	review.toggle()
 	await _wait_ready()
-	check(review.last_error.contains("preparation failed") and review.proxy_path.is_empty(), "An actual codec-process failure never becomes playable output")
+	check(review.last_error.contains("encode failed") and review.proxy_path.is_empty(), "An actual codec-process failure never becomes playable output")
 	review.tools_provider = func(): return {"ffmpeg": ffmpeg, "ffprobe": ffprobe}
 	review.toggle()
+	check(review.note.tooltip_text.is_empty(), "Retry clears stale failure tooltips before preparing a new copy")
 	if review.guard != null:
 		review.guard.space_reader = func(): return 0
 		review.guard.sample_interval_msec = 0
@@ -152,6 +153,7 @@ func _run() -> void:
 	await _wait_ready()
 	check(review.last_error.is_empty() and review.player.paused, "Preparation completed in a hidden panel does not start playing sound")
 	review.show()
+	await _check_corrupt_playback(source, source_hash, proxy, ffprobe)
 	IO.write_json(second.path_join("report.json"), {"ok": false})
 	review.select_job(second)
 	check(review.play_button.disabled and review.source.is_empty(), "Unverified jobs cannot be offered as completed playback")
@@ -159,6 +161,90 @@ func _run() -> void:
 	_check_scene_warnings()
 	print("PLAYBACK EVIDENCE: " + job_dir)
 	_finish()
+
+
+func _check_corrupt_playback(source: String, source_hash: String, valid_copy: String, ffprobe: String) -> void:
+	var broken := job_dir.path_join("broken-playback")
+	DirAccess.make_dir_recursive_absolute(broken)
+	for name in ["video-360.mp4", "job.json", "report.json"]:
+		DirAccess.copy_absolute(job_dir.path_join(name), broken.path_join(name))
+	review.select_job(broken)
+	# Pause polling so a deterministic malformed video packet can replace one
+	# encoder result before the normal verification path examines it.
+	review.set_process(false)
+	review.toggle()
+	var deadline := Time.get_ticks_msec() + 120000
+	while review.runner != null and review.runner.is_running() and Time.get_ticks_msec() < deadline:
+		await create_timer(0.05).timeout
+	if review.runner == null or review.runner.is_running():
+		review.cancel()
+		review.set_process(true)
+		check(false, "Corruption fixture encoder finishes")
+		return
+	var data := FileAccess.get_file_as_bytes(valid_copy)
+	check(_corrupt_video_packet(data), "Corruption fixture changes a video packet while retaining valid Ogg page checksums")
+	var file := FileAccess.open(review.media_path, FileAccess.WRITE)
+	file.store_buffer(data)
+	file.close()
+	var output: Array = []
+	var code := OS.execute(ffprobe, ["-v", "error", "-show_streams", "-show_format", "-of", "json", review.media_path], output, true)
+	var probe = JSON.parse_string("".join(output))
+	check(code == 0 and probe is Dictionary and Playback.valid_proxy(probe, 6.0), "Corrupt motion packets still pass the old format and duration checks")
+	var rejected_path: String = review.media_path
+	var rejected_cache: String = review.cache_dir
+	review.set_process(true)
+	await _wait_ready()
+	check(review.last_error.contains("decoding errors") and review.last_error.contains("Tool setup"), "Full decoding rejects corrupt playback and explains how to rebuild it")
+	check(review.player.stream == null and review.proxy_path.is_empty() and not FileAccess.file_exists(rejected_path), "Corrupt playback is never loaded and its failed copy is removed")
+	check(not FileAccess.file_exists(rejected_cache.path_join("ready.json")), "Corrupt playback never receives a reusable cache record")
+	check(FileAccess.get_sha256(source) == source_hash and FileAccess.file_exists(valid_copy), "Rejecting corruption preserves the delivery and earlier valid playback")
+	review.toggle()
+	deadline = Time.get_ticks_msec() + 120000
+	while review.phase not in ["", "decode"] and Time.get_ticks_msec() < deadline:
+		await process_frame
+	check(review.phase == "decode", "A valid retry reaches the asynchronous full-decode stage")
+	var decode_pid: int = review.runner.pid if review.runner != null else -1
+	var cancelled_copy: String = review.media_path
+	review.cancel()
+	check(review.phase.is_empty() and review.runner == null and decode_pid > 0 and not OS.is_process_running(decode_pid)
+		and not FileAccess.file_exists(cancelled_copy) and not FileAccess.file_exists(rejected_cache.path_join("ready.json")), "Cancel during full decoding stops its worker and leaves no playable cache")
+	review.toggle()
+	await _wait_ready()
+	check(review.last_error.is_empty() and not review.proxy_path.is_empty(), "Retry can build a valid playback copy after rejection")
+
+
+func _corrupt_video_packet(data: PackedByteArray) -> bool:
+	# The first Ogg stream is Theora. Keep the identification/setup headers,
+	# lacing and timestamps; damage a complete data packet and recompute CRC.
+	var serial := data.decode_u32(14)
+	var offset := 0
+	while offset + 27 < data.size():
+		var segments := int(data[offset + 26])
+		var payload := offset + 27 + segments
+		var length := 0
+		for index in range(segments):
+			length += data[offset + 27 + index]
+		var end := payload + length
+		if end > data.size():
+			return false
+		if data.decode_u32(offset + 14) == serial and data.decode_u32(offset + 18) > 1 and length > 8:
+			var packet_length := 0
+			for index in range(segments):
+				packet_length += data[offset + 27 + index]
+				if data[offset + 27 + index] < 255:
+					break
+			for index in range(packet_length):
+				data[payload + index] = 0x7f if index == 0 else 0xff
+			data.encode_u32(offset + 22, 0)
+			var crc := 0
+			for index in range(offset, end):
+				crc ^= int(data[index]) << 24
+				for bit in range(8):
+					crc = ((crc << 1) ^ (0x04c11db7 if crc & 0x80000000 else 0)) & 0xffffffff
+			data.encode_u32(offset + 22, crc)
+			return true
+		offset = end
+	return false
 
 
 func _wait_ready() -> void:

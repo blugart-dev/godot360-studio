@@ -4,11 +4,11 @@ An original Godot addon for producing **monoscopic 360 video** from a 3D scene.
 Configure a scene and camera, render a fixed number of frames, encode an MP4,
 write spherical metadata, and inspect the validation report from one editor panel.
 
-![The Godot360 panel with scene and video controls beside spherical playback of the THRESHOLD example.](media/studio.png)
+![The current recipe and a completed calibration sample in Godot360 Studio.](media/studio.png)
 
 *Select a scene and camera, test a second, render, then drag, seek and listen.
-This is the actual panel with a completed film open; the review copy is limited
-to 2K / 30 FPS. THRESHOLD is an example from the full source repository.*
+This is the actual panel with a completed calibration sample in the full-resolution
+still view. Video playback uses a separate copy limited to 2K / 30 FPS.*
 
 **[Start here: your first 360° export →](QUICKSTART.md)**
 
@@ -42,9 +42,9 @@ after installing or changing tools.
 1. Copy `addons/godot360` into a Godot project at the same path.
 2. Enable **Godot360 Studio** under **Project > Project Settings > Plugins**.
 3. Open the **Godot360** bottom panel.
-4. Expand **Tool setup** and choose **Find installed tools**, or use **FFmpeg…**
+4. Open **Tools → Tool setup** and choose **Find missing tools**, or use **FFmpeg…**
    to select the executable (`ffmpeg.exe` on Windows, `ffmpeg` on Linux/macOS).
-   FFprobe is filled in when installed beside it;
+   FFprobe is filled in when installed beside it unless you already selected a path;
    otherwise select it with **FFprobe…**. Selecting these files is enough; PATH
    configuration is optional. Click **Check setup** after choosing an output folder.
    FFmpeg must include **libx264**, **AAC**, `scale`, and `colorspace`.
@@ -53,7 +53,7 @@ after installing or changing tools.
 
 FFmpeg is an external codec dependency. The addon does not bundle or silently
 download executables. Selecting FFmpeg also locates FFprobe in the same directory
-when present. Machine paths are saved in `.godot360/settings.cfg`; exclude that
+when present and no deliberate FFprobe selection exists. Clear a field to allow automatic discovery again. Machine paths are saved in `.godot360/settings.cfg`; exclude that
 directory and your render directory from version control.
 
 For an existing installation, follow the [folder migration guide](MIGRATION.md)
@@ -61,12 +61,17 @@ before replacing the addon or loading saved recipes.
 
 ## First export
 
+**Current recipe** describes the next render. **Opened export** shows the saved job
+you are reviewing; editing or loading a recipe does not change its metadata.
+Tools and the export/recipe library have their own tabs. See the [quick start](QUICKSTART.md)
+for playback retry, keyboard review and recovery.
+
 For the complete walkthrough, use **[Your first 360° export](QUICKSTART.md)**.
 The panel's **Quick start** button opens that guide locally.
 
 1. Click **Use current scene** to save and select your open named scene, or
    **Choose scene…** for another saved scene. Pick a **Camera** from the list.
-   For the included calibration room, expand **Recipes and examples** and choose
+   For the included calibration room, open **Library → Recipes and examples** and choose
    **Calibration defaults**; its camera is selected automatically.
 2. Choose **Production · 4K** for viewing or **Draft · 2K** for a quick compatibility
    check. Set duration, frame rate, audio and **Save exports in**.
@@ -75,13 +80,13 @@ The panel's **Quick start** button opens that guide locally.
 4. Click **Test 1 second** to inspect a sample and estimate the full export's time
    and retained storage. Then **Render 360 video** for the full duration.
 5. Drag the spherical preview, then click **Play video** to review the whole clip
-   with seeking and sound. A local copy is prepared on first use. Use **Open output**
+   with seeking and sound. A local copy is prepared on first use. Use **Open folder**
    for `video-360.mp4` and `report.json`; inspect the master in a full-resolution player.
 
 **Advanced capture and encoding** contains the manual camera path, dimensions,
 renderer/driver overrides, PNG storage and H.264 CRF. **Audio timing and levels** contains offsets, trim and
-gain. **Recipes and examples** contains recipe loading/saving and both examples.
-**Saved exports and recovery** contains job reopening, re-encoding and diagnostics.
+gain. **Library → Recipes and examples** contains recipe loading/saving and both examples.
+**Library → Saved exports and recovery** contains job reopening, re-encoding and diagnostics.
 
 Current-scene selection and export save the open named scene through Godot. Other
 scenes use their saved versions. Save other scenes, scripts and assets before
@@ -100,7 +105,7 @@ working headroom for images and audio plus a 256 MiB reserve; metadata checks th
 the second MP4 copy will fit. A low-space or required checkpoint-write failure
 stops the job and retains its sources. Read the [storage guide](STORAGE.md).
 
-The panel reopens its last saved job at startup. **Recent exports** remembers up
+The panel reopens its last saved job at startup. **Library → Recent exports** remembers up
 to 12 launched or opened jobs; choose an entry and click **Open** to review it.
 **Forget** removes only the list entry. Use **Open saved job…** to locate another
 export. A running 0.6.3 coordinator must answer a fresh request before the

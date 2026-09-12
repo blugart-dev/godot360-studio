@@ -1,6 +1,6 @@
 # Engineering brief — development toward 1.0
 
-Updated on 2026-09-11. This is a development recap; the
+Updated on 2026-09-13. This is a development recap; the
 [publication preparation review](publication-review.md) records repository cleanup.
 The canonical completion criteria remain in [release readiness](release-readiness.md).
 
@@ -20,6 +20,24 @@ cancellation, diagnostics, re-encoding, recovery, storage guards, spherical play
 and recent exports are implemented. The internal version remains 0.8.0.
 
 Recent increments establish:
+
+- [Studio UI/UX audit](ui-ux-audit.md): native tabbed recipe/tools/library layout,
+  separate opened-export metadata, persistent deliberate tool selections,
+  clear still/playback/delivery and failure states, keyboard sphere review and
+  refreshed guides/screenshots. The original playback decoding fix is preserved.
+  Packaged headless checks, native UI/playback and real-editor export/recovery
+  evidence are recorded in [validation](validation.md#studio-uiux-audit--2026-09-13).
+  This checkpoint remains private at 0.8.0 and includes the playback fix. Preserve the
+  evidence and continue with the audit's short owner walkthrough; human acceptance
+  and the outstanding platform/release gates are still open.
+
+- Private walkthrough feedback found corrupt in-editor playback from the
+  selected Gyan 8.0.1 full build, while the delivery MP4 looked correct. The
+  playback path now fully decodes its copy before accepting it; the tested
+  Gyan 9.0.1 essentials build produces a clean replacement from the same MP4.
+  Fifty native and 44 headless playback checks pass. The owner confirmed that
+  playback now works perfectly after selecting the tested tools. The remaining
+  walkthrough steps are pending. See the newest [validation](validation.md).
 
 - [Clean native editor integration](editor-workflow.md): a fresh addon-only
   project and two actual editor processes validate authored scene saving, 4K
@@ -174,7 +192,12 @@ folders; preserve the user's creative scenes, recipes, settings and existing mas
 
 ## Local evidence and tools
 
-- Latest package: `.godot360/clean-editor-fixes/final-reviewed/candidate.zip`,
+- Latest package: `.godot360/preview-artifacts-20260912/candidate.zip`, SHA256
+  `5f17c39f7f3ec54141da23e66d8ffd62c57278289efc1a6873a81d6475314e5c`.
+  This targeted playback fix follows the package below; its tests and actual-clip
+  source mapping are recorded in [validation](validation.md).
+
+- Previous package: `.godot360/clean-editor-fixes/final-reviewed/candidate.zip`,
   SHA256 `e3ed1dc5053a91e9645d4796702516f67b23ba892c4f469685be5648ea5982bc`.
   The exact package and native editor records are mapped in [validation](validation.md).
   The earlier combined/production work is checkpointed at `9779e38`.

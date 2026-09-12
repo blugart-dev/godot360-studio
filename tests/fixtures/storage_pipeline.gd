@@ -1,6 +1,17 @@
 extends "res://addons/godot360/pipeline.gd"
 ## Disposable fault injection; never fills a real disk or changes permissions.
 var metadata_reads := 0
+var rendering_status_writes := 0
+
+
+func _status(stage: String, progress: float, error: String = "") -> bool:
+	if IO.argument("case") == "status-write" and stage == "Rendering":
+		rendering_status_writes += 1
+		if rendering_status_writes == 2:
+			# Inject from the coordinator between its own writes. Doing this in
+			# the capture worker raced an already-open status.json.tmp file.
+			DirAccess.make_dir_recursive_absolute(folder.path_join("status.json.tmp"))
+	return super._status(stage, progress, error)
 
 
 func _make_storage_guard() -> RefCounted:

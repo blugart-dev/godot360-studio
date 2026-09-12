@@ -5,45 +5,78 @@ extends RefCounted
 
 static func build(panel: Control) -> void:
 	panel.custom_minimum_size = Vector2(0, 350)
-	panel.add_theme_constant_override("separation", 20)
+	panel.add_theme_constant_override("separation", 16)
 	var left := VBoxContainer.new()
-	left.custom_minimum_size = Vector2(490, 350)
+	left.custom_minimum_size = Vector2(440, 350)
+	left.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	left.size_flags_stretch_ratio = 0.85
+	left.add_theme_constant_override("separation", 8)
 	panel.add_child(left)
-	var scroll := ScrollContainer.new()
-	scroll.custom_minimum_size = Vector2(490, 225)
-	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
-	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	left.add_child(scroll)
-	var settings := VBoxContainer.new()
-	settings.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	settings.add_theme_constant_override("separation", 6)
-	scroll.add_child(settings)
-	var title := Label.new()
-	title.text = "GODOT360 STUDIO   /   0.8.0"
-	title.add_theme_font_size_override("font_size", 19)
-	settings.add_child(title)
-	var recent := foldout(panel, settings, "recent", "Recent exports")
-	panel.recent_exports = preload("recent_exports.gd").new()
-	recent.add_child(panel.recent_exports)
+	var brand := HBoxContainer.new()
+	left.add_child(brand)
+	var title := _heading(brand, "Godot360 Studio")
+	title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	var credit := _label(brand, "by Blugart")
+	credit.tooltip_text = "Godot360 Studio · Development version 0.8.0"
+	panel.workspace_tabs = TabContainer.new()
+	panel.workspace_tabs.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	left.add_child(panel.workspace_tabs)
+	var settings := _page(panel.workspace_tabs, "Current recipe")
+	var tools_page := _page(panel.workspace_tabs, "Tools")
+	var library := _page(panel.workspace_tabs, "Library")
+	panel.recipe_feedback = _note(settings, "")
+	panel.recipe_feedback.max_lines_visible = 3
+	panel.recipe_feedback.hide()
 	_scene(panel, settings)
 	_export(panel, settings)
 	panel._build_audio_controls(settings)
+	_destination(panel, settings)
+	settings.move_child(panel.sections.audio.toggle, settings.get_child_count() - 1)
+	settings.move_child(panel.sections.audio.contents, settings.get_child_count() - 1)
 	_advanced(panel, settings)
-	_tools(panel, settings)
-	_saved(panel, settings)
+	_tools(panel, tools_page)
+	_saved(panel, library)
+	var setup_row := HBoxContainer.new()
+	left.add_child(setup_row)
+	panel.readiness_summary = _note(setup_row, "Check your recipe before rendering.")
+	panel.readiness_summary.max_lines_visible = 2
+	panel.check_button = panel._button(setup_row, "Check setup", panel._check_readiness)
+	panel.check_button.tooltip_text = "Save the selected open scene, verify tools and check output access. Details are in Tools."
 	var actions := HBoxContainer.new()
 	left.add_child(actions)
 	panel.test_button = panel._button(actions, "Test 1 second", panel._test_render)
+	panel.test_button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	panel.test_button.tooltip_text = "Render the first second at the selected quality, then estimate the full export."
 	panel.render_button = panel._button(actions, "Render 360 video", panel._render)
-	panel.cancel_button = panel._button(actions, "Cancel", panel._cancel)
-	panel.cancel_button.disabled = true
+	panel.render_button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	panel.render_button.tooltip_text = "Export the current recipe to a new folder. Existing captures are preserved."
 	_viewer(panel)
+	panel.resized.connect(func():
+		var scale: float = panel.get_theme_default_base_scale()
+		left.custom_minimum_size.x = 440 * scale)
+
+
+static func _page(tabs: TabContainer, title: String) -> VBoxContainer:
+	var scroll := ScrollContainer.new()
+	scroll.name = title
+	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	scroll.follow_focus = true
+	tabs.add_child(scroll)
+	var margin := MarginContainer.new()
+	margin.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	for edge in ["left", "right", "top", "bottom"]:
+		margin.add_theme_constant_override("margin_" + edge, 10)
+	scroll.add_child(margin)
+	var contents := VBoxContainer.new()
+	contents.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	contents.add_theme_constant_override("separation", 8)
+	margin.add_child(contents)
+	return contents
 
 
 static func _scene(panel: Control, parent: Control) -> void:
 	_heading(parent, "1  Scene and camera")
-	var actions := HBoxContainer.new()
+	var actions := HFlowContainer.new()
 	parent.add_child(actions)
 	panel.use_scene_button = panel._button(actions, "Use current scene", panel._use_current_scene)
 	panel.use_scene_button.disabled = not panel.current_scene_provider.is_valid()
@@ -55,16 +88,16 @@ static func _scene(panel: Control, parent: Control) -> void:
 	_label(grid, "Camera")
 	panel.camera_picker = OptionButton.new()
 	panel.camera_picker.fit_to_longest_item = false
-	panel.camera_picker.custom_minimum_size.x = 260
+	panel.camera_picker.custom_minimum_size.x = 180
 	panel.camera_picker.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	grid.add_child(panel.camera_picker)
 	panel.camera_picker.item_selected.connect(panel._camera_selected)
-	_note(parent, "Current scene saves automatically. Other scenes use saved files." if panel.current_scene_provider.is_valid() else "Exports use saved scene files.")
+	panel.recipe_fields.scene_path.tooltip_text = "Exports use saved files. Use current scene saves the named scene; save other scene and asset edits in Godot first."
 
 
 static func _export(panel: Control, parent: Control) -> void:
 	_heading(parent, "2  Video")
-	var quality := HBoxContainer.new()
+	var quality := HFlowContainer.new()
 	parent.add_child(quality)
 	for pair in [["Draft · 2K", "draft"], ["Production · 4K", "production"], ["Detail · 8K", "detail"]]:
 		var button: Button = panel._button(quality, pair[0], func():
@@ -74,21 +107,33 @@ static func _export(panel: Control, parent: Control) -> void:
 		button.toggle_mode = true
 		panel.quality_buttons[pair[1]] = button
 	panel.quality_hint = _note(parent, "")
-	var grid := _grid(parent)
-	panel.recipe_fields.duration = panel._field(grid, "Duration (seconds)", str(panel.profile.duration))
-	_label(grid, "Frames per second")
+	panel.quality_hint.max_lines_visible = 2
+	var timing := HBoxContainer.new()
+	parent.add_child(timing)
+	panel.recipe_fields.duration = panel._field(timing, "Duration (s)", str(panel.profile.duration))
+	panel.recipe_fields.duration.custom_minimum_size.x = 70
+	panel.recipe_fields.duration.tooltip_text = "Video length in seconds, from above zero to 3600. Test 1 second keeps this full duration."
+	_label(timing, "FPS")
 	panel.fps_picker = OptionButton.new()
 	for rate in [24, 25, 30, 50, 60]:
 		panel.fps_picker.add_item(str(rate), rate)
-	grid.add_child(panel.fps_picker)
+	timing.add_child(panel.fps_picker)
+	panel.fps_picker.tooltip_text = "Frames per second. 30 is a practical starting point; higher rates increase render time and storage."
 	panel.fps_picker.item_selected.connect(func(index: int):
 		panel.recipe_fields.fps.text = str(panel.fps_picker.get_item_id(index))
 		panel._refresh_plan())
+
+
+static func _destination(panel: Control, parent: Control) -> void:
+	var grid := _grid(parent)
 	panel.output = panel._field(grid, "Save exports in", ProjectSettings.globalize_path("res://renders"))
 	var actions := HBoxContainer.new()
 	parent.add_child(actions)
 	panel._button(actions, "Choose folder…", panel._browse.bind("folder"))
 	_note(actions, "Each export gets its own folder.")
+	panel.planning_label = _note(parent, "")
+	panel.planning_label.max_lines_visible = 3
+	panel.planning_label.tooltip_text = "This estimate describes the current recipe. A one-second sample cannot predict later scene complexity or full-job memory use."
 
 
 static func _advanced(panel: Control, parent: Control) -> void:
@@ -142,7 +187,7 @@ static func _advanced(panel: Control, parent: Control) -> void:
 		panel._refresh_plan())
 	_note(section, "Project preserves the saved project's renderer. Overrides affect new captures; re-encoding keeps the original pixels. A fallback stops capture with a diagnostic.")
 	panel._button(section, "Renderer support and scene effects", func(): OS.shell_open(ProjectSettings.globalize_path("res://addons/godot360/RENDERERS.md")))
-	var row := HBoxContainer.new()
+	var row: Container = HBoxContainer.new()
 	section.add_child(row)
 	_label(row, "Frame storage")
 	panel.storage = OptionButton.new()
@@ -169,21 +214,30 @@ static func _advanced(panel: Control, parent: Control) -> void:
 
 static func _tools(panel: Control, parent: Control) -> void:
 	var section := foldout(panel, parent, "tools", "Tool setup")
-	_note(section, "FFmpeg encodes the video; FFprobe verifies it. Select their files or find installed tools. Platform setup has download and installation steps.")
+	_note(section, "FFmpeg creates your video. FFprobe verifies it. Choose the executables from an extracted installation.")
 	var grid := _grid(section)
 	panel.ffmpeg = panel._field(grid, "FFmpeg", "ffmpeg")
 	panel.ffprobe = panel._field(grid, "FFprobe", "ffprobe")
-	var actions := HBoxContainer.new()
+	var actions := HFlowContainer.new()
 	section.add_child(actions)
 	panel._button(actions, "FFmpeg…", panel._browse.bind("ffmpeg"))
 	panel._button(actions, "FFprobe…", panel._browse.bind("ffprobe"))
-	panel._button(actions, "Find installed tools", panel._detect_tools)
+	panel._button(actions, "Find missing tools", panel._detect_tools)
 	panel._button(actions, "Platform setup", func(): OS.shell_open(ProjectSettings.globalize_path("res://addons/godot360/PLATFORMS.md")))
+	panel.tool_summary = _note(section, "Selected paths are kept. Clear a field to use automatic discovery.")
+	panel.tool_logs_button = panel._button(section, "Open setup logs", panel._open_setup_logs)
+	panel.tool_logs_button.disabled = true
+	_heading(parent, "Setup details · current recipe")
+	panel.readiness_label = _note(parent, "Choose a scene, then check your setup.")
+	panel.sections.tools.toggle.button_pressed = true
 
 
 static func _saved(panel: Control, parent: Control) -> void:
+	var recent := foldout(panel, parent, "recent", "Recent exports")
+	panel.recent_exports = preload("recent_exports.gd").new()
+	recent.add_child(panel.recent_exports)
 	var recipes := foldout(panel, parent, "recipes", "Recipes and examples")
-	var row := HBoxContainer.new()
+	var row: Container = HBoxContainer.new()
 	recipes.add_child(row)
 	panel._button(row, "Load recipe…", panel._browse.bind("load"))
 	panel._button(row, "Save recipe…", panel._browse.bind("save"))
@@ -191,10 +245,12 @@ static func _saved(panel: Control, parent: Control) -> void:
 	recipes.add_child(row)
 	panel._button(row, "Calibration defaults", func():
 		panel.profile = panel.Profile.new()
-		panel._refresh_fields())
+		panel._refresh_fields()
+		panel.workspace_tabs.current_tab = 0)
 	panel._button(row, "Motion lab", func():
 		panel.profile = load("res://addons/godot360/examples/timeline.tres").duplicate()
-		panel._refresh_fields())
+		panel._refresh_fields()
+		panel.workspace_tabs.current_tab = 0)
 	_note(recipes, "Calibration checks all six directions. Motion lab demonstrates an animated camera.")
 	var jobs := foldout(panel, parent, "jobs", "Saved exports and recovery")
 	row = HBoxContainer.new()
@@ -204,70 +260,100 @@ static func _saved(panel: Control, parent: Control) -> void:
 	panel.reencode_button.tooltip_text = "Change quality or audio using a completed capture, without rendering again."
 	panel.reuse_button = panel._button(jobs, "Re-encode this capture", func(): panel._reencode(panel.recovery_source))
 	panel.reuse_button.disabled = true
+	_note(jobs, "Re-encoding uses the capture's scene, dimensions and frame rate, with the current recipe's quality and audio. It creates a new export.")
 	panel._button(jobs, "Save diagnostics…", panel._browse.bind("diagnostics"))
 	panel.diagnostics_result = _note(jobs, "Save reports and logs as a local ZIP. Review it before sharing; paths may be included.")
+	panel.sections.recent.toggle.button_pressed = true
+	panel.sections.jobs.toggle.button_pressed = true
 
 
 static func _viewer(panel: Control) -> void:
 	var viewer := VBoxContainer.new()
 	viewer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	viewer.custom_minimum_size.x = 320
-	viewer.add_theme_constant_override("separation", 6)
+	viewer.add_theme_constant_override("separation", 8)
 	panel.add_child(viewer)
-	var row := HBoxContainer.new()
+	var row: Container = HBoxContainer.new()
 	viewer.add_child(row)
-	var heading := _heading(row, "3  Check and render")
+	var heading := _heading(row, "Opened export")
 	heading.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	panel.check_button = panel._button(row, "Check setup", panel._check_readiness)
-	var readiness_scroll := ScrollContainer.new()
-	readiness_scroll.custom_minimum_size.y = 72
-	readiness_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
-	viewer.add_child(readiness_scroll)
-	panel.readiness_label = _note(readiness_scroll, "Choose a scene, then check your setup.")
-	panel.readiness_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	panel.planning_label = _note(viewer, "")
-	_label(viewer, "360° preview · Drag to look around")
+	panel._button(row, "Quick start", func(): OS.shell_open(ProjectSettings.globalize_path("res://addons/godot360/QUICKSTART.md")))
+	panel.export_summary = _note(viewer, "No export open")
+	panel.export_summary.max_lines_visible = 2
+	panel.export_summary.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+	row = HBoxContainer.new()
+	viewer.add_child(row)
+	panel.preview_kind = _label(row, "360° review")
+	panel.preview_kind.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	panel.still_button = panel._button(row, "Show still", panel._review_still)
+	panel.still_button.disabled = true
+	panel.still_button.tooltip_text = "Show the full-resolution opening frame. Playback uses a smaller copy."
+	panel._button(row, "Reset view", func():
+		panel.heading = Vector2.ZERO
+		if panel.preview_material != null:
+			panel._update_preview())
 	panel.preview = ColorRect.new()
 	panel.preview.custom_minimum_size = Vector2(320, 130)
 	panel.preview.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	panel.preview.color = Color("101e29")
+	panel.preview.focus_mode = Control.FOCUS_ALL
+	panel.preview.tooltip_text = "Drag to look around. With keyboard focus, use arrow keys; Home resets the view."
 	panel.preview.gui_input.connect(panel._preview_input)
 	panel.preview.resized.connect(func():
 		if panel.preview_material != null:
 			panel._update_preview())
 	viewer.add_child(panel.preview)
+	panel.preview_focus = ReferenceRect.new()
+	panel.preview_focus.border_color = panel.get_theme_color("accent_color", "Editor") if panel.has_theme_color("accent_color", "Editor") else Color("80bfff")
+	panel.preview_focus.border_width = 2.0
+	panel.preview_focus.editor_only = false
+	panel.preview_focus.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	panel.preview.add_child(panel.preview_focus)
+	panel.preview_focus.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	panel.preview_focus.hide()
+	panel.preview.focus_entered.connect(func(): panel.preview_focus.show())
+	panel.preview.focus_exited.connect(func(): panel.preview_focus.hide())
 	panel.preview_empty = Label.new()
-	panel.preview_empty.text = "Your first frame will appear here.\nStart with Test 1 second."
+	panel.preview_empty.text = "See your scene in 360°\nChoose a scene, then Test 1 second.\nOr open an export from Library."
 	panel.preview_empty.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	panel.preview_empty.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	panel.preview_empty.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	panel.preview_empty.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	panel.preview.add_child(panel.preview_empty)
 	panel.preview_empty.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	panel.playback = preload("playback_review.gd").new()
 	panel.playback.tools_provider = func(): return {"ffmpeg": panel.ffmpeg.text.strip_edges(), "ffprobe": panel.ffprobe.text.strip_edges()}
 	panel.playback.texture_changed.connect(panel._video_texture)
+	panel.playback.setup_requested.connect(func(): panel.workspace_tabs.current_tab = 1)
 	viewer.add_child(panel.playback)
 	panel.effects_scroll = ScrollContainer.new()
-	panel.effects_scroll.custom_minimum_size.y = 52
-	panel.effects_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
-	viewer.add_child(panel.effects_scroll)
-	panel.effects_label = _note(panel.effects_scroll, "")
+	# Scene notes live in the details dialog, with a concise count beside it.
 	panel.effects_scroll.hide()
+	panel.add_child(panel.effects_scroll)
+	panel.effects_label = _note(panel.effects_scroll, "")
 	panel.progress = ProgressBar.new()
+	panel.progress.show_percentage = true
+	panel.progress.hide()
 	viewer.add_child(panel.progress)
-	var status_scroll := ScrollContainer.new()
-	status_scroll.custom_minimum_size.y = 44
-	status_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
-	viewer.add_child(status_scroll)
-	panel.status = _note(status_scroll, "Choose a scene or try Calibration under Recipes and examples.")
 	row = HBoxContainer.new()
 	viewer.add_child(row)
-	panel.output_button = panel._button(row, "Open output", func():
+	panel.status = _note(row, "No export open. Your current recipe is on the left.")
+	panel.status.max_lines_visible = 3
+	panel.status.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+	panel.cancel_button = panel._button(row, "Cancel export", panel._cancel)
+	panel.cancel_button.disabled = true
+	panel.cancel_button.hide()
+	row = HFlowContainer.new()
+	viewer.add_child(row)
+	panel.delivery_button = panel._button(row, "Open delivery MP4", panel._open_delivery)
+	panel.delivery_button.disabled = true
+	panel.delivery_button.tooltip_text = "Open video-360.mp4 in your default video player. Use a 360° player to look around."
+	panel.output_button = panel._button(row, "Open folder", func():
 		if not panel.folder.is_empty():
 			OS.shell_open(panel.folder))
 	panel.output_button.disabled = true
-	panel._button(row, "Quick start", func():
-		OS.shell_open(ProjectSettings.globalize_path("res://addons/godot360/QUICKSTART.md")))
+	panel.details_button = panel._button(row, "Export details", panel._show_export_details)
+	panel.details_button.disabled = true
 
 
 static func foldout(panel: Control, parent: Control, key: String, title: String) -> VBoxContainer:
@@ -305,7 +391,7 @@ static func _label(parent: Control, text: String) -> Label:
 
 static func _heading(parent: Control, text: String) -> Label:
 	var label := _label(parent, text)
-	label.add_theme_font_size_override("font_size", 16)
+	label.add_theme_font_size_override("font_size", label.get_theme_font_size("font_size") + 2)
 	return label
 
 

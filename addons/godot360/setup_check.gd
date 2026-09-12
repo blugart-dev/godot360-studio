@@ -15,7 +15,7 @@ func check_tools(ffmpeg: String, ffprobe: String) -> Dictionary:
 	if busy:
 		return {"ok": false, "error": "A tool check is already running."}
 	busy = true
-	var result := {"ok": false, "error": "", "png": false, "filters": ""}
+	var result := {"ok": false, "error": "", "png": false, "filters": "", "playback": false}
 	var encoder := find_executable(ffmpeg)
 	var probe := find_executable(ffprobe)
 	if encoder.is_empty() or probe.is_empty():
@@ -25,8 +25,13 @@ func check_tools(ffmpeg: String, ffprobe: String) -> Dictionary:
 		if DirAccess.make_dir_recursive_absolute(folder) != OK:
 			result.error = "Cannot save setup logs in .godot360. Check project folder access."
 		else:
+			var encoder_version := await _execute(encoder, ["-version"], folder.path_join("ffmpeg.log"))
+			result.ffmpeg_version = _version_label(str(encoder_version.output), "ffmpeg")
 			var encoders := await _execute(encoder, ["-hide_banner", "-encoders"], folder.path_join("encoders.log"))
-			if encoders.code != 0 or not str(encoders.output).contains("libx264") or not str(encoders.output).contains(" aac "):
+			result.playback = str(encoders.output).contains("libtheora") and str(encoders.output).contains("libvorbis")
+			if encoder_version.code != 0 or not str(encoder_version.output).contains("ffmpeg version"):
+				result.error = "FFmpeg could not be verified. Select ffmpeg in Tool setup."
+			elif encoders.code != 0 or not str(encoders.output).contains("libx264") or not str(encoders.output).contains(" aac "):
 				result.error = "FFmpeg needs H.264 (libx264) and AAC encoders. Choose another build in Tool setup."
 			else:
 				result.png = str(encoders.output).contains(" png ")
@@ -36,6 +41,7 @@ func check_tools(ffmpeg: String, ffprobe: String) -> Dictionary:
 					result.error = "FFmpeg needs scale and colorspace filters. Choose another build in Tool setup."
 				else:
 					var version := await _execute(probe, ["-version"], folder.path_join("ffprobe.log"))
+					result.ffprobe_version = _version_label(str(version.output), "ffprobe")
 					if version.code != 0 or not str(version.output).contains("ffprobe version"):
 						result.error = "FFprobe could not be verified. Select ffprobe in Tool setup."
 					else:
@@ -43,6 +49,13 @@ func check_tools(ffmpeg: String, ffprobe: String) -> Dictionary:
 			result.logs = folder
 	busy = false
 	return result
+
+
+static func _version_label(output: String, tool: String) -> String:
+	for line in output.split("\n"):
+		if line.begins_with(tool + " version "):
+			return ("FFmpeg" if tool == "ffmpeg" else "FFprobe") + " · " + line.get_slice(" ", 2)
+	return tool + " · version unavailable"
 
 
 func _execute(executable: String, arguments: PackedStringArray, path: String) -> Dictionary:

@@ -31,7 +31,7 @@ You author the camera's position, movement and sequence. The viewer chooses wher
 to look during playback. The exported film follows the same timeline for everyone;
 prepare interactive gameplay or gaze events as an authored sequence for capture.
 
-![Godot360's actual panel with THRESHOLD's 8K recipe selected and the Sky Garden playing in the spherical review area.](addons/godot360/media/studio.png)
+![Godot360 Studio separates the current recipe from a completed calibration sample.](addons/godot360/media/studio.png)
 
 *The current panel, captured in an isolated Godot project. Left: scene, camera,
 quality and sound. Right: draggable spherical review, seeking and playback audio.
@@ -55,11 +55,11 @@ the addon itself needs no .NET runtime, compiler, Python or Godot export templat
 
 1. Copy `addons/godot360` beside your `project.godot`. Enable **Godot360 Studio**
    under **Project > Project Settings > Plugins**, then open the **Godot360** bottom panel.
-2. Under **Tool setup**, click **Find installed tools**, or select FFmpeg and FFprobe.
+2. Under **Tools → Tool setup**, click **Find missing tools**, or select FFmpeg and FFprobe.
 3. Click **Use current scene**, choose a **Camera**, and set quality, duration,
    audio and an output folder. Save a new scene before selecting it.
 4. Click **Check setup**, then **Test 1 second**. Inspect the sample and its estimates.
-5. Click **Render 360 video**. Use **Play video** to review it and **Open output**
+5. Click **Render 360 video**. Use **Play video** to review it and **Open folder**
    to find the verified `video-360.mp4`.
 
 **[Step-by-step quick start and troubleshooting →](addons/godot360/QUICKSTART.md)**

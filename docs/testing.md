@@ -243,6 +243,22 @@ rendering does not establish GPU compatibility or production render performance.
 
 ## First-export workflow
 
+`tests/ui_review.py` prepares a fresh project and runs native interface checks
+without touching owner settings. It covers deliberately selected tools, saved-job
+versus recipe context, keyboard sphere input, still/video switching, delivery
+preservation, reopening, cancellation and re-encoding. It writes screenshots at
+1100×600, 1440×900 and 125% window scaling, plus controlled error states. The runner
+rejects engine errors and records source hashes; read [the audit](ui-ux-audit.md)
+for the distinction between screenshots, automated integration and human review.
+
+```sh
+python tests/ui_review.py --godot /path/to/godot --ffmpeg /path/to/ffmpeg --ffprobe /path/to/ffprobe --output .godot360/ui-review-new
+```
+
+It requires a graphical GPU session and optional playback codecs, and is included
+in the development package. Do not run its GDScript directly in the owner project;
+it requires the disposable project's explicit name and creates its own settings.
+
 `tests/recent_exports_checks.gd` exercises project-local history migration and
 persistence, bounded metadata reads, stale/missing/malformed jobs, recipe and
 file preservation, and active-job guards. Run with

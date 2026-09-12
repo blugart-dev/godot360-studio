@@ -1,4 +1,121 @@
-# Validation record — updated 2026-09-11
+# Validation record — updated 2026-09-13
+
+## Studio UI/UX audit — 2026-09-13
+
+The [implemented audit and walkthrough](ui-ux-audit.md) separates editable recipes
+from opened exports, reorganizes native controls, stabilizes deliberate tool
+selections and provides explicit still/playback/delivery and failure guidance.
+The original uncommitted full-decoding fix, author Blugart, and development
+version 0.8.0 are preserved. No rendering, audio, metadata, storage-guard or
+recovery-protocol code changed; all work and packages remain local/private.
+
+Accepted native environment: Windows / Godot 4.7.2 / Forward+ Vulkan / RTX 3060 Ti,
+using the already tested FFmpeg/FFprobe 9.0.1 essentials pair. The final package is
+`.godot360/ui-ux-review/validated-candidate.zip`, 241 members, SHA256
+`d24476076c75c6ef76d691f43d59f49f570132310d9016f4eee2b220415d5ca9`.
+
+- **1,043 packaged headless/failure checks** pass, including tool/recipe/readiness,
+  audio, metadata, storage, recovery/capture failures and corrupt playback copies.
+  The final tested package rebuilds identically, with its manifest and all payload
+  files verified against the checkout.
+- **51 native playback checks** pass, including actual malformed Theora packet
+  rejection, full decoding, cancellation/retry, stale-tooltip clearing, paused
+  forward/backward seeking, replay, audio and source preservation.
+- **31 native UI workflow checks** pass with no engine errors, in a disposable
+  project. These cover tools/offline selections, recipe/export separation, invalid
+  Open preservation, keyboard sphere controls, still/video switching, native
+  capture/re-encode/cancel, synchronous running/completion text and unchanged
+  delivery hashes. Its runtime sources match the final package.
+- **44 native editor integration checks** and independent delivery decode results
+  are recorded in `.godot360/ui-ux-review/delivery-audit.json` and
+  `delivery-native/editor-review.json`.
+  The reviewer checks actual 4K sample/full exports, stereo playback, save callbacks,
+  paused seeks, editor restart, active capture/encode cancellation and recovery.
+  All 270 delivered video frames decode cleanly, with 440 Hz left / 660 Hz right
+  audio cues in the sample, full export and recovered export. Every original
+  capture file and the authored scene remain unchanged after restart/recovery.
+  Its addon matches the final ZIP byte for byte. Only two storage-fault test
+  fixtures changed afterward, and those run in the final headless package review.
+
+Sixteen unmodified [screenshots and provenance](media/ui-provenance.json) show the
+before/after compact panel and empty, ready, running, completed, cancelled,
+playback-error, export-error, details, tools, library and scaled states. Error
+presentation images use controlled states; real corruption rejection is separate
+integration evidence. The addon guide screenshot is refreshed from the real
+calibration sample. Source paths and failed development attempts remain in the
+ignored `.godot360/ui-ux-review/` tree.
+
+Final repository review passes all source/link/media checks, seven guard tests
+pass, and `git diff --check` reports no whitespace errors. The package keeps the
+addon license notices and Blugart author field unchanged.
+
+Development findings were resolved before acceptance: an invalid numeric display
+format, a stale empty-preview label and low-contrast read-only details. One native
+editor attempt stalled awaiting a draw after a paused seek; the preview now
+invalidates its texture on seek and the reviewer requests its evidence draw.
+Another attempt raced the initial Encoding checkpoint before FFmpeg started;
+requiring a saved process PID also proved unsuitable because it updates with
+  frame progress. The final fixture waits for the encoder-created MP4 header while
+the job is still in Encoding, then requests cancellation. These unsuccessful
+  attempts are retained and are not counted as passes. Final screenshot review
+  also caught a one-poll delay in the recipe's running message; busy transitions
+  now refresh recipe state synchronously, covered by two new native UI assertions.
+  A final headless run exposed a pre-existing race in the storage fault fixture:
+  its worker tried to create a blocking directory while the coordinator already
+  had the temporary status file open, so no fault was injected. Injection now
+  happens between writes in the coordinator fixture; production checkpoint code
+  is unchanged. The failed run and the passing deterministic rerun are retained.
+
+This is automated native/editor integration plus screenshot inspection, **not a
+human click-through or subjective delivery review**. Default and native dark
+themes were inspected; 1100×600, 1440×900 and 125% window scaling were exercised.
+Other editor-scale/OS combinations, assistive technologies, native Linux/Mac GPUs,
+YouTube processing and headset comfort remain outside this evidence. The
+[release criteria](release-readiness.md) remain open. The unrelated sandbox root
+certificate-store warning is excluded from the accepted error checks.
+
+## Corrupt playback copy found in the private walkthrough — 2026-09-12
+
+The owner reported changing colored pixels around the moving sphere in the
+clean walkthrough's in-editor preview while the delivery MP4 looked correct.
+The selected tools were a Gyan FFmpeg 8.0.1 full build. Its cached Theora copy
+passes format/duration inspection but an independent strict FFmpeg decode fails
+with `error in unpack_block_qpis`. Rebuilding the same eight-second delivery
+with the locally tested Gyan 9.0.1 essentials build passes complete video/audio
+decoding. This identifies corruption in the review copy, not the scene capture
+or spherical display shader; no rendering change is required.
+
+Playback now performs asynchronous, cancellable full decoding after format
+inspection and before loading or caching a copy. Decoder errors explain how to
+select another FFmpeg build and retry without rendering the scene. A new cache
+format prevents reuse of copies accepted before this check.
+
+The exact addon passes **50 native Forward+/Vulkan playback checks** and **44
+headless checks** on Windows / Godot 4.7.2 / RTX 3060 Ti. A deterministic malformed
+video packet retains valid Ogg page checksums and passes the old format checks;
+the old runtime fails three rejection assertions, while the fix rejects it,
+cleans up, preserves earlier valid media, and supports cancellation and retry.
+The owner's actual MP4 also passes the fixed native playback path, with inspected
+spherical screenshots at 1.2, 3.2 and 6.2 seconds and an unchanged delivery hash.
+The usual sandbox certificate-store warning is unrelated to playback.
+
+Candidate `.godot360/preview-artifacts-20260912/candidate.zip`, SHA256
+`5f17c39f7f3ec54141da23e66d8ffd62c57278289efc1a6873a81d6475314e5c`,
+contains 239 members. Local review scripts, logs, native screenshots and source
+mapping are retained in the same review folder. This is a targeted playback
+fix, not a rerun of the broader capture/platform matrix. Version remains 0.8.0;
+the owner's retry and remaining manual walkthrough steps are still pending.
+
+The first owner retry correctly showed the new decoding error; its saved tool
+paths still selected the WinGet 8.0.1 build. The walkthrough settings were then
+updated directly to the tested 9.0.1 pair. The latest delivery was reviewed in an
+isolated native panel, and its validated playback copy was installed in the
+walkthrough cache with the same source fingerprint. The MP4 hash is unchanged;
+the owner needs to restart the test editor to load the saved paths and retry.
+Follow-up evidence is in the review folder's `tool-selection-fix/` directory.
+The owner subsequently confirmed that playback now works perfectly. This closes
+the reported preview corruption; it does not establish completion of every
+remaining walkthrough or native-platform check.
 
 ## Clean native editor export and recovery — 2026-09-11
 

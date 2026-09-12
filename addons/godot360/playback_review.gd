@@ -2,13 +2,14 @@
 extends VBoxContainer
 ## Optional local review copy. The delivery MP4 and capture are read-only.
 signal texture_changed(texture: Texture2D)
+signal setup_requested
 
 const IO = preload("job_io.gd")
 const Runner = preload("process_runner.gd")
 const Tools = preload("tool_paths.gd")
 const Storage = preload("storage_guard.gd")
 const CACHE_ROOT = "res://.godot360/playback"
-const FORMAT = "theora-srgb-2k-30-v2"
+const FORMAT = "theora-srgb-2k-30-v3-decoded"
 var player: VideoStreamPlayer
 var play_button: Button
 var cancel_button: Button
@@ -35,6 +36,9 @@ var dragging := false
 var was_playing := false
 var ended := false
 var progress_poll := 0.0
+var error_actions: HFlowContainer
+var log_button: Button
+var log_path := ""
 
 
 func _ready() -> void:
@@ -44,6 +48,7 @@ func _ready() -> void:
 	play_button.text = "Play video"
 	play_button.disabled = true
 	play_button.pressed.connect(toggle)
+	play_button.tooltip_text = "Prepare and fully check a local playback copy, then play it. The delivery MP4 keeps its original quality."
 	row.add_child(play_button)
 	seek = HSlider.new()
 	seek.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -66,22 +71,39 @@ func _ready() -> void:
 	clock_label.text = "0:00 / 0:00"
 	row.add_child(clock_label)
 	sound_button = Button.new()
-	sound_button.text = "Sound on"
+	sound_button.text = "Mute"
 	sound_button.toggle_mode = true
+	sound_button.disabled = true
 	sound_button.tooltip_text = "Mute the review audio"
 	sound_button.toggled.connect(func(muted: bool):
 		player.volume = 0.0 if muted else 1.0
-		sound_button.text = "Muted" if muted else "Sound on")
+		sound_button.text = "Unmute" if muted else "Mute"
+		sound_button.tooltip_text = "Restore review audio" if muted else "Mute review audio")
 	row.add_child(sound_button)
 	cancel_button = Button.new()
 	cancel_button.text = "Cancel preview"
 	cancel_button.hide()
 	cancel_button.pressed.connect(cancel)
-	row.add_child(cancel_button)
+	add_child(cancel_button)
 	note = Label.new()
 	note.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	note.text = "Play a completed export here. A local 2K review copy is prepared on first use."
+	note.text = "Drag the sphere to look around · Arrow keys when focused."
+	note.max_lines_visible = 4
+	note.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	add_child(note)
+	error_actions = HFlowContainer.new()
+	error_actions.hide()
+	add_child(error_actions)
+	var setup := Button.new()
+	setup.text = "Tool setup"
+	setup.pressed.connect(func(): setup_requested.emit())
+	error_actions.add_child(setup)
+	log_button = Button.new()
+	log_button.text = "Playback logs"
+	log_button.pressed.connect(func():
+		if not log_path.is_empty():
+			OS.shell_open(log_path.get_base_dir()))
+	error_actions.add_child(log_button)
 	player = VideoStreamPlayer.new()
 	player.expand = true
 	player.hide()
@@ -111,6 +133,7 @@ func select_job(folder: String) -> void:
 	seek.max_value = duration
 	clock_label.text = "0:00 / " + _time(duration)
 	play_button.disabled = false
+	note.text = "Play video prepares a checked 2K copy. Open delivery MP4 for full detail."
 
 
 func clear() -> void:
@@ -122,6 +145,10 @@ func clear() -> void:
 	source = ""
 	proxy_path = ""
 	last_error = ""
+	log_path = ""
+	note.tooltip_text = ""
+	error_actions.hide()
+	sound_button.disabled = true
 	cache_hit = false
 	ended = false
 	dragging = false
@@ -132,7 +159,7 @@ func clear() -> void:
 	play_button.text = "Play video"
 	play_button.disabled = true
 	cancel_button.hide()
-	note.text = "Play a completed export here. A local 2K review copy is prepared on first use."
+	note.text = "Drag the sphere to look around · Arrow keys when focused."
 
 
 func toggle() -> void:
@@ -141,6 +168,7 @@ func toggle() -> void:
 	if player.stream == null:
 		prepare()
 		return
+	texture_changed.emit(player.get_video_texture())
 	if ended or not player.is_playing():
 		ended = false
 		player.play()
@@ -148,6 +176,13 @@ func toggle() -> void:
 	else:
 		player.paused = not player.paused
 	play_button.text = "Play video" if player.paused else "Pause"
+	note.text = "Playback copy · Up to 2K / 30 FPS. Open the delivery MP4 for full detail."
+
+
+func pause_for_still() -> void:
+	if player.stream != null:
+		player.paused = true
+		play_button.text = "Play video"
 
 
 func seek_to(seconds: float) -> void:
@@ -160,12 +195,15 @@ func seek_to(seconds: float) -> void:
 	player.paused = paused
 	player.stream_position = clampf(seconds, 0.0, maxf(0.0, duration - 0.001))
 	play_button.text = "Play video" if paused else "Pause"
+	texture_changed.emit(player.get_video_texture())
 
 
 func prepare() -> void:
 	if source.is_empty() or not phase.is_empty():
 		return
 	last_error = ""
+	note.tooltip_text = ""
+	error_actions.hide()
 	cache_hit = false
 	fingerprint = source_signature(source)
 	if fingerprint.is_empty():
@@ -194,7 +232,7 @@ func prepare() -> void:
 	if ffmpeg.is_empty() or ffprobe.is_empty():
 		_fail("Select FFmpeg and FFprobe in Tool setup to prepare playback.")
 		return
-	expected = {"ffprobe": ffprobe}
+	expected = {"ffmpeg": ffmpeg, "ffprobe": ffprobe}
 	attempt = Crypto.new().generate_random_bytes(16).hex_encode()
 	media_path = cache_dir.path_join(attempt + ".ogv")
 	started = Time.get_ticks_msec()
@@ -214,9 +252,14 @@ func _start(executable: String, arguments: PackedStringArray, stage: String) -> 
 		_fail(error)
 		return
 	phase = stage
+	log_path = cache_dir.path_join(attempt + "-" + stage + ".log")
 	play_button.disabled = true
 	cancel_button.show()
-	note.text = "Preparing 2K playback… You can cancel; the delivered video is preserved."
+	note.text = "Preparing 2K playback… Delivery MP4 is already verified."
+	if stage == "verify":
+		note.text = "Checking playback format and duration…"
+	elif stage == "decode":
+		note.text = "Decoding the entire playback copy to check video and audio…"
 
 
 func _process(delta: float) -> void:
@@ -242,14 +285,25 @@ func _process(delta: float) -> void:
 		var result: Dictionary = runner.finish()
 		runner = null
 		if result.code != 0:
-			_fail("Playback preparation failed. FFmpeg needs libtheora and libvorbis; check " + cache_dir.path_join(attempt + "-" + phase + ".log"))
+			if phase == "decode":
+				_fail("Playback copy contains decoding errors. Delivery MP4 is unchanged. Select another FFmpeg build in Tool setup, Check setup, then Retry playback.")
+			else:
+				_fail("Playback %s failed. Delivery MP4 is unchanged. Open Playback logs; select an FFmpeg build with libtheora and libvorbis, Check setup, then Retry playback." % phase)
 			return
 		if phase == "encode":
 			_start(str(expected.ffprobe), ["-v", "error", "-show_streams", "-show_format", "-of", "json", media_path], "verify")
 			return
-		var probe = JSON.parse_string(str(result.output))
-		if not probe is Dictionary or not valid_proxy(probe, duration):
-			_fail("The playback copy failed its video/audio checks. The delivery file is preserved.")
+		if phase == "verify":
+			var probe = JSON.parse_string(str(result.output))
+			if not probe is Dictionary or not valid_proxy(probe, duration):
+				_fail("The playback copy failed its video/audio checks. The delivery file is preserved.")
+				return
+			# Readable headers and a successful encoder exit do not establish that
+			# the actual Theora packets decode. Some Windows builds emit corrupt
+			# motion packets while still satisfying the format/duration checks.
+			_start(str(expected.ffmpeg), ["-hide_banner", "-loglevel", "error", "-nostdin", "-xerror", "-err_detect", "explode",
+				"-i", media_path, "-map", "0:v:0", "-map", "0:a:0", "-f", "null", "-"], "decode")
+			note.text = "Checking playback video and audio… You can cancel."
 			return
 		if source_signature(source) != fingerprint:
 			_fail("The delivery video changed during playback preparation. Reopen the export and retry.")
@@ -282,6 +336,7 @@ func _load_proxy(path: String) -> void:
 	ended = false
 	texture_changed.emit(player.get_video_texture())
 	seek.editable = true
+	sound_button.disabled = false
 	play_button.disabled = false
 	play_button.text = "Play video" if player.paused else "Pause"
 	note.text = "Review copy · Up to 2K / 30 FPS. Inspect the delivery MP4 for full detail."
@@ -295,9 +350,13 @@ func _fail(message: String) -> void:
 	_stop_worker()
 	last_error = message
 	play_button.disabled = source.is_empty()
-	play_button.text = "Play video"
+	play_button.text = "Retry playback"
 	cancel_button.hide()
 	note.text = message
+	note.tooltip_text = message + ("\nLog: " + log_path if not log_path.is_empty() else "")
+	error_actions.show()
+	log_button.disabled = log_path.is_empty()
+	log_button.tooltip_text = log_path
 
 
 func _stop_worker() -> void:

@@ -3,16 +3,16 @@
 After a successful test or render, click **Play video** below the spherical
 preview. The first use prepares a local review copy, then plays the whole clip
 with the delivered audio mix. Drag the image to look around, use the position
-slider to seek, pause to inspect a moment, or toggle **Sound on / Muted**.
+slider to seek, pause to inspect a moment, or toggle **Mute / Unmute**.
 The end of the clip offers **Replay**. Hiding the Godot360 panel pauses playback.
 
-![THRESHOLD open at 35 seconds in Godot360: spherical preview above playback, seeking and sound controls.](media/studio.png)
+![Godot360 Studio with a completed calibration export and separate recipe settings.](media/studio.png)
 
 *Drag the picture to look around. Use the slider beneath it to find a moment;
-Play video / Pause and Sound on / Muted control the review. The screenshot shows
-the full-repository film example at 35 seconds through its 2K review copy.*
+Play video / Pause and Mute / Unmute control the review. The screenshot shows
+the included calibration scene in the full-resolution opening still.*
 
-**Open saved job…** also enables playback for an existing export with a successful
+**Library → Saved exports and recovery → Open saved job…** also enables playback for an existing export with a successful
 report and its delivery MP4. Retained PNGs are not needed for playback. Starting
 another export or opening another job stops the current review.
 
@@ -21,7 +21,9 @@ another export or opening another job stops the current review.
 The copy is at most **2048×1024 and 30 FPS**, with Ogg Theora video and Vorbis
 stereo audio. Godot plays it natively; no Python, browser server, .NET runtime or
 additional Godot extension is needed. FFmpeg must include **libtheora** and
-**libvorbis**, and FFprobe verifies the copy before it becomes available.
+**libvorbis**. FFprobe checks the format and duration, then FFmpeg decodes the
+entire video and audio before the copy becomes available. A successful encoder
+exit and readable headers alone do not establish valid playback packets.
 These codecs are only required for in-editor video playback. An FFmpeg build
 without them can still export the usual H.264/AAC delivery MP4.
 
@@ -41,10 +43,19 @@ available. Low disk space, failed processes, invalid output or a 15-minute timeo
 stop preparation with an explanation; the original video and capture remain
 unchanged. Closing the plugin also stops its preview conversion.
 
+If the copy contains decoding errors, select another FFmpeg build in **Tool
+setup**, click **Check setup**, then **Retry playback**. **Playback logs** opens the failed operation’s logs, while **Open delivery MP4** remains available for a verified export. Some Windows Theora
+encoder builds can produce corrupt motion packets while still returning success.
+The 2026-09-12 walkthrough reproduced this with the selected Gyan 8.0.1 full
+build; rebuilding the same delivered MP4 with the tested Gyan 9.0.1 essentials
+build passed a complete decode. This is build-specific evidence, not a claim
+about every FFmpeg installation with those version numbers. No scene render is
+needed to rebuild playback.
+
 This is a motion, orientation and sound review, with approximate seeking. Check
 the original `video-360.mp4` in an external 360 player for final resolution, fine
 seams, 50/60 FPS motion and compression quality. The first-frame still preview
-retains the original capture resolution until video playback is selected.
+retains the original capture resolution. **Show still** pauses playback and returns to this opening frame; **Play video** restores the playback image. The review header identifies which image is displayed. Use arrow keys on the focused sphere and Home to reset its view.
 Local playback does not certify YouTube processing or headset comfort.
 
 ## Cache and storage
@@ -53,6 +64,7 @@ Copies and conversion logs live in the project's ignored `.godot360/playback/`
 folder. They do not change the export folder, recipe or delivery report. Opening
 the same unchanged MP4 reuses its copy without another conversion. The cache key
 includes the absolute source path, file size, modification time and review format.
+Copies from before full-decode validation are rebuilt once on first use.
 It does not fingerprint the source's full contents; replacing bytes while
 preserving all of that metadata requires removing the corresponding cache folder.
 
@@ -65,8 +77,9 @@ estimate. Preparation maintains a 256 MiB reserve plus 16 MiB working headroom.
 
 Saved-scene checks now explain glow, auto exposure, fog, SDFGI, depth of field and
 compositor risks before capture, alongside existing billboard and interface notes.
-After a successful export, **Scene notes** displays the actual capture warnings
-in a scrollable area beside playback. Inspect the relevant effects at several
+After a successful export, **Export details** shows the actual capture warnings
+and signals their count beside its button. The details dialog includes selectable
+paths and the full status, keeping long messages outside the review area. Inspect the relevant effects at several
 times and viewing directions. These checks are heuristic; runtime changes and
 custom materials can introduce effects that saved-scene inspection cannot see.
 

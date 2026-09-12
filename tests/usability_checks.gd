@@ -45,11 +45,11 @@ func _run() -> void:
 	root.add_child(panel)
 	panel.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	panel._use_current_scene()
-	check(panel.status.text.contains("Save your scene") and save_calls == 0, "An unnamed editor scene cannot silently export a different scene")
+	check(panel.recipe_feedback.text.contains("Save your scene") and save_calls == 0, "An unnamed editor scene cannot silently export a different scene")
 	fixture_root.scene_file_path = fixture.path_join("inherited.tscn")
 	save_error = ERR_CANT_CREATE
 	panel._use_current_scene()
-	check(panel.status.text.contains("could not save"), "Failed editor saves stop scene selection with an explanation")
+	check(panel.recipe_feedback.text.contains("could not save"), "Failed editor saves stop scene selection with an explanation")
 	save_error = OK
 	panel._use_current_scene()
 	check(save_calls == 2 and panel.recipe_fields.scene_path.text == fixture_root.scene_file_path and panel.recipe_fields.camera_path.text == "Rig/Lens", "Use current scene saves and selects its preferred camera")
@@ -58,7 +58,7 @@ func _run() -> void:
 	panel._selected("scene", fixture.path_join("ambiguous.tscn"))
 	check(panel.recipe_fields.camera_path.text.is_empty() and panel.readiness_label.text.contains("choose a camera"), "The panel requests a choice for ambiguous cameras")
 	panel._render()
-	check(panel.process_id <= 0 and panel.status.text.contains("Choose a camera"), "Render refuses an empty camera selection before launching")
+	check(panel.process_id <= 0 and panel.recipe_feedback.text.contains("Choose a camera"), "Render refuses an empty camera selection before launching")
 	panel._camera_selected(2)
 	check(panel.recipe_fields.camera_path.text == "Second", "Selecting a camera updates the exported recipe")
 	panel._camera_selected(panel.camera_picker.item_count - 1)
@@ -85,7 +85,7 @@ func _run() -> void:
 	check(panel.exposure_control.selected == 0 and panel.profile.capture_exposure_mode == "scene", "Legacy recipe restores scene exposure")
 	panel.recipe_fields.duration.text = "12seconds"
 	panel._render()
-	check(panel.process_id <= 0 and panel.status.text.contains("duration"), "Invalid numeric text cannot silently become a valid render duration")
+	check(panel.process_id <= 0 and panel.recipe_feedback.text.contains("duration"), "Invalid numeric text cannot silently become a valid render duration")
 	panel.recipe_fields.duration.text = "6"
 	panel.recipe_fields.width.text = "4K"
 	check(panel._numeric_error().contains("whole number"), "Custom dimensions reject malformed numeric text")
@@ -147,6 +147,8 @@ func _run() -> void:
 	panel.storage.item_selected.emit(0)
 	for section in panel.sections.values():
 		section.toggle.button_pressed = false
+	panel.workspace_tabs.current_tab = 0
+	panel.recipe_feedback.hide()
 	panel.folder = ""
 	panel.preview.material = null
 	panel.preview_material = null

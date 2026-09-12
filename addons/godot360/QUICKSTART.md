@@ -1,161 +1,136 @@
 # Your first 360° export
 
-Use a saved Godot 3D scene and a Camera3D to produce a video viewers can look
-around in. You choose the camera's position and movement; viewers choose their
-looking direction. Interactive gameplay and gaze-triggered events need a planned
-sequence if they should appear in the film.
+Turn a saved Godot 3D scene into a video viewers can look around in. You author
+the camera position and movement; viewers choose their looking direction.
+Interactive gameplay needs a planned sequence to appear in the film.
 
-![Godot360 with an 8K film recipe and a completed video open in the spherical review area.](media/studio.png)
+![Current recipe beside a completed one-second calibration export in Godot360 Studio.](media/studio.png)
 
-*Your destination: choose a scene and camera on the left, then test, render and
-review on the right. The pictured THRESHOLD scene is in the full repository;
-addon-only installs can follow these steps with their own scene. The review copy
-is limited to 2K / 30 FPS; the delivered MP4 keeps the selected resolution.*
+The **Current recipe** tab describes your next render. **Opened export**, on the
+right, shows the saved scene, resolution, duration and audio of the job you are
+reviewing. Editing the recipe or opening another export keeps these separate.
 
-**Select scene → Choose video → Check setup → Test 1 second → Render → Review**
-
-## 1. Install and check your tools
-
-Follow **[Platform setup](PLATFORMS.md)** for Windows, Linux or macOS. It links to
-Godot and FFmpeg downloads and covers extraction/package installation, executable
-selection and permissions. Start with **Godot 4.7.2 Standard** and keep your scene's renderer.
-The addon needs no .NET, Python, compiler or Godot export templates.
+## 1. Install and select tools
 
 1. Copy `addons/godot360` into your project. Enable **Godot360 Studio** in
-   **Project > Project Settings > Plugins**, then open the **Godot360** bottom panel.
-   The plugin is already enabled in this repository's demo project.
-2. Expand **Tool setup** and choose **Find installed tools**. It searches PATH and
-   standard Linux/macOS install locations, including both Homebrew prefixes.
-3. If needed, select **FFmpeg…** and locate the executable. FFprobe is filled in
-   when beside it; otherwise select **FFprobe…** separately. Files end in `.exe`
-   on Windows and normally have no extension on Linux/macOS. PATH is optional.
-4. Choose a writable output folder, then click **Check setup**. It launches both
-   tools and checks the needed encoders/filters. Repeat after upgrading tools or
-   changing machines. Nothing is downloaded by the addon.
+   **Project → Project Settings → Plugins**, then open the **Godot360** bottom panel.
+   Drag the top of the bottom panel upward for a larger preview.
+2. Open **Tools → Tool setup**. Select **FFmpeg…** from an extracted installation.
+   FFprobe is filled from that folder unless you deliberately selected it already.
+   Select **FFprobe…** separately if needed. Windows files end in `.exe`.
+3. **Find missing tools** fills empty/default fields from installed tools. It keeps
+   selected paths, including unavailable paths. Clear a field to allow discovery
+   again. No executable is downloaded. Selections are saved in this project.
+4. Choose a writable folder in **Current recipe**, then **Check setup**. The Tools
+   tab identifies both versions, delivery capabilities and optional playback
+   codecs. **Open setup logs** opens the detailed results. Repeat this check after
+   changing tools. Available playback codecs do not guarantee a clean copy; each
+   generated playback copy is fully decoded before it can play.
 
-See [platform validation status](PLATFORMS.md#support-status); macOS graphical export
-tests remain pending, while headless CI passes. New captures use your saved project's renderer and driver, with
-explicit overrides under Advanced. Unexpected fallback stops capture. Review
-[renderer support and scene effects](RENDERERS.md); a graphical session is required.
+Use [Platform setup](PLATFORMS.md) for installation and download instructions.
+The recommended development baseline is Godot 4.7.2 Standard; the addon needs no
+.NET, Python, compiler or export templates. Keep your scene's renderer. See the
+[platform validation limits](PLATFORMS.md#support-status).
 
-## 2. Select your scene and camera
+## 2. Select a scene and camera
 
-Open your scene and click **Use current scene**. This saves the named scene before
-selecting it. A new, unnamed scene must first be saved in Godot with **Ctrl+S** (**Cmd+S** on macOS).
-You can also use **Choose scene…** to select another saved `.tscn`.
+In **Current recipe**, click **Use current scene**. This saves the named open
+scene. Save a new unnamed scene in Godot first with Ctrl+S (Cmd+S on macOS).
+**Choose scene…** selects another saved `.tscn`. Pick a **Camera**; a sole camera
+or a unique current camera is selected automatically. Inherited and instanced
+saved cameras are included. **Refresh cameras** rereads the saved scene.
 
-Pick a **Camera** from the list. The addon selects the only camera automatically,
-or the uniquely marked current camera if there are several. Otherwise it asks you
-to choose. Cameras in saved inherited and instanced scenes are included.
+For a script-created camera, choose **Enter a runtime camera path…** and enter
+its path relative to the scene root under **Advanced capture and encoding**.
+Only a render can confirm that path, so begin with a sample.
 
-**Refresh cameras** rereads the saved scene. Discovery does not instantiate scene
-nodes. If a script creates your camera at runtime, choose **Enter a runtime camera
-path…** and enter its path relative to the scene root, such as `Player/Camera3D`.
-That path can only be confirmed when the scene runs, so use a short test first.
+The selected open scene is saved again before checking setup, testing or rendering.
+Other scenes use their saved files. Save other scenes, scripts and assets in Godot.
+Camera forward (`-Z`) is the initial viewing direction. 2D interface layers are
+hidden; use 3D titles. See [authoring](AUTHORING.md) for animation and scene limits.
 
-The selected current scene is saved again before **Check setup**, **Test 1 second**,
-or **Render 360 video**. Other scenes use their saved files. Save changes to other
-scenes, scripts and assets before exporting. Camera forward (`-Z`) is the initial
-viewing direction. 2D interface layers are hidden; use world-space 3D titles instead.
+To try an example, open **Library → Recipes and examples → Calibration defaults**
+for six labeled directions and a tone, or **Motion lab** for an animated camera.
+Return to **Current recipe** to edit it. Examples replace the recipe; they do not
+change the opened export or your authored scene.
 
-To check the addon before trying your own scene, expand **Recipes and examples**
-and select **Calibration defaults**. It contains six labeled directions and a tone.
-**Motion lab** supplies an editable animated-camera example.
+## 3. Choose video, audio and destination
 
-## 3. Choose the video
+- **Draft · 2K** gives a quick compatibility test; **Production · 4K** provides
+  more viewing detail; **Detail · 8K** costs more time and memory. The displayed
+  dimensions cover the entire sphere. Hover for detail and sampling limits.
+- Set **Duration (s)** and **FPS**. 30 FPS is a useful starting point.
+- **Audio source** can use scene audio, a soundtrack, or both. Soundtrack modes
+  reveal the file picker. **Audio timing and levels** has offsets, trim and gain.
+  Short audio ends in silence; mixing uses a peak limiter. See [audio](AUDIO.md).
+- Set **Save exports in**, or **Choose folder…**. Each job gets a new folder;
+  existing captures and deliveries are preserved.
 
-| Setting | Start with |
+**Advanced capture and encoding** contains custom dimensions, camera path,
+renderer/driver, capture exposure/borders, PNG storage and H.264 quality (CRF).
+Lower CRF means larger files with more detail; the presets choose it for you.
+For glow cuts or brightness seams, consult [renderer guidance](RENDERERS.md)
+before changing borders or exposure, then make another sample.
+
+## 4. Check, test and render
+
+**Check setup**, **Test 1 second**, and **Render 360 video** stay at the foot of
+the recipe area. The readiness line shows the next setup issue; full details and
+saved-scene warnings are in **Tools**. Readiness describes the current recipe,
+independently of an opened export's completion or failure.
+
+Run **Test 1 second** first. It preserves your chosen full duration and opens the
+one-second sample on the right. Review its image and sound. The recipe then shows
+estimated time, retained storage and suggested free space for the full duration.
+Estimates become stale after relevant settings, assets or destination changes.
+The first second cannot predict later complexity or full-job memory use.
+
+Choose **Render 360 video** when satisfied. Progress and **Cancel export** appear
+with the opened job. Capture and encoding show their own frame counts/estimates;
+the percentage is overall job progress, not a frame count. Cancellation waits for
+the worker to stop and retains its files. Edits during a render apply to the next
+job; they do not alter the active export.
+
+## 5. Review and find the delivery
+
+The review header names the image you see:
+
+| View | Purpose |
 | --- | --- |
-| Quality | **Production · 4K** for viewing; **Draft · 2K** for a quick compatibility check |
-| Duration | A few seconds for your first clip |
-| Frames per second | 30 |
-| Audio source | Scene audio, or select a soundtrack file |
-| Save exports in | A local folder with enough free space |
+| **Full-resolution still** | The original opening frame; drag to inspect detail and orientation. **Show still** returns here after playback. |
+| **Playback copy · up to 2K / 30 FPS** | **Play video** prepares a local checked copy. Play/pause, seek, replay and mute/unmute to review motion and audio. |
+| **Open delivery MP4** | Opens verified `video-360.mp4` at the export's original resolution in your default player. Use a 360° player to look around. |
 
-The resolution covers the whole sphere, so 2K looks soft in a large viewing window.
-**Detail · 8K** increases viewing detail and render/storage cost. Quality presets
-set both output and capture resolution together.
+Tab to the sphere and use arrow keys to look; Home or **Reset view** recenters it.
+The seek slider supports keyboard input and is approximate, not frame-accurate.
+**Open folder** reveals the delivery, `report.json`, logs and retained captures.
+**Export details** shows the complete saved context, status, scene notes and
+recovery guidance. Long paths can be selected/copied there. A notes count signals
+capture warnings without taking space from the preview.
 
-You can leave **Advanced capture and encoding** and **Audio timing and levels**
-collapsed. Their defaults work for a basic export. The [audio guide](AUDIO.md)
-explains mixing, offsets and levels; the [reference guide](README.md#export-recipes)
-explains quality and storage settings.
+Playback preparation has separate progress and **Cancel preview**. A playback
+error does not revoke a verified delivery. For corrupt-copy errors, use **Tool
+setup**, select another FFmpeg build, **Check setup**, then **Retry playback**.
+**Playback logs** opens the failed operation's logs. No scene render is needed.
+See [playback and cache](PLAYBACK.md). Inspect the delivery in a full-resolution
+360° player for final seams, compression and 50/60 FPS motion; local review does
+not establish YouTube processing or headset comfort.
 
-## 4. Check, test, render
+## Reopen or recover an export
 
-Click **Check setup**. The panel verifies tool capabilities and checks that the
-output folder can be written, while keeping the editor responsive. It also shows
-saved-scene risks and configuration errors. Follow the guidance beside each issue.
-Paths are remembered locally in `.godot360/settings.cfg`.
+**Library → Recent exports** lists the last 12 jobs. Select an entry to inspect it,
+then **Open**. Browsing keeps your current preview and recipe until Open; opening
+also preserves your recipe. **Forget** removes only the entry, keeping its files.
+Use **Saved exports and recovery → Open saved job…** for a moved or older folder.
+Unavailable drives stay in history. **Unconfirmed** requires Open to check the
+coordinator; a saved stage alone does not prove it is running.
 
-**Ready for a 1-second test** means the basic setup checks passed. A runtime camera,
-scene behavior, soundtrack decoding, and the actual pictures still need a test.
-Tool and output checks become stale when their paths change. The export pipeline
-always repeats its own checks, including disk-space checks during the job.
+**Re-encode this capture** uses retained frames with the current quality/audio
+settings. The source capture's scene, dimensions, FPS and duration stay fixed.
+It writes a new export and preserves the original. Partial captures require a
+fresh render. **Save diagnostics…** creates a local ZIP of reports/logs; review
+its contents before sharing. Read [recovery](RECOVERY.md) and [storage](STORAGE.md).
 
-Click **Test 1 second**. It renders the first second at your chosen quality, creates
-a verified sample, and estimates the full export's time and storage. Your full
-duration is preserved. Later content may cost more; a first-second estimate is not
-a guarantee. Then click **Render 360 video** when the sample looks right.
-
-The render runs separately from the editor. **Cancel** stops it and keeps the
-partial files. Each job gets a new folder; existing exports are preserved.
-
-## 5. Review your result
-
-Drag the **360° preview** to check the first frame's orientation. Click **Play video**
-to prepare a local 2K review copy, then play, pause, seek and hear the complete clip
-inside the editor. Read **Scene notes** beside playback and inspect movement and
-sound throughout the clip. See [playback, cache and requirements](PLAYBACK.md).
-
-If a glow halo has a hard cut, try **Advanced → Capture border per edge (%)** at
-**12.5%**, then run a new short test. It adds face context and blends overlaps,
-using about 56% more face pixels. Read [capture borders and limits](RENDERERS.md#capture-borders)
-before relying on it for a final render.
-
-If whole faces have different brightness, try **Advanced → Capture exposure →
-Fixed (authored)** and run a new short test. It disables automatic metering while
-retaining authored exposure values and animation. Adjust exposure in the scene
-if needed; this does not freeze the editor view's auto-metered brightness.
-Read [capture exposure](RENDERERS.md#capture-exposure). Scene remains the default.
-
-**Open output** opens the selected job folder. `video-360.mp4` is the verified
-delivery file; `report.json` records the technical checks. For full-resolution
-playback, you can install
-[VLC for your platform from VideoLAN](https://www.videolan.org/vlc/).
-Use **File/Media → Open File**, then hold the left mouse button and drag to look
-around, as described in [VideoLAN's 360° guide](https://docs.videolan.me/vlc-user/desktop/3.0/en/advanced/player/360_video.html).
-The in-editor video copy is limited to 2K / 30 FPS; use the delivery MP4 for final detail.
-
-Keep the capture folder if you may want to change quality or audio later.
-Expand **Recent exports** near the top of the panel to choose from the last 12
-launched or opened jobs, then click **Open**. The list shows render/test/re-encode
-type and saved state; the selection shows scene, video settings and folder.
-Browsing the list keeps your current job and recipe selected until you click Open.
-**Forget** removes only the history entry, keeping its files and any current preview.
-
-History is local to this project in `.godot360/settings.cfg`. The previous last
-job is added on first upgrade; other older exports enter the list when opened.
-Unavailable folders stay listed so an offline drive can be reconnected. Use
-**Open saved job…** to locate a moved folder. **Unconfirmed** means saved progress
-alone cannot establish whether the coordinator is running; Open checks it normally.
-
-Under **Saved exports and recovery**, **Re-encode this capture** uses retained
-frames without rendering again. **Open saved job…** opens an earlier job, and
-**Save diagnostics…** collects its reports and logs for troubleshooting.
-
-## If something needs attention
-
-| What you see | What to do |
-| --- | --- |
-| Save your scene first | Save with Ctrl+S (Cmd+S on macOS), then use it again. |
-| Choose a camera | Pick a listed Camera3D; for a generated camera, enter its runtime path under Advanced. |
-| Missing tools or encoders | Select FFmpeg and FFprobe in Tool setup, then Check setup again. |
-| FFmpeg has no PNG encoder | Choose Compact PNG under Advanced, or another FFmpeg build. |
-| 2D UI or billboard notes | Use 3D titles and fixed geometry, or inspect a short test for seams. |
-| Failed export | Expand Saved exports and recovery and follow the job's recovery action. See [recovery](RECOVERY.md). |
-| Blurry playback | Use 4K or 8K and check the player's selected playback resolution. |
-
-For camera animation and interactive scenes, continue with [authoring](AUTHORING.md).
-For storage, see [retained captures and disk space](STORAGE.md). For a reproducible
-problem report, use the [beta form](BETA-REPORT.md).
+Recipes are portable settings saved/loaded under **Library → Recipes and examples**.
+Executable paths, history and the last opened job remain project-local in
+`.godot360/settings.cfg`. Quick start is always available above the review area.
