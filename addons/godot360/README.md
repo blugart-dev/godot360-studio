@@ -12,8 +12,8 @@ still view. Video playback uses a separate copy limited to 2K / 30 FPS.*
 
 **[Start here: your first 360° export →](QUICKSTART.md)**
 
-**Version 1.0.0 — Windows; Linux/macOS experimental.** This build is prepared
-privately; public release awaits the owner's instruction. The Windows launch
+**Version 1.0.0 — Windows; Linux/macOS experimental.** Download the release
+from [GitHub](https://github.com/blugart-dev/godot360-studio/releases/tag/v1.0.0). The Windows launch
 matrix covers Godot 4.7.2 Compatibility/OpenGL 3 and Forward+/Mobile Vulkan,
 plus 4.5.1/4.6.3 Compatibility/OpenGL 3, on the Windows 11 / RTX 3060 Ti reference
 machine. Exact-package evidence is recorded in the source repository's
@@ -125,7 +125,7 @@ Use **Save diagnostics…** to save the selected job's reports, log excerpts and
 environment information as a local ZIP. Choose a new filename outside the job
 folder. Review the contents before sharing: local paths and scene-written text
 can be included. Source media is excluded. The [diagnostics guide](DIAGNOSTICS.md)
-explains limits and the [beta report form](BETA-REPORT.md) records feedback.
+explains limits and the [compatibility report form](BETA-REPORT.md) records feedback.
 Independent Windows/GPU feedback and current YouTube review remain pending.
 
 Failed jobs show a recovery action in the panel. A completed capture can usually

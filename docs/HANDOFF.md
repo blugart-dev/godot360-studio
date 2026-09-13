@@ -1,6 +1,16 @@
 # Godot360 Studio development handoff
 
-## Current work — private 1.0 preparation, 2026-09-13
+## Public 1.0.0 release — 2026-09-13
+
+The owner authorized publication and explicitly chose to preserve reviewed
+history. Current release information is in [release notes](release-1.0.md),
+[acceptance](release-readiness.md) and [publication review](publication-review.md).
+Public archives refresh Markdown guides while preserving accepted runtime and
+fixtures; fresh artifact checks and publication results are recorded separately.
+Earlier private holds and pending authorization statements below are dated
+historical checkpoints and no longer control publication.
+
+## Historical private 1.0 preparation — 2026-09-13
 
 The owner reported no errors with RC2 and authorized final 1.0 preparation,
 explicitly withholding publication approval. Version 1.0.0 retains RC2 behavior;

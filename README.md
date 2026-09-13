@@ -19,6 +19,10 @@ light trails, soft vapor and an original score. [Watch its flat tour](docs/media
 score, dancing glass tiles, swaying architecture and a mirror crown surrounded by orbiting lights.
 [Watch the complete preview with sound](docs/media/afterglow-tour.mp4).
 
+**[Download Godot360 Studio 1.0.0](https://github.com/blugart-dev/godot360-studio/releases/tag/v1.0.0)**
+· [Addon ZIP](https://github.com/blugart-dev/godot360-studio/releases/download/v1.0.0/godot360-studio-1.0.0.zip)
+· [Source and examples](https://github.com/blugart-dev/godot360-studio/releases/download/v1.0.0/godot360-studio-1.0.0-source.zip)
+
 **[Export your first scene →](addons/godot360/QUICKSTART.md)**
 · [Take the visual tour](docs/showcase.md)
 · [Browse the documentation](docs/README.md)
@@ -80,13 +84,12 @@ Open this repository's `project.godot` to try them; the plugin is already enable
 
 ## Where the project stands
 
-**1.0.0 — prepared privately for Windows release.**
-Onboarding, rendering, playback and recent-export improvements are implemented.
-The exact 1.0.0 addon passes **6,070 checks across all five Windows package lanes**
-and **52 native editor checks**. The owner reported no errors with RC2 and
-authorized final preparation. [Release acceptance](docs/release-1.0.md) records
-the artifact and remaining publication work. Public release remains on hold.
-The agreed 1.0 launch scope is **supported Windows, experimental Linux/macOS**.
+**1.0.0 — Windows supported; Linux/macOS experimental.**
+The release includes scene setup, rendering, audio, playback, recovery and offline
+help. Its runtime passes **6,070 checks across five Windows package lanes** and
+**52 native editor checks**. The public downloads refresh the packaged guides;
+[release notes](docs/release-1.0.md) and [validation](docs/validation.md) distinguish
+the exact archive checks from unchanged runtime evidence.
 
 - **Windows:** tested exports and review on Godot 4.5.1, 4.6.3 and 4.7.2;
   Forward+/Mobile also have Windows Vulkan and Direct3D 12 visual evidence.
@@ -113,16 +116,13 @@ The agreed 1.0 launch scope is **supported Windows, experimental Linux/macOS**.
   evidence, with saved editor baking, camera cuts and missing-map controls.
 - [Combined effects](docs/combined-effects.md) and [four one-minute 4K/8K workloads](docs/production-performance.md)
   now have bounded native Windows evidence.
-- **RC2:** adds offline in-editor help, clearer setup/support/storage guidance,
-  and a fix for cancellation during export startup. Exact-package validation and
-  the private walkthrough precede stable 1.0. The repaired stabilization checks
-  and hosted runs pass; the earlier
-  experimental Mobile mismatch remains recorded in
-  [current CI evidence](docs/validation.md#hosted-stabilization-checkpoint--2026-09-13).
+- Offline in-editor help, concrete setup guidance and storage/recovery guides
+  accompany the export workflow. Cancellation during export startup is handled
+  as a saved, recoverable Cancelled job.
 
 The [Windows 1.0 support contract](addons/godot360/SUPPORT.md) lists the exact
-target combinations and scene limits. [Upgrade instructions](addons/godot360/MIGRATION.md)
-and [draft release notes](docs/release-1.0.md) are prepared for final acceptance.
+combinations and scene limits. Read [upgrade instructions](addons/godot360/MIGRATION.md)
+before replacing an existing installation.
 
 Scope is **mono 360°, SDR BT.709 and stereo sound**. Six-face capture can show
 seams with glow, auto exposure and other screen-space effects; inspect a test

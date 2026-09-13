@@ -1,19 +1,15 @@
 # Preparing a public release
 
-Repository preparation and product acceptance are separate checks. The current
-source uses version **1.0.0**, prepared privately with publication explicitly on hold. Complete the
-[1.0 acceptance criteria](release-readiness.md) before describing it as a stable
-release. The [preparation review](publication-review.md) records the current cleanup.
+Version **1.0.0** has passed its Windows runtime acceptance. The owner authorized
+publication and preserving the reviewed Git history on 2026-09-13. See
+[release acceptance](release-readiness.md), [release notes](release-1.0.md) and
+[publication review](publication-review.md) for the current record. Earlier
+private-release holds are superseded by that explicit instruction.
 
-Use the [Windows support contract](../addons/godot360/SUPPORT.md),
-[upgrade guide](../addons/godot360/MIGRATION.md) and [release draft](release-1.0.md)
-as the prepared release content. The owner reported no errors with RC2 and
-authorized final package preparation, while withholding public-release approval.
-The 2026-09-13 settings review could not
-confirm private vulnerability reporting (HTTP 404). GitHub documents this feature
-for [public repositories](https://docs.github.com/en/code-security/how-tos/report-and-fix-vulnerabilities/configure-vulnerability-reporting/configure-for-a-repository).
-Enable and verify the reporting route during authorized publication, after the
-repository becomes public; this is not a private RC validation prerequisite.
+Use the [support contract](../addons/godot360/SUPPORT.md) and
+[upgrade guide](../addons/godot360/MIGRATION.md) with every release. The checklist
+below also applies to subsequent versions; obtain authorization if a future
+publication is outside the owner's instructions.
 
 ## Source and rights
 
@@ -37,13 +33,11 @@ repository becomes public; this is not a private RC validation prerequisite.
   Review commit identities and personal paths separately: secret scanners do not
   treat every private filename, email address or video link as a credential.
 
-Historical versions of `docs/next-session.md` contain personal workstation paths.
-The current file is portable, but an ordinary commit does not remove its earlier
-versions. Before changing the existing repository's visibility, explicitly review
-those historical paths. Use a reviewed source-only snapshot for a new public
-repository if history is not needed, or prepare and verify a sanitized history
-with a backup and coordinated migration. Never force-push a history rewrite as
-routine release housekeeping. Inspect every ref intended for publication.
+Six historical versions of `docs/next-session.md` contain personal workstation
+paths. The current source is portable. The owner reviewed the history findings
+and explicitly chose preservation for 1.0.0; retain existing commits and tags.
+No force-push or history rewrite is part of this release. Review any newly added
+refs and scan credentials before publication.
 
 ## Candidate and verification
 
@@ -84,14 +78,12 @@ clear the existing repository's historical privacy review.
 
 ## Final public-facing review
 
-- Keep the current private 1.0 preparation on hold until the owner explicitly
-  authorizes publication. Before announcing, ensure the chosen default branch
-  and version tag contain the accepted source; the private stabilization branch
-  and older `main` are currently separate.
-- Replace private-preparation status text with the actual publication status only
-  when authorized. If packaged guides change, rebuild and verify the resulting
-  archive, retain its new checksum, and map unchanged runtime/fixture hashes to
-  the recorded Windows evidence. Runtime changes require applicable fresh tests.
+- Ensure the default branch and version tag contain the accepted source; use a
+  fast-forward when bringing the stabilization branch to `main`.
+- Update public-facing status and download links. If packaged guides change,
+  rebuild and verify the archive, retain its new checksum, and map unchanged
+  runtime/fixture hashes to recorded Windows evidence. Runtime changes require
+  applicable fresh tests.
 - Match version strings, changelog, package filename and release notes to the
   actual candidate. Keep older validation records labeled as historical evidence.
 - Follow the quick start on a clean checkout. Check examples, relative links,
@@ -102,8 +94,9 @@ clear the existing repository's historical privacy review.
 - Attach the tested ZIP and its checksum/manifest. Keep source masters and local
   diagnostic bundles out of the release. Publish support claims only for the
   combinations actually reviewed.
-- Obtain the owner's final publication authorization before changing repository
-  visibility, uploading release assets or submitting the addon to an asset catalog.
+- Confirm publication is authorized before changing visibility or publishing a
+  release. The owner explicitly authorized both for 1.0.0. Asset Library submission
+  and external-service uploads are separate actions.
 
 The preparation tools build local artifacts only. They do not change repository
 visibility, publish releases, upload videos or submit an Asset Library entry.

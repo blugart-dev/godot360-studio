@@ -1,10 +1,9 @@
-# Compatibility and private validation
+# Compatibility and validation
 
-Godot360 Studio 1.0 is prepared privately for Windows release. The
+Godot360 Studio 1.0 supports the documented Windows launch matrix. The
 [main guide](README.md) identifies the current version and the
-[support contract](SUPPORT.md) defines its exact launch scope. Independent beta
-feedback is not a prerequisite for continuing work. This filename and its dated
-tables are retained as historical evidence. Use the [main guide](README.md)
+[support contract](SUPPORT.md) defines its exact launch scope. This filename and
+its dated tables are retained as historical evidence. Use the [main guide](README.md)
 for installation and export, [AUTHORING.md](AUTHORING.md) for timelines, and
 [AUDIO.md](AUDIO.md) for music and synchronization. This package has not been
 published to a community registry.

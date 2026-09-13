@@ -1,7 +1,7 @@
 # Security policy
 
-Godot360 Studio 1.0 is prepared privately for Windows release. Fixes target the current maintained
-branch; historical 0.x snapshots do not have a separate security maintenance policy.
+Godot360 Studio 1.0 supports the documented Windows release matrix. Security
+fixes target the current maintained `main` branch; historical 0.x snapshots do not have a separate security maintenance policy.
 
 ## Report a vulnerability privately
 

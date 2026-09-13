@@ -1,8 +1,7 @@
 # Windows 1.0 support contract
 
-This is the support contract for **1.0.0**, prepared privately for release.
+This is the support contract for **1.0.0**.
 Windows is the supported launch platform; Linux and macOS remain experimental.
-Public distribution awaits the owner's explicit instruction.
 
 ## Engine and graphics combinations
 
@@ -64,9 +63,10 @@ the [storage guidance](STORAGE.md). The source repository's
 ## Evidence and acceptance
 
 The source repository's `docs/validation.md` maps each result to its exact
-package and commit. RC2 passed all five Windows package lanes and native editor
-integration. The owner reported no errors and authorized 1.0 preparation; the
-1.0 artifact receives its own recorded package acceptance.
+package and commit. The 1.0 runtime passes all five Windows package lanes
+(6,070 checks) and native editor integration (52 checks). Public downloads update
+the guides; the record maps their unchanged runtime and fixture hashes to that
+matrix and records fresh checks against the public archives.
 
 Linux software-Mobile history failed again on RC2 despite intervening passing
 runs. Its opening five frames exceed the unchanged face-comparison limit; the
@@ -74,4 +74,4 @@ cause remains unresolved. The separate exact-RC2 Windows Mobile temporal review
 passes. Linux/Mac hardware testing is required before promoting those platforms
 to supported, and does not block the Windows launch. YouTube and other external
 services require separate review after upload; local validation does not certify
-their processing or playback. Publication remains on hold.
+their processing or playback.

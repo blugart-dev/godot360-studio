@@ -40,8 +40,8 @@ the results, then follow the walkthrough using your own scene or an included exa
 
 ## Development and project status
 
-**1.0.0 is prepared privately for Windows release; publication is on hold.**
-Start with the [remaining work and completion criteria](release-readiness.md) and
+**[Godot360 Studio 1.0.0](release-1.0.md) supports Windows; Linux/macOS are experimental.**
+Start with the [release acceptance and follow-up work](release-readiness.md) and
 the [roadmap](roadmap.md) for completed work; use the
 [validation record](validation.md) for the exact evidence behind support claims.
 

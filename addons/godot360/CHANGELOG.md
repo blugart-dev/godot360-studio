@@ -1,15 +1,20 @@
 # Changelog
 
-## 1.0.0 — prepared privately, publication on hold
+## 1.0.0 — 2026-09-13
 
-- Carry the validated RC2 Windows workflow into 1.0, following the owner's
-  no-error feedback and authorization to prepare the final version.
-- Align plugin, panel, spherical metadata and package labels at 1.0.0.
-- Refresh installation, upgrade and support guides, including the recurring
-  experimental Linux Mobile history issue and separate external-service review.
-- Capture, rendering, encoding, recipes, settings and saved-job formats are
-  unchanged from RC2. Final artifact evidence is recorded in the source
-  repository's `docs/validation.md`; public release requires explicit instruction.
+- First stable Windows release for authored mono 360° SDR video with stereo audio.
+- Export 2K/4K/8K recipes with camera animation and cuts, scene audio, attached
+  music, H.264/AAC encoding, spherical metadata and delivery checks.
+- Test one second, estimate time/storage, then look around, seek and listen in
+  Godot. Reopen recent exports, recover jobs and re-encode retained captures.
+- Use native offline help, clear tool/setup guidance and documented storage,
+  upgrade, renderer and scene limits. Honor cancellation during export startup.
+- Support five Windows engine/renderer combinations. Linux/macOS remain
+  experimental, including the unresolved Linux software-Mobile history mismatch.
+- Align plugin, panel, spherical metadata and package labels at 1.0.0. Runtime,
+  recipes, settings and saved-job formats retain the accepted RC2 behavior.
+- Public installation/support guides accompany reproducible downloads; the source
+  repository's `docs/validation.md` maps exact artifacts to their evidence.
 
 ## 1.0.0-rc.2 — 2026-09-13 — private candidate
 

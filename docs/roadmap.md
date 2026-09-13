@@ -1,43 +1,29 @@
 # Godot360 Studio roadmap
 
-The user authorized the Godot360 name and private GitHub source hosting on
-2026-09-07; that is separate from a public 1.0 release.
-See [repository/privacy notes](repository.md).
+**1.0.0 supports Windows; Linux/macOS remain experimental.** The owner authorized
+public release and preservation of the reviewed history on 2026-09-13.
+[Release notes](release-1.0.md) describe the product and downloads;
+[acceptance and follow-up work](release-readiness.md) define the current boundary.
 
-The 1.0 target is dependable mono 360 production from a documented Godot scene
-contract: repeatable recipes, predictable jobs, useful failure reports, and a
-validated spherical H.264/AAC delivery file. External-service processing and
-playback require their own authorized upload/review. The scope does not include
-stereoscopic ODS or ambisonic audio.
+Godot360 focuses on dependable mono 360 production from authored Godot scenes:
+repeatable recipes, predictable jobs, useful failure reports and a validated
+spherical H.264/AAC delivery. External-service processing and device playback
+need their own review. Stereoscopic ODS and ambisonics are outside 1.0.
 
-## Current priority — private development toward 1.0
+## After 1.0
 
-**2026-09-13 scope decision:** Windows will be the supported 1.0 launch platform;
-Linux/macOS remain experimental. Native Linux/Mac hardware acceptance no longer
-blocks Windows launch. Following the owner's no-error RC2 feedback, the exact
-1.0.0 addon now passes 6,070 Windows package checks and 52 native editor checks.
-The [validation record](validation.md) maps the source and reproducible artifact.
-Final source packaging and publication preparation follow; public release is
-explicitly on hold. The experimental Linux Mobile history mismatch recurred on
-RC2 and remains unresolved, with original tolerances and negative controls.
-The platform plans below retain their dates and are superseded by this launch scope.
+Prioritize reproducible defects in the supported Windows workflow and real-project
+feedback. Investigate the recurring experimental Linux software-Mobile history
+mismatch without relaxing its thresholds, and perform native Linux/Mac graphical
+testing before promoting support. Expand measured hardware/production envelopes
+as evidence becomes available. Shared spherical automatic exposure and broader
+GI, IK/retargeting and shader stacks remain extensions.
 
-On 2026-09-08 the owner clarified that development should continue privately until
-1.0 is tested and ready. The `0.8.0` version is an internal development baseline;
-"beta" is not a pause or a requirement to recruit public testers. Independent
-feedback can inform the work without blocking local implementation and testing.
-
-**[Remaining work and 1.0 completion criteria](release-readiness.md)** is the
-current checklist. The bounded appearance, animation and production reviews below
-are established. Preserve the completed Windows acceptance and verify final
-distribution identity. Publication and the public-history choice await the
-owner's instruction; Linux/Mac support can follow separately.
-Linux/Mac hardware checks continue as experimental-platform work.
-
-The [Windows support contract](../addons/godot360/SUPPORT.md) now consolidates
-the launch combinations and bounded scene evidence. Upgrade guidance and
-[draft 1.0 release notes](release-1.0.md) are prepared; the human walkthrough,
-final versioned candidate and publication decisions remain open.
+The [validation record](validation.md) maps exact artifacts and code to the
+Windows matrix, editor integration, archive checks and bounded advanced rendering.
+Keep installation, [support](../addons/godot360/SUPPORT.md) and
+[upgrade guidance](../addons/godot360/MIGRATION.md) aligned with shipped behavior.
+The dated development records below describe how this boundary was established.
 
 The 2026-09-09 [combined appearance review](combined-appearance.md) adds moving
 lights/materials, exposure-source changes and capture borders in one fixture.

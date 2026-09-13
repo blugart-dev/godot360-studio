@@ -1,92 +1,6 @@
-# Godot360 Studio 1.0 release preparation
+# Godot360 Studio 1.0.0
 
-**Prepared privately; publication on hold.** The current package identifies itself
-as **1.0.0**. The owner reported no errors after RC2 review and authorized final
-preparation, explicitly requiring further instruction before public release.
-The exact 1.0.0 addon passes its full Windows acceptance matrix.
-
-## Validated private 1.0.0 addon
-
-Addon source: **`cea9bae3b449974d70962d66e95cf653f7e8ff58`** on
-`codex/windows-1.0-stabilization`. `godot360-studio-1.0.0.zip` has **245 members**,
-**884,541 bytes**, and SHA-256
-**`5ab5ea3589d4c32347890cd33daf5925b3c728eb385442d2f71ecbe3c38a9dde`**.
-
-The exact ZIP passes **6,070 checks across five Windows engine/renderer lanes**
-and **52 native editor checks**. It rebuilds identically; repository CI produces
-the same bytes. Both V1 XML and V2 binary spherical metadata carry version 1.0.0
-in all fifteen workflow deliveries. Runtime differences from RC2 are version
-strings only; recipes, settings, capture/encoding and tests/fixtures are unchanged.
-
-Evidence is retained under `.godot360/stable-1.0-review-20260913/`. The final
-`release/` folder contains the addon, a source snapshot with current release
-documentation and no Git history, `SHA256SUMS.txt` and `release-manifest.json`.
-The manifest records each archive's source commit and exact checksum; final source
-import/startup and rendered-workflow results accompany it. Root documentation
-recording acceptance follows the frozen addon commit. See [validation](validation.md).
-
-Final source snapshot: **`e4385b02c7ecb39a8e115393ae3940eeaa1cf8ce`**.
-`godot360-studio-1.0.0-source.zip` has **497 members / 75,869,646 bytes**;
-SHA-256 **`3abcbf64d393de29fc8c22975486ca559b9fc451f91dedcfdb97d7cc4ff450c4`**.
-It rebuilds identically and passes clean import/startup plus **247 scene and
-rendered-workflow checks**, with all source payloads unchanged and no credentials
-found. Its manifest/archive identity is frozen; this completion entry follows
-that snapshot. The local `release/READY.md` and manifest summarize the handoff.
-
-The unresolved experimental Linux Mobile history result remains open. The fresh
-RC2 Windows temporal review and other bounded rendering evidence remain mapped
-to unchanged rendering code. Public visibility, default-branch/tag decisions,
-history choice, release uploads and external-service review remain separate.
-
-## Frozen private RC2
-
-RC2 adds native offline help, clearer installation and quality/support guidance,
-storage/source-retention explanations, and correct handling of cancellation
-before coordinator startup. It keeps the existing Windows launch matrix and
-capture/encoding settings. Current guides distinguish historical 0.x/RC1 evidence
-from the new candidate.
-
-Candidate source: **`f1329c1c6478ccc942eacddd35247b4e9bf318f2`**, on the private
-`codex/windows-1.0-stabilization` branch. Evidence and distributions are retained
-under `.godot360/rc2-review-20260913/`:
-
-- `godot360-studio-1.0.0-rc.2.zip`: **245 members, 884,186 bytes**; SHA-256
-  `d2693cf7d1f3c785868b7ed7d5f3f7d4e40ec5604477d0db0f9060e82c12d940`.
-- `godot360-studio-1.0.0-rc.2-source.zip`: **497 members, 75,862,666 bytes**;
-  SHA-256 `43e0745704a2de7777b6df4ea0b9a95d5cafb1633fa932a49468f8ff1a20442e`.
-  It includes a source manifest and no Git history.
-
-Both archives rebuild identically. The addon passes **6,070 native Windows
-package checks** and **52 native editor checks** against that exact ZIP.
-Repository CI builds the same addon bytes. The source archive freezes the
-candidate commit; later root documentation records its acceptance evidence.
-The experimental Linux Mobile temporal job repeats the known opening-history
-mismatch and remains failed. See [validation](validation.md) for the full result
-and the separate Windows evidence. The clean `owner-walkthrough/` uses RC2;
-human navigation, listening and delivery acceptance remain pending.
-
-## Frozen private RC1 artifact
-
-Candidate source: **`b323a92e1b74b749a32adb6d5d4b1f7669874f9b`** on
-`codex/windows-1.0-stabilization`. The addon ZIP has 243 members and 875,471 bytes;
-SHA-256 **`78f850256fb956f8d9365eaa03df7f4cdb0b3f1ab9f968b8b8e27044d7ff6e79`**.
-The source ZIP has 495 members and 75,847,196 bytes, including its manifest and
-no Git history; SHA-256
-**`76ff9055d0ef59c2ed0cb65132e4e69d5e83aae180bb7df038bee418d62b50a9`**.
-Both rebuild identically. Repository CI passes and produces the identical addon
-ZIP. Local archives and exact review reports are retained under
-`.godot360/rc1-review-20260913/`; no release assets have been uploaded.
-
-RC1 updates the plugin, panel and spherical metadata release strings and adds
-numbered-candidate support to the package builder. The comparison against the
-preceding reviewed package confirms unchanged capture/rendering behavior.
-All five native Windows package lanes pass **5,930 checks**, and the two-process
-native editor review passes **44 checks**, against that exact ZIP. The
-[validation record](validation.md#private-windows-rc1-acceptance-evidence--2026-09-13)
-maps these results and the six release-identity regression tests. The
-prepared `owner-walkthrough/` in the RC1 evidence folder installs this exact ZIP.
-
-## Proposed stable release description
+**Windows supported; Linux/macOS experimental.** Released September 13, 2026.
 
 Godot360 Studio turns a saved, authored Godot 3D scene into a monoscopic 360° SDR
 video with stereo sound. Choose a scene and camera, test a second, render a fixed
@@ -94,64 +8,95 @@ frame sequence, then inspect the spherical video, audio and delivery report in
 the editor. Completed captures can be reopened and re-encoded without rendering
 the scene again.
 
-## Planned Windows launch
+## Downloads
 
-The [support contract](../addons/godot360/SUPPORT.md) defines five combinations:
-Godot 4.7.2 with Compatibility/OpenGL 3, Forward+/Vulkan or Mobile/Vulkan, plus
-4.5.1/4.6.3 with Compatibility/OpenGL 3. Windows 11 / RTX 3060 Ti is the native
-reference environment. Linux/macOS remain experimental; other engines and
-drivers retain their separately recorded evidence.
+- [Release and checksums](https://github.com/blugart-dev/godot360-studio/releases/tag/v1.0.0)
+- [Addon ZIP](https://github.com/blugart-dev/godot360-studio/releases/download/v1.0.0/godot360-studio-1.0.0.zip): install `addons/godot360` in your project; includes offline guides, calibration and Motion lab.
+- [Source and examples](https://github.com/blugart-dev/godot360-studio/releases/download/v1.0.0/godot360-studio-1.0.0-source.zip): open `project.godot` to try UMBRAL, THRESHOLD, LUMEN and AFTERGLOW, with their scenes, music and recipes.
 
-The release includes 2K/4K/8K recipes, short-test forecasts, authored animation and
-camera cuts, stereo scene/soundtrack audio, H.264/AAC MP4 delivery, spherical
-metadata, full delivery checks, spherical preview/playback, cancellation,
-diagnostics, saved-job recovery, re-encoding and offline in-editor help. Current recipe, Tools, Library
-and Opened export separate setup from review of an existing delivery.
+The release includes `SHA256SUMS.txt` and a portable `release-manifest.json`.
+The dedicated source ZIP contains a verified source manifest and no Git history.
+GitHub's automatically generated source archives are separate downloads.
 
-Selected character, particle, trail, temporal and GI setups have native rendered
-references. Four one-minute 4K/8K Forward+/Mobile workloads establish measured
-performance on one Windows machine; they do not establish general minimum
-hardware requirements or unlimited-duration performance.
+## What is included
 
-## Limits to include with the release
-
-- Use authored exposure for consistent brightness. Per-face automatic metering
-  remains available with seam risk; shared spherical adaptation is deferred.
-- Capture borders can reduce glow cuts, while halo shape, screen-space effects,
-  reflections and temporal history can still differ at cube boundaries.
-- Custom compositors must maintain history per view. The tested Mobile history
-  path needs authored 4× MSAA and its writable intermediate texture.
-- GPU particles need documented warmup. Compatibility does not support native
-  GPU trails. General IK/retargeting and arbitrary shader stacks are outside the
-  established scene evidence.
-- Partial captures restart from the beginning. Complete retained PNG/WAV captures
-  can be re-encoded; original captured pixels and capture settings remain fixed.
-- Delivery is mono 360 SDR with stereo audio. Stereoscopic ODS, HDR, ambisonics
-  and automatic uploads are outside this release.
+- Mono equirectangular 2K/4K/8K recipes, fixed-frame capture, authored animation,
+  camera paths and cuts, and 24/25/30/50/60 FPS presets.
+- Scene stereo audio, an attached soundtrack or both, with timing and levels.
+- H.264/AAC MP4 delivery, SDR BT.709, V1/V2 spherical metadata and technical checks.
+- A one-second test with measured time/storage estimates before a long export.
+- Spherical still preview and video playback with drag, keyboard look, seeking
+  and sound. The editor video copy is limited to 2K/30 FPS; delivery is unchanged.
+- Saved recipes, recent exports, cancellation, diagnostics, job recovery and
+  re-encoding of complete retained PNG/WAV captures.
+- Native offline help and installation, authoring, audio, renderer, storage,
+  recovery and upgrade guides. The addon uses Godot's editor controls and requires
+  no custom engine, .NET runtime, compiler or Python installation.
 
 ## Installation and upgrade
 
-Use [platform setup](../addons/godot360/PLATFORMS.md), copy `addons/godot360` into
-the project, enable the plugin, select the tested FFmpeg/FFprobe tools and follow
-the [quick start](../addons/godot360/QUICKSTART.md). Existing users should close
-active exports, back up recipes/settings and follow
-[upgrading Godot360](../addons/godot360/MIGRATION.md).
+1. Install Godot Standard and native FFmpeg/FFprobe using [platform setup](../addons/godot360/PLATFORMS.md).
+2. Extract the addon ZIP and copy `addons/godot360` beside your `project.godot`.
+3. Enable **Godot360 Studio** under **Project > Project Settings > Plugins**.
+4. Open the **Godot360** bottom panel, configure **Tools → Tool setup**, choose a
+   saved scene and camera, then run **Check setup** and **Test 1 second**.
+5. Inspect the test before selecting **Render 360 video**.
 
-## Final acceptance record
+Follow the [quick start](../addons/godot360/QUICKSTART.md). Existing users should
+finish or cancel exports, close Godot, back up recipes/settings and follow
+[upgrading Godot360](../addons/godot360/MIGRATION.md). Recipes, settings and saved
+jobs retain RC2 formats. FFmpeg/FFprobe and Godot are installed separately; the
+addon does not download tools or upload scenes, diagnostics or videos.
 
-- [x] Record the owner's RC2 feedback: "I did not get any errors," followed by
-  authorization to prepare 1.0. Individual subjective/device checks were not
-  supplied and are not recorded as passed.
-- [x] No supported-workflow blocker is reported or reproduced in final native
-  checks; retain the recurring experimental Linux Mobile observation separately.
-- [x] Set consistent stable version labels in plugin, panel, metadata, guides and
-  generated package README; replace this draft's candidate status while retaining
-  the separately identified historical evidence.
-- [x] Record the exact addon commit/hash, manifest, native Windows acceptance and
-  passing repository CI.
-- [x] Complete the final source archive verification and local release manifest.
-- [ ] Complete the public-history choice and verify issue/security settings.
-- [ ] Obtain final publication authorization for the exact source and artifacts.
+## Supported Windows launch
 
-Follow [release readiness](release-readiness.md), [validation](validation.md) and
-[publishing](publishing.md). This draft prepares the release and does not publish it.
+| Godot Standard | Renderer | Driver |
+| --- | --- | --- |
+| 4.7.2 | Compatibility | OpenGL 3 |
+| 4.7.2 | Forward+ | Vulkan |
+| 4.7.2 | Mobile | Vulkan |
+| 4.6.3 | Compatibility | OpenGL 3 |
+| 4.5.1 | Compatibility | OpenGL 3 |
+
+Windows 11 / RTX 3060 Ti and FFmpeg/FFprobe 9.0.1 essentials are the native
+reference environment. This does not establish every GPU or driver. Read the
+[support contract](../addons/godot360/SUPPORT.md) for the exact scene/effect boundary.
+The 1.0 runtime passes 6,070 package checks across these five lanes and 52 native
+editor checks. Public archives refresh Markdown guides; [validation](validation.md)
+maps unchanged code/fixtures to those results and records fresh archive checks.
+
+Linux/macOS remain experimental. Linux software-Mobile temporal history has an
+unresolved mismatch in its first five frames; its original thresholds and failed
+evidence remain recorded. Windows Mobile temporal checks pass separately.
+Mac headless CI does not establish graphical Mac export support. See
+[platform coverage](../addons/godot360/PLATFORMS.md#support-status).
+
+## Known limits
+
+- Use authored exposure for consistent brightness. Per-face automatic metering
+  remains available with seam risk; shared spherical adaptation is deferred.
+- Capture borders can reduce glow cuts. Halo shape, screen-space effects,
+  reflections and temporal history can still differ at cube boundaries.
+- Custom compositors need history per view. The tested Mobile history path needs
+  authored 4× MSAA and its writable intermediate texture.
+- GPU particles need documented warmup. Compatibility does not support native
+  GPU trails. General IK/retargeting and arbitrary shader stacks are outside the
+  established scene evidence.
+- Partial captures restart from the beginning. Re-encoding requires complete
+  retained source frames/audio and does not alter their captured pixels.
+- Four one-minute 4K/8K workloads establish performance on one Windows machine;
+  longer exports and heavier scenes need their own measurements and disk headroom.
+- Stereoscopic ODS, HDR, ambisonics and automatic uploads are outside 1.0.
+  YouTube/headset processing and playback require separate review after delivery;
+  local technical checks do not certify an external service or device.
+
+## Help, licenses and development
+
+Use [the documentation index](README.md) and repository
+[issue forms](https://github.com/blugart-dev/godot360-studio/issues/new/choose).
+Follow the [security policy](../SECURITY.md) for sensitive reports.
+Original addon, examples, music and documentation use the [MIT license](../LICENSE);
+separately sourced material retains [third-party notices](../THIRD_PARTY_NOTICES.md).
+
+[Changelog](../addons/godot360/CHANGELOG.md) · [Contributing](../CONTRIBUTING.md)
+· [Release acceptance](release-readiness.md) · [Publication record](publication-review.md)

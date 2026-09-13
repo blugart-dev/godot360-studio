@@ -4,7 +4,7 @@ Fresh installations use `addons/godot360` and `.godot360/settings.cfg`.
 
 ## Updating an existing Godot360 installation
 
-The current build is **1.0.0**, prepared privately for Windows release. These
+The current release is **1.0.0**, with Windows support. These
 instructions cover upgrades from earlier 0.x and 1.0 release-candidate packages.
 Recipes, settings and job formats are unchanged from RC2.
 

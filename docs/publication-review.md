@@ -1,18 +1,27 @@
-# Publication preparation review
+# Publication review
 
-## Current publication hold — 2026-09-13
+## Authorized 1.0.0 publication — 2026-09-13
 
-The owner authorized preparation of **1.0.0** after reporting no errors with RC2,
-and explicitly instructed that the repository remain private until told otherwise.
-The exact addon now passes 6,070 native package and 52 editor checks; repository
-CI reproduces it. The final source snapshot includes current release/security
-guidance, passes 247 scene/rendered-workflow checks and rebuilds identically.
-Its source scan and the 48-commit all-ref credential scan pass. Both archive
-checksums and source commits are recorded in the local release manifest and
-[validation](validation.md). No
-visibility change, public upload, release publication or historical rewrite is
-authorized by that preparation request. The public-history choice and activation
-of the public security-reporting route remain publication work.
+The owner instructed: **“Publish it, make it public, and make sure everything is
+properly prepared and documented.”** The history choice is **“Preserve the
+reviewed history.”** These instructions supersede the earlier private-release
+hold. Six older planning-document blobs contain personal workstation paths;
+the owner reviewed that scope and chose to retain commit/validation identities.
+The all-ref credential scan at `161f7c2` covers 49 commits with no leaks; reviewed
+author/committer identities use GitHub noreply addresses. No rewrite is planned.
+
+Public installation/support guides and release notes replace current hold text.
+The addon and source downloads are rebuilt from a canonical Git checkout, with
+portable manifests/checksums. Runtime and fixture bytes are mapped to the accepted
+Windows matrix, and the exact new downloads receive fresh checks before upload.
+The [validation record](validation.md) retains the prior immutable artifacts.
+
+Publication uses the existing repository, a fast-forward of `main` and tag
+`v1.0.0`. A reviewed draft release and its assets precede the public visibility
+change. Private vulnerability reporting must be enabled and verified, then the
+published release and download hashes checked anonymously. A completion receipt
+will record the final state; this section records preparation, not a completed
+GitHub operation. The dated sections below are historical.
 
 ## Frozen RC2 publication review — 2026-09-13
 

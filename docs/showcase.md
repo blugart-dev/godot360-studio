@@ -106,7 +106,8 @@ Under **Recipes and examples**, choose **Calibration defaults** for labeled
 directions and a test tone, or **Motion lab** for an editable camera path and
 animation timeline. These are useful starting points before the larger films.
 
-The current source prepares version 1.0.0 privately for Windows release. Check
+[Download version 1.0.0](https://github.com/blugart-dev/godot360-studio/releases/tag/v1.0.0),
+with Windows support and experimental Linux/macOS coverage. Check
 [platform coverage](../addons/godot360/PLATFORMS.md#support-status) and
 [renderer effects and seams](../addons/godot360/RENDERERS.md) for your scene.
 These examples do not establish that every effect or machine will behave the same way.
