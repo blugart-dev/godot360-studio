@@ -5,7 +5,7 @@ fixes target the current maintained `main` branch; historical 0.x snapshots do n
 
 ## Report a vulnerability privately
 
-Use the repository's **Security → Report a vulnerability** option when available:
+Use the repository's **Security → Report a vulnerability** option:
 [start a private report](https://github.com/blugart-dev/godot360-studio/security/advisories/new).
 If private reporting is unavailable, open an issue asking for a private reporting
 channel, without exploit details, credentials or affected private files.

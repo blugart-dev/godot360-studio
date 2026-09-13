@@ -2,13 +2,35 @@
 
 ## Public 1.0.0 release — 2026-09-13
 
-The owner authorized publication and explicitly chose to preserve reviewed
-history. Current release information is in [release notes](release-1.0.md),
-[acceptance](release-readiness.md) and [publication review](publication-review.md).
-Public archives refresh Markdown guides while preserving accepted runtime and
-fixtures; fresh artifact checks and publication results are recorded separately.
-Earlier private holds and pending authorization statements below are dated
-historical checkpoints and no longer control publication.
+**Published [1.0.0](https://github.com/blugart-dev/godot360-studio/releases/tag/v1.0.0)** from
+`d2a687d1d30d8fe8a7375ee27b64eb5f50179c93`, preserved by annotated tag `v1.0.0`.
+The owner authorized public visibility and preservation of the reviewed history.
+[Publication review](publication-review.md) records final asset identities,
+anonymous downloads, security reporting, settings and hosted run links.
+
+| Exact public archive | SHA-256 |
+| --- | --- |
+| Addon | `e9ee8e602add276f8958ee738d57b3f6f688ffd1e495b6be0f2fa21426fe6020` |
+| Source and examples | `2b5c7aa1e899069966397c879dfc20a1b9820c300416f3372d124e260ad85a61` |
+
+Fresh acceptance: **1,214** native Windows 4.7.2 Compatibility package checks,
+**52** native editor first/reopen checks, clean source import/startup and **247**
+scene/rendered-workflow checks. Both archives rebuild identically; hosted
+Repository hygiene passes and reproduces the addon bytes. All 13 Python
+regression tests pass, 101 protected source files remain unchanged, and source
+plus 50-commit all-ref credential scans are clean. All four GitHub assets were
+downloaded anonymously and match local hashes and the checksum file.
+
+Compared with the private stable archives below, only Markdown guides and their
+generated manifests changed: all runtime, test and fixture files are identical.
+The five-lane 6,070-check Windows matrix remains evidence for that unchanged
+runtime; the counts above were rerun against the exact public ZIPs. This mapping
+does not imply the other four lanes ran again against documentation-only changes.
+
+Linux/macOS remain experimental. The recurring Linux Mobile history defect and
+unchanged thresholds remain open; no all-green rendering matrix or unreported
+external-service/device acceptance is claimed. The dated private/RC records below
+retain their original artifact identities; their publication holds are superseded.
 
 ## Private 1.0.0 Windows acceptance — 2026-09-13
 

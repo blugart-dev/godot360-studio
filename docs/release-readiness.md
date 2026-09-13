@@ -43,7 +43,8 @@ requires applicable fresh acceptance checks.
   per-view compositor history requirements. Shared automatic spherical exposure,
   arbitrary IK/shader stacks, stereoscopic ODS, HDR and ambisonics remain extensions.
 
-During publication, fast-forward `main`, tag the accepted source, attach verified
-downloads, enable/verify private vulnerability reporting and verify public access.
-Record final URLs and checksums in [publication review](publication-review.md).
+Publication is complete: `main` was fast-forwarded, `v1.0.0` tags the tested
+source, the release is public with four verified downloads, and private
+vulnerability reporting is enabled. Anonymous downloads match the accepted bytes.
+[Publication review](publication-review.md) records exact hashes and CI status.
 The [publishing checklist](publishing.md) applies to subsequent releases too.

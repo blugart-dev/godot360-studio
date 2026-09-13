@@ -1,27 +1,80 @@
 # Publication review
 
-## Authorized 1.0.0 publication — 2026-09-13
+## Published 1.0.0 — 2026-09-13
 
-The owner instructed: **“Publish it, make it public, and make sure everything is
-properly prepared and documented.”** The history choice is **“Preserve the
-reviewed history.”** These instructions supersede the earlier private-release
-hold. Six older planning-document blobs contain personal workstation paths;
-the owner reviewed that scope and chose to retain commit/validation identities.
-The all-ref credential scan at `161f7c2` covers 49 commits with no leaks; reviewed
-author/committer identities use GitHub noreply addresses. No rewrite is planned.
+**[Repository](https://github.com/blugart-dev/godot360-studio) public; [1.0.0 release](https://github.com/blugart-dev/godot360-studio/releases/tag/v1.0.0) published.**
+Publication time: **2026-09-13T20:28:46Z**. The release is stable, marked latest,
+and has four verified uploaded assets. `main` was fast-forwarded to the tested
+source; annotated tag **`v1.0.0`** points to
+**`d2a687d1d30d8fe8a7375ee27b64eb5f50179c93`**. This completion receipt follows that frozen
+artifact commit and does not move the release tag or rebuild published downloads.
 
-Public installation/support guides and release notes replace current hold text.
-The addon and source downloads are rebuilt from a canonical Git checkout, with
-portable manifests/checksums. Runtime and fixture bytes are mapped to the accepted
-Windows matrix, and the exact new downloads receive fresh checks before upload.
-The [validation record](validation.md) retains the prior immutable artifacts.
+The owner explicitly authorized publication and chose **preserve the reviewed
+history**. Existing commits and tags are retained; no force-push or history
+rewrite was performed. Six historical planning-document blobs contain reviewed
+workstation paths. Redacted Gitleaks scans found no credentials in all **50
+commits** at the release source or in the exact extracted public source archive.
+The prepublication Git bundle was verified and retained locally.
 
-Publication uses the existing repository, a fast-forward of `main` and tag
-`v1.0.0`. A reviewed draft release and its assets precede the public visibility
-change. Private vulnerability reporting must be enabled and verified, then the
-published release and download hashes checked anonymously. A completion receipt
-will record the final state; this section records preparation, not a completed
-GitHub operation. The dated sections below are historical.
+### Published downloads
+
+| Archive | Bytes | SHA-256 |
+| --- | ---: | --- |
+| `godot360-studio-1.0.0-source.zip` | 75,865,372 | `2b5c7aa1e899069966397c879dfc20a1b9820c300416f3372d124e260ad85a61` |
+| `godot360-studio-1.0.0.zip` | 884,590 | `e9ee8e602add276f8958ee738d57b3f6f688ffd1e495b6be0f2fa21426fe6020` |
+
+`SHA256SUMS.txt` also verifies the portable `release-manifest.json`. The addon has
+245 members; the dedicated source ZIP has 497 members, including its verified
+source manifest and no Git history. GitHub's automatic source archives are separate.
+Both dedicated archives come from the tagged source commit above.
+
+### Verification and support
+
+- Fresh public addon: **1,214** native Godot 4.7.2 Compatibility/OpenGL 3 package
+  checks and **52** native editor checks across first launch/reopen, all passing.
+- Fresh public source: clean import/startup and **247** scene/rendered-workflow
+  checks; all **101** protected creative/project/fixture files unchanged.
+- Both archives reproduce identical bytes. Compared with the private stable
+  snapshots, 238 addon members and 478 source members are byte-identical; only
+  Markdown and generated manifests changed. All runtime, tests and fixtures match
+  the accepted five-lane Windows runtime (**6,070** package checks and 52 editor checks).
+- All 13 packaging/repository regression tests pass. Repository hygiene passes
+  on the [release preparation commit](https://github.com/blugart-dev/godot360-studio/actions/runs/34780450398)
+  and [main push](https://github.com/blugart-dev/godot360-studio/actions/runs/34780801697);
+  hosted builds reproduce the public addon checksum.
+- Anonymous access confirms the public repository, release, security policy and
+  issue chooser. All four actual downloads were fetched without authentication
+  and matched their tested local bytes, GitHub asset digests and checksum file.
+- Private vulnerability reporting was enabled after the visibility change and
+  verified through its API (`enabled: true`). Issues remain enabled; the repository
+  description, homepage and topics now describe the released addon.
+
+**Windows is supported; Linux/macOS remain experimental.** The unresolved Linux
+software-Mobile first-five-frame history mismatch and unchanged test thresholds
+remain documented. Windows Mobile temporal evidence passes separately. No new
+YouTube/headset or broader hardware acceptance is inferred from publication.
+See [support](../addons/godot360/SUPPORT.md) and [validation](validation.md).
+
+### Hosted checks on the tagged main source
+
+This is the publication-verification snapshot. Follow each run for its final
+result; in-progress experimental renderer jobs are not reported as passed.
+They supplement the completed native Windows and exact-download acceptance above.
+
+| Workflow | Publication-verification status |
+| --- | --- |
+| [Baked LightmapGI](https://github.com/blugart-dev/godot360-studio/actions/runs/34780801687) | In progress at publication verification |
+| [Combined appearance](https://github.com/blugart-dev/godot360-studio/actions/runs/34780801649) | In progress at publication verification |
+| [Complex particles](https://github.com/blugart-dev/godot360-studio/actions/runs/34780801634) | In progress at publication verification |
+| [Imported characters](https://github.com/blugart-dev/godot360-studio/actions/runs/34780801733) | success |
+| [Desktop platforms](https://github.com/blugart-dev/godot360-studio/actions/runs/34780801683) | In progress at publication verification |
+| [Temporal rendering](https://github.com/blugart-dev/godot360-studio/actions/runs/34780801707) | In progress at publication verification |
+| [Repository hygiene](https://github.com/blugart-dev/godot360-studio/actions/runs/34780801697) | success |
+
+Local detailed evidence is retained under `.godot360/publication-1.0-20260913/`;
+diagnostic bundles, workstation-specific build reports and render masters were
+not uploaded. Release assets contain portable checksums/metadata and licensed
+source. Earlier preparation records below retain their original dates and scope.
 
 ## Frozen RC2 publication review — 2026-09-13
 

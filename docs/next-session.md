@@ -2,17 +2,18 @@
 
 ## Public 1.0.0 release — 2026-09-13
 
-The owner authorized publication and explicitly chose to preserve reviewed
-history. Current release information is in [release notes](release-1.0.md),
-[acceptance](release-readiness.md) and [publication review](publication-review.md).
-Public archives refresh Markdown guides while preserving accepted runtime and
-fixtures; fresh artifact checks and publication results are recorded separately.
-Earlier private holds and pending authorization statements below are dated
-historical checkpoints and no longer control publication.
+**Published and public.** `v1.0.0` identifies the tested source `d2a687d`;
+the release has verified addon/source downloads, checksums and a portable manifest.
+The owner authorized publication and preservation of the reviewed history. `main`
+was fast-forwarded; existing history and tags remain intact. Private vulnerability
+reporting is enabled and verified. All four assets download anonymously and match
+the accepted bytes. Fresh public package/editor/source checks pass (1,214/52/247).
 
-Updated on 2026-09-13. This is a development recap; the
-[publication preparation review](publication-review.md) records repository cleanup.
-The canonical completion criteria remain in [release readiness](release-readiness.md).
+Read [release notes](release-1.0.md), [acceptance](release-readiness.md),
+[publication receipt](publication-review.md) and [validation](validation.md).
+The release tag stays frozen; this documentation records completed publication.
+Windows remains supported, Linux/macOS experimental, with the recurring Linux
+Mobile history result retained. Earlier holds below are historical and superseded.
 
 ## Historical checkpoint: private 1.0 acceptance — 2026-09-13
 
