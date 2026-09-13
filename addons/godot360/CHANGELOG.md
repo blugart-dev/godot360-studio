@@ -1,5 +1,18 @@
 # Changelog
 
+## Unreleased — Windows 1.0 preparation
+
+- Define the intended five Windows engine/renderer/driver combinations and
+  consolidate tested scene, effect, production and recovery limits in
+  [the support contract](SUPPORT.md). Linux/macOS remain experimental.
+- Expand [upgrade instructions](MIGRATION.md) for existing recipes, renderer
+  selection, playback-cache rebuilding and retained jobs.
+- Repair audio, recovery and release-workflow tests for the tabbed Studio layout.
+  Retain opening temporal reference images in CI. Fresh affected workflows pass;
+  the earlier experimental Mobile history mismatch remains unexplained.
+- Keep version 0.8.0 while the human walkthrough and final release acceptance
+  remain pending. This preparation does not change capture/runtime behavior.
+
 ## Unreleased — studio workflow and interface
 
 - Separate Current recipe, Tools and Library from the Opened export review.

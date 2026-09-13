@@ -116,6 +116,10 @@ The agreed 1.0 launch scope is **supported Windows, experimental Linux/macOS**.
   experimental Mobile mismatch remains recorded in
   [current CI evidence](docs/validation.md#hosted-stabilization-checkpoint--2026-09-13).
 
+The [Windows 1.0 support contract](addons/godot360/SUPPORT.md) lists the exact
+target combinations and scene limits. [Upgrade instructions](addons/godot360/MIGRATION.md)
+and [draft release notes](docs/release-1.0.md) are prepared for final acceptance.
+
 Scope is **mono 360°, SDR BT.709 and stereo sound**. Six-face capture can show
 seams with glow, auto exposure and other screen-space effects; inspect a test
 before a long export. Stereoscopic 3D, ambisonics and automatic uploads are outside

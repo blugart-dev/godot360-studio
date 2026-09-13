@@ -15,6 +15,10 @@ capturing frames. Fix the driver or select the intended override and test again.
 Missing graphics initialization is diagnosed in `capture.log`. A headless check
 cannot establish rendering support.
 
+The [Windows 1.0 support contract](SUPPORT.md) defines the intended launch matrix
+and scene boundary. The dated measurements below retain their original scope;
+an earlier driver-specific clip does not by itself establish full release support.
+
 ## Measured combinations — 2026-09-07
 
 | Machine / engine | Renderer and backend | Evidence |

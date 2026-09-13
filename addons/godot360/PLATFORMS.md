@@ -12,15 +12,16 @@ templates are required by the addon itself.
 The agreed 1.0 launch scope (2026-09-13) is **supported Windows, experimental
 Linux/macOS**. The current version is still pre-1.0. Native Linux GPU and Mac
 graphical acceptance are required before promoting their support status, but do
-not block the Windows release. Historical checks below do not certify a later
-candidate; current failures and exact evidence are recorded in the repository's
+not block the Windows release. The [Windows support contract](SUPPORT.md) defines
+the five target engine/renderer/driver combinations. Historical checks do not
+certify a later candidate; exact evidence is recorded in the repository's
 `docs/validation.md`.
 
 | Platform | Status |
 | --- | --- |
 | Windows x86_64 | Compatibility baseline on 4.5.1/4.6.3/4.7.2; current Forward+/Mobile evidence and backend-specific limits are in [Renderers](RENDERERS.md). |
-| Linux x86_64 — experimental | Earlier Ubuntu / WSLg software OpenGL/Vulkan and hosted CI reviews pass. At checkpoint `a3ff0ec`, the package workflow stops at an obsolete audio-test UI lookup and Mobile temporal-history references fail. Hardware GPU validation remains open. See [renderer limits](RENDERERS.md). |
-| macOS — experimental | Apple Silicon headless CI passes at checkpoint `a3ff0ec` on Godot 4.7.2. Graphical exports, Mac GPU appearance and Intel Mac validation remain open. Native paths and installation steps support both Homebrew prefixes. |
+| Linux x86_64 — experimental | At stabilization checkpoint `b69b427`, Ubuntu hosted package, skeletal, particle, Forward+/Mobile software Vulkan and temporal reviews pass. The obsolete panel tests are repaired. The earlier Mobile history mismatch remains unexplained despite passing reruns. Native hardware GPU validation remains open. |
+| macOS — experimental | Apple Silicon headless CI passes at checkpoint `b69b427` on Godot 4.7.2. Graphical exports, Mac GPU appearance and Intel Mac validation remain open. Native paths and installation steps support both Homebrew prefixes. |
 
 Validation on one machine does not cover every GPU or desktop environment.
 Forward+ and Mobile have Windows Vulkan/D3D12 and Linux software-Vulkan visual

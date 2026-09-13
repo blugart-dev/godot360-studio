@@ -21,6 +21,10 @@ Native Mac exports remain unvalidated. Read the
 [compatibility guide](BETA.md) for the exact coverage and a clean-project
 check. No custom engine or .NET runtime is needed.
 
+The [Windows 1.0 support contract](SUPPORT.md) consolidates the intended launch
+matrix, tested scene setups and limits. Existing installations should follow
+[the upgrade guide](MIGRATION.md) before replacing the addon.
+
 ## Install
 
 ### Downloads
