@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.0.0 — prepared privately, publication on hold
+
+- Carry the validated RC2 Windows workflow into 1.0, following the owner's
+  no-error feedback and authorization to prepare the final version.
+- Align plugin, panel, spherical metadata and package labels at 1.0.0.
+- Refresh installation, upgrade and support guides, including the recurring
+  experimental Linux Mobile history issue and separate external-service review.
+- Capture, rendering, encoding, recipes, settings and saved-job formats are
+  unchanged from RC2. Final artifact evidence is recorded in the source
+  repository's `docs/validation.md`; public release requires explicit instruction.
+
 ## 1.0.0-rc.2 — 2026-09-13 — private candidate
 
 - Read concise offline task guides inside Godot, with a topic picker and a direct

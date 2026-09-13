@@ -1,10 +1,11 @@
-# Godot360 Studio 1.0 release draft
+# Godot360 Studio 1.0 release preparation
 
-**Unreleased.** This is the proposed release description for review. The current
-package identifies itself as **1.0.0-rc.2**; human walkthrough and stable candidate
-acceptance remain pending. Do not attach an RC ZIP to a stable 1.0 release.
+**Prepared privately; publication on hold.** The current package identifies itself
+as **1.0.0**. The owner reported no errors after RC2 review and authorized final
+preparation, explicitly requiring further instruction before public release.
+The exact final artifact is undergoing validation. No RC ZIP is relabelled as 1.0.
 
-## Current private RC2
+## Frozen private RC2
 
 RC2 adds native offline help, clearer installation and quality/support guidance,
 storage/source-retention explanations, and correct handling of cancellation
@@ -105,10 +106,12 @@ active exports, back up recipes/settings and follow
 
 ## Final acceptance record
 
-- [ ] Record the completed human walkthrough and itemized delivery review.
+- [x] Record the owner's RC2 feedback: "I did not get any errors," followed by
+  authorization to prepare 1.0. Individual subjective/device checks were not
+  supplied and are not recorded as passed.
 - [ ] Resolve any supported-workflow blocker; retain the unexplained recurring
   Linux Mobile observation and its separate platform evidence.
-- [ ] Set consistent stable version labels in plugin, panel, metadata, guides and
+- [x] Set consistent stable version labels in plugin, panel, metadata, guides and
   generated package README; replace this draft's candidate status while retaining
   the separately identified historical evidence.
 - [ ] Record the final commit, exact addon/source ZIP names, SHA-256 values,

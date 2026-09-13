@@ -4,9 +4,9 @@ Fresh installations use `addons/godot360` and `.godot360/settings.cfg`.
 
 ## Updating an existing Godot360 installation
 
-The current build is **1.0.0-rc.2**, a private Windows release candidate. These
-instructions cover the upgrade from the earlier 0.x packages; stable release
-acceptance remains pending.
+The current build is **1.0.0**, prepared privately for Windows release. These
+instructions cover upgrades from earlier 0.x and 1.0 release-candidate packages.
+Recipes, settings and job formats are unchanged from RC2.
 
 1. Finish or cancel active exports and close the editor before replacing addon
    files. Back up the project, saved `.tres` recipes and local `.godot360` settings.

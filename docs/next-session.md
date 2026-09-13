@@ -4,7 +4,22 @@ Updated on 2026-09-13. This is a development recap; the
 [publication preparation review](publication-review.md) records repository cleanup.
 The canonical completion criteria remain in [release readiness](release-readiness.md).
 
-## Current checkpoint: private RC2 — 2026-09-13
+## Current work: private 1.0 preparation — 2026-09-13
+
+The owner reported no errors after RC2 and authorized proceeding with 1.0,
+asking for thorough release preparation. **Keep the repository private until
+explicitly told otherwise.** This is authorization for final implementation,
+versioning, private Git updates and verification, not publication.
+
+Version 1.0.0 changes release strings and current guides only. Native launch
+matrix/editor and source-download acceptance must be recorded against its own
+archive. Preserve RC2's unchanged advanced rendering evidence and unresolved
+experimental Linux Mobile failure. Do not repeat unrelated production matrices
+without a source change or new failure. No itemized YouTube/headset review was
+provided; record only the owner's actual no-error feedback. Public-history choice,
+public issue/security settings and publication remain pending.
+
+## Frozen checkpoint: private RC2 — 2026-09-13
 
 The owner asked to audit every remaining 1.0 gate and continue autonomously.
 **1.0.0-rc.2** is frozen at `f1329c1c6478ccc942eacddd35247b4e9bf318f2` on the private

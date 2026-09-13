@@ -6,7 +6,9 @@ See [repository/privacy notes](repository.md).
 
 The 1.0 target is dependable mono 360 production from a documented Godot scene
 contract: repeatable recipes, predictable jobs, useful failure reports, and a
-validated YouTube delivery file. It does not include stereoscopic ODS or ambisonic audio.
+validated spherical H.264/AAC delivery file. External-service processing and
+playback require their own authorized upload/review. The scope does not include
+stereoscopic ODS or ambisonic audio.
 
 ## Current priority — private development toward 1.0
 
@@ -168,8 +170,9 @@ native backend are outside the first release's support claim.
 | 0.7 — Production resolution | Inspect every source/decoded frame and beginning/middle/end audio cues in a 60-second 4096×2048/30 FPS run and a 30-second 7680×3840/30 FPS run; record storage, timings and limitations | Passed locally: all 1,800/900 frames and audio cues; see [validation](validation.md) |
 | 0.8 — Local candidate | Install the exact packaged addon in a clean project, complete the documented workflow, establish versioned source history and provide useful diagnostics bundles | Passed locally: 1,332 checks on the exact ZIP across three engines; reproducible build and Git history; see [candidate record](release-0.8.md) |
 | 0.8 — Independent beta (historical gate) | Gather independent Windows/GPU feedback | Superseded as a development prerequisite on 2026-09-08; private workflow review remains in the [1.0 checklist](release-readiness.md) |
-| 1.0 — Delivery review | User-reviewed YouTube navigation, orientation, detail, seams and audio on a current candidate | Positive user visual review of THRESHOLD on YouTube, 2026-09-07; individual playback checks are not yet recorded |
-| 1.0 — Release | Final reproducible package/manifest, accurate supported limits and release notes; explicit approval before public publication | Pending implementation, native/private validation and final package acceptance in the [1.0 checklist](release-readiness.md) |
+| 1.0 — Windows workflow review | Owner feedback on the prepared candidate and separately recorded automated delivery checks | Owner reported no errors with RC2 and authorized final preparation on 2026-09-13; no itemized subjective/device results were supplied |
+| External-service delivery review | User-reviewed navigation, orientation, detail, seams and audio after service processing; required for service-specific acceptance claims | Positive user visual review of THRESHOLD on YouTube, 2026-09-07; individual current-version playback checks remain unrecorded and uploads need authorization |
+| 1.0 — Release | Final reproducible package/manifest, accurate supported limits and release notes; explicit approval before public publication | Version 1.0.0 prepared privately; exact artifact acceptance is in the [release checklist](release-readiness.md). Publication is explicitly on hold |
 
 The original 12-second candidate film at `renders/delivery-080-8k/video-360.mp4`
 remains local evidence, described in the [candidate record](release-0.8.md).

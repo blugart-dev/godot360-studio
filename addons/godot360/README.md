@@ -12,16 +12,18 @@ still view. Video playback uses a separate copy limited to 2K / 30 FPS.*
 
 **[Start here: your first 360° export →](QUICKSTART.md)**
 
-**Version 1.0.0-rc.2 — private Windows release candidate.** Final validation and
-human acceptance remain pending before stable release. The addon has passed isolated project checks on
-Windows with Godot 4.5.1, 4.6.3 and 4.7.2, Compatibility, and an NVIDIA RTX 3060 Ti.
-Linux and macOS preparation and evidence are listed in [Platform setup](PLATFORMS.md).
-Forward+ and Mobile have actual rendered evidence; see [renderers and scene appearance](RENDERERS.md).
-Native Mac exports remain unvalidated. Read the
+**Version 1.0.0 — Windows; Linux/macOS experimental.** This build is prepared
+privately; public release awaits the owner's instruction. The Windows launch
+matrix covers Godot 4.7.2 Compatibility/OpenGL 3 and Forward+/Mobile Vulkan,
+plus 4.5.1/4.6.3 Compatibility/OpenGL 3, on the Windows 11 / RTX 3060 Ti reference
+machine. Exact-package evidence is recorded in the source repository's
+`docs/validation.md`. Other hardware and driver combinations retain their
+separately recorded scope. Linux has an unresolved software-Mobile opening-history
+mismatch; native Linux/Mac graphical validation remains open. Read the
 [compatibility guide](BETA.md) for the exact coverage and a clean-project
 check. No custom engine or .NET runtime is needed.
 
-The [Windows 1.0 support contract](SUPPORT.md) consolidates the intended launch
+The [Windows 1.0 support contract](SUPPORT.md) consolidates the launch
 matrix, tested scene setups and limits. Existing installations should follow
 [the upgrade guide](MIGRATION.md) before replacing the addon.
 

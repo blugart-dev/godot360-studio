@@ -40,7 +40,7 @@ the results, then follow the walkthrough using your own scene or an included exa
 
 ## Development and project status
 
-The source is in **pre-1.0 development**, on the 0.8 version baseline.
+**1.0.0 is prepared privately for Windows release; publication is on hold.**
 Start with the [remaining work and completion criteria](release-readiness.md) and
 the [roadmap](roadmap.md) for completed work; use the
 [validation record](validation.md) for the exact evidence behind support claims.

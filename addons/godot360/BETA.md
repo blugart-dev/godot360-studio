@@ -1,7 +1,7 @@
 # Compatibility and private validation
 
-Godot360 Studio is validating a private Windows 1.0 release candidate. The
-[main guide](README.md) identifies the current candidate and the
+Godot360 Studio 1.0 is prepared privately for Windows release. The
+[main guide](README.md) identifies the current version and the
 [support contract](SUPPORT.md) defines its exact launch scope. Independent beta
 feedback is not a prerequisite for continuing work. This filename and its dated
 tables are retained as historical evidence. Use the [main guide](README.md)
@@ -162,8 +162,11 @@ after YouTube processing. Uploading is a separate user action.
 If reporting a failure, fill in the beta form and attach the reviewed diagnostics
 ZIP. Reports and logs can contain local paths and scene-written text. Keep the
 failed folder and original capture for diagnosis. Independent feedback from at
-least one other Windows/GPU setup remains required; another local automated run
-does not replace it. Current-candidate YouTube playback review remains pending too.
+least one other Windows/GPU setup is useful before extending the support matrix;
+another local automated run does not replace independent feedback. External
+YouTube playback requires its own upload/review before making service-specific
+acceptance claims. The [support contract](SUPPORT.md) defines the Windows launch
+boundary; these historical beta requirements do not expand it.
 
 ## Repeat the automated checks
 
@@ -233,7 +236,7 @@ Build or verify a package using Python's standard library:
 
 ```sh
 python tools/package_addon.py
-python tools/package_addon.py --verify dist/godot360-studio-0.8.0.zip
+python tools/package_addon.py --verify dist/godot360-studio-1.0.0.zip
 ```
 
 The builder reads current files, checks version labels, refuses to overwrite a

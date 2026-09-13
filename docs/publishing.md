@@ -1,14 +1,15 @@
 # Preparing a public release
 
 Repository preparation and product acceptance are separate checks. The current
-source uses version **1.0.0-rc.2** as a private Windows release candidate. Complete the
+source uses version **1.0.0**, prepared privately with publication explicitly on hold. Complete the
 [1.0 acceptance criteria](release-readiness.md) before describing it as a stable
 release. The [preparation review](publication-review.md) records the current cleanup.
 
 Use the [Windows support contract](../addons/godot360/SUPPORT.md),
 [upgrade guide](../addons/godot360/MIGRATION.md) and [release draft](release-1.0.md)
-as the prepared release content. They describe a release candidate until
-the final acceptance record is complete. The 2026-09-13 settings review could not
+as the prepared release content. The owner reported no errors with RC2 and
+authorized final package preparation, while withholding public-release approval.
+The 2026-09-13 settings review could not
 confirm private vulnerability reporting (HTTP 404). GitHub documents this feature
 for [public repositories](https://docs.github.com/en/code-security/how-tos/report-and-fix-vulnerabilities/configure-vulnerability-reporting/configure-for-a-repository).
 Enable and verify the reporting route during authorized publication, after the

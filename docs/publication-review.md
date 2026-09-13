@@ -1,8 +1,17 @@
 # Publication preparation review
 
-## Current candidate review — 2026-09-13
+## Current publication hold — 2026-09-13
 
-The current source is **1.0.0-rc.2**, following the native-help and startup-cancel
+The owner authorized preparation of **1.0.0** after reporting no errors with RC2,
+and explicitly instructed that the repository remain private until told otherwise.
+Final package/source checks are recorded in [validation](validation.md). No
+visibility change, public upload, release publication or historical rewrite is
+authorized by that preparation request. The public-history choice and activation
+of the public security-reporting route remain publication work.
+
+## Frozen RC2 publication review — 2026-09-13
+
+The reviewed source is **1.0.0-rc.2**, following the native-help and startup-cancel
 fixes. A read-only GitHub check confirms the repository remains private, with
 `main` as its default branch and no open issues or pull requests. RC2 repository
 CI passes and reproduces the local addon bytes. Gitleaks finds no credentials

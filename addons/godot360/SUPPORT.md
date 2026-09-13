@@ -1,15 +1,15 @@
 # Windows 1.0 support contract
 
-This is the release target for **1.0.0-rc.2**, the private Windows candidate. Stable
-1.0 acceptance is still pending. Windows is the supported launch platform;
-Linux and macOS remain experimental.
+This is the support contract for **1.0.0**, prepared privately for release.
+Windows is the supported launch platform; Linux and macOS remain experimental.
+Public distribution awaits the owner's explicit instruction.
 
 ## Engine and graphics combinations
 
 The Windows launch matrix is deliberately tied to tested engine versions and
 drivers. Use the Standard x86_64 editor and a saved, authored 3D scene.
 
-| Godot | Renderer | Driver | Intended 1.0 coverage |
+| Godot | Renderer | Driver | 1.0 coverage |
 | --- | --- | --- | --- |
 | 4.7.2 | Compatibility | OpenGL 3 | Baseline scene, export, audio, playback and recovery workflow. |
 | 4.7.2 | Forward+ | Vulkan | Baseline workflow plus the bounded advanced cases below. |
@@ -64,13 +64,14 @@ the [storage guidance](STORAGE.md). The source repository's
 ## Evidence and acceptance
 
 The source repository's `docs/validation.md` maps each result to its exact
-package and commit. RC1 passed five Windows package lanes; RC2 follows the
-usability and early-cancellation fixes and requires its own recorded acceptance.
-Experimental hosted checks passed at the stabilization checkpoint. An earlier Linux software-Mobile
-history mismatch remains unexplained despite passing reruns with unchanged
-thresholds; it is retained for candidate review, not described as a renderer fix.
+package and commit. RC2 passed all five Windows package lanes and native editor
+integration. The owner reported no errors and authorized 1.0 preparation; the
+1.0 artifact receives its own recorded package acceptance.
 
-The remaining stable-release gates are the private human walkthrough, acceptance
-of the final versioned package, and publication review. Native Linux/Mac testing
-is required before promoting those platforms to supported, and does not block
-the Windows launch. No current development ZIP is a stable 1.0 release.
+Linux software-Mobile history failed again on RC2 despite intervening passing
+runs. Its opening five frames exceed the unchanged face-comparison limit; the
+cause remains unresolved. The separate exact-RC2 Windows Mobile temporal review
+passes. Linux/Mac hardware testing is required before promoting those platforms
+to supported, and does not block the Windows launch. YouTube and other external
+services require separate review after upload; local validation does not certify
+their processing or playback. Publication remains on hold.

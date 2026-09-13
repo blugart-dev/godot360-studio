@@ -1,4 +1,4 @@
-# Godot360 beta report
+# Godot360 compatibility and delivery report
 
 Copy this form for one independently tested Windows, Linux or macOS machine. Review any diagnostics
 ZIP before attaching it. Leave untested steps marked **not tested**. Do not report
@@ -11,7 +11,7 @@ automated tests on the development machine as independent hardware feedback.
 - OS/distribution version and CPU architecture (x86_64/arm64):
 - GPU, driver and display/session (X11/Wayland/WSLg, if applicable):
 - Godot install source (official download/package manager/sandboxed package):
-- Renderer (the initial support target is Compatibility):
+- Renderer and graphics driver (compare with [support](SUPPORT.md)):
 - FFmpeg / FFprobe versions:
 - Different tester/machine from the development setup (Windows / RTX 3060 Ti):
 
@@ -32,7 +32,7 @@ it repeats. Attach the reviewed ZIP and keep the original job folder. State whet
 the failure blocks normal exports or has a reliable workaround. No real disk-full
 or power-loss experiment is needed for this feedback.
 
-## Current-candidate YouTube review (separate release gate)
+## YouTube delivery review (after an authorized upload)
 
 - Candidate version, package hash, export job and `video-360.mp4` hash:
 - Upload and high-resolution processing complete:
@@ -43,5 +43,6 @@ or power-loss experiment is needed for this feedback.
 - Observed issue, playback time and reproduction steps:
 
 Uploading and sharing are separate user actions. A passing local container/media
-report does not establish YouTube playback quality. Independent beta feedback and
-current-candidate playback review are required before the 1.0 release gate closes.
+report does not establish YouTube playback quality. Leave this section untested
+until an upload is authorized and reviewed. It is required for service-specific
+acceptance claims, separate from the [Windows addon support contract](SUPPORT.md).

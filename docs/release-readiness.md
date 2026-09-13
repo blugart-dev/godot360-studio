@@ -1,8 +1,8 @@
 # Private development toward 1.0
 
 Godot360 stays private until the supported 1.0 workflow is implemented, tested and
-ready. The current `1.0.0-rc.2` version identifies a private Windows release
-candidate; stable acceptance is still pending. Earlier
+ready. The current `1.0.0` version is prepared privately for final validation.
+The owner explicitly instructed that publication must wait for further approval. Earlier
 "beta" milestones describe historical packages; they do not pause development or
 require a public beta. This follows the owner's direction on 2026-09-08.
 
@@ -30,11 +30,26 @@ The [Windows support contract](../addons/godot360/SUPPORT.md) now consolidates
 the five launch combinations, tested scene setups, production envelope and
 explicit exclusions. [Upgrade instructions](../addons/godot360/MIGRATION.md)
 cover existing 0.x installations, and [the 1.0 release draft](release-1.0.md)
-provides the description and final acceptance record. Stable labels and the final
-stable artifact remain pending. RC2 includes the later usability and
+provides the description and final acceptance record. Stable labels are set;
+exact 1.0 artifact acceptance is being recorded. RC2 includes the later usability and
 early-cancellation fixes and passes the complete Windows package/editor matrix.
 
-## Current RC2 checkpoint — 2026-09-13
+## Current 1.0 preparation — 2026-09-13
+
+After the prepared RC2 walkthrough, the owner reported **"I did not get any
+errors"** and authorized proceeding with thorough 1.0 preparation. This records
+the feedback actually provided, without inventing itemized listening, headset or
+YouTube results. No supported-workflow blocker was reported. Public release is
+explicitly on hold until the owner instructs otherwise.
+
+The final build changes release identifiers and documentation only. Rendering,
+capture, encoding, recipes and saved jobs retain RC2 behavior. Validate the exact
+1.0 package across all five Windows lanes, native editor restart and source
+distribution; verify manifests, metadata, reproducibility, repository hygiene and
+credential scans. Preserve source-matched RC2 advanced-renderer evidence and the
+failed experimental Linux Mobile result. Current results belong in [validation](validation.md).
+
+## Frozen RC2 checkpoint — 2026-09-13
 
 RC2 at `f1329c1c6478ccc942eacddd35247b4e9bf318f2` includes native offline help,
 clearer setup/support/storage guidance and the coordinator startup-cancellation

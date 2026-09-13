@@ -10,7 +10,7 @@ templates are required by the addon itself.
 ## Support status
 
 The agreed 1.0 launch scope (2026-09-13) is **supported Windows, experimental
-Linux/macOS**. Version 1.0.0-rc.2 is a release candidate. Native Linux GPU and Mac
+Linux/macOS**. Version 1.0.0 is prepared privately for release. Native Linux GPU and Mac
 graphical acceptance are required before promoting their support status, but do
 not block the Windows release. The [Windows support contract](SUPPORT.md) defines
 the five target engine/renderer/driver combinations. Historical checks do not
@@ -20,7 +20,7 @@ certify a later candidate; exact evidence is recorded in the repository's
 | Platform | Status |
 | --- | --- |
 | Windows x86_64 | Compatibility baseline on 4.5.1/4.6.3/4.7.2; current Forward+/Mobile evidence and backend-specific limits are in [Renderers](RENDERERS.md). |
-| Linux x86_64 — experimental | At stabilization checkpoint `b69b427`, Ubuntu hosted package, skeletal, particle, Forward+/Mobile software Vulkan and temporal reviews pass. The obsolete panel tests are repaired. The earlier Mobile history mismatch remains unexplained despite passing reruns. Native hardware GPU validation remains open. |
+| Linux x86_64 — experimental | RC2 hosted package, skeletal, particle and Forward+ temporal reviews pass. Mobile temporal history fails in its opening frames, repeating an earlier result despite intervening passes; the cause remains unresolved. Native hardware GPU validation remains open. |
 | macOS — experimental | Apple Silicon headless CI passes at checkpoint `b69b427` on Godot 4.7.2. Graphical exports, Mac GPU appearance and Intel Mac validation remain open. Native paths and installation steps support both Homebrew prefixes. |
 
 Validation on one machine does not cover every GPU or desktop environment.

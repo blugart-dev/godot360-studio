@@ -1,5 +1,13 @@
 # Godot360 Studio development handoff
 
+## Current work — private 1.0 preparation, 2026-09-13
+
+The owner reported no errors with RC2 and authorized final 1.0 preparation,
+explicitly withholding publication approval. Version 1.0.0 retains RC2 behavior;
+its exact package is being checked. Use [the current engineering brief](next-session.md),
+[release acceptance](release-1.0.md) and [validation](validation.md) for the latest
+status. The dated sections below preserve their original artifact identities.
+
 ## Private RC1 validated on the Windows launch matrix — 2026-09-13
 
 **1.0.0-rc.1** at `b323a92` is pushed privately. The packager now supports numbered

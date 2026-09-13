@@ -17,7 +17,7 @@ static func build(panel: Control) -> void:
 	var title := _heading(brand, "Godot360 Studio")
 	title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	var credit := _label(brand, "by Blugart")
-	credit.tooltip_text = "Godot360 Studio · Release candidate 1.0.0-rc.2"
+	credit.tooltip_text = "Godot360 Studio · Version 1.0.0"
 	panel.workspace_tabs = TabContainer.new()
 	panel.workspace_tabs.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	left.add_child(panel.workspace_tabs)
