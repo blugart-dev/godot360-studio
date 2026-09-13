@@ -4,7 +4,7 @@ Fresh installations use `addons/godot360` and `.godot360/settings.cfg`.
 
 ## Updating an existing Godot360 installation
 
-The current build is **1.0.0-rc.1**, a private Windows release candidate. These
+The current build is **1.0.0-rc.2**, a private Windows release candidate. These
 instructions cover the upgrade from the earlier 0.x packages; stable release
 acceptance remains pending.
 
@@ -38,7 +38,7 @@ acceptance remains pending.
   decoded before playback is accepted. A bad encoder build can require choosing
   another tool pair and using **Retry playback**; the delivered MP4 is preserved.
 - New export folders contain `.gdignore`, keeping retained PNG/WAV captures out
-  of Godot's asset import. Older folders are left as they were. Use **Open output**
+  of Godot's asset import. Older folders are left as they were. Use **Open folder**
   to inspect job files even when they do not appear in Godot's FileSystem panel.
 - Live reconnection requires a coordinator started with 0.6.3 or later. Older
   saved jobs can be inspected; complete compatible PNG/WAV captures can be

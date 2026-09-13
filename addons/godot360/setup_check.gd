@@ -30,20 +30,20 @@ func check_tools(ffmpeg: String, ffprobe: String) -> Dictionary:
 			var encoders := await _execute(encoder, ["-hide_banner", "-encoders"], folder.path_join("encoders.log"))
 			result.playback = str(encoders.output).contains("libtheora") and str(encoders.output).contains("libvorbis")
 			if encoder_version.code != 0 or not str(encoder_version.output).contains("ffmpeg version"):
-				result.error = "FFmpeg could not be verified. Select ffmpeg in Tool setup."
+				result.error = "FFmpeg could not launch or identify itself. In Tool setup, select FFmpeg… and choose the extracted executable for your operating system and CPU. Open setup logs for details."
 			elif encoders.code != 0 or not str(encoders.output).contains("libx264") or not str(encoders.output).contains(" aac "):
-				result.error = "FFmpeg needs H.264 (libx264) and AAC encoders. Choose another build in Tool setup."
+				result.error = "This FFmpeg cannot provide H.264 (libx264) and AAC encoding for delivery. Open Platform setup, select a build with both encoders, then Check setup again."
 			else:
 				result.png = str(encoders.output).contains(" png ")
 				var filters := await _execute(encoder, ["-hide_banner", "-filters"], folder.path_join("filters.log"))
 				result.filters = str(filters.output)
 				if filters.code != 0 or not result.filters.contains(" scale ") or not result.filters.contains(" colorspace "):
-					result.error = "FFmpeg needs scale and colorspace filters. Choose another build in Tool setup."
+					result.error = "This FFmpeg cannot provide the scale and colorspace filters used by delivery. Open Platform setup, select a build with these filters, then Check setup again."
 				else:
 					var version := await _execute(probe, ["-version"], folder.path_join("ffprobe.log"))
 					result.ffprobe_version = _version_label(str(version.output), "ffprobe")
 					if version.code != 0 or not str(version.output).contains("ffprobe version"):
-						result.error = "FFprobe could not be verified. Select ffprobe in Tool setup."
+						result.error = "FFprobe could not launch or identify itself. In Tool setup, select FFprobe… and choose ffprobe from the extracted tools folder, then Check setup again. Open setup logs for details."
 					else:
 						result.ok = true
 			result.logs = folder

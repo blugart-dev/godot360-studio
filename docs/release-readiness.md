@@ -1,7 +1,7 @@
 # Private development toward 1.0
 
 Godot360 stays private until the supported 1.0 workflow is implemented, tested and
-ready. The current `1.0.0-rc.1` version identifies a private Windows release
+ready. The current `1.0.0-rc.2` version identifies a private Windows release
 candidate; stable acceptance is still pending. Earlier
 "beta" milestones describe historical packages; they do not pause development or
 require a public beta. This follows the owner's direction on 2026-09-08.
@@ -31,9 +31,24 @@ the five launch combinations, tested scene setups, production envelope and
 explicit exclusions. [Upgrade instructions](../addons/godot360/MIGRATION.md)
 cover existing 0.x installations, and [the 1.0 release draft](release-1.0.md)
 provides the description and final acceptance record. Stable labels and the final
-stable artifact remain pending; RC1 has passed the automated checks for this contract.
+stable artifact remain pending. RC1 passed its automated matrix; the later
+usability and early-cancellation fixes are being checked as the distinct RC2.
 
-## Current RC1 checkpoint — 2026-09-13
+## Current RC2 preparation — 2026-09-13
+
+RC2 includes the native help/setup/support/storage improvements and the
+coordinator startup-cancellation fix. The pre-versioned follow-up passed 582
+focused checks across all three Windows engine versions, 43 panel checks, and
+52 native editor checks. These results motivated RC2; the exact RC2 ZIP must
+have its own package, full Windows matrix, native editor and CI evidence.
+
+The remaining engineering work is to finish those checks, correct any supported
+workflow regressions, and align the current guides and source distribution.
+The actual private walkthrough and subjective delivery review remain pending.
+Stable versioning/final artifact acceptance and the public-history/publication
+decisions follow. Linux/macOS remain experimental throughout.
+
+## Frozen RC1 checkpoint — 2026-09-13
 
 The exact **1.0.0-rc.1** ZIP passes all five Windows lanes (**5,930 checks**) and
 the two-process native editor workflow (**44 checks**). Both addon/source archives

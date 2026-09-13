@@ -94,6 +94,8 @@ var ffprobe_deliberate := false
 var tool_notice := ""
 var cancelling := false
 var recipe_feedback: Label
+var renderer_hint: Label
+var help_dialog: AcceptDialog
 
 
 func _ready() -> void:
@@ -136,6 +138,17 @@ func _button(parent: Control, label: String, action: Callable) -> Button:
 	button.pressed.connect(action)
 	parent.add_child(button)
 	return button
+
+
+func _show_help(topic: String = "start") -> void:
+	if not is_instance_valid(help_dialog):
+		help_dialog = preload("studio_help.gd").new()
+		add_child(help_dialog)
+		help_dialog.setup_requested.connect(func():
+			workspace_tabs.current_tab = 1
+			sections.tools.toggle.button_pressed = true
+			ffmpeg.grab_focus())
+	help_dialog.show_topic(topic)
 
 
 func _build_audio_controls(parent: Control) -> void:
@@ -504,8 +517,10 @@ func _refresh_readiness() -> void:
 	var renderer := Renderer.resolve(profile.to_dictionary())
 	var renderer_name: String = {"forward_plus": "Forward+", "mobile": "Mobile", "gl_compatibility": "Compatibility"}.get(renderer.resolved_method, renderer.resolved_method)
 	var renderer_note := "Capture: %s / %s · unexpected fallback stops the job." % [renderer_name, renderer.resolved_driver]
+	var support_note := Renderer.support_note(renderer, OS.get_name(), Engine.get_version_info())
+	renderer_hint.text = support_note
 	var heading_text := "Ready for a 1-second test · scene, tools and output checked." if issues.is_empty() else "Current recipe needs attention"
-	readiness_label.text = heading_text + "\n" + renderer_note + "\n" + "\n".join(issues + notes)
+	readiness_label.text = heading_text + "\n" + renderer_note + "\n" + support_note + "\n" + "\n".join(issues + notes)
 	readiness_summary.text = "Ready · Test 1 second" if issues.is_empty() else issues[0]
 	readiness_summary.tooltip_text = readiness_label.text + "\nFull setup details are in Tools."
 	if setup_checker != null and setup_checker.busy:

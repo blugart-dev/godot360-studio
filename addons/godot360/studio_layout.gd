@@ -17,7 +17,7 @@ static func build(panel: Control) -> void:
 	var title := _heading(brand, "Godot360 Studio")
 	title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	var credit := _label(brand, "by Blugart")
-	credit.tooltip_text = "Godot360 Studio · Release candidate 1.0.0-rc.1"
+	credit.tooltip_text = "Godot360 Studio · Release candidate 1.0.0-rc.2"
 	panel.workspace_tabs = TabContainer.new()
 	panel.workspace_tabs.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	left.add_child(panel.workspace_tabs)
@@ -141,6 +141,7 @@ static func _advanced(panel: Control, parent: Control) -> void:
 	var grid := _grid(section)
 	for entry in [["camera_path", "Manual camera path"], ["width", "Output width (2:1)"], ["face_size", "Cube face size"], ["fps", "Custom FPS value"]]:
 		panel.recipe_fields[entry[0]] = panel._field(grid, entry[1], str(panel.profile.get(entry[0])))
+	_note(section, "Cube face size controls captured detail. Output width covers the whole sphere; a larger output cannot restore missing detail.")
 	# Keep the recipe binding for compatibility, but expose only the supported FPS picker.
 	panel.recipe_fields.fps.hide()
 	grid.get_child(grid.get_child_count() - 2).hide()
@@ -181,12 +182,15 @@ static func _advanced(panel: Control, parent: Control) -> void:
 	panel.driver_control = OptionButton.new()
 	for name in ["Project driver (default)", "Vulkan", "Direct3D 12", "Metal", "OpenGL 3", "OpenGL via ANGLE", "OpenGL ES"]:
 		panel.driver_control.add_item(name)
+	for index in [2, 3, 5, 6]:
+		panel.driver_control.set_item_tooltip(index, "Outside the Windows 1.0 launch matrix. See the support note for the complete selection.")
 	renderer_grid.add_child(panel.driver_control)
 	panel.driver_control.item_selected.connect(func(index: int):
 		panel.profile.rendering_driver = panel.Renderer.DRIVERS[index]
 		panel._refresh_plan())
 	_note(section, "Project preserves the saved project's renderer. Overrides affect new captures; re-encoding keeps the original pixels. A fallback stops capture with a diagnostic.")
-	panel._button(section, "Renderer support and scene effects", func(): OS.shell_open(ProjectSettings.globalize_path("res://addons/godot360/RENDERERS.md")))
+	panel.renderer_hint = _note(section, "")
+	panel._button(section, "Quality and renderer support", panel._show_help.bind("quality"))
 	var row: Container = HBoxContainer.new()
 	section.add_child(row)
 	_label(row, "Frame storage")
@@ -207,6 +211,7 @@ static func _advanced(panel: Control, parent: Control) -> void:
 	panel.crf_control.value = panel.profile.crf
 	panel.crf_control.tooltip_text = "Lower values retain more detail and increase file size. Presets choose this for you."
 	row.add_child(panel.crf_control)
+	_note(section, "Lower CRF = more detail and a larger video. Presets choose this for you.")
 	panel.crf_control.value_changed.connect(func(value: float):
 		panel.profile.crf = int(value)
 		panel._refresh_plan())
@@ -223,7 +228,7 @@ static func _tools(panel: Control, parent: Control) -> void:
 	panel._button(actions, "FFmpeg…", panel._browse.bind("ffmpeg"))
 	panel._button(actions, "FFprobe…", panel._browse.bind("ffprobe"))
 	panel._button(actions, "Find missing tools", panel._detect_tools)
-	panel._button(actions, "Platform setup", func(): OS.shell_open(ProjectSettings.globalize_path("res://addons/godot360/PLATFORMS.md")))
+	panel._button(actions, "Platform setup", panel._show_help.bind("setup"))
 	panel.tool_summary = _note(section, "Selected paths are kept. Clear a field to use automatic discovery.")
 	panel.tool_logs_button = panel._button(section, "Open setup logs", panel._open_setup_logs)
 	panel.tool_logs_button.disabled = true
@@ -263,6 +268,7 @@ static func _saved(panel: Control, parent: Control) -> void:
 	_note(jobs, "Re-encoding uses the capture's scene, dimensions and frame rate, with the current recipe's quality and audio. It creates a new export.")
 	panel._button(jobs, "Save diagnostics…", panel._browse.bind("diagnostics"))
 	panel.diagnostics_result = _note(jobs, "Save reports and logs as a local ZIP. Review it before sharing; paths may be included.")
+	panel._button(jobs, "Files, storage and recovery", panel._show_help.bind("files"))
 	panel.sections.recent.toggle.button_pressed = true
 	panel.sections.jobs.toggle.button_pressed = true
 
@@ -277,7 +283,7 @@ static func _viewer(panel: Control) -> void:
 	viewer.add_child(row)
 	var heading := _heading(row, "Opened export")
 	heading.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	panel._button(row, "Quick start", func(): OS.shell_open(ProjectSettings.globalize_path("res://addons/godot360/QUICKSTART.md")))
+	panel._button(row, "Quick start", panel._show_help.bind("start"))
 	panel.export_summary = _note(viewer, "No export open")
 	panel.export_summary.max_lines_visible = 2
 	panel.export_summary.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS

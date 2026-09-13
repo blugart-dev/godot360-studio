@@ -10,6 +10,11 @@ The **Current recipe** tab describes your next render. **Opened export**, on the
 right, shows the saved scene, resolution, duration and audio of the job you are
 reviewing. Editing the recipe or opening another export keeps these separate.
 
+**Quick start** in the panel opens an offline Godot help window. Its topic picker
+covers first export, tool setup, quality/support, and files/recovery. Instructions
+are readable without an external Markdown application; detailed reference guides
+remain available through an optional external-open button.
+
 ## 1. Install and select tools
 
 1. Copy `addons/godot360` into your project. Enable **Godot360 Studio** in
@@ -69,6 +74,9 @@ change the opened export or your authored scene.
 **Advanced capture and encoding** contains custom dimensions, camera path,
 renderer/driver, capture exposure/borders, PNG storage and H.264 quality (CRF).
 Lower CRF means larger files with more detail; the presets choose it for you.
+The support note beneath the graphics controls identifies the resolved selection
+as a Windows 1.0 target combination, experimental, or outside the launch matrix.
+It provides guidance without changing your project settings or preventing a test.
 For glow cuts or brightness seams, consult [renderer guidance](RENDERERS.md)
 before changing borders or exposure, then make another sample.
 
@@ -134,3 +142,6 @@ its contents before sharing. Read [recovery](RECOVERY.md) and [storage](STORAGE.
 Recipes are portable settings saved/loaded under **Library → Recipes and examples**.
 Executable paths, history and the last opened job remain project-local in
 `.godot360/settings.cfg`. Quick start is always available above the review area.
+Use **Library → Saved exports and recovery → Files, storage and recovery** for
+guidance on keeping deliveries and sources, rebuilding playback copies, and
+reclaiming space manually. The addon does not delete files through this help window.

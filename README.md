@@ -80,7 +80,7 @@ Open this repository's `project.godot` to try them; the plugin is already enable
 
 ## Where the project stands
 
-**1.0.0-rc.1 — private Windows release candidate.**
+**1.0.0-rc.2 — private Windows release candidate.**
 Onboarding, rendering, playback and recent-export improvements are implemented.
 The [1.0 completion criteria](docs/release-readiness.md) describe the remaining
 engineering and validation work. This source snapshot is not a stable 1.0 release.
@@ -88,9 +88,9 @@ The agreed 1.0 launch scope is **supported Windows, experimental Linux/macOS**.
 
 - **Windows:** tested exports and review on Godot 4.5.1, 4.6.3 and 4.7.2;
   Forward+/Mobile also have Windows Vulkan and Direct3D 12 visual evidence.
-- **Linux (experimental):** earlier export/review and software OpenGL/Vulkan
-  checks pass; the latest CI has workflow and temporal-reference failures under
-  investigation. Hardware GPU validation remains open.
+- **Linux (experimental):** the completed stabilization export/review and software
+  OpenGL/Vulkan checks pass. An earlier software-Mobile history mismatch remains
+  unexplained and recorded; native hardware GPU validation remains open.
 - **macOS (experimental):** Apple Silicon headless CI passes, including playback and recovery
   checks. Graphical export and Mac GPU validation remain open.
 - Optional [capture borders with before/after examples](docs/capture-borders.md)
@@ -111,8 +111,10 @@ The agreed 1.0 launch scope is **supported Windows, experimental Linux/macOS**.
   evidence, with saved editor baking, camera cuts and missing-map controls.
 - [Combined effects](docs/combined-effects.md) and [four one-minute 4K/8K workloads](docs/production-performance.md)
   now have bounded native Windows evidence.
-- **Next:** complete the private walkthrough, then freeze and validate the Windows
-  1.0 package. The repaired workflow checks and fresh hosted runs pass; the earlier
+- **RC2:** adds offline in-editor help, clearer setup/support/storage guidance,
+  and a fix for cancellation during export startup. Exact-package validation and
+  the private walkthrough precede stable 1.0. The repaired stabilization checks
+  and hosted runs pass; the earlier
   experimental Mobile mismatch remains recorded in
   [current CI evidence](docs/validation.md#hosted-stabilization-checkpoint--2026-09-13).
 

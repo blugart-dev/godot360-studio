@@ -44,11 +44,40 @@ func _run() -> void:
 	panel = panels[0]
 	DirAccess.make_dir_recursive_absolute("res://.godot360/editor-review")
 	make_bottom_panel_item_visible(panel)
+	await _help()
 	if phase == "first":
 		await _first()
 	else:
 		await _reopen()
 	_finish()
+
+
+func _help() -> void:
+	var before: Dictionary = panel.profile.to_dictionary()
+	panel._show_help("setup")
+	var dialog = panel.help_dialog
+	await get_tree().process_frame
+	await RenderingServer.frame_post_draw
+	dialog.get_texture().get_image().save_png("res://.godot360/editor-review/help-" + phase + ".png")
+	check(dialog.visible and dialog.body.selection_enabled and dialog.download_button.visible, "Native editor displays selectable offline setup help and its download-page action")
+	dialog.setup_button.pressed.emit()
+	check(not dialog.visible and panel.workspace_tabs.current_tab == 1 and panel.ffmpeg.has_focus(), "Native editor help returns keyboard focus to Tool setup")
+	panel._show_help("files")
+	await get_tree().process_frame
+	await get_tree().process_frame
+	var escape := InputEventKey.new()
+	escape.keycode = KEY_ESCAPE
+	escape.pressed = true
+	escape.window_id = dialog.get_window_id()
+	# Native dialog close shortcuts are handled before Viewport.push_input.
+	Input.parse_input_event(escape)
+	await get_tree().process_frame
+	escape.pressed = false
+	Input.parse_input_event(escape)
+	check(not dialog.visible, "Escape dismisses native help")
+	dialog.hide() # Leave later checks independent if keyboard dismissal regresses.
+	check(panel.profile.to_dictionary() == before, "Native help preserves the recipe across editor sessions")
+	panel.workspace_tabs.current_tab = 0
 
 
 func _first() -> void:

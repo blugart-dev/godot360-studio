@@ -51,7 +51,7 @@ static func find_executable(command: String) -> String:
 
 
 static func missing_message(label: String) -> String:
-	var message := "Locate %s in Tool setup. Select the executable file or use Find installed tools." % label
+	var message := "%s was not found or cannot be used. In Tools → Tool setup, select %s… and choose the executable inside an extracted installation. Clear an unavailable path before using Find missing tools. Platform setup has installation steps." % [label, label]
 	if OS.get_name() in ["Linux", "macOS"]:
 		message += " The file must have execute permission; choose a build for your operating system and CPU. See Platform setup."
 	return message

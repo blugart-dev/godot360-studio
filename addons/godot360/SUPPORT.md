@@ -1,6 +1,6 @@
 # Windows 1.0 support contract
 
-This is the release target for **1.0.0-rc.1**, the private Windows candidate. Stable
+This is the release target for **1.0.0-rc.2**, the private Windows candidate. Stable
 1.0 acceptance is still pending. Windows is the supported launch platform;
 Linux and macOS remain experimental.
 
@@ -17,7 +17,7 @@ drivers. Use the Standard x86_64 editor and a saved, authored 3D scene.
 | 4.6.3 | Compatibility | OpenGL 3 | Baseline workflow; advanced Vulkan cases are not established by this row. |
 | 4.5.1 | Compatibility | OpenGL 3 | Baseline workflow; advanced Vulkan cases are not established by this row. |
 
-The current five-lane review passed on Windows 11 and an RTX 3060 Ti. This is
+The five-lane reference environment is Windows 11 and an RTX 3060 Ti. This is
 the reference environment, not a claim that every Windows GPU has been tested.
 FFmpeg/FFprobe 9.0.1 essentials is the tested Windows tool pair. See
 [platform setup](PLATFORMS.md) for installation and required codecs.
@@ -64,8 +64,9 @@ the [storage guidance](STORAGE.md). The source repository's
 ## Evidence and acceptance
 
 The source repository's `docs/validation.md` maps each result to its exact
-package and commit. Five Windows package lanes and fresh experimental hosted
-checks pass at the stabilization checkpoint. An earlier Linux software-Mobile
+package and commit. RC1 passed five Windows package lanes; RC2 follows the
+usability and early-cancellation fixes and requires its own recorded acceptance.
+Experimental hosted checks passed at the stabilization checkpoint. An earlier Linux software-Mobile
 history mismatch remains unexplained despite passing reruns with unchanged
 thresholds; it is retained for candidate review, not described as a renderer fix.
 

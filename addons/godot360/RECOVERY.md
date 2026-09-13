@@ -1,11 +1,11 @@
 # Reopening and recovering an export
 
-Version 0.6.3 reopens saved jobs, reconnects to running exports, and shows the next
+The addon reopens saved jobs, reconnects to running exports, and shows the next
 action after failure or coordinator loss.
 Keep the job folder: it contains the recipe, partial files and diagnostic logs.
 Each new attempt uses a fresh output folder.
 
-Version 0.7 also stops on insufficient working disk space and required write
+Exports also stop on insufficient working disk space and required write
 failures. Free space or choose another output drive before retrying. A completely
 unwritable drive may leave only the last complete checkpoint; reopening inspects
 retained sources again. See [storage checks](STORAGE.md).

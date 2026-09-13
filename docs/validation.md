@@ -1,5 +1,45 @@
 # Validation record — updated 2026-09-13
 
+## Unreleased usability follow-up after RC1 — 2026-09-13
+
+The owner authorized changes that simplify using the addon. This working-tree
+snapshot follows the frozen RC1 below; it is not a newly accepted stable release.
+It adds native offline help and setup navigation, clearer tool errors, visible
+renderer support guidance, and source/storage explanations. A discovered race
+also fixes cancellation requested before coordinator initialization. Capture
+pixels, animation, color conversion and audio/encoding settings are unchanged.
+
+Evidence root: `.godot360/usability-polish-20260913/`.
+The local `usability-preview-final.zip` contains **245 members / 879,043 bytes**;
+SHA-256 **`fb3f0de88a292bad6caee98351885e9346c91bc383cd2a6b81e93f76f6260956`**.
+It retains the RC1 version string to identify its development base; it must not
+be confused with the immutable RC1 artifact or its earlier acceptance evidence.
+
+| Review | Result |
+| --- | --- |
+| Focused checks on Godot 4.7.2, 4.6.3 and 4.5.1 | 194 checks per engine, **582 total**, plus clean isolated editor imports. Each lane covers 47 usability, 10 process/platform, 79 renderer-policy/camera and 58 export/metadata/startup checks. |
+| Native Windows Forward+/Vulkan panel | **43 checks pass**, including actual export, playback, cancellation, re-encoding, compact/scaled layouts, help navigation and preserved recipe/source state. |
+| Exact-package native editor, first process and restart | **26 + 26 = 52 checks pass**. Includes native help, keyboard focus and Escape dismissal, ordinary-scene 4K sample/full delivery, stereo playback, paused seeking, cancellation, recovery and diagnostics. |
+| Repository and packaging | Six release-identity and seven repository-guard tests pass; source/link review and archive verification pass. |
+
+The first native UI rerun exposed an early Cancel request being rejected by the
+fresh-folder check. The fix accepts that pending request and saves Cancelled and
+recovery records before launching tools. Nine new process-level export checks
+exercise pre-start cancellation and preservation of an occupied destination.
+The native panel cancellation check also passes after the fix.
+
+An initial Escape test incorrectly used Viewport input injection, which bypasses
+the native dialog's window-input handling. A focused native probe established
+that routing the event through Input with the dialog's window ID closes it.
+The corrected editor test passes with Godot's existing behavior; no product
+keyboard override was added. Early contract-run imports also needed isolated
+APPDATA/LOCALAPPDATA directories inside the review workspace. Those diagnostic
+logs are retained; the accepted lanes use isolated profiles.
+
+Screenshots of the help pages and compact/scaled panel states were inspected.
+The existing human walkthrough remains pending. No new platform support,
+long-workload guarantee, publication or stable-release acceptance is claimed.
+
 ## Private Windows RC1 acceptance evidence — 2026-09-13
 
 **`1.0.0-rc.1`** is the first versioned private Windows release candidate.

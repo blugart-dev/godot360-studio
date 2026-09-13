@@ -1,6 +1,6 @@
 # Storage checks and write failures
 
-Version 0.7 checks the output drive before starting expensive work, during capture
+The addon checks the output drive before starting expensive work, during capture
 and encoding, and while copying spherical metadata. Use local writable storage
 for desktop exports. See [platform evidence](PLATFORMS.md#support-status). A one-second planning sample is still the
 best estimate of the full render's file sizes and time.
@@ -9,7 +9,7 @@ best estimate of the full render's file sizes and time.
 
 New job folders contain `.gdignore`, so Godot does not import the exported
 images and sound into its asset cache when the destination is inside your
-project. Use **Open output** to browse these files in the system file manager.
+project. Use **Open folder** to browse these files in the system file manager.
 The marker applies only to that job folder; other project assets remain visible.
 
 The guard keeps a 256 MiB reserve. Capture adds a conservative allowance for four

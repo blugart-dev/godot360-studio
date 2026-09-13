@@ -37,6 +37,23 @@ static func stamp(job: Dictionary) -> void:
 	job.rendering_signature = signature(job)
 
 
+static func support_note(selection: Dictionary, platform: String, version: Dictionary) -> String:
+	# User-facing launch scope only; never change capture settings or eligibility.
+	if platform in ["Linux", "macOS"]:
+		return "Experimental on %s · native graphical acceptance is still pending. Start with a short test." % platform
+	if platform != "Windows":
+		return "Outside the desktop launch scope · see Quality and renderer support in Help."
+	var engine := "%d.%d.%d" % [version.get("major", 0), version.get("minor", 0), version.get("patch", 0)]
+	var stable := str(version.get("status", "")) == "stable"
+	var method := str(selection.resolved_method)
+	var driver := str(selection.resolved_driver)
+	var baseline := engine in ["4.5.1", "4.6.3", "4.7.2"] and method == "gl_compatibility" and driver == "opengl3"
+	var advanced := engine == "4.7.2" and method in ["forward_plus", "mobile"] and driver == "vulkan"
+	if stable and (baseline or advanced):
+		return "Windows 1.0 target combination · test your scene and hardware before a long render."
+	return "Outside the Windows 1.0 test matrix · this engine/renderer/driver combination has narrower evidence. See Help."
+
+
 static func signature(job: Dictionary) -> String:
 	# Conservative: all saved project settings (including platform overrides),
 	# engine, host and explicit selection invalidate a measured capture estimate.

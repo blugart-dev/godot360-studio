@@ -161,6 +161,16 @@ func _run() -> void:
 	await process_frame
 	check(panel.size.x <= root.size.x and panel.size.y <= root.size.y, "The basic workflow fits a 1100 by 600 panel")
 	check(not panel.sections.advanced.contents.visible and not panel.sections.tools.contents.visible and not panel.sections.jobs.contents.visible, "Advanced, setup and recovery controls stay collapsed during the basic workflow")
+	panel._show_help("setup")
+	check(panel.help_dialog.visible and panel.help_dialog.setup_button.visible, "Native setup help opens on this engine without a document application")
+	panel.help_dialog.setup_button.pressed.emit()
+	check(not panel.help_dialog.visible and panel.workspace_tabs.current_tab == 1 and panel.ffmpeg.has_focus(), "Help returns to the correct tool field on this engine")
+	panel._show_help("files")
+	check(not panel.help_dialog.setup_button.visible and panel.help_dialog.body.selection_enabled, "Storage help is selectable and hides unrelated setup actions")
+	panel.help_dialog.get_ok_button().pressed.emit()
+	await process_frame
+	check(not panel.help_dialog.visible, "Native help closes cleanly on this engine")
+	panel.workspace_tabs.current_tab = 0
 	if DisplayServer.get_name() != "headless":
 		await RenderingServer.frame_post_draw
 		root.get_texture().get_image().save_png("res://.godot360/usability-panel.png")

@@ -9,6 +9,7 @@ func _initialize() -> void:
 	call_deferred("_run")
 
 func _run() -> void:
+	_check_support_labels()
 	var recipe: Dictionary = Profile.new().to_dictionary()
 	check(recipe.rendering_method == "project" and recipe.rendering_driver == "project", "New recipes use the project renderer and driver")
 	check(Policy.resolve({}).resolved_method == ProjectSettings.get_setting_with_override("rendering/renderer/rendering_method"), "Legacy JSON resolves the saved project, not the coordinator renderer")
@@ -106,6 +107,37 @@ func _run() -> void:
 	camera.free()
 	print("RENDERER CHECKS: %d checks, %d failures" % [checks, failures])
 	quit(0 if failures == 0 else 1)
+
+func _check_support_labels() -> void:
+	var version := {"major": 4, "minor": 7, "patch": 2, "status": "stable"}
+	var selection := {"resolved_method": "gl_compatibility", "resolved_driver": "opengl3"}
+	for engine in [[5, 1], [6, 3], [7, 2]]:
+		version.minor = engine[0]
+		version.patch = engine[1]
+		check(Policy.support_note(selection, "Windows", version).begins_with("Windows 1.0 target"), "Supported Compatibility launch version is identified: " + str(engine))
+	version.minor = 7
+	version.patch = 2
+	for method in ["forward_plus", "mobile"]:
+		selection = {"resolved_method": method, "resolved_driver": "vulkan"}
+		check(Policy.support_note(selection, "Windows", version).begins_with("Windows 1.0 target"), "Supported Vulkan launch renderer is identified: " + method)
+	var saved_selection := selection.duplicate(true)
+	for platform in ["Linux", "macOS"]:
+		check(Policy.support_note(selection, platform, version).begins_with("Experimental"), "Windows evidence does not promote " + platform)
+	version.status = "rc1"
+	check(Policy.support_note(selection, "Windows", version).begins_with("Outside"), "An engine prerelease does not inherit stable support")
+	version.status = "stable"
+	version.patch = 3
+	check(Policy.support_note(selection, "Windows", version).begins_with("Outside"), "An untested newer engine does not inherit support")
+	version.patch = 2
+	for driver in ["d3d12", "metal", "opengl3_angle", "opengl3_es"]:
+		var other := selection.duplicate(true)
+		other.resolved_driver = driver
+		check(Policy.support_note(other, "Windows", version).begins_with("Outside"), "Other driver evidence does not imply full launch support: " + driver)
+	version.minor = 6
+	version.patch = 3
+	check(Policy.support_note(selection, "Windows", version).begins_with("Outside"), "Older Vulkan engines do not inherit the Compatibility launch scope")
+	check(selection == saved_selection, "Support guidance leaves the requested capture configuration unchanged")
+
 
 func check(ok: bool, description: String) -> void:
 	checks += 1

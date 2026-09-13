@@ -1,14 +1,15 @@
 # Compatibility and private validation
 
-Godot360 Studio 0.8.0 is a private development baseline toward 1.0. Implementation
-and validation continue before public release; independent beta feedback is not
-a prerequisite for continuing work. This filename and the historical tables are
-retained for existing links. Use the [main guide](README.md)
+Godot360 Studio is validating a private Windows 1.0 release candidate. The
+[main guide](README.md) identifies the current candidate and the
+[support contract](SUPPORT.md) defines its exact launch scope. Independent beta
+feedback is not a prerequisite for continuing work. This filename and its dated
+tables are retained as historical evidence. Use the [main guide](README.md)
 for installation and export, [AUTHORING.md](AUTHORING.md) for timelines, and
 [AUDIO.md](AUDIO.md) for music and synchronization. This package has not been
 published to a community registry.
 
-## Current platform work
+## Platform scope and historical evidence
 
 The renderer pass supersedes the old forced-Compatibility capture behavior.
 Captures now preserve the saved project renderer/driver by default. Windows has
@@ -19,8 +20,9 @@ The repository's `docs/validation.md` holds dated workflow counts and evidence.
 The historical Compatibility tables below remain historical; they do not certify
 all features or all GPUs of another renderer.
 
-The same addon now targets Windows and Linux, with macOS prepared for native
-validation. See [Platform setup](PLATFORMS.md) for downloads and installation.
+Windows is the supported launch target; Linux and macOS remain experimental.
+See [Platform setup](PLATFORMS.md) for downloads and installation. The older
+results below do not certify the current candidate's bytes or expand its scope.
 
 Linux source workflows passed **495 checks** on Godot 4.7.2, Ubuntu 26.04 x86_64
 under WSL2/WSLg, Mesa 26.0.3 llvmpipe software OpenGL, FFmpeg/FFprobe 8.0.1.
@@ -65,7 +67,7 @@ exited, cancellation after reconnection, actual coordinator loss, stale replies
 and an unrelated live PID, missing delivery files, and recovered-source re-encoding.
 The 0.7 matrix passed 1,143 checks; an updated 24-check storage contract suite also
 passed on all three engines, adding cancellation-write and process-log startup
-checks (six per engine). Current unique coverage is 1,161 checks.
+checks (six per engine). That historical coverage totals 1,161 checks.
 Nine disposable pipeline cases cover low
 space and blocked writes, followed by a successful re-encode with unchanged source
 hashes. Capacity readings are injected; the real drive is not filled. See [STORAGE.md](STORAGE.md).

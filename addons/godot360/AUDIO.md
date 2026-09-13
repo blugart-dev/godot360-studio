@@ -1,8 +1,8 @@
 # Soundtracks and synchronization
 
-Version 0.6 adds audio controls to the studio panel, portable recipes and CLI jobs.
+Audio controls are available in the studio panel, portable recipes and CLI jobs.
 They apply during encoding, so you can adjust a completed capture without running
-its scene again. Existing recipes default to the original scene-audio behavior.
+its scene again. Recipes without audio fields default to scene audio.
 
 ## Choose the audio source
 

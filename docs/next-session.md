@@ -4,7 +4,33 @@ Updated on 2026-09-13. This is a development recap; the
 [publication preparation review](publication-review.md) records repository cleanup.
 The canonical completion criteria remain in [release readiness](release-readiness.md).
 
-## Current checkpoint: private 1.0.0-rc.1 — 2026-09-13
+## Current work: private RC2 preparation — 2026-09-13
+
+The owner asked to audit every remaining 1.0 gate and continue autonomously.
+The usability follow-up below is being frozen as **1.0.0-rc.2**, with consistent
+release strings, refreshed current guides and separately identified historical
+evidence. Finish exact-package Windows/CI and source-distribution checks, resolve
+applicable failures, and prepare a fresh walkthrough. Keep human delivery
+acceptance and public-history/publication decisions pending until provided.
+
+## Usability follow-up after RC1 — 2026-09-13
+
+The owner authorized improvements that simplify using the addon. The working
+tree now adds native offline help, direct setup navigation and download-page
+access, actionable tool messages, visible renderer support guidance, and storage
+retention explanations. The main export controls and capture settings stay in place.
+
+A native UI run exposed cancellation before coordinator startup being rejected
+as an occupied output folder. The coordinator now accepts the pending request
+and saves a Cancelled state before launching tools; existing-output protection
+has an independent regression check. Rendering and audio algorithms are unchanged.
+
+See the newest [validation record](validation.md) and the unreleased changelog.
+Evidence lives in `.godot360/usability-polish-20260913/`. These changes follow
+the immutable RC1 artifact below; do not reuse its acceptance claim for a changed
+package. Human acceptance and public-release decisions remain pending.
+
+## Frozen private 1.0.0-rc.1 checkpoint — 2026-09-13
 
 RC1 at **`b323a92e1b74b749a32adb6d5d4b1f7669874f9b`** is pushed on the private
 stabilization branch. The package builder accepts numbered candidate identifiers,

@@ -10,7 +10,7 @@ templates are required by the addon itself.
 ## Support status
 
 The agreed 1.0 launch scope (2026-09-13) is **supported Windows, experimental
-Linux/macOS**. Version 1.0.0-rc.1 is a release candidate. Native Linux GPU and Mac
+Linux/macOS**. Version 1.0.0-rc.2 is a release candidate. Native Linux GPU and Mac
 graphical acceptance are required before promoting their support status, but do
 not block the Windows release. The [Windows support contract](SUPPORT.md) defines
 the five target engine/renderer/driver combinations. Historical checks do not

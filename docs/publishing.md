@@ -1,7 +1,7 @@
 # Preparing a public release
 
 Repository preparation and product acceptance are separate checks. The current
-source uses version **1.0.0-rc.1** as a private Windows release candidate. Complete the
+source uses version **1.0.0-rc.2** as a private Windows release candidate. Complete the
 [1.0 acceptance criteria](release-readiness.md) before describing it as a stable
 release. The [preparation review](publication-review.md) records the current cleanup.
 

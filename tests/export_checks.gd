@@ -51,8 +51,45 @@ func _run() -> void:
 	check(IO.validate(restored).is_empty() and int(restored.frames) == 300 and restored.camera_path == "Camera3D", "Serialized recipe preserves its export settings")
 	_test_metadata()
 	_test_verification(recipe)
+	await _test_startup_cancellation(recipe)
 	print("EXPORT CHECKS: %d checks, %d failures" % [checks, failures])
 	quit(0 if failures == 0 else 1)
+
+
+func _test_startup_cancellation(recipe: Dictionary) -> void:
+	for occupied in [false, true]:
+		var destination := folder.path_join("early-cancel-occupied" if occupied else "early-cancel")
+		DirAccess.make_dir_recursive_absolute(destination)
+		var job := recipe.duplicate(true)
+		job.output_dir = destination
+		# No tool should be started for a cancellation already waiting at launch.
+		job.ffmpeg = "missing-encoder-for-startup-cancellation-check"
+		job.ffprobe = "missing-probe-for-startup-cancellation-check"
+		IO.write_json(destination.path_join("job.json"), job)
+		IO.write_text(destination.path_join("cancel.request"), "Cancel before coordinator initialization")
+		if occupied:
+			IO.write_text(destination.path_join("existing-source.png"), "Preserve existing source")
+		var runner = preload("res://addons/godot360/process_runner.gd").new()
+		var error: String = runner.start(OS.get_executable_path(), ["--headless", "--path", ProjectSettings.globalize_path("res://"),
+			"--log-file", destination.path_join("pipeline.log"), "--script", "res://addons/godot360/pipeline.gd", "--",
+			"--job=" + destination.path_join("job.json")], folder.path_join("startup-occupied.log" if occupied else "startup-cancel.log"))
+		check(error.is_empty(), "Startup cancellation coordinator launches: occupied=" + str(occupied))
+		if not error.is_empty():
+			continue
+		var deadline := Time.get_ticks_msec() + 20000
+		while runner.is_running() and Time.get_ticks_msec() < deadline:
+			await process_frame
+		check(not runner.is_running(), "Startup cancellation coordinator exits promptly: occupied=" + str(occupied))
+		if runner.is_running():
+			runner.cancel()
+		runner.finish()
+		var state := IO.read_json(destination.path_join("status.json"))
+		if occupied:
+			check(state.is_empty() and FileAccess.get_file_as_string(destination.path_join("existing-source.png")) == "Preserve existing source", "An early cancel does not bypass existing-output protection")
+		else:
+			check(state.get("stage") == "Cancelled" and FileAccess.file_exists(destination.path_join("recovery.json")), "Cancellation before initialization writes a reopenable terminal state and recovery guidance")
+			check(not FileAccess.file_exists(destination.path_join("ffmpeg-check.log")) and not DirAccess.dir_exists_absolute(destination.path_join("frames")), "Early cancellation starts no external tools or scene capture")
+		check(not FileAccess.file_exists(destination.path_join("video-360.mp4")), "Startup cancellation cannot publish a delivery: occupied=" + str(occupied))
 
 
 func _test_metadata() -> void:

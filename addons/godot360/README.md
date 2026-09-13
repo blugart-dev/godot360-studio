@@ -12,7 +12,7 @@ still view. Video playback uses a separate copy limited to 2K / 30 FPS.*
 
 **[Start here: your first 360° export →](QUICKSTART.md)**
 
-**Version 1.0.0-rc.1 — private Windows release candidate.** Final validation and
+**Version 1.0.0-rc.2 — private Windows release candidate.** Final validation and
 human acceptance remain pending before stable release. The addon has passed isolated project checks on
 Windows with Godot 4.5.1, 4.6.3 and 4.7.2, Compatibility, and an NVIDIA RTX 3060 Ti.
 Linux and macOS preparation and evidence are listed in [Platform setup](PLATFORMS.md).
@@ -90,7 +90,9 @@ The panel's **Quick start** button opens that guide locally.
 **Advanced capture and encoding** contains the manual camera path, dimensions,
 renderer/driver overrides, PNG storage and H.264 CRF. **Audio timing and levels** contains offsets, trim and
 gain. **Library → Recipes and examples** contains recipe loading/saving and both examples.
-**Library → Saved exports and recovery** contains job reopening, re-encoding and diagnostics.
+**Library → Saved exports and recovery** contains job reopening, re-encoding,
+diagnostics and storage guidance. **Quick start** opens offline help inside Godot;
+the topic picker includes tool installation and quality/support guidance.
 
 Current-scene selection and export save the open named scene through Godot. Other
 scenes use their saved versions. Save other scenes, scripts and assets before
@@ -112,7 +114,7 @@ stops the job and retains its sources. Read the [storage guide](STORAGE.md).
 The panel reopens its last saved job at startup. **Library → Recent exports** remembers up
 to 12 launched or opened jobs; choose an entry and click **Open** to review it.
 **Forget** removes only the list entry. Use **Open saved job…** to locate another
-export. A running 0.6.3 coordinator must answer a fresh request before the
+export. A running coordinator from 0.6.3 or later must answer a fresh request before the
 panel reconnects and enables cancellation. Completed captures offer **Re-encode
 this capture**, using the current CRF/audio settings and a fresh output folder.
 Unconfirmed jobs show their last saved stage and available recovery action.

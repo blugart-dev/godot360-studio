@@ -1,5 +1,22 @@
 # Changelog
 
+## 1.0.0-rc.2 — 2026-09-13 — private candidate
+
+- Read concise offline task guides inside Godot, with a topic picker and a direct
+  return to Tool setup. Detailed bundled references remain available externally.
+- Explain setup failures using the current button names and concrete next steps.
+- Show the launch support boundary for the resolved engine/renderer/driver;
+  explain capture detail and final compression beside the advanced controls.
+- Add guidance for retaining source captures, attached soundtracks, dependent
+  re-encodes and removable playback copies. No automatic deletion is introduced.
+- Honor cancellation requested before coordinator initialization, with a saved
+  Cancelled state and recovery guidance; retain occupied-output protection.
+- These changes follow the frozen RC1 artifact and have a distinct candidate
+  identity; RC1's acceptance results do not automatically cover RC2. Capture pixels and encoding
+  settings are unchanged; the coordinator also fixes the early-cancel race.
+- Refresh current support/status guidance while preserving dated historical
+  evidence. Stable acceptance and public publication remain pending.
+
 ## 1.0.0-rc.1 — 2026-09-13 — private candidate
 
 - Freeze the five-combination Windows launch target with experimental Linux/macOS

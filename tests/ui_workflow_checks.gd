@@ -28,6 +28,7 @@ func _run() -> void:
 		margin.add_theme_constant_override("margin_" + edge, 12)
 	panel = preload("res://addons/godot360/studio_panel.gd").new()
 	margin.add_child(panel)
+	await _check_help()
 	panel.workspace_tabs.current_tab = 0
 	panel._selected("scene", "res://missing-scene.tscn")
 	await _shot("empty-1100")
@@ -61,6 +62,16 @@ func _run() -> void:
 	await _shot("tools-1100")
 	panel.workspace_tabs.current_tab = 0
 	await _shot("ready-1100")
+	panel.sections.advanced.toggle.button_pressed = true
+	panel.driver_control.grab_focus()
+	await _shot("advanced-1100")
+	check(panel.renderer_hint.text.begins_with("Windows 1.0 target") if OS.get_name() == "Windows" else panel.renderer_hint.text.begins_with("Experimental"), "Resolved project graphics have a visible support note")
+	panel.driver_control.select(2)
+	panel.driver_control.item_selected.emit(2)
+	check(panel.renderer_hint.text.begins_with("Outside") if OS.get_name() == "Windows" else panel.renderer_hint.text.begins_with("Experimental"), "Changing graphics updates support guidance without launching or changing project settings")
+	panel.driver_control.select(0)
+	panel.driver_control.item_selected.emit(0)
+	panel.sections.advanced.toggle.button_pressed = false
 	check(panel.preview.size.y >= 250 and panel.size.x <= root.size.x and panel.size.y <= root.size.y, "Ready 1100×600 panel retains at least 250 pixels of preview height without overflow")
 	panel.test_button.pressed.emit()
 	check(panel.readiness_summary.text.begins_with("Export running"), "Launch updates recipe action state immediately without waiting for the periodic refresh")
@@ -156,6 +167,32 @@ func _run() -> void:
 	print("UI WORKFLOW CHECKS: %d checks, %d failures" % [checks, failures])
 	panel.free()
 	quit(0 if failures == 0 else 1)
+
+
+func _check_help() -> void:
+	var before: Dictionary = panel.profile.to_dictionary()
+	for control in panel.find_children("*", "Button", true, false):
+		if control.text == "Quick start":
+			control.pressed.emit()
+	check(is_instance_valid(panel.help_dialog) and panel.help_dialog.visible, "Quick start opens native help without an external document application")
+	var dialog = panel.help_dialog
+	for index in range(dialog.TOPICS.size()):
+		dialog.topics.select(index)
+		dialog.topics.item_selected.emit(index)
+		check(not dialog.body.get_parsed_text().is_empty() and FileAccess.file_exists("res://addons/godot360/" + dialog.GUIDES[index]), "Help topic has readable content and its bundled reference: " + str(dialog.TOPICS[index]))
+		await process_frame
+		await RenderingServer.frame_post_draw
+		dialog.get_texture().get_image().save_png(evidence.path_join("help-" + str(dialog.TOPICS[index]) + ".png"))
+	check(dialog.size.x <= root.size.x and dialog.size.y <= root.size.y, "Help stays inside a compact review window")
+	panel._show_help("setup")
+	check(panel.help_dialog == dialog, "Repeated help requests reuse one window")
+	dialog.setup_button.pressed.emit()
+	check(not dialog.visible and panel.workspace_tabs.current_tab == 1 and panel.sections.tools.contents.visible and panel.ffmpeg.has_focus(), "Help returns to Tool setup with keyboard focus on the executable field")
+	check(panel.profile.to_dictionary() == before, "Reading help preserves every recipe setting")
+	panel._show_help("files")
+	dialog.get_ok_button().pressed.emit()
+	await process_frame
+	check(not dialog.visible, "Close dismisses help without changing the workspace")
 
 
 func _wait_job() -> void:

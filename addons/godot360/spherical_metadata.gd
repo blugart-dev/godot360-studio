@@ -5,7 +5,7 @@ extends RefCounted
 
 const SPHERICAL_UUID = "ffcc8263f8554a938814587a02521fdd"
 const MAX_MOOV = 64 * 1024 * 1024
-const SOFTWARE = "Godot360 Studio 1.0.0-rc.1"
+const SOFTWARE = "Godot360 Studio 1.0.0-rc.2"
 # Unknown structural boxes may contain offsets we cannot safely relocate.
 const CONTAINERS = {
 	"moov": ["mvhd", "trak", "udta"],

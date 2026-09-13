@@ -57,7 +57,8 @@ func _run() -> void:
 		return
 	# A job owns a fresh folder. Never mix frames with an earlier render.
 	var existing := DirAccess.get_files_at(folder)
-	for allowed in ["job.json", "pipeline.log", ".gdignore"]:
+	# The launching editor can request cancellation before this process starts.
+	for allowed in ["job.json", "pipeline.log", ".gdignore", "cancel.request"]:
 		existing.erase(allowed)
 	if not existing.is_empty() or not DirAccess.get_directories_at(folder).is_empty():
 		push_error("Output folder already contains a job. Choose a new folder.")
@@ -86,6 +87,8 @@ func _run() -> void:
 		"source_columns_per_90_degrees": int(job.width) / 4,
 		"warnings": IO.quality_advice(job)}):
 		_fail(job_error)
+		return
+	if _cancelled():
 		return
 	_status("Checking tools", 0.0)
 	for key in ["ffmpeg", "ffprobe"]:

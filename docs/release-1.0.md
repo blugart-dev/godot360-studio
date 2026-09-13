@@ -1,10 +1,19 @@
 # Godot360 Studio 1.0 release draft
 
 **Unreleased.** This is the proposed release description for review. The current
-package identifies itself as **1.0.0-rc.1**; human walkthrough and stable candidate
+package identifies itself as **1.0.0-rc.2**; human walkthrough and stable candidate
 acceptance remain pending. Do not attach an RC ZIP to a stable 1.0 release.
 
-## Private RC1 artifact
+## Current private RC2
+
+RC2 adds native offline help, clearer installation and quality/support guidance,
+storage/source-retention explanations, and correct handling of cancellation
+before coordinator startup. It keeps the existing Windows launch matrix and
+capture/encoding settings. Current guides distinguish historical 0.x/RC1 evidence
+from the new candidate. The exact artifact identity, native reviews and CI
+results are recorded in [validation](validation.md) as they complete.
+
+## Frozen private RC1 artifact
 
 Candidate source: **`b323a92e1b74b749a32adb6d5d4b1f7669874f9b`** on
 `codex/windows-1.0-stabilization`. The addon ZIP has 243 members and 875,471 bytes;
@@ -44,7 +53,7 @@ drivers retain their separately recorded evidence.
 The release includes 2K/4K/8K recipes, short-test forecasts, authored animation and
 camera cuts, stereo scene/soundtrack audio, H.264/AAC MP4 delivery, spherical
 metadata, full delivery checks, spherical preview/playback, cancellation,
-diagnostics, saved-job recovery and re-encoding. Current recipe, Tools, Library
+diagnostics, saved-job recovery, re-encoding and offline in-editor help. Current recipe, Tools, Library
 and Opened export separate setup from review of an existing delivery.
 
 Selected character, particle, trail, temporal and GI setups have native rendered

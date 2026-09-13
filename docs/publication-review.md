@@ -1,5 +1,17 @@
 # Publication preparation review
 
+## Current candidate review — 2026-09-13
+
+The current source is **1.0.0-rc.2**, following the native-help and startup-cancel
+fixes. A read-only GitHub check confirms the repository remains private, with
+`main` as its default branch. RC1's repository checks pass; RC2 requires its own
+source/archive scans and CI evidence. See the latest [validation](validation.md).
+The dated sections below retain their original versions and counts.
+
+Human candidate acceptance, the public-history choice and final publication
+authorization remain open. No visibility change or release upload is part of
+the private candidate review.
+
 ## Windows release preparation — 2026-09-13
 
 The private stabilization branch now has a consolidated

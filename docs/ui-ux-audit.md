@@ -1,5 +1,31 @@
 # Godot360 Studio UI/UX review
 
+## Usability follow-up after RC1 — 2026-09-13
+
+The owner requested improvements that simplify the tool without expanding the
+normal export flow. The follow-up keeps the native panel and its existing actions:
+
+- Quick start opens a selectable, scrollable Godot help window with four topics:
+  first export, tool installation, quality/support, and files/storage/recovery.
+  Platform setup and the contextual help buttons open the relevant topic.
+- Setup help can return directly to the executable field with keyboard focus or
+  open the download page in the browser. Detailed Markdown references remain
+  optional. Missing-tool messages now use the actual button names and next steps.
+- The advanced controls explain capture detail and compression, and show whether
+  the resolved engine/renderer/driver belongs to the Windows 1.0 launch matrix.
+  Other combinations remain selectable and retain their narrower support scope.
+- Storage guidance explains source dependencies, attached soundtracks, moved
+  jobs, playback-cache rebuilding and the fact that Forget does not delete files.
+- Cancellation during coordinator startup now ends as Cancelled with retained
+  diagnostics, instead of an occupied-folder error. Existing outputs stay protected.
+
+The help dialog uses Godot's standard theme, focus, scrolling and close behavior.
+No custom keyboard handling, external UI runtime or automatic deletion is added.
+Native integration checks are separate from the pending human walkthrough.
+See [validation](validation.md) for the tested snapshot and retained evidence.
+
+## Earlier panel redesign
+
 Implemented on 2026-09-12–13, retaining the private **0.8.0** development version
 and author **Blugart**. This review covers the editor addon, not the demo films.
 The existing uncommitted playback-decoding fix was preserved and extended.
