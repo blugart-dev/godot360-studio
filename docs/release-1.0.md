@@ -3,7 +3,32 @@
 **Prepared privately; publication on hold.** The current package identifies itself
 as **1.0.0**. The owner reported no errors after RC2 review and authorized final
 preparation, explicitly requiring further instruction before public release.
-The exact final artifact is undergoing validation. No RC ZIP is relabelled as 1.0.
+The exact 1.0.0 addon passes its full Windows acceptance matrix.
+
+## Validated private 1.0.0 addon
+
+Addon source: **`cea9bae3b449974d70962d66e95cf653f7e8ff58`** on
+`codex/windows-1.0-stabilization`. `godot360-studio-1.0.0.zip` has **245 members**,
+**884,541 bytes**, and SHA-256
+**`5ab5ea3589d4c32347890cd33daf5925b3c728eb385442d2f71ecbe3c38a9dde`**.
+
+The exact ZIP passes **6,070 checks across five Windows engine/renderer lanes**
+and **52 native editor checks**. It rebuilds identically; repository CI produces
+the same bytes. Both V1 XML and V2 binary spherical metadata carry version 1.0.0
+in all fifteen workflow deliveries. Runtime differences from RC2 are version
+strings only; recipes, settings, capture/encoding and tests/fixtures are unchanged.
+
+Evidence is retained under `.godot360/stable-1.0-review-20260913/`. The final
+`release/` folder contains the addon, a source snapshot with current release
+documentation and no Git history, `SHA256SUMS.txt` and `release-manifest.json`.
+The manifest records each archive's source commit and exact checksum; final source
+import/startup and rendered-workflow results accompany it. Root documentation
+recording acceptance follows the frozen addon commit. See [validation](validation.md).
+
+The unresolved experimental Linux Mobile history result remains open. The fresh
+RC2 Windows temporal review and other bounded rendering evidence remain mapped
+to unchanged rendering code. Public visibility, default-branch/tag decisions,
+history choice, release uploads and external-service review remain separate.
 
 ## Frozen private RC2
 
@@ -109,13 +134,14 @@ active exports, back up recipes/settings and follow
 - [x] Record the owner's RC2 feedback: "I did not get any errors," followed by
   authorization to prepare 1.0. Individual subjective/device checks were not
   supplied and are not recorded as passed.
-- [ ] Resolve any supported-workflow blocker; retain the unexplained recurring
-  Linux Mobile observation and its separate platform evidence.
+- [x] No supported-workflow blocker is reported or reproduced in final native
+  checks; retain the recurring experimental Linux Mobile observation separately.
 - [x] Set consistent stable version labels in plugin, panel, metadata, guides and
   generated package README; replace this draft's candidate status while retaining
   the separately identified historical evidence.
-- [ ] Record the final commit, exact addon/source ZIP names, SHA-256 values,
-  manifests, native Windows acceptance and required CI results.
+- [x] Record the exact addon commit/hash, manifest, native Windows acceptance and
+  passing repository CI.
+- [ ] Complete the final source archive verification and local release manifest.
 - [ ] Complete the public-history choice and verify issue/security settings.
 - [ ] Obtain final publication authorization for the exact source and artifacts.
 

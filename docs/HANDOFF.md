@@ -4,7 +4,8 @@
 
 The owner reported no errors with RC2 and authorized final 1.0 preparation,
 explicitly withholding publication approval. Version 1.0.0 retains RC2 behavior;
-its exact package is being checked. Use [the current engineering brief](next-session.md),
+its exact addon passes 6,070 Windows package and 52 native editor checks.
+Use [the current engineering brief](next-session.md),
 [release acceptance](release-1.0.md) and [validation](validation.md) for the latest
 status. The dated sections below preserve their original artifact identities.
 

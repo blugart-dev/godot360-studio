@@ -4,20 +4,30 @@ Updated on 2026-09-13. This is a development recap; the
 [publication preparation review](publication-review.md) records repository cleanup.
 The canonical completion criteria remain in [release readiness](release-readiness.md).
 
-## Current work: private 1.0 preparation — 2026-09-13
+## Current checkpoint: private 1.0 acceptance — 2026-09-13
 
 The owner reported no errors after RC2 and authorized proceeding with 1.0,
 asking for thorough release preparation. **Keep the repository private until
 explicitly told otherwise.** This is authorization for final implementation,
 versioning, private Git updates and verification, not publication.
 
-Version 1.0.0 changes release strings and current guides only. Native launch
-matrix/editor and source-download acceptance must be recorded against its own
-archive. Preserve RC2's unchanged advanced rendering evidence and unresolved
+Version 1.0.0 at `cea9bae3b449974d70962d66e95cf653f7e8ff58` changes release strings
+and current guides only. Its exact addon ZIP passes **6,070 Windows package
+checks** and **52 native editor checks**; repository CI builds identical bytes.
+`windows-audit.json` and `source-mapping.json` retain the proof in
+`.godot360/stable-1.0-review-20260913/`. The addon SHA-256 is
+`5ab5ea3589d4c32347890cd33daf5925b3c728eb385442d2f71ecbe3c38a9dde`.
+The final `release/` source snapshot includes acceptance documentation and is
+verified separately; its checksum/commit and full source workflow results belong
+in the adjacent release manifest. Preserve RC2's unchanged rendering evidence and unresolved
 experimental Linux Mobile failure. Do not repeat unrelated production matrices
 without a source change or new failure. No itemized YouTube/headset review was
 provided; record only the owner's actual no-error feedback. Public-history choice,
-public issue/security settings and publication remain pending.
+public issue/security settings and publication remain pending. The source and
+history scans are clean for credentials; historical personal paths still require
+the public-history choice. `main` remains older and private; no release/tag or
+visibility change has been made. Do not rerun unchanged production/temporal
+matrices merely for final documentation updates.
 
 ## Frozen checkpoint: private RC2 — 2026-09-13
 

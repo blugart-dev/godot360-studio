@@ -4,7 +4,9 @@
 
 The owner authorized preparation of **1.0.0** after reporting no errors with RC2,
 and explicitly instructed that the repository remain private until told otherwise.
-Final package/source checks are recorded in [validation](validation.md). No
+The exact addon now passes 6,070 native package and 52 editor checks; repository
+CI reproduces it. The final source snapshot includes current release/security
+guidance and receives its own archive review. Results are in [validation](validation.md). No
 visibility change, public upload, release publication or historical rewrite is
 authorized by that preparation request. The public-history choice and activation
 of the public security-reporting route remain publication work.

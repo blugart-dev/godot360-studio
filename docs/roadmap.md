@@ -14,12 +14,12 @@ stereoscopic ODS or ambisonic audio.
 
 **2026-09-13 scope decision:** Windows will be the supported 1.0 launch platform;
 Linux/macOS remain experimental. Native Linux/Mac hardware acceptance no longer
-blocks Windows launch. The current order is private workflow and delivery
-acceptance, then the exact Windows candidate and publication review.
-The [stabilization checkpoint](validation.md#hosted-stabilization-checkpoint--2026-09-13)
-repairs stale panel tests and passes all three dispatched CI workflows on the
-private branch, plus fresh Windows package checks. The earlier Mobile mismatch
-remains unexplained despite passing reruns with unchanged thresholds.
+blocks Windows launch. Following the owner's no-error RC2 feedback, the exact
+1.0.0 addon now passes 6,070 Windows package checks and 52 native editor checks.
+The [validation record](validation.md) maps the source and reproducible artifact.
+Final source packaging and publication preparation follow; public release is
+explicitly on hold. The experimental Linux Mobile history mismatch recurred on
+RC2 and remains unresolved, with original tolerances and negative controls.
 The platform plans below retain their dates and are superseded by this launch scope.
 
 On 2026-09-08 the owner clarified that development should continue privately until
@@ -29,9 +29,9 @@ feedback can inform the work without blocking local implementation and testing.
 
 **[Remaining work and 1.0 completion criteria](release-readiness.md)** is the
 current checklist. The bounded appearance, animation and production reviews below
-are established. Remaining priorities are a final private end-to-end review,
-the supported Windows matrix and exact package acceptance, with the historical
-experimental Mobile observation explicitly accounted for.
+are established. Preserve the completed Windows acceptance and verify final
+distribution identity. Publication and the public-history choice await the
+owner's instruction; Linux/Mac support can follow separately.
 Linux/Mac hardware checks continue as experimental-platform work.
 
 The [Windows support contract](../addons/godot360/SUPPORT.md) now consolidates

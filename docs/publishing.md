@@ -84,6 +84,14 @@ clear the existing repository's historical privacy review.
 
 ## Final public-facing review
 
+- Keep the current private 1.0 preparation on hold until the owner explicitly
+  authorizes publication. Before announcing, ensure the chosen default branch
+  and version tag contain the accepted source; the private stabilization branch
+  and older `main` are currently separate.
+- Replace private-preparation status text with the actual publication status only
+  when authorized. If packaged guides change, rebuild and verify the resulting
+  archive, retain its new checksum, and map unchanged runtime/fixture hashes to
+  the recorded Windows evidence. Runtime changes require applicable fresh tests.
 - Match version strings, changelog, package filename and release notes to the
   actual candidate. Keep older validation records labeled as historical evidence.
 - Follow the quick start on a clean checkout. Check examples, relative links,

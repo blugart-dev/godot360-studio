@@ -1,7 +1,7 @@
 # Private development toward 1.0
 
 Godot360 stays private until the supported 1.0 workflow is implemented, tested and
-ready. The current `1.0.0` version is prepared privately for final validation.
+ready. The current `1.0.0` addon passes its private Windows acceptance matrix.
 The owner explicitly instructed that publication must wait for further approval. Earlier
 "beta" milestones describe historical packages; they do not pause development or
 require a public beta. This follows the owner's direction on 2026-09-08.
@@ -31,10 +31,10 @@ the five launch combinations, tested scene setups, production envelope and
 explicit exclusions. [Upgrade instructions](../addons/godot360/MIGRATION.md)
 cover existing 0.x installations, and [the 1.0 release draft](release-1.0.md)
 provides the description and final acceptance record. Stable labels are set;
-exact 1.0 artifact acceptance is being recorded. RC2 includes the later usability and
+the exact 1.0 addon passes 6,070 package and 52 native editor checks. RC2 includes the later usability and
 early-cancellation fixes and passes the complete Windows package/editor matrix.
 
-## Current 1.0 preparation — 2026-09-13
+## Current private 1.0 acceptance — 2026-09-13
 
 After the prepared RC2 walkthrough, the owner reported **"I did not get any
 errors"** and authorized proceeding with thorough 1.0 preparation. This records
@@ -43,11 +43,13 @@ YouTube results. No supported-workflow blocker was reported. Public release is
 explicitly on hold until the owner instructs otherwise.
 
 The final build changes release identifiers and documentation only. Rendering,
-capture, encoding, recipes and saved jobs retain RC2 behavior. Validate the exact
-1.0 package across all five Windows lanes, native editor restart and source
-distribution; verify manifests, metadata, reproducibility, repository hygiene and
-credential scans. Preserve source-matched RC2 advanced-renderer evidence and the
-failed experimental Linux Mobile result. Current results belong in [validation](validation.md).
+capture, encoding, recipes and saved jobs retain RC2 behavior. The exact addon
+passes all five Windows lanes, native editor restart, manifests, metadata,
+reproducibility and repository CI. Source/download and credential evidence are
+recorded in [validation](validation.md); final archive identities accompany the
+local `release/` folder. Preserve source-matched RC2 advanced-renderer evidence
+and the failed experimental Linux Mobile result. Further work concerns final
+source packaging and the deliberately withheld public-release steps.
 
 ## Frozen RC2 checkpoint — 2026-09-13
 
@@ -122,9 +124,9 @@ evidence remains valid for its recorded snapshot.
 | Complex animated scenes | [Keyed skin/cameras](skeletal-capture.md), [imported GLB](imported-characters.md), [head look/nested skeletons](modifier-capture.md), [particles](particle-capture.md), [smoke](smoke-capture.md), [trails](trail-capture.md), [temporal effects](temporal-capture.md), [saved LightmapGI](lightmap-capture.md) and [combined effects](combined-effects.md) now have a consolidated [support boundary](../addons/godot360/SUPPORT.md). Preserve the tested setups and resolve applicable regressions; further GI, stateful IK and import pipelines remain extensions. | Deterministic fixture results and negative controls are retained, with explicit setup requirements and exclusions. |
 | Production performance | [Four one-minute Forward+/Mobile 4K/8K workloads](production-performance.md) now pass on native Windows / 4.7.2 / RTX 3060 Ti, with sampled process/GPU/system memory, timing, storage, frame/audio checks and controlled capacity failures. Forward+ 8K uses disabled MSAA; other profiles use 4×. Broader hardware, longer durations and heavier GI remain unmeasured. | Preserve the measured budgets and explicit limits; extend only the profiles selected for the final supported matrix. Short probes do not certify full-job RAM needs. |
 | Regression follow-up | The obsolete panel tests and startup-cancellation defect are repaired. The experimental Linux Mobile history mismatch recurs in RC2, with the same first-five-frame measurements. Preserve the failure and opening-frame evidence; the cause remains unresolved. | Current Windows acceptance is recorded separately. Keep original thresholds and negative controls; do not report all hosted checks green or claim a renderer fix. Linux support remains experimental. |
-| Windows candidate matrix | All five [target combinations](../addons/godot360/SUPPORT.md) pass against the exact RC2 artifact, together with native editor integration. Preserve those results and validate the eventual stable artifact as required by its changes. Linux/macOS remain experimental. | RC2 has 6,070 native package checks and 52 editor checks, reproducible package identity and unchanged sources. Native Linux/Mac hardware checks do not block Windows launch. |
-| Private end-to-end usability and delivery | [Clean native editor integration](editor-workflow.md) now covers authored-scene saving, 4K test/export, stereo playback/seek, editor restart, cancellation and recovery. It fixes progress JSON errors and unwanted import of retained captures. Remaining: actual UI navigation and subjective delivery review from the published instructions. | Completed private walkthrough and itemized delivery review against the final candidate, with blocking findings resolved. Automated editor evidence does not close the click-through requirement. Independent feedback can help but is not a prerequisite for continuing implementation. |
-| Final package | RC2 addon/source distributions, refreshed current guides, [migration notes](../addons/godot360/MIGRATION.md) and [release draft](release-1.0.md) are prepared. After human feedback, update stable labels, build the final artifact and run checks appropriate to its changes. | Reproducible ZIP/manifest, green required checks and native Windows reviews, explicitly accounted-for experimental results, no known supported-workflow blockers, and accurate release notes. |
+| Windows matrix | All five [target combinations](../addons/godot360/SUPPORT.md) pass against the exact 1.0.0 addon, together with native editor integration. Further changes require applicable verification. Linux/macOS remain experimental. | 1.0.0 has 6,070 native package checks and 52 editor checks, reproducible package identity and unchanged sources. Native Linux/Mac hardware checks do not block Windows launch. |
+| Private end-to-end usability and delivery | The owner reports no errors with RC2 and authorizes final preparation. The exact 1.0 editor workflow passes saving, 4K test/export, stereo playback/seek, restart, cancellation and recovery. No new supported-workflow blocker is reported. | Keep the owner's actual feedback and automated evidence distinct. No itemized subjective, headset or current-service results were supplied; complete service-specific review before making those claims. |
+| Final package | The 1.0.0 addon, refreshed guides, migration notes and release description are ready. Final source/archive verification and the local release manifest accompany the prepared downloads. | Reproducible ZIP/manifest, green repository CI and native Windows reviews, retained experimental failure, accurate support limits and recorded source identities. |
 | Public repository preparation | Source/all-ref credential scans pass; six historical brief blobs retain personal paths. A reviewed source-only ZIP is prepared. Choose the public-history approach and approve the exact artifacts. GitHub private vulnerability reporting is a public-repository feature; enable and verify it during authorized publication. | Follow the [publication checklist](publishing.md), retain licenses/notices, and obtain final publication authorization after candidate acceptance. Reporting activation is not a private RC prerequisite. |
 
 ## Already working
@@ -151,15 +153,14 @@ time, memory and disk budgets, including the reduced-AA tradeoff for Forward+
 8K on the tested 8 GiB GPU. These bounded milestones do not need an ever-growing
 scene matrix before 1.0; changes and failures determine which checks to repeat.
 
-1. Finish the [short owner walkthrough](ui-ux-audit.md#blugarts-short-verification-walkthrough)
-   and itemized delivery review: orientation, seams/detail, sound, seeking,
-   reopening, re-encoding and cancellation/recovery. Fix reproducible blockers.
-2. Freeze the supported scene/Windows matrix and validate the exact 1.0 candidate,
-   including package reproducibility, migration notes and support labels. Preserve
-   the passing stabilization evidence and explicitly review the unexplained
-   experimental Mobile observation; investigate any recurrence.
-3. Complete the source/history and repository-settings review, then publish only
-   after final authorization. Native Linux/Mac support can follow separately.
+1. Preserve the accepted Windows source/package identity and owner feedback.
+   Verify the final source snapshot and record both archive checksums. Fix any
+   newly reported reproducible supported-workflow blocker before distributing.
+2. Keep publication on hold. When authorized, choose the public history, align
+   the default branch/tag and public status text, and verify security reporting
+   and final artifact identity. External-service uploads need separate approval.
+3. Native Linux/Mac support and broader hardware/effect acceptance can follow
+   separately. Do not close the known Linux Mobile issue based on Windows success.
 
 Stereoscopic ODS, ambisonics, automatic uploads and resuming arbitrary partially
 captured scene state are outside the defined 1.0 scope. A native backend is an

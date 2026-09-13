@@ -1,5 +1,60 @@
 # Validation record — updated 2026-09-13
 
+## Private 1.0.0 Windows acceptance — 2026-09-13
+
+The owner reported **"I did not get any errors"** after RC2 and authorized final
+1.0 preparation while explicitly withholding publication approval. This records
+the feedback supplied; no itemized YouTube, headset or other device acceptance
+is inferred. Version **1.0.0** is prepared privately.
+
+Addon source: **`cea9bae3b449974d70962d66e95cf653f7e8ff58`**.
+Evidence root: `.godot360/stable-1.0-review-20260913/`.
+`godot360-studio-1.0.0.zip` contains **245 members / 884,541 bytes**; SHA-256
+**`5ab5ea3589d4c32347890cd33daf5925b3c728eb385442d2f71ecbe3c38a9dde`**.
+
+| Exact 1.0.0 native Windows review | Result |
+| --- | --- |
+| Godot 4.7.2 Compatibility / OpenGL 3 | 1,214 checks pass |
+| Godot 4.6.3 Compatibility / OpenGL 3 | 1,214 checks pass |
+| Godot 4.5.1 Compatibility / OpenGL 3 | 1,214 checks pass |
+| Godot 4.7.2 Forward+ / Vulkan | 1,214 checks pass |
+| Godot 4.7.2 Mobile / Vulkan | 1,214 checks pass |
+| Editor first launch and restart | 26 + 26 = 52 checks pass |
+
+All **6,070 package checks** pass against the same ZIP, with verified manifests,
+identical rebuilds and unchanged extracted payloads. The editor review covers
+ordinary-scene 4K delivery, native help/Escape, stereo playback, seeking, restart,
+cancellation and recovery. Each of fifteen workflow videos contains the correct
+1.0.0 V1 XML and V2 binary software identifiers. An extra audit initially expected
+two XML identifiers; inspection confirmed that V2 uses a NUL-terminated binary
+field. The corrected audit verifies both formats separately; no product change
+was required.
+
+[Repository hygiene](https://github.com/blugart-dev/godot360-studio/actions/runs/34776307678)
+passes, including six release-identity and seven repository-guard tests, source
+review and two builds with the exact addon hash. The preparation inventory checks
+**496 files, 695 local links and 46 media provenance hashes**. Its source-only
+archive rebuilds identically with Python 3.12.14 / zlib 1.3.2, imports/starts cleanly,
+and passes 48 UMBRAL, 60 THRESHOLD and 107 AFTERGLOW scene checks. A final source
+snapshot also includes the completed release documentation; its own archive hash,
+source commit and scene/rendered-workflow acceptance are recorded alongside it
+in `release/release-manifest.json` and `source-final-review.json`.
+
+`source-mapping.json` proves that only three runtime files differ from RC2, each
+solely in its release string. Every packaged test, fixture, shader and capture/
+encoding algorithm is unchanged; all **80 packaged script UIDs** are unique and
+all **101 protected creative/project/fixture files** remain unchanged. Gitleaks
+finds no credentials in the preparation source or **47 commits across all refs**.
+The path review covers **1,004 unique text blobs**, retaining the six historical
+brief blobs for the later public-history choice.
+
+The unchanged RC2 advanced-renderer evidence remains valid for its recorded
+scope. No new temporal or production result is claimed: Windows Mobile temporal
+passed at RC2, Linux/macOS remain experimental, and the recurring Linux Mobile
+history failure is still unresolved. Original tolerances and negative controls
+are preserved. No settings/recipes or runtime behavior changed to obtain 1.0
+acceptance. Repository visibility, `main`, release uploads and tags remain unchanged.
+
 ## Private Windows RC2 acceptance evidence — 2026-09-13
 
 Candidate source **`f1329c1c6478ccc942eacddd35247b4e9bf318f2`**, version

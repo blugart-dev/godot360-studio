@@ -82,10 +82,10 @@ Open this repository's `project.godot` to try them; the plugin is already enable
 
 **1.0.0 — prepared privately for Windows release.**
 Onboarding, rendering, playback and recent-export improvements are implemented.
-RC2 passes all five Windows package lanes and the native editor restart review.
-The owner reported no errors and authorized final preparation. The
-[release checklist](docs/release-readiness.md) tracks exact 1.0 artifact acceptance
-and publication, which remains on hold until explicitly authorized.
+The exact 1.0.0 addon passes **6,070 checks across all five Windows package lanes**
+and **52 native editor checks**. The owner reported no errors with RC2 and
+authorized final preparation. [Release acceptance](docs/release-1.0.md) records
+the artifact and remaining publication work. Public release remains on hold.
 The agreed 1.0 launch scope is **supported Windows, experimental Linux/macOS**.
 
 - **Windows:** tested exports and review on Godot 4.5.1, 4.6.3 and 4.7.2;
