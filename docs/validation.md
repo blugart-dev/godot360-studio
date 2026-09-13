@@ -1,5 +1,61 @@
 # Validation record — updated 2026-09-13
 
+## Windows release content and source distribution — 2026-09-13
+
+Preparation commit **`da96a39763711e94114422c2263ed7efed48eaa7`** defines the
+[five-combination Windows support contract](../addons/godot360/SUPPORT.md),
+expands [upgrade guidance](../addons/godot360/MIGRATION.md), updates platform
+status and prepares [the 1.0 release draft](release-1.0.md). The scene/effect
+boundary and measured production envelope are consolidated without changing
+runtime behavior. Version remains **0.8.0**; no stable release is claimed.
+
+Both distributions were built from canonical Git bytes at that commit, using
+Python 3.12.14 / zlib 1.3.2, and rebuild identically:
+
+| Distribution | Members / bytes | SHA-256 |
+| --- | --- | --- |
+| Addon | 242 / 873,503 | `1fc01adb0b6726172b1fb8c355aff564351189c8c658fed02263c4ca4f4f1f5c` |
+| Source with manifest, no Git history | 494 / 75,841,071 | `a676181c1f3d8ca800189b0c3d309d1c9a51515ecd7bbaf372efa0e6c2052f24` |
+
+The archives are `.godot360/release-preparation-20260913/addon.zip` and
+`source.zip`. Comparing addon manifests against the prior tested `c2fb579a…`
+package identifies exactly six added/changed Markdown files. All executable
+runtime, tests, fixtures, assets, dependencies and package-builder bytes remain
+identical. The earlier five Windows lanes and exact Git/CI ZIP run remain their
+original packages' evidence; this comparison explicitly maps the unchanged code
+instead of claiming a new full renderer matrix.
+
+A fresh extraction of the source ZIP passes Godot 4.7.2 import and main-scene
+startup on Windows. Its **247** checks pass: UMBRAL/runtime **48**, THRESHOLD **60**,
+AFTERGLOW **107**, and the native Compatibility release workflow **32**. The last
+suite performs real calibration and Motion Lab exports, spherical still/playback
+review, saved-job reopening, re-encoding and diagnostics. Every source-manifest
+payload and both original archives remain unchanged after the review.
+
+The first local review harness stopped after the import's zero exit because it
+classified `Failed to read the root certificate store` as a project error. The
+retained log locates it in Windows `get_system_ca_certificates`; the import itself
+completed. The final harness uses a fresh extraction, records that exact known
+sandbox diagnostic separately and rejects other engine/script errors. Both the
+initial `source-review.json` and accepted `source-review-verified.json` are retained;
+the accepted run has no project/script errors. This was a review-harness change,
+not a source or addon fix.
+
+Fresh Gitleaks history and source scans find no credentials. The history scan
+covers **41 commits** across all local refs. A separate bounded path review covers
+**914 unique text blobs** and finds six historical `docs/next-session.md` blobs
+with personal workstation paths. All commit identities are GitHub noreply.
+No history was rewritten. Read-only GitHub settings review confirms private
+visibility, Issues and Actions enabled; private vulnerability reporting remains
+unconfirmed after HTTP 404. See [publication preparation](publication-review.md).
+
+`source-review-verified.json`, `history-paths.json`, both redacted secret-scan
+reports and `audit.json` are retained beside the archives. Root-documentation
+follow-up records these results separately from the packaged preparation commit.
+The human walkthrough, final stable version/artifact acceptance, public-history
+choice and publication authorization remain open. The existing prepared owner
+walkthrough uses the same unchanged addon runtime.
+
 ## Hosted stabilization checkpoint — 2026-09-13
 
 The owner approved the private branch push and three workflow dispatches.

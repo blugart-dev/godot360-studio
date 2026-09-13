@@ -4,6 +4,40 @@ Updated on 2026-09-13. This is a development recap; the
 [publication preparation review](publication-review.md) records repository cleanup.
 The canonical completion criteria remain in [release readiness](release-readiness.md).
 
+## Latest release preparation — 2026-09-13
+
+At `da96a39`, the [Windows support contract](../addons/godot360/SUPPORT.md),
+upgrade guide and [1.0 release draft](release-1.0.md) are prepared. The target
+matrix is 4.7.2 Compatibility/OpenGL and Forward+/Mobile Vulkan, plus
+4.5.1/4.6.3 Compatibility/OpenGL. The scene/effect boundaries and production
+limits are consolidated; Linux/macOS remain experimental.
+
+Canonical Git distributions are retained in `.godot360/release-preparation-20260913/`:
+
+- `addon.zip`: 242 members, SHA256
+  `1fc01adb0b6726172b1fb8c355aff564351189c8c658fed02263c4ca4f4f1f5c`.
+- `source.zip`: 494 members including manifest, no Git history, SHA256
+  `a676181c1f3d8ca800189b0c3d309d1c9a51515ecd7bbaf372efa0e6c2052f24`.
+
+Both rebuild identically. Only six packaged Markdown files differ from the
+prior tested Git/CI ZIP; runtime/tests/fixtures/assets are byte-identical.
+Fresh extracted-source import/startup and 247 UMBRAL/THRESHOLD/AFTERGLOW/release
+workflow checks pass, with every original source payload unchanged. The exact
+certificate-store sandbox diagnostic is recorded separately; initial and accepted
+harness reports are retained. See [validation](validation.md#windows-release-content-and-source-distribution--2026-09-13).
+
+All-ref history and exact-source credential scans pass. The 41-commit/914-text-blob
+review retains six historical brief blobs with personal paths. GitHub stays
+private with Issues/Actions enabled; private vulnerability reporting is unconfirmed
+after HTTP 404. No refs, history or settings were changed by that settings review.
+
+The existing `release-stabilization-20260913/hosted/owner-walkthrough/` uses the
+same addon runtime and remains the human acceptance project. A progress question
+was offered, but acceptance has not been reported. Complete that walkthrough,
+resolve findings, set final stable labels and validate the exact artifact, then
+choose public history and obtain publication authorization. Version remains 0.8.0.
+Do not repeat completed large matrices without relevant changes or new findings.
+
 ## Latest stabilization checkpoint — 2026-09-13
 
 Three stale panel-test lookups are repaired. The exact package at
@@ -255,7 +289,12 @@ folders; preserve the user's creative scenes, recipes, settings and existing mas
 
 ## Local evidence and tools
 
-- Latest reviewed package: `.godot360/release-stabilization-20260913/hosted/git-package.zip`,
+- Latest reviewed package: `.godot360/release-preparation-20260913/addon.zip`,
+  SHA256 `1fc01adb0b6726172b1fb8c355aff564351189c8c658fed02263c4ca4f4f1f5c`.
+  Its 242 members map to `da96a39`; the six Markdown changes and unchanged runtime
+  are recorded in the release-preparation audit above.
+
+- Previous stabilization package: `.godot360/release-stabilization-20260913/hosted/git-package.zip`,
   SHA256 `c2fb579ad9595a729cb3acae5f8d8e490d0a4668c16137816a420a1e35037414`.
   The 241-member Git/CI package maps to `b69b427` and the source audit above;
   subsequent root documentation does not change its payload.

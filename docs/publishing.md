@@ -5,6 +5,13 @@ source uses version **0.8.0** as a development baseline. Complete the
 [1.0 acceptance criteria](release-readiness.md) before describing it as a stable
 release. The [preparation review](publication-review.md) records the current cleanup.
 
+Use the [Windows support contract](../addons/godot360/SUPPORT.md),
+[upgrade guide](../addons/godot360/MIGRATION.md) and [release draft](release-1.0.md)
+as the prepared release content. They still describe a development build until
+the final acceptance record is complete. The 2026-09-13 settings review could not
+confirm private vulnerability reporting (HTTP 404); verify the actual reporting
+route as part of the final public-facing review below.
+
 ## Source and rights
 
 - Run `python tools/repository_review.py --output .godot360/publication-review/inventory.json`.

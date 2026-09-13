@@ -1,5 +1,48 @@
 # Publication preparation review
 
+## Windows release preparation — 2026-09-13
+
+The private stabilization branch now has a consolidated
+[Windows support contract](../addons/godot360/SUPPORT.md),
+[upgrade guide](../addons/godot360/MIGRATION.md) and
+[1.0 release draft](release-1.0.md). The five target Windows combinations and
+scene/effect limits are explicit. Version remains 0.8.0 while human walkthrough
+and final candidate acceptance remain open.
+
+At preparation commit `da96a39763711e94114422c2263ed7efed48eaa7`, a fresh
+Gitleaks scan of **41 commits across all local refs** finds no credentials.
+A separate scan of the exact extracted source also finds no credentials.
+All author/committer identities use GitHub noreply addresses. A bounded review
+of **914 unique historical text blobs** finds personal workstation paths in
+**six blobs**, all older versions of `docs/next-session.md`. The local report
+maps their blobs and reachable commits; no history or refs were rewritten.
+
+The canonical Git source produces an addon ZIP with **242 members**, including
+the support contract, and a source ZIP with **494 members**, including its source
+manifest. Both rebuild identically with the same Python/zlib runtime. The source
+ZIP contains no Git history. Exact hashes, extracted-source checks and mapping to
+the existing Windows runtime evidence are in the latest [validation record](validation.md).
+
+Read-only GitHub inspection confirms private visibility, Issues enabled, Actions
+enabled, Discussions disabled, and no protection on the two existing branches.
+The private vulnerability-reporting endpoint returns **HTTP 404** and
+`security_and_analysis` is unavailable; private reporting is **not confirmed**,
+not assumed enabled or disabled. The existing security policy provides a fallback
+request for a private channel without disclosing exploit details. Confirm the
+actual private-report route before publication. No repository setting was changed.
+
+Remaining publication decisions are the final accepted package, whether to expose
+the reviewed historical paths or use a reviewed source-only public history, and
+the final public issue/security settings. The source-only archive provides a
+concrete option without altering the private repository. Publication still needs
+the owner's final authorization after product acceptance.
+
+Local reports, source snapshots and both archives are retained in
+`.godot360/release-preparation-20260913/`. The following sections preserve the
+earlier 2026-09-10 review and its original counts and package identities.
+
+## Original publication cleanup — 2026-09-10
+
 Prepared on 2026-09-10 for the pre-1.0 source. This review prepares the repository
 and local distributions; the [1.0 product acceptance criteria](release-readiness.md)
 remain open. Nothing was published and repository visibility was not changed.

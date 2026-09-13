@@ -32,6 +32,11 @@ the supported Windows matrix and exact package acceptance, with the historical
 experimental Mobile observation explicitly accounted for.
 Linux/Mac hardware checks continue as experimental-platform work.
 
+The [Windows support contract](../addons/godot360/SUPPORT.md) now consolidates
+the launch combinations and bounded scene evidence. Upgrade guidance and
+[draft 1.0 release notes](release-1.0.md) are prepared; the human walkthrough,
+final versioned candidate and publication decisions remain open.
+
 The 2026-09-09 [combined appearance review](combined-appearance.md) adds moving
 lights/materials, exposure-source changes and capture borders in one fixture.
 Consistent 1.0 brightness uses authored exposure, including animation; shared

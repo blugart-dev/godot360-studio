@@ -1,5 +1,23 @@
 # Godot360 Studio development handoff
 
+## Windows release content and distributions prepared — 2026-09-13
+
+Commit `da96a39` adds the [Windows support contract](../addons/godot360/SUPPORT.md),
+expanded upgrade instructions and [1.0 release draft](release-1.0.md). The addon
+and complete source archives rebuild identically from Git bytes; only six addon
+Markdown files differ from the tested stabilization ZIP. Runtime, tests, fixtures
+and assets are unchanged. Fresh source import/startup and 247 native/example
+checks pass with unchanged source payloads. See
+[the exact package/source evidence](validation.md#windows-release-content-and-source-distribution--2026-09-13).
+
+Fresh scans find no credentials across all 41 local commits or the exact source.
+Six historical brief blobs retain workstation paths; the prepared source archive
+contains no Git history. GitHub stays private, Issues/Actions are enabled, and
+private vulnerability reporting is unconfirmed after HTTP 404. No settings or
+history were changed. The prepared human walkthrough still uses identical runtime.
+Next: human delivery acceptance, final stable version/artifact, public-history
+choice and final publication authorization. Keep version 0.8.0 until acceptance.
+
 ## Windows and hosted stabilization complete — 2026-09-13
 
 Repaired the obsolete audio/recovery/release-test panel lookups. Five complete
