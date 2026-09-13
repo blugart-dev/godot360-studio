@@ -1,8 +1,8 @@
 # Godot360 Studio 1.0 release draft
 
 **Unreleased.** This is the proposed release description for review. The current
-package still identifies itself as 0.8.0; human walkthrough and final candidate
-acceptance remain pending. Do not attach a development ZIP to a stable 1.0 release.
+package identifies itself as **1.0.0-rc.1**; human walkthrough and stable candidate
+acceptance remain pending. Do not attach an RC ZIP to a stable 1.0 release.
 
 Godot360 Studio turns a saved, authored Godot 3D scene into a monoscopic 360° SDR
 video with stereo sound. Choose a scene and camera, test a second, render a fixed

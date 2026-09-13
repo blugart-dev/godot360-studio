@@ -1,6 +1,19 @@
 # Changelog
 
-## Unreleased — Windows 1.0 preparation
+## 1.0.0-rc.1 — 2026-09-13 — private candidate
+
+- Freeze the five-combination Windows launch target with experimental Linux/macOS
+  and the documented scene/effect limits. See [support](SUPPORT.md) and
+  [upgrading](MIGRATION.md).
+- Carry the completed Studio workflow, playback, capture, audio, recovery and
+  validation work listed below into the first versioned release candidate.
+- Identify the candidate consistently in the plugin, panel and spherical metadata.
+  The package builder now accepts numbered `-rc.N` identifiers and generates
+  channel-appropriate installation text, rejecting mismatched version labels.
+- Keep stable acceptance and publication pending. This version changes release
+  identity and packaging; capture/rendering behavior remains unchanged.
+
+### Windows 1.0 preparation
 
 - Define the intended five Windows engine/renderer/driver combinations and
   consolidate tested scene, effect, production and recovery limits in
@@ -10,10 +23,10 @@
 - Repair audio, recovery and release-workflow tests for the tabbed Studio layout.
   Retain opening temporal reference images in CI. Fresh affected workflows pass;
   the earlier experimental Mobile history mismatch remains unexplained.
-- Keep version 0.8.0 while the human walkthrough and final release acceptance
-  remain pending. This preparation does not change capture/runtime behavior.
+- The preceding preparation used version 0.8.0 while human acceptance remained
+  pending. This candidate retains its capture/runtime behavior.
 
-## Unreleased — studio workflow and interface
+### studio workflow and interface
 
 - Separate Current recipe, Tools and Library from the Opened export review.
   Saved export metadata stays visible while editing the next recipe. Keep setup,
@@ -28,9 +41,9 @@
 - Keep cancellation visible until acknowledged; preserve previous export status
   when recipe validation or opening a different job fails.
 - Add native UI state/screenshot checks and refresh the guides. Author remains
-  Blugart; version remains the private 0.8.0 development baseline.
+  Blugart; the preceding UI checkpoint used the private 0.8.0 baseline.
 
-## Unreleased — reject corrupt playback copies
+### reject corrupt playback copies
 
 - Decode the complete review video and audio before making it playable or caching
   it. Some Windows Theora encoder builds return success but write corrupt motion
@@ -40,7 +53,7 @@
 - Add a malformed-video-packet regression that retains valid Ogg checksums and
   passes the earlier format checks, then verifies rejection, cleanup and retry.
 
-## Unreleased — clean editor export and recovery
+### clean editor export and recovery
 
 - Exclude each new export folder from Godot asset import before writing media.
   Reopening a project with exports inside it no longer imports retained PNG/WAV
@@ -53,7 +66,7 @@
   authored scene saving, 4K sample/export, stereo playback and seeking, history,
   cancellation, diagnostics and recovery with source preservation.
 
-## Unreleased — saved LightmapGI validation
+### saved LightmapGI validation
 
 - Add a disposable editor bake and saved-scene review for static lightmaps and
   a moving dynamic probe receiver, with camera cuts and capture borders.
@@ -64,7 +77,7 @@
   workflow. This adds bounded validation and authoring guidance; the capture
   runtime is unchanged.
 
-## Unreleased — temporal rendering and graphics failure detection
+### temporal rendering and graphics failure detection
 
 - Reject completed captures when the worker log records an engine rendering or
   graphics-backend error. Keep the failed capture result and diagnostics, require
@@ -80,7 +93,7 @@
 - Include the reviewer in reproducible addon packages and add a separate
   Temporal rendering workflow. Native and hosted evidence remain distinct.
 
-## Unreleased — moving smoke and particle material guidance
+### moving smoke and particle material guidance
 
 - Add an optional point-facing smoke shader that keeps particle orientation
   consistent across the six cube views. Existing authored materials are preserved.
@@ -95,7 +108,7 @@
   pause/cut checks and enabled/disabled controls. Explain that native trail
   history requires Forward+ or Mobile in scene notes and Compatibility reports.
 
-## Unreleased — head-look and nested attachment validation
+### head-look and nested attachment validation
 
 - Add a stateless custom head-look modifier to the imported character fixture,
   independent modified-skin references, and a nested skeleton/camera mount.
@@ -105,7 +118,7 @@
 - Document Manual modifier sampling and the supported setup. The tested cases
   use the existing deferred capture synchronization without a runtime change.
 
-## Unreleased — imported character validation
+### imported character validation
 
 - Add a pinned, licensed CesiumMan GLB and normal scene-import fixture with a
   head-attached export camera, camera boom and a frame-30 viewpoint cut.
@@ -115,7 +128,7 @@
   settings and a textured camera comparison. Document default import optimization
   separately from capture timing. The addon runtime is unchanged by this review.
 
-## Unreleased — particle startup and fixed capture clock
+### particle startup and fixed capture clock
 
 - Disable realtime physics jitter compensation in the capture worker so Movie
   Maker's fixed FPS also produces fixed opening simulation deltas. This fixes the
@@ -129,7 +142,7 @@
 - Earlier retained captures keep their original timing when re-encoded. Render
   again to apply the corrected clock; project and particle settings are preserved.
 
-## Unreleased — combined appearance validation
+### combined appearance validation
 
 - Add a portable combined material/light fixture and reviewer for camera motion,
   lighting cuts, camera/world exposure handoffs, glow and capture borders.
@@ -139,7 +152,7 @@
   automatic spherical adaptation is deferred beyond 1.0; Scene defaults and saved
   recipes keep their existing behavior.
 
-## Unreleased — particle capture and authored processing modes
+### particle capture and authored processing modes
 
 - Preserve the scene root's processing mode through warmup and honor later scene
   changes. Disabled scenes and scenes that pause themselves stay paused during export.
@@ -151,7 +164,7 @@
 - Add CPU/GPU particle motion against an analytic mesh reference, decoded MP4
   comparisons and rendered processing-mode regressions in the portable test suite.
 
-## Unreleased — skeletal camera timing
+### skeletal camera timing
 
 - Synchronize capture cameras after queued skeleton/attachment updates, fixing
   a one-frame delay when the selected camera follows a BoneAttachment3D.
@@ -162,7 +175,7 @@
   retained. Complex modifiers, particles and imported character workflows remain
   outside the validated fixture scope.
 
-## Unreleased — explicit consistent exposure
+### explicit consistent exposure
 
 - Add Advanced capture exposure: Scene (default) or Fixed (authored). Fixed uses
   worker-owned camera attributes with automatic metering disabled; authored
@@ -174,7 +187,7 @@
   checks and exposure synchronization timings. Shared automatic spherical
   adaptation remains open; this option uses authored exposure.
 
-## Unreleased — capture borders and private 1.0 development
+### capture borders and private 1.0 development
 
 - Add optional capture borders with smooth overlap blending at face edges and
   three-face corners. Preserve the 90° core's pixel density and final panorama
@@ -186,7 +199,7 @@
 - Clarify that 0.8 is an internal development baseline. Work continues privately
   until the supported 1.0 workflow is implemented and validated.
 
-## Unreleased — recent exports
+### recent exports
 
 - Add a project-local list of the last 12 launched or opened jobs, with scene,
   video settings, saved state and folder details. Open through the existing
@@ -197,7 +210,7 @@
 - Keep job switching disabled during exports and coordinator checks. Add focused
   persistence, malformed-input, layout and actual export/playback workflow checks.
 
-## Unreleased — native playback and scene notes
+### native playback and scene notes
 
 - Play completed exports in the editor with spherical navigation, pause, seeking,
   replay and stereo sound. Prepare a local Theora/Vorbis copy up to 2K / 30 FPS
@@ -209,7 +222,7 @@
 - Add native pixel/audio playback checks and exact-package workflow coverage.
   Playback is a review aid; full-resolution delivery and renderer limitations remain.
 
-## Unreleased — renderer preservation
+### renderer preservation
 
 - Default capture to the saved project renderer/driver; explicit recipe/UI/CLI
   overrides, actual GPU/backend evidence and a fail-on-fallback worker handshake.
@@ -225,7 +238,7 @@
 - Document measured renderer/backend combinations and visible glow/auto-exposure
   seams, distinguishing native face effects from panorama sampling defects.
 
-## Unreleased — desktop platforms
+### desktop platforms
 
 - Add Windows, Linux and macOS dependency downloads, install steps and a shared
   Platform setup guide, available from the editor's Tool setup section.
@@ -239,7 +252,7 @@
 - Prepare Linux rendered-export and macOS headless CI lanes. Keep Mac capture
   support provisional until native validation; see [platform status](PLATFORMS.md).
 
-## Unreleased — first-export workflow
+### first-export workflow
 
 - Add Use current scene with a save boundary, saved-scene camera discovery and a
   picker for inherited/instanced cameras. Keep manual paths for runtime cameras.
@@ -253,7 +266,7 @@
 - Add a portable quick start, shorten the repository landing page, and move demo
   architecture and developer commands into their own guides.
 
-## Unreleased — folder naming
+### folder naming
 
 - Use `addons/godot360` for the addon and `.godot360` for local settings/output.
 - Update scene/script references, recipes, CLI tools, tests and package contents

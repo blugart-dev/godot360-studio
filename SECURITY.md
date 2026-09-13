@@ -1,6 +1,6 @@
 # Security policy
 
-Godot360 Studio is in pre-1.0 development. Fixes target the current development
+Godot360 Studio is validating its private 1.0 release candidate. Fixes target the current development
 branch; historical 0.x snapshots do not have a separate security maintenance policy.
 
 ## Report a vulnerability privately

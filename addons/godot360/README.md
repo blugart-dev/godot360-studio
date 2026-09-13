@@ -12,8 +12,8 @@ still view. Video playback uses a separate copy limited to 2K / 30 FPS.*
 
 **[Start here: your first 360° export →](QUICKSTART.md)**
 
-**Version 0.8.0 — private development baseline toward 1.0.** Development and
-validation continue before public release. The addon has passed isolated project checks on
+**Version 1.0.0-rc.1 — private Windows release candidate.** Final validation and
+human acceptance remain pending before stable release. The addon has passed isolated project checks on
 Windows with Godot 4.5.1, 4.6.3 and 4.7.2, Compatibility, and an NVIDIA RTX 3060 Ti.
 Linux and macOS preparation and evidence are listed in [Platform setup](PLATFORMS.md).
 Forward+ and Mobile have actual rendered evidence; see [renderers and scene appearance](RENDERERS.md).

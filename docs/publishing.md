@@ -1,13 +1,13 @@
 # Preparing a public release
 
 Repository preparation and product acceptance are separate checks. The current
-source uses version **0.8.0** as a development baseline. Complete the
+source uses version **1.0.0-rc.1** as a private Windows release candidate. Complete the
 [1.0 acceptance criteria](release-readiness.md) before describing it as a stable
 release. The [preparation review](publication-review.md) records the current cleanup.
 
 Use the [Windows support contract](../addons/godot360/SUPPORT.md),
 [upgrade guide](../addons/godot360/MIGRATION.md) and [release draft](release-1.0.md)
-as the prepared release content. They still describe a development build until
+as the prepared release content. They describe a release candidate until
 the final acceptance record is complete. The 2026-09-13 settings review could not
 confirm private vulnerability reporting (HTTP 404); verify the actual reporting
 route as part of the final public-facing review below.
@@ -47,6 +47,12 @@ routine release housekeeping. Inspect every ref intended for publication.
 Use fresh output paths and the same Python environment for build and review;
 different zlib versions can produce different compressed bytes from identical
 payloads. Build the addon ZIP from the final source:
+
+The package builder accepts `M.m.p` and numbered `M.m.p-rc.N` identifiers. It
+checks that plugin, panel, spherical metadata and addon README versions agree,
+then derives the installation README's development/candidate/release label.
+`python -m unittest discover -s tests -p package_addon_checks.py` verifies
+candidate/stable labels and rejection of mismatched or malformed identities.
 
 ```sh
 python tools/package_addon.py --output .godot360/publication-candidate.zip

@@ -4,9 +4,9 @@ Fresh installations use `addons/godot360` and `.godot360/settings.cfg`.
 
 ## Updating an existing Godot360 installation
 
-The current build is still the 0.8.0 development baseline. These instructions
-cover its changes since the earlier 0.x packages and prepare the Windows 1.0
-upgrade path; they do not announce a stable release.
+The current build is **1.0.0-rc.1**, a private Windows release candidate. These
+instructions cover the upgrade from the earlier 0.x packages; stable release
+acceptance remains pending.
 
 1. Finish or cancel active exports and close the editor before replacing addon
    files. Back up the project, saved `.tres` recipes and local `.godot360` settings.

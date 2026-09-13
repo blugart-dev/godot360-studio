@@ -1,6 +1,6 @@
 # Windows 1.0 support contract
 
-This is the release target for the current **0.8.0 development build**. Stable
+This is the release target for **1.0.0-rc.1**, the private Windows candidate. Stable
 1.0 acceptance is still pending. Windows is the supported launch platform;
 Linux and macOS remain experimental.
 

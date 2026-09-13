@@ -80,7 +80,7 @@ Open this repository's `project.godot` to try them; the plugin is already enable
 
 ## Where the project stands
 
-**Pre-1.0 development, currently on the 0.8 code baseline.**
+**1.0.0-rc.1 — private Windows release candidate.**
 Onboarding, rendering, playback and recent-export improvements are implemented.
 The [1.0 completion criteria](docs/release-readiness.md) describe the remaining
 engineering and validation work. This source snapshot is not a stable 1.0 release.

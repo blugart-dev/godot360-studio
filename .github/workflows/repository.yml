@@ -26,6 +26,8 @@ jobs:
           python-version: '3.13'
       - name: Check the repository guard
         run: python -m unittest discover -s tests -p repository_review_checks.py
+      - name: Check release identifiers and artifact labels
+        run: python -m unittest discover -s tests -p package_addon_checks.py
       - name: Check all source files and documentation
         run: python tools/repository_review.py --output .godot360/repository-review.json
       - name: Build and reproduce the addon archive

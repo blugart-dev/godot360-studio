@@ -13,7 +13,7 @@ import zlib
 from pathlib import Path
 from zipfile import ZIP_DEFLATED, ZipFile, ZipInfo
 
-TESTS = """ui_review.py editor_review.py prepare_walkthrough.py production_review.py production_metrics.py production_recovery.py combined_review.py lightmap_review.py temporal_review.py gltf_reference.py imported_character_review.py appearance_review.py exposure_checks.gd exposure_review.py border_review.py audio_checks.gd audio_delivery_checks.py audio_formats_review.py
+TESTS = """package_addon_checks.py ui_review.py editor_review.py prepare_walkthrough.py production_review.py production_metrics.py production_recovery.py combined_review.py lightmap_review.py temporal_review.py gltf_reference.py imported_character_review.py appearance_review.py exposure_checks.gd exposure_review.py border_review.py audio_checks.gd audio_delivery_checks.py audio_formats_review.py
 audio_review.py audio_studio_checks.gd capture_lifecycle_checks.gd compatibility_review.py diagnostics_checks.gd endurance_review.py export_checks.gd
 frame_writer_checks.gd metadata_checks.gd metadata_integration.gd metadata_review.py
 motion_review.py particle_review.py particle_checks.gd smoke_review.py trail_review.py planning_checks.gd planning_studio_checks.gd quality_panel_checks.gd recovery_studio_checks.gd
@@ -21,7 +21,7 @@ studio_checks.gd timeline_checks.gd skeletal_checks.gd skeletal_review.py timeli
 ADDON_SUFFIXES = {".md", ".gd", ".uid", ".gdshader", ".tscn", ".tres", ".cfg"}
 PACKAGE_README = """# Godot360 Studio
 
-This is a pre-1.0 development candidate, not a stable 1.0 release.
+{release_status}
 
 Copy `addons/godot360` into your Godot project and enable Godot360 Studio in
 Project Settings > Plugins. Start with [Quick start](addons/godot360/QUICKSTART.md)
@@ -46,14 +46,41 @@ def digest(data):
     return hashlib.sha256(data).hexdigest()
 
 
+def release_label(version):
+    # Accepted release identifiers: M.m.p and M.m.p-rc.N (N starts at one).
+    match = re.fullmatch(r'(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)(?:-rc\.([1-9][0-9]*))?', version)
+    assert match, "Invalid addon version; use M.m.p or M.m.p-rc.N"
+    if match.group(4):
+        return "Release candidate " + version
+    return ("Development version " if match.group(1) == "0" else "Version ") + version
+
+
+def package_readme(version):
+    label = release_label(version)
+    if label.startswith("Release candidate"):
+        status = label + ". Stable release acceptance is pending."
+    elif label.startswith("Development version"):
+        status = label + ". This is a pre-1.0 development build."
+    else:
+        status = "Godot360 Studio " + version + "."
+    return PACKAGE_README.format(release_status=status)
+
+
+def release_version(root):
+    addon = root / "addons/godot360"
+    versions = re.findall(r'^version="([^"]+)"$', (addon / "plugin.cfg").read_text(encoding="utf-8"), re.MULTILINE)
+    assert len(versions) == 1, "Expected one addon version"
+    version = versions[0]
+    label = release_label(version)
+    assert 'const SOFTWARE = "Godot360 Studio ' + version + '"' in (addon / "spherical_metadata.gd").read_text(encoding="utf-8"), "Metadata version differs"
+    assert 'credit.tooltip_text = "Godot360 Studio · ' + label + '"' in (addon / "studio_layout.gd").read_text(encoding="utf-8"), "Panel version or release label differs"
+    assert "**Version " + version + " " in (addon / "README.md").read_text(encoding="utf-8"), "README version differs"
+    return version
+
+
 def inventory(root):
     addon = root / "addons/godot360"
-    match = re.search(r'^version="(\d+\.\d+\.\d+)"$', (addon / "plugin.cfg").read_text(), re.MULTILINE)
-    assert match, "Missing addon version"
-    version = match.group(1)
-    assert 'const SOFTWARE = "Godot360 Studio ' + version + '"' in (addon / "spherical_metadata.gd").read_text()
-    assert 'Development version ' + version + '"' in (addon / "studio_layout.gd").read_text()
-    assert "**Version " + version + " " in (addon / "README.md").read_text(), "README version differs"
+    version = release_version(root)
     paths = sorted(path for path in addon.rglob("*") if path.is_file() and
                    (path.suffix in ADDON_SUFFIXES or path.name == "LICENSE"))
     # Keep illustrated guides portable; full film previews stay in root docs.
@@ -73,7 +100,7 @@ def inventory(root):
         assert name not in files, name
         files[name] = path.read_bytes()
     assert "addons/godot360/LICENSE" in files
-    files["README.md"] = PACKAGE_README.encode("utf-8")
+    files["README.md"] = package_readme(version).encode("utf-8")
     manifest = {"version": version, "files": {name: {"bytes": len(data), "sha256": digest(data)}
                                              for name, data in sorted(files.items())}}
     files["manifest.json"] = (json.dumps(manifest, indent=2, sort_keys=True) + "\n").encode()

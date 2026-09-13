@@ -1,7 +1,8 @@
 # Private development toward 1.0
 
 Godot360 stays private until the supported 1.0 workflow is implemented, tested and
-ready. The current `0.8.0` version identifies a development baseline. Earlier
+ready. The current `1.0.0-rc.1` version identifies a private Windows release
+candidate; stable acceptance is still pending. Earlier
 "beta" milestones describe historical packages; they do not pause development or
 require a public beta. This follows the owner's direction on 2026-09-08.
 
@@ -30,9 +31,9 @@ the five launch combinations, tested scene setups, production envelope and
 explicit exclusions. [Upgrade instructions](../addons/godot360/MIGRATION.md)
 cover existing 0.x installations, and [the 1.0 release draft](release-1.0.md)
 provides the description and final acceptance record. Stable labels and the final
-artifact remain pending; the preparation still uses version 0.8.0.
+stable artifact remain pending; RC1 is being validated against this contract.
 
-## Current checkpoint — checked 2026-09-13
+## Stabilization evidence before RC1 — checked 2026-09-13
 
 **Stabilization complete:** three stale panel tests are repaired. The local
 development package passes **5,930 checks** across five full Windows lanes:
@@ -51,7 +52,8 @@ The clean owner walkthrough is prepared against that Git ZIP. See
 [source-matched hosted evidence](validation.md#hosted-stabilization-checkpoint--2026-09-13)
 and [the five local lanes](validation.md#local-release-stabilization--2026-09-13).
 
-GitHub remains private and `main` stays at `a3ff0ec`; version remains `0.8.0`.
+GitHub remains private and `main` stays at `a3ff0ec`. This stabilization evidence
+was recorded at version `0.8.0`; RC1 retains it as historical evidence.
 The [original main status](validation.md#release-status-review--2026-09-13)
 records five passing workflows and two failures before stabilization. The three
 fresh runs cover the affected checks; other established matrices were not rerun.
