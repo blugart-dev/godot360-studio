@@ -12,10 +12,12 @@ validated YouTube delivery file. It does not include stereoscopic ODS or ambison
 
 **2026-09-13 scope decision:** Windows will be the supported 1.0 launch platform;
 Linux/macOS remain experimental. Native Linux/Mac hardware acceptance no longer
-blocks Windows launch. The current order is regression repair, private workflow
-and delivery acceptance, then the exact Windows candidate and publication review.
-The [latest status](validation.md#release-status-review--2026-09-13) identifies two
-failed hosted workflows at `a3ff0ec`; the earlier all-green checkpoint is historical.
+blocks Windows launch. The current order is private workflow and delivery
+acceptance, then the exact Windows candidate and publication review.
+The [stabilization checkpoint](validation.md#hosted-stabilization-checkpoint--2026-09-13)
+repairs stale panel tests and passes all three dispatched CI workflows on the
+private branch, plus fresh Windows package checks. The earlier Mobile mismatch
+remains unexplained despite passing reruns with unchanged thresholds.
 The platform plans below retain their dates and are superseded by this launch scope.
 
 On 2026-09-08 the owner clarified that development should continue privately until
@@ -25,8 +27,9 @@ feedback can inform the work without blocking local implementation and testing.
 
 **[Remaining work and 1.0 completion criteria](release-readiness.md)** is the
 current checklist. The bounded appearance, animation and production reviews below
-are established. Remaining priorities are current regression failures, a final
-private end-to-end review, the supported Windows matrix and exact package acceptance.
+are established. Remaining priorities are a final private end-to-end review,
+the supported Windows matrix and exact package acceptance, with the historical
+experimental Mobile observation explicitly accounted for.
 Linux/Mac hardware checks continue as experimental-platform work.
 
 The 2026-09-09 [combined appearance review](combined-appearance.md) adds moving

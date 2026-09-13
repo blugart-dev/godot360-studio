@@ -111,8 +111,10 @@ The agreed 1.0 launch scope is **supported Windows, experimental Linux/macOS**.
   evidence, with saved editor baking, camera cuts and missing-map controls.
 - [Combined effects](docs/combined-effects.md) and [four one-minute 4K/8K workloads](docs/production-performance.md)
   now have bounded native Windows evidence.
-- **Next:** resolve current regression failures, complete the private walkthrough,
-  and freeze and validate the Windows 1.0 package. See [current CI evidence](docs/validation.md#release-status-review--2026-09-13).
+- **Next:** complete the private walkthrough, then freeze and validate the Windows
+  1.0 package. The repaired workflow checks and fresh hosted runs pass; the earlier
+  experimental Mobile mismatch remains recorded in
+  [current CI evidence](docs/validation.md#hosted-stabilization-checkpoint--2026-09-13).
 
 Scope is **mono 360°, SDR BT.709 and stereo sound**. Six-face capture can show
 seams with glow, auto exposure and other screen-space effects; inspect a test

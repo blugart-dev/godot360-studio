@@ -4,7 +4,7 @@ Updated on 2026-09-13. This is a development recap; the
 [publication preparation review](publication-review.md) records repository cleanup.
 The canonical completion criteria remain in [release readiness](release-readiness.md).
 
-## Latest local stabilization — 2026-09-13
+## Latest stabilization checkpoint — 2026-09-13
 
 Three stale panel-test lookups are repaired. The exact package at
 `.godot360/release-stabilization-20260913/workflow-fix.zip` passes **5,930 full
@@ -21,14 +21,29 @@ and 101 unchanged protected source files. A clean owner walkthrough is prepared
 in the same folder. Source/history scanning passes for credentials; six historical
 brief revisions still contain personal workstation paths.
 
-The owner explicitly authorized committing and pushing this work to the existing
-private repo on `codex/windows-1.0-stabilization` and running the repository,
-platform and temporal workflows. This resolves the earlier automatic approval
-rejection. Hosted verification is the next step. The Temporal workflow retains
-early face/reference images for diagnosis. Preserve local evidence and complete
-the owner walkthrough before final candidate acceptance.
+The approved private branch `codex/windows-1.0-stabilization` is pushed and all
+three dispatched workflows pass at `b69b427`: repository hygiene, Desktop
+platforms and Temporal rendering. Linux completes 1,189 package checks plus its
+rendered reviews; Mac passes 1,045 headless checks. Temporal Forward+/Mobile
+cover 936 decoded frames, including correctly rejected negative controls.
+Fresh hosted Mobile history error is 0.050482 against the unchanged 0.15 limit.
+The earlier mismatch remains an unexplained experimental Linux observation.
 
-## Latest release decision and immediate work — 2026-09-13
+The canonical Git/CI ZIP is now
+`.godot360/release-stabilization-20260913/hosted/git-package.zip`, SHA256
+`c2fb579ad9595a729cb3acae5f8d8e490d0a4668c16137816a420a1e35037414`.
+It also passes 1,186 full native Windows 4.7.2 Forward+/Vulkan checks. It differs
+from the earlier local ZIP only in CRLF line endings in ten text files; all
+hosted candidate hashes match the Git ZIP. See
+[hosted verification](validation.md#hosted-stabilization-checkpoint--2026-09-13)
+and `hosted/audit.json`. The final evidence update changes root docs only.
+
+Use the fresh `hosted/owner-walkthrough/` project and `WALKTHROUGH.md` for the
+remaining human review against the Git ZIP. The plugin starts disabled and the
+scene has no capture hooks. Preserve all evidence; final candidate acceptance
+and public-history review remain open. The branch stays private at version 0.8.0.
+
+## Release scope and original status review — 2026-09-13
 
 The owner chose **supported Windows, experimental Linux/macOS** for 1.0.
 Native Linux/Mac hardware acceptance is no longer a Windows launch prerequisite.
@@ -42,9 +57,9 @@ exceed the existing image-reference tolerance. Mac headless and Forward+ tempora
 pass. The manual Combined rendering workflow has not run remotely. See
 [failure evidence](validation.md#release-status-review--2026-09-13).
 
-Next engineering work: repair the stale audio test and run the previously skipped
-package suites, then diagnose the temporal mismatch and verify supported Windows
-cases. Finish the [owner walkthrough](ui-ux-audit.md#blugarts-short-verification-walkthrough),
+The stabilization checkpoint above repairs the stale tests and supersedes these
+affected CI results on its branch. Finish the
+[owner walkthrough](ui-ux-audit.md#blugarts-short-verification-walkthrough),
 freeze the supported matrix and exact package, and complete the history/publication
 review. Do not expand advanced-effect scope merely to fill the remaining version
 number. No runtime changes or CI reruns were made during this status review.
@@ -240,7 +255,12 @@ folders; preserve the user's creative scenes, recipes, settings and existing mas
 
 ## Local evidence and tools
 
-- Latest reviewed package: `.godot360/ui-ux-review/validated-candidate.zip`, SHA256
+- Latest reviewed package: `.godot360/release-stabilization-20260913/hosted/git-package.zip`,
+  SHA256 `c2fb579ad9595a729cb3acae5f8d8e490d0a4668c16137816a420a1e35037414`.
+  The 241-member Git/CI package maps to `b69b427` and the source audit above;
+  subsequent root documentation does not change its payload.
+
+- Previous UI package: `.godot360/ui-ux-review/validated-candidate.zip`, SHA256
   `d24476076c75c6ef76d691f43d59f49f570132310d9016f4eee2b220415d5ca9`.
   All 241 members matched the checkout at `a3ff0ec` before the release-status
   documentation update. Preserve its original evidence; rebuild the next candidate

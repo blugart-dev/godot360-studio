@@ -1,20 +1,27 @@
 # Godot360 Studio development handoff
 
-## Local Windows stabilization complete; hosted verification pending — 2026-09-13
+## Windows and hosted stabilization complete — 2026-09-13
 
 Repaired the obsolete audio/recovery/release-test panel lookups. Five complete
 Windows package lanes pass **5,930 checks** against one reproducible ZIP; fresh
 Mobile temporal references also pass locally on Windows and in a narrower WSL
-software case. No runtime or tolerance change was made. The hosted mismatch
-remains unexplained. See [source-matched evidence](validation.md#local-release-stabilization--2026-09-13)
-and [the latest brief](next-session.md) for package identity and the prepared
-clean owner walkthrough.
+software case. No runtime or tolerance change was made.
 
-The owner explicitly approved the commit/private branch push/CI dispatch after
-the earlier automatic approval rejection. Continue on
-`codex/windows-1.0-stabilization` and record the new hosted results. Version stays
-0.8.0 and no public action is authorized. The older status below describes the
-main checkpoint, not the repaired tests on the stabilization branch.
+The approved private branch `codex/windows-1.0-stabilization` is pushed with
+tested commit `b69b427`. Repository hygiene, Desktop platforms and Temporal
+rendering all pass there. Linux completes 1,189 package checks and its rendered
+reviews; Mac passes 1,045 headless checks. Both temporal lanes pass 936 decoded
+frames with the expected negative controls. The exact Git/CI ZIP also passes
+1,186 full Windows Forward+/Vulkan checks. See
+[hosted evidence](validation.md#hosted-stabilization-checkpoint--2026-09-13)
+and [the latest brief](next-session.md) for hashes and the prepared walkthrough.
+
+The earlier Mobile history mismatch remains unexplained despite fresh passing
+Windows and hosted runs with unchanged thresholds. Retain it as an experimental
+Linux observation for final candidate review. Next: owner walkthrough and delivery
+acceptance, then the exact Windows 1.0 candidate and public-history review.
+Version stays 0.8.0 and the repo stays private. The older status below describes
+the main checkpoint; the stabilization evidence above supersedes its next steps.
 
 ## Windows 1.0 launch scope and current CI — 2026-09-13
 

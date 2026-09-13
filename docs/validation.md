@@ -1,5 +1,57 @@
 # Validation record — updated 2026-09-13
 
+## Hosted stabilization checkpoint — 2026-09-13
+
+The owner approved the private branch push and three workflow dispatches.
+`codex/windows-1.0-stabilization` contains scope/documentation commit `6255cc9`
+and test/evidence commit **`b69b4275e660de944920b0798078be170a34bcfb`**.
+All three dispatched workflows pass at that exact commit:
+
+| Workflow | Result and scope |
+| --- | --- |
+| [Repository hygiene](https://github.com/blugart-dev/godot360-studio/actions/runs/34767326147) | Pass: repository guard, source/docs and reproducible addon archive. |
+| [Desktop platforms](https://github.com/blugart-dev/godot360-studio/actions/runs/34767323463) | Pass: Linux **1,189** package checks, skeletal timing, Forward+/Mobile software Vulkan and particle processing reviews; Mac **1,045** headless checks. |
+| [Temporal rendering](https://github.com/blugart-dev/godot360-studio/actions/runs/34767324878) | Pass: Forward+ **648** and Mobile **288** source/decoded frames, including deliberately rejected shared-history controls; the Mobile missing-buffer control stops before delivery as expected. |
+
+These are fresh results for the affected workflows, not a new run of every
+historical matrix. The separate Combined rendering workflow remains unrun on
+GitHub; its bounded native evidence is recorded in [combined effects](combined-effects.md).
+Linux/macOS remain experimental: Mesa software rendering and Mac headless
+contracts do not establish native graphical acceptance on those platforms.
+
+The canonical Git-built **241-member, 868,581-byte** package is retained at
+`.godot360/release-stabilization-20260913/hosted/git-package.zip`, SHA256
+**`c2fb579ad9595a729cb3acae5f8d8e490d0a4668c16137816a420a1e35037414`**.
+All four hosted candidate records have this same hash. Linux/Mac package
+manifests and both temporal reviewers' runtime/fixture hashes match it.
+An additional full native Windows / Godot 4.7.2 / Forward+ Vulkan package review
+passes **1,186 checks** against this exact ZIP, including an identical rebuild,
+unchanged extracted payload and unchanged original archive.
+
+The previous local `9cfe296a…` ZIP differs only by CRLF line endings in ten text
+files. `hosted/source-mapping.json` records that comparison against Git objects;
+the capture runtime and temporal fixtures involved in the history comparison are
+byte-identical. The five Windows lanes below remain their original package's
+evidence; the additional native run establishes direct coverage of the Git/CI ZIP.
+
+Fresh hosted Mobile `history` and `history-world` each reach maximum face mean
+error **0.050482**, below the unchanged **0.15** limit, using llvmpipe LLVM 20.1.2
+as in the earlier failing run. Both feature-presence checks pass and the wrong
+shared-history control is rejected. The original **0.796318** mismatch remains
+unexplained; this rerun does not establish a renderer fix or justify dismissing
+the failure as runner noise. It is retained as an experimental Linux observation
+for final candidate review. Fresh Windows history checks also pass, as below.
+The new workflow retention captures opening native/face images for future diagnosis.
+
+The retained run metadata, reports and package/source verification are summarized
+in `.godot360/release-stabilization-20260913/hosted/audit.json`, reproduced by
+`hosted/audit_hosted.py`. A fresh addon-only `hosted/owner-walkthrough/` uses the
+canonical Git ZIP; its plugin starts disabled and human acceptance stays pending.
+The final evidence update changes only root documentation, outside the packaged
+payload. The repository remains private, `main` stays at `a3ff0ec`, and version
+remains **0.8.0**. Owner walkthrough, final Windows candidate acceptance and
+public-history/publication review remain open.
+
 ## Local release stabilization — 2026-09-13
 
 The hosted Linux failure exposed three obsolete positional UI lookups, in the
