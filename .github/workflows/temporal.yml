@@ -79,3 +79,5 @@ jobs:
             .godot360/ci-temporal/review/**/report.json
             .godot360/ci-temporal/review/**/temporal-samples.json
             .godot360/ci-temporal/review/**/capture-settings.json
+            .godot360/ci-temporal/review/**/native/*-00[0-5].png
+            .godot360/ci-temporal/review/**/faces/*-00[0-5].png

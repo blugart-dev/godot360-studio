@@ -159,8 +159,11 @@ func _run() -> void:
 	await _wait_panel()
 	check(IO.read_json(panel.folder.path_join("report.json")).get("ok", false), "Recovered source re-encodes into a fresh verified video")
 	check(before == _snapshot(source), "Recovery and re-encoding preserve all original source bytes")
-	var scroll: ScrollContainer = panel.get_child(0).get_child(0)
-	scroll.scroll_vertical = 285
+	panel.workspace_tabs.current_tab = 2
+	var scroll := panel.workspace_tabs.get_current_tab_control() as ScrollContainer
+	await process_frame
+	await process_frame
+	scroll.ensure_control_visible(panel.reuse_button)
 	await process_frame
 	await RenderingServer.frame_post_draw
 	check(panel.size.y <= root.size.y, "Saved-job controls fit the existing panel")

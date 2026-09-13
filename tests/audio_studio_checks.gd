@@ -73,9 +73,13 @@ func _run() -> void:
 	var final_report := IO.read_json(panel.folder.path_join("report.json"))
 	check(final_report.get("ok", false) and final_report.get("audio", {}).get("settings", {}).get("soundtrack_gain_db", 0) == -8, "Panel re-encode completes with requested audio levels")
 	check(before == _snapshot(source), "Panel re-encode preserves every file in the original capture")
-	# Bring the new controls into view without enlarging the compact panel.
-	var scroll: ScrollContainer = panel.get_child(0).get_child(0)
-	scroll.scroll_vertical = 440
+	# Review the audio controls in their current recipe tab, after layout settles.
+	panel.workspace_tabs.current_tab = 0
+	panel.sections.audio.toggle.button_pressed = true
+	var scroll := panel.workspace_tabs.get_current_tab_control() as ScrollContainer
+	await process_frame
+	await process_frame
+	scroll.ensure_control_visible(panel.audio_controls.soundtrack_gain_db)
 	await process_frame
 	await RenderingServer.frame_post_draw
 	check(panel.size.y <= root.size.y, "Audio controls fit within a scrolling bottom panel")

@@ -113,8 +113,11 @@ func _run() -> void:
 	panel.playback.play_button.pressed.emit()
 	check(panel.playback.proxy_path != "" and panel.playback.phase.is_empty(), "A delivery reopened from history reuses its native playback cache")
 	panel.playback.player.paused = true
-	var scroll: ScrollContainer = panel.get_child(0).get_child(0)
-	scroll.scroll_vertical = 385
+	panel.workspace_tabs.current_tab = 2
+	var scroll := panel.workspace_tabs.get_current_tab_control() as ScrollContainer
+	await process_frame
+	await process_frame
+	scroll.ensure_control_visible(panel.recent_exports.open_button)
 	await process_frame
 	await RenderingServer.frame_post_draw
 	check(panel.size.y <= root.size.y and panel.size.x <= root.size.x, "New controls fit within the compact scrolling panel")
