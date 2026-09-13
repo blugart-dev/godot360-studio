@@ -84,12 +84,14 @@ Open this repository's `project.godot` to try them; the plugin is already enable
 Onboarding, rendering, playback and recent-export improvements are implemented.
 The [1.0 completion criteria](docs/release-readiness.md) describe the remaining
 engineering and validation work. This source snapshot is not a stable 1.0 release.
+The agreed 1.0 launch scope is **supported Windows, experimental Linux/macOS**.
 
 - **Windows:** tested exports and review on Godot 4.5.1, 4.6.3 and 4.7.2;
   Forward+/Mobile also have Windows Vulkan and Direct3D 12 visual evidence.
-- **Linux:** export/review workflows and software OpenGL/Vulkan checks pass,
-  including hosted CI. Hardware GPU validation remains open.
-- **macOS:** Apple Silicon headless CI passes, including playback and recovery
+- **Linux (experimental):** earlier export/review and software OpenGL/Vulkan
+  checks pass; the latest CI has workflow and temporal-reference failures under
+  investigation. Hardware GPU validation remains open.
+- **macOS (experimental):** Apple Silicon headless CI passes, including playback and recovery
   checks. Graphical export and Mac GPU validation remain open.
 - Optional [capture borders with before/after examples](docs/capture-borders.md)
   reduce tested glow cuts at edges and corners.
@@ -107,8 +109,10 @@ engineering and validation work. This source snapshot is not a stable 1.0 releas
   a successful delivery even when every frame was written.
 - [Saved LightmapGI](docs/lightmap-capture.md) now has static-lightmap and dynamic-probe
   evidence, with saved editor baking, camera cuts and missing-map controls.
-- **Next:** combined effects and remaining seams, heavy 4K/8K workloads, native hardware
-  coverage and private workflow review.
+- [Combined effects](docs/combined-effects.md) and [four one-minute 4K/8K workloads](docs/production-performance.md)
+  now have bounded native Windows evidence.
+- **Next:** resolve current regression failures, complete the private walkthrough,
+  and freeze and validate the Windows 1.0 package. See [current CI evidence](docs/validation.md#release-status-review--2026-09-13).
 
 Scope is **mono 360°, SDR BT.709 and stereo sound**. Six-face capture can show
 seams with glow, auto exposure and other screen-space effects; inspect a test

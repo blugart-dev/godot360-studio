@@ -4,10 +4,58 @@ Updated on 2026-09-13. This is a development recap; the
 [publication preparation review](publication-review.md) records repository cleanup.
 The canonical completion criteria remain in [release readiness](release-readiness.md).
 
+## Latest local stabilization — 2026-09-13
+
+Three stale panel-test lookups are repaired. The exact package at
+`.godot360/release-stabilization-20260913/workflow-fix.zip` passes **5,930 full
+Windows checks**: Compatibility on 4.5.1/4.6.3/4.7.2 and Forward+/Mobile Vulkan
+on 4.7.2. Its SHA256 is
+`9cfe296adade52bc91f7d7701e5ae8b03adbef53a62f19e03143dc680097afd4`.
+Fresh Windows Mobile temporal tests and a local WSL software-history case pass
+with the unchanged fixture and thresholds. The earlier hosted mismatch is still
+unexplained. No addon runtime or version change was needed.
+
+See [local stabilization evidence](validation.md#local-release-stabilization--2026-09-13)
+and the local `audit.json` beside that package. It maps source-matched evidence
+and 101 unchanged protected source files. A clean owner walkthrough is prepared
+in the same folder. Source/history scanning passes for credentials; six historical
+brief revisions still contain personal workstation paths.
+
+The owner explicitly authorized committing and pushing this work to the existing
+private repo on `codex/windows-1.0-stabilization` and running the repository,
+platform and temporal workflows. This resolves the earlier automatic approval
+rejection. Hosted verification is the next step. The Temporal workflow retains
+early face/reference images for diagnosis. Preserve local evidence and complete
+the owner walkthrough before final candidate acceptance.
+
+## Latest release decision and immediate work — 2026-09-13
+
+The owner chose **supported Windows, experimental Linux/macOS** for 1.0.
+Native Linux/Mac hardware acceptance is no longer a Windows launch prerequisite.
+Retain experimental checks and record their limitations; do not claim support
+until their native workflows pass.
+
+Private remote and local `main` match `a3ff0ec`. Five of its seven hosted workflows
+pass. Linux Desktop platforms fails on the audio test's old UI hierarchy lookup
+at `tests/audio_studio_checks.gd:77`; Mobile temporal `history` and `history-world`
+exceed the existing image-reference tolerance. Mac headless and Forward+ temporal
+pass. The manual Combined rendering workflow has not run remotely. See
+[failure evidence](validation.md#release-status-review--2026-09-13).
+
+Next engineering work: repair the stale audio test and run the previously skipped
+package suites, then diagnose the temporal mismatch and verify supported Windows
+cases. Finish the [owner walkthrough](ui-ux-audit.md#blugarts-short-verification-walkthrough),
+freeze the supported matrix and exact package, and complete the history/publication
+review. Do not expand advanced-effect scope merely to fill the remaining version
+number. No runtime changes or CI reruns were made during this status review.
+
+The notes below preserve earlier milestone evidence; their all-green and broader
+platform-gate statements do not override this checkpoint and scope decision.
+
 The earlier checkpoint is committed and pushed privately: runtime/fixture checkpoint
 `12e8872`, silent bake-editor fix `c26c919`, corrected Mobile tint validation
 `0cde68f`, and bounded software-CI timeouts `739cf95`. All seven hosted workflows
-pass. The LightmapGI artifacts are retained and audited: 12 clips / 864 decoded
+passed at that earlier checkpoint. The LightmapGI artifacts are retained and audited: 12 clips / 864 decoded
 frames, with all three missing-map controls rejected. See [validation](validation.md)
 for exact runs, package mappings and the corrected historical compositor claim.
 
@@ -136,7 +184,7 @@ estimate. The amount of corrective work depends on what the rendered tests revea
 | 1 | Representative complex particles — bounded smoke/trail cases complete | High for remaining general cases | Moving transparent smoke and native trails now have rendered references. Lit/intersecting transparency, preprocessing and arbitrary temporal histories remain separate cases. | Completed native matrices and package checks are in the latest validation record. |
 | 2 | Extend the advanced rendering boundary — selected temporal/compositor/GI cases complete | High for remaining general cases | Selected saved LightmapGI now passes too. The selected combined GI/transparency/long-history case now passes; larger GI layouts and other stacks remain outside that evidence. | The temporal guide records 23 native jobs and explicit Mobile buffer requirements; the LightmapGI guide adds 16 clips. Complete further selected cases with clear setup guidance. Full support for every combination is not a prerequisite implied by this plan. |
 | 3 | Representative 4K/8K Forward+/Mobile workloads — bounded profiles complete | Medium for further profiles; potentially high to optimize | Four one-minute textured/effects exports now establish measured budgets on one native Windows GPU. Other hardware, longer durations and heavier GI can change requirements. | The production guide records 7,200 source/decoded frames, sampled CPU/GPU/system memory, storage/time forecasts and capacity-failure recovery. |
-| 4 | Native Linux GPU and Mac graphical review | Medium technically; dependent on hardware access | Software/headless CI cannot establish a native GPU installation, export and playback workflow. | Actual install/export/review/cancel/recovery on each claimed platform. If hardware is unavailable, the supported release matrix requires an explicit scope decision. |
+| 4 | Native Linux GPU and Mac graphical review — experimental follow-up | Medium technically; dependent on hardware access | Software/headless CI cannot establish a native GPU installation, export and playback workflow. The owner removed this as a Windows 1.0 prerequisite on 2026-09-13. | Actual install/export/review/cancel/recovery before promoting either platform to supported. |
 | 5 | Private walkthrough from clean setup through delivery | Low to medium | A technically valid file can still be hard to produce or wrong in orientation, sound or spherical presentation. | Follow the published instructions with an existing scene, review the sphere and audio, reopen a job and recover a failure; resolve observed friction. |
 | 6 | Freeze and validate the exact 1.0 package | Medium, after earlier work | A release needs one consistent supported matrix, code snapshot, documentation set and reproducible artifact. | Version and migration notes updated, exact package checks pass, known supported-workflow blockers resolved. Public publication remains a separate action. |
 
@@ -182,8 +230,8 @@ Next, perform a private clean-installation walkthrough against the documented
 existing-scene workflow: install, select/save a scene and camera, configure
 tools, run a short test, export, review orientation/seams/detail/sound, reopen
 and recover an interrupted job. Record concrete usability or delivery findings
-and fix reproducible blockers. Native Linux/Mac coverage and final support
-decisions remain open. Do not rerun completed large matrices without a code
+and fix reproducible blockers. Native Linux/Mac coverage remains experimental;
+the final Windows candidate matrix remains open. Do not rerun completed large matrices without a code
 change, failure or unresolved concern that justifies them.
 
 `tests/fixtures/cesium_man/` now contains a pinned licensed GLB with its attribution
@@ -192,7 +240,13 @@ folders; preserve the user's creative scenes, recipes, settings and existing mas
 
 ## Local evidence and tools
 
-- Latest package: `.godot360/preview-artifacts-20260912/candidate.zip`, SHA256
+- Latest reviewed package: `.godot360/ui-ux-review/validated-candidate.zip`, SHA256
+  `d24476076c75c6ef76d691f43d59f49f570132310d9016f4eee2b220415d5ca9`.
+  All 241 members matched the checkout at `a3ff0ec` before the release-status
+  documentation update. Preserve its original evidence; rebuild the next candidate
+  from the updated source. See [the UI audit](validation.md#studio-uiux-audit--2026-09-13).
+
+- Previous package: `.godot360/preview-artifacts-20260912/candidate.zip`, SHA256
   `5f17c39f7f3ec54141da23e66d8ffd62c57278289efc1a6873a81d6475314e5c`.
   This targeted playback fix follows the package below; its tests and actual-clip
   source mapping are recorded in [validation](validation.md).

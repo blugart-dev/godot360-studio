@@ -1,5 +1,36 @@
 # Godot360 Studio development handoff
 
+## Local Windows stabilization complete; hosted verification pending — 2026-09-13
+
+Repaired the obsolete audio/recovery/release-test panel lookups. Five complete
+Windows package lanes pass **5,930 checks** against one reproducible ZIP; fresh
+Mobile temporal references also pass locally on Windows and in a narrower WSL
+software case. No runtime or tolerance change was made. The hosted mismatch
+remains unexplained. See [source-matched evidence](validation.md#local-release-stabilization--2026-09-13)
+and [the latest brief](next-session.md) for package identity and the prepared
+clean owner walkthrough.
+
+The owner explicitly approved the commit/private branch push/CI dispatch after
+the earlier automatic approval rejection. Continue on
+`codex/windows-1.0-stabilization` and record the new hosted results. Version stays
+0.8.0 and no public action is authorized. The older status below describes the
+main checkpoint, not the repaired tests on the stabilization branch.
+
+## Windows 1.0 launch scope and current CI — 2026-09-13
+
+The owner chose **Windows supported; Linux/macOS experimental**. Native Linux/Mac
+hardware acceptance no longer blocks Windows 1.0. The private repository's local
+and remote `main` match `a3ff0ec`; version remains 0.8.0.
+
+The [fresh status review](validation.md#release-status-review--2026-09-13) found
+five passing hosted workflows and two failures: an obsolete audio-test UI lookup
+halts the Linux package review, and Mobile temporal-history image references
+exceed tolerance. Mac headless and Forward+ temporal pass. Next: repair the stale
+test, investigate the mismatch and its Windows relevance, finish the owner
+walkthrough, and freeze the exact Windows candidate. The status review updates
+documentation only; failures remain unresolved. Follow the revised
+[release checklist](release-readiness.md) over older platform-gate statements below.
+
 ## Studio UI/UX audit — 2026-09-13
 
 Implemented the [complete workflow audit](ui-ux-audit.md), including before/after

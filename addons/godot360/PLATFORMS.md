@@ -9,11 +9,18 @@ templates are required by the addon itself.
 
 ## Support status
 
+The agreed 1.0 launch scope (2026-09-13) is **supported Windows, experimental
+Linux/macOS**. The current version is still pre-1.0. Native Linux GPU and Mac
+graphical acceptance are required before promoting their support status, but do
+not block the Windows release. Historical checks below do not certify a later
+candidate; current failures and exact evidence are recorded in the repository's
+`docs/validation.md`.
+
 | Platform | Status |
 | --- | --- |
 | Windows x86_64 | Compatibility baseline on 4.5.1/4.6.3/4.7.2; current Forward+/Mobile evidence and backend-specific limits are in [Renderers](RENDERERS.md). |
-| Linux x86_64 | Local Ubuntu 26.04 / WSLg software OpenGL/Vulkan validation and hosted Ubuntu 24.04 CI pass. Hosted CI includes 639 package/workflow checks plus eight software-Vulkan appearance cases on Godot 4.7.2. Hardware GPU validation remains open. See [renderer limits](RENDERERS.md). |
-| macOS | Apple Silicon headless CI passes 505 checks on macOS 15.7.9 / Godot 4.7.2 with FFmpeg 9.0.1 full. Graphical exports, Mac GPU appearance and Intel Mac validation remain open. Native paths and installation steps support both Homebrew prefixes. |
+| Linux x86_64 — experimental | Earlier Ubuntu / WSLg software OpenGL/Vulkan and hosted CI reviews pass. At checkpoint `a3ff0ec`, the package workflow stops at an obsolete audio-test UI lookup and Mobile temporal-history references fail. Hardware GPU validation remains open. See [renderer limits](RENDERERS.md). |
+| macOS — experimental | Apple Silicon headless CI passes at checkpoint `a3ff0ec` on Godot 4.7.2. Graphical exports, Mac GPU appearance and Intel Mac validation remain open. Native paths and installation steps support both Homebrew prefixes. |
 
 Validation on one machine does not cover every GPU or desktop environment.
 Forward+ and Mobile have Windows Vulkan/D3D12 and Linux software-Vulkan visual

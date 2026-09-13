@@ -10,16 +10,24 @@ validated YouTube delivery file. It does not include stereoscopic ODS or ambison
 
 ## Current priority — private development toward 1.0
 
+**2026-09-13 scope decision:** Windows will be the supported 1.0 launch platform;
+Linux/macOS remain experimental. Native Linux/Mac hardware acceptance no longer
+blocks Windows launch. The current order is regression repair, private workflow
+and delivery acceptance, then the exact Windows candidate and publication review.
+The [latest status](validation.md#release-status-review--2026-09-13) identifies two
+failed hosted workflows at `a3ff0ec`; the earlier all-green checkpoint is historical.
+The platform plans below retain their dates and are superseded by this launch scope.
+
 On 2026-09-08 the owner clarified that development should continue privately until
 1.0 is tested and ready. The `0.8.0` version is an internal development baseline;
 "beta" is not a pause or a requirement to recruit public testers. Independent
 feedback can inform the work without blocking local implementation and testing.
 
 **[Remaining work and 1.0 completion criteria](release-readiness.md)** is the
-current checklist. Priorities are capture seams and exposure, complex animated
-scenes, representative production endurance, native hardware coverage, and a final
-private end-to-end review of the exact package. Hardware-dependent checks remain
-open where hardware is unavailable; all other development continues.
+current checklist. The bounded appearance, animation and production reviews below
+are established. Remaining priorities are current regression failures, a final
+private end-to-end review, the supported Windows matrix and exact package acceptance.
+Linux/Mac hardware checks continue as experimental-platform work.
 
 The 2026-09-09 [combined appearance review](combined-appearance.md) adds moving
 lights/materials, exposure-source changes and capture borders in one fixture.
@@ -50,8 +58,8 @@ sampled process/GPU/system memory, disk/time forecasts and capacity-failure
 recovery. Its profiles and hardware limits remain explicit. Next: a clean private
 installation-to-delivery walkthrough; [automated native editor integration](editor-workflow.md)
 now passes and fixes progress-read errors and capture-folder imports. Actual
-UI navigation remains open, alongside native Linux/Mac testing as hardware is
-available, then freezing and validating the 1.0 package.
+UI navigation remains open, followed by freezing and validating the Windows 1.0
+package. Native Linux/Mac testing can proceed separately as hardware is available.
 
 ## Completed first-export and review increments
 

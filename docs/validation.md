@@ -1,5 +1,118 @@
 # Validation record — updated 2026-09-13
 
+## Local release stabilization — 2026-09-13
+
+The hosted Linux failure exposed three obsolete positional UI lookups, in the
+audio, recovery and release-workflow tests. They now select the relevant Studio
+tab, wait for layout and scroll the actual control into view. The audio test
+also opens its timing/level foldout. No addon runtime or temporal fixture changed.
+
+The exact **241-member** package is retained at
+`.godot360/release-stabilization-20260913/workflow-fix.zip`, SHA256
+`9cfe296adade52bc91f7d7701e5ae8b03adbef53a62f19e03143dc680097afd4`.
+It remains version **0.8.0**. All five full native Windows package lanes pass:
+
+| Godot | Renderer / driver | Passing checks |
+| --- | --- | --- |
+| 4.5.1 | Compatibility / OpenGL | 1,186 |
+| 4.6.3 | Compatibility / OpenGL | 1,186 |
+| 4.7.2 | Compatibility / OpenGL | 1,186 |
+| 4.7.2 | Forward+ / Vulkan | 1,186 |
+| 4.7.2 | Mobile / Vulkan | 1,186 |
+
+The **5,930 checks** include real exports, native playback, audio re-encoding,
+source preservation, capture/encoder failures, recovery, storage faults and the
+documented calibration/Motion Lab workflow. Each lane includes all 19 audio,
+41 recovery and 32 release-workflow assertions. Every package rebuild is identical,
+manifests and extracted payloads pass, and isolated source/settings preservation
+passes. This is Windows / RTX 3060 Ti evidence, not a fresh D3D12 or other-GPU matrix.
+
+The unchanged Mobile temporal fixture also passes a fresh Windows Vulkan matrix:
+baseline, camera/world history, rejected shared-history control and diagnosed
+missing-buffer control. Four completed clips contain 288 source/decoded delivery
+frames; the buffer control correctly produces no delivery. Maximum normal-history
+face mean error is **0.048301**, below the unchanged **0.15** limit. A local WSL
+software-Vulkan history run passes at **0.050482** on llvmpipe LLVM 21.1.8. Its
+driver differs from hosted CI's LLVM 20.1.2. Both runs' addon/fixture hashes match
+the package. These passes do not explain or close the earlier hosted mismatch.
+
+The Temporal workflow now retains the first six native/captured face-image sets
+for diagnosis on its next run. Automatic approval review rejected the proposed
+commit/private branch push/three-workflow dispatch, requiring explicit owner
+approval of the payload and destination. No branch, commit, push or hosted rerun
+was performed during that local pass. The owner subsequently explicitly approved
+these actions; new hosted verification follows separately. Existing remote results
+at `a3ff0ec` remain those in the status review below.
+
+The evidence audit at `.godot360/release-stabilization-20260913/audit.json`
+maps all five package lanes and both temporal runs, verifies their source, and
+confirms **101** project/creative/fixture asset files remain unchanged from the
+initial repository inventory. Native audio and Library screenshots were inspected.
+The fresh Gitleaks scan covers **37 commits** reachable from `main` and tags,
+with no findings and only the GitHub noreply commit identity. A separate bounded
+path review finds personal paths in six historical `docs/next-session.md` revisions;
+public-history acceptance remains open.
+
+A fresh addon-only `owner-walkthrough/` project and local `WALKTHROUGH.md` are
+prepared beside the audit, using this exact package. Its plugin starts disabled,
+its authored scene has no capture hooks, and human acceptance remains pending.
+No stable version bump or public publication occurred.
+
+## Release status review — 2026-09-13
+
+The owner selected **Windows supported, Linux/macOS experimental** for 1.0.
+Native Linux GPU and Mac graphical validation remain open before promoting those
+platforms; they are no longer Windows launch prerequisites. This changes release
+scope, not runtime behavior or the `0.8.0` development version.
+
+Read-only GitHub checks confirm private visibility, no open issues or pull
+requests, and local/remote `main` at `a3ff0ec091d50e702bb9e0425ed645def0e033d4`.
+The tree was clean before this status/scope documentation update. Seven workflows
+ran on that commit; **five pass and two fail**:
+
+| Workflow | Result at the reviewed commit |
+| --- | --- |
+| [Repository hygiene](https://github.com/blugart-dev/godot360-studio/actions/runs/34723188012) | Pass. |
+| [Combined appearance](https://github.com/blugart-dev/godot360-studio/actions/runs/34723188025) | Pass. |
+| [Imported characters](https://github.com/blugart-dev/godot360-studio/actions/runs/34723187996) | Pass. |
+| [Complex particles](https://github.com/blugart-dev/godot360-studio/actions/runs/34723187998) | Pass. |
+| [Baked LightmapGI](https://github.com/blugart-dev/godot360-studio/actions/runs/34723188013) | Pass. |
+| [Desktop platforms](https://github.com/blugart-dev/godot360-studio/actions/runs/34723187982) | Linux fails; Mac headless passes. |
+| [Temporal rendering](https://github.com/blugart-dev/godot360-studio/actions/runs/34723188018) | Mobile software Vulkan fails; Forward+ software Vulkan passes. |
+
+The separate manual **Combined rendering** workflow is active but has no hosted
+runs. Its local native evidence remains in [combined effects](combined-effects.md).
+The earlier handoff's all-green statement applies to its earlier checkpoint.
+
+The Linux artifact identifies a concrete test regression at
+`tests/audio_studio_checks.gd:77`: its old positional child lookup returns an
+`HBoxContainer`, which cannot be assigned to `ScrollContainer` after the UI
+reorganization. Twelve assertions pass first, including sample capture, delivery
+checks, re-encoding and source preservation. The script then stops and the outer
+review times out at 240 seconds. Later suites are skipped. This does not establish
+an export-runtime failure, nor does it count as a passing workflow.
+
+Mobile `history` and `history-world` both report maximum face mean absolute
+error **0.796318** against the reviewer's **0.15** limit. Baseline passes; the
+deliberately shared-history control is rejected and the missing-buffer control
+correctly fails before encoding. The cause of the normal-history mismatch is
+unresolved. It must not be dismissed as runner noise or hidden by relaxing the
+threshold. Determine its Windows relevance as part of candidate acceptance.
+
+Fresh local checks on the pre-edit checkout pass:
+
+- Source hygiene: **491 files, 606 local Markdown links, 46 media hashes**, no findings.
+- All **seven** repository-guard regression tests.
+- Verification of every payload in the **241-member** UI package against source;
+  its identity remains the hash in the UI audit below.
+- `git diff --check`.
+
+Downloaded failure artifacts and the source inventory are retained locally in
+`.godot360/release-status-20260913/`. No large render matrices were repeated,
+CI reruns dispatched, runtime fixes made, release tags created or visibility
+changed. The documentation changes after these checks require a fresh candidate
+build; the old ZIP remains evidence for its original snapshot.
+
 ## Studio UI/UX audit — 2026-09-13
 
 The [implemented audit and walkthrough](ui-ux-audit.md) separates editable recipes
