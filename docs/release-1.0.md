@@ -4,6 +4,29 @@
 package identifies itself as **1.0.0-rc.1**; human walkthrough and stable candidate
 acceptance remain pending. Do not attach an RC ZIP to a stable 1.0 release.
 
+## Private RC1 artifact
+
+Candidate source: **`b323a92e1b74b749a32adb6d5d4b1f7669874f9b`** on
+`codex/windows-1.0-stabilization`. The addon ZIP has 243 members and 875,471 bytes;
+SHA-256 **`78f850256fb956f8d9365eaa03df7f4cdb0b3f1ab9f968b8b8e27044d7ff6e79`**.
+The source ZIP has 495 members and 75,847,196 bytes, including its manifest and
+no Git history; SHA-256
+**`76ff9055d0ef59c2ed0cb65132e4e69d5e83aae180bb7df038bee418d62b50a9`**.
+Both rebuild identically. Repository CI passes and produces the identical addon
+ZIP. Local archives and exact review reports are retained under
+`.godot360/rc1-review-20260913/`; no release assets have been uploaded.
+
+RC1 updates the plugin, panel and spherical metadata release strings and adds
+numbered-candidate support to the package builder. The comparison against the
+preceding reviewed package confirms unchanged capture/rendering behavior.
+All five native Windows package lanes pass **5,930 checks**, and the two-process
+native editor review passes **44 checks**, against that exact ZIP. The
+[validation record](validation.md#private-windows-rc1-acceptance-evidence--2026-09-13)
+maps these results and the six release-identity regression tests. The
+prepared `owner-walkthrough/` in the RC1 evidence folder installs this exact ZIP.
+
+## Proposed stable release description
+
 Godot360 Studio turns a saved, authored Godot 3D scene into a monoscopic 360° SDR
 video with stereo sound. Choose a scene and camera, test a second, render a fixed
 frame sequence, then inspect the spherical video, audio and delivery report in
@@ -59,7 +82,8 @@ active exports, back up recipes/settings and follow
 - [ ] Resolve any supported-workflow blocker; retain the unexplained historical
   Linux Mobile observation and its fresh passing evidence.
 - [ ] Set consistent stable version labels in plugin, panel, metadata, guides and
-  generated package README; replace this draft's development status.
+  generated package README; replace this draft's candidate status and refresh
+  legacy compatibility-guide intros while retaining their historical evidence.
 - [ ] Record the final commit, exact addon/source ZIP names, SHA-256 values,
   manifests, native Windows acceptance and required CI results.
 - [ ] Complete the public-history choice and verify issue/security settings.

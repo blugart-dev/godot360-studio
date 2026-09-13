@@ -4,6 +4,40 @@ Updated on 2026-09-13. This is a development recap; the
 [publication preparation review](publication-review.md) records repository cleanup.
 The canonical completion criteria remain in [release readiness](release-readiness.md).
 
+## Current checkpoint: private 1.0.0-rc.1 — 2026-09-13
+
+RC1 at **`b323a92e1b74b749a32adb6d5d4b1f7669874f9b`** is pushed on the private
+stabilization branch. The package builder accepts numbered candidate identifiers,
+checks product release-string agreement, and generates the correct README label.
+Six new unit tests pass. Only release strings change in the addon runtime.
+
+The exact RC1 ZIP passes **5,930 full native checks** across all five declared
+Windows combinations plus **44 native editor checks** across two processes.
+Repository CI passes and builds the same package. Both distributions rebuild
+identically and all 101 protected creative/project/fixture files are unchanged.
+See [the RC1 evidence](validation.md#private-windows-rc1-acceptance-evidence--2026-09-13).
+
+Evidence root: `.godot360/rc1-review-20260913/`.
+
+- `godot360-studio-1.0.0-rc.1.zip`: 243 members; SHA256
+  `78f850256fb956f8d9365eaa03df7f4cdb0b3f1ab9f968b8b8e27044d7ff6e79`.
+- `godot360-studio-1.0.0-rc.1-source.zip`: 495 members, no Git history; SHA256
+  `76ff9055d0ef59c2ed0cb65132e4e69d5e83aae180bb7df038bee418d62b50a9`.
+- `audit.json` / `audit_rc1.py` map the exact package, native lanes/editor,
+  CI identity, source-only release-string changes and spherical metadata tags.
+- `owner-walkthrough/` is prepared from RC1 with the plugin disabled and a normal
+  authored scene. Human navigation/listening/delivery acceptance remains pending.
+
+Next: collect walkthrough findings, resolve blockers, update the final stable
+labels and remaining legacy guide intros, then validate the stable artifact as
+required by its changes. Do not repeat completed large matrices without cause.
+The source/history scans pass for credentials; historical personal paths still
+need the public-history decision. GitHub private vulnerability reporting belongs
+to authorized publication after a public visibility change, not private RC
+acceptance. No stable tag, release upload or visibility change has occurred.
+
+The 0.8.0 records below are historical and do not override this current candidate.
+
 ## Latest release preparation — 2026-09-13
 
 At `da96a39`, the [Windows support contract](../addons/godot360/SUPPORT.md),
@@ -114,7 +148,7 @@ Godot360 Studio is a working editor addon for exporting a saved, authored Godot
 scene to mono 360 SDR video with stereo audio. Scene/camera selection, recipes,
 short-test estimates, timeline capture, audio, spherical MP4 metadata, verification,
 cancellation, diagnostics, re-encoding, recovery, storage guards, spherical playback
-and recent exports are implemented. The internal version remains 0.8.0.
+and recent exports are implemented. The current candidate version is 1.0.0-rc.1.
 
 Recent increments establish:
 
@@ -289,7 +323,11 @@ folders; preserve the user's creative scenes, recipes, settings and existing mas
 
 ## Local evidence and tools
 
-- Latest reviewed package: `.godot360/release-preparation-20260913/addon.zip`,
+- Latest reviewed package: `.godot360/rc1-review-20260913/godot360-studio-1.0.0-rc.1.zip`,
+  SHA256 `78f850256fb956f8d9365eaa03df7f4cdb0b3f1ab9f968b8b8e27044d7ff6e79`.
+  Its 243 members and all fresh Windows acceptance evidence map to `b323a92`.
+
+- Previous preparation package: `.godot360/release-preparation-20260913/addon.zip`,
   SHA256 `1fc01adb0b6726172b1fb8c355aff564351189c8c658fed02263c4ca4f4f1f5c`.
   Its 242 members map to `da96a39`; the six Markdown changes and unchanged runtime
   are recorded in the release-preparation audit above.

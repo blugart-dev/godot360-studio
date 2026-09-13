@@ -9,8 +9,10 @@ Use the [Windows support contract](../addons/godot360/SUPPORT.md),
 [upgrade guide](../addons/godot360/MIGRATION.md) and [release draft](release-1.0.md)
 as the prepared release content. They describe a release candidate until
 the final acceptance record is complete. The 2026-09-13 settings review could not
-confirm private vulnerability reporting (HTTP 404); verify the actual reporting
-route as part of the final public-facing review below.
+confirm private vulnerability reporting (HTTP 404). GitHub documents this feature
+for [public repositories](https://docs.github.com/en/code-security/how-tos/report-and-fix-vulnerabilities/configure-vulnerability-reporting/configure-for-a-repository).
+Enable and verify the reporting route during authorized publication, after the
+repository becomes public; this is not a private RC validation prerequisite.
 
 ## Source and rights
 
@@ -85,8 +87,9 @@ clear the existing repository's historical privacy review.
   actual candidate. Keep older validation records labeled as historical evidence.
 - Follow the quick start on a clean checkout. Check examples, relative links,
   preview playback, credits, issue forms and the security reporting route.
-- Enable GitHub private vulnerability reporting before relying on the private
-  report link in `SECURITY.md`. Confirm Issues and Actions settings suit the project.
+- Include private vulnerability reporting in the authorized publication steps:
+  after the visibility change, enable it and verify the report route before
+  announcing the release. Confirm Issues and Actions settings suit the project.
 - Attach the tested ZIP and its checksum/manifest. Keep source masters and local
   diagnostic bundles out of the release. Publish support claims only for the
   combinations actually reviewed.

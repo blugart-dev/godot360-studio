@@ -1,5 +1,73 @@
 # Validation record — updated 2026-09-13
 
+## Private Windows RC1 acceptance evidence — 2026-09-13
+
+**`1.0.0-rc.1`** is the first versioned private Windows release candidate.
+Source commit **`b323a92e1b74b749a32adb6d5d4b1f7669874f9b`** is pushed on
+`codex/windows-1.0-stabilization`. Stable 1.0 and publication remain pending.
+
+The package builder now accepts plain `M.m.p` and numbered `M.m.p-rc.N`
+identifiers, checks plugin/panel/metadata/README agreement, and generates the
+installation README's release-channel text. Six regression tests cover valid
+development/candidate/stable identities, malformed and duplicate versions,
+drifting product strings, and a falsely stable panel label on a candidate.
+The plugin, tooltip and spherical metadata identify RC1; normalized comparison
+against the previous package confirms those three files change only release
+strings. Other capture/rendering runtime and existing fixture/test bytes match.
+
+| Exact Git-built artifact | Members / bytes | SHA-256 |
+| --- | --- | --- |
+| `godot360-studio-1.0.0-rc.1.zip` | 243 / 875,471 | `78f850256fb956f8d9365eaa03df7f4cdb0b3f1ab9f968b8b8e27044d7ff6e79` |
+| `godot360-studio-1.0.0-rc.1-source.zip` | 495 / 75,847,196 | `76ff9055d0ef59c2ed0cb65132e4e69d5e83aae180bb7df038bee418d62b50a9` |
+
+Both archives rebuild identically with Python 3.12.14 / zlib 1.3.2. The source
+archive contains its manifest and no Git history. The
+[RC1 repository workflow](https://github.com/blugart-dev/godot360-studio/actions/runs/34771225547)
+passes the seven repository-guard and six release-identity tests, source hygiene,
+and archive verification/rebuild. Its built and rebuilt addon ZIP hashes match
+the local RC1 ZIP exactly.
+
+Every declared Windows lane passes against that same immutable RC1 ZIP:
+
+| Godot | Renderer / driver | Passing checks |
+| --- | --- | ---: |
+| 4.7.2 | Compatibility / OpenGL 3 | 1,186 |
+| 4.6.3 | Compatibility / OpenGL 3 | 1,186 |
+| 4.5.1 | Compatibility / OpenGL 3 | 1,186 |
+| 4.7.2 | Forward+ / Vulkan | 1,186 |
+| 4.7.2 | Mobile / Vulkan | 1,186 |
+
+The **5,930** native checks include actual exports, audio, playback, capture and
+storage faults, cancellation, recovery, re-encoding and the documented workflow.
+All five runs verify the manifest, rebuild identical ZIP bytes, and preserve
+the extracted package and original archive. Fifteen completed release-workflow
+MP4s independently contain the RC1 software identifier in both spherical
+metadata representations. Their hashes are retained in the audit.
+
+The same ZIP also passes **44 native editor checks** in two fresh Godot 4.7.2
+Forward+/Vulkan editor processes: **22** initial-process and **22** reopened-process
+checks. This includes real 4K sample/full export, spherical playback, stereo mix,
+pause/seek, editor restart, recent jobs, capture/encoder cancellation, recovery
+and source preservation. The installed addon hashes match the RC1 manifest and
+remain unchanged. This automated review does not mark human UI navigation or
+subjective delivery acceptance complete.
+
+The reports, packages, Git snapshot and reproducible audit are retained under
+`.godot360/rc1-review-20260913/`. `audit_rc1.py` verifies `audit.json` from the
+five lane reports, native editor report, CI metadata, source mapping and
+distribution manifests. All **101** protected creative/project/fixture files
+remain unchanged. Credential scans of the exact source and **43 local commits**
+find no leaks; the previously identified historical personal paths remain.
+
+The fresh `owner-walkthrough/` project uses this exact candidate, starts with
+the plugin disabled and has no capture hooks. Its human checklist is pending.
+Linux/macOS remain experimental; the prior advanced-effect, production and
+experimental CI evidence retains its recorded snapshots. No such matrices were
+rerun for a release-string change, and the original Linux Mobile observation
+remains unexplained. Root-documentation follow-up records the results without
+changing the tested addon payload. No stable tag, public release, visibility
+change or release-asset upload occurred.
+
 ## Windows release content and source distribution — 2026-09-13
 
 Preparation commit **`da96a39763711e94114422c2263ed7efed48eaa7`** defines the

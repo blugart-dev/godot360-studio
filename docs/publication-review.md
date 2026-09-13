@@ -29,7 +29,12 @@ The private vulnerability-reporting endpoint returns **HTTP 404** and
 `security_and_analysis` is unavailable; private reporting is **not confirmed**,
 not assumed enabled or disabled. The existing security policy provides a fallback
 request for a private channel without disclosing exploit details. Confirm the
-actual private-report route before publication. No repository setting was changed.
+actual private-report route during authorized publication. GitHub's
+[current instructions](https://docs.github.com/en/code-security/how-tos/report-and-fix-vulnerabilities/configure-vulnerability-reporting/configure-for-a-repository)
+scope the feature to public repositories. The 404 is consistent with that scope,
+but is not by itself proof of the reason; activation and verification follow
+the authorized visibility change. This does not block private RC validation.
+No repository setting was changed.
 
 Remaining publication decisions are the final accepted package, whether to expose
 the reviewed historical paths or use a reviewed source-only public history, and

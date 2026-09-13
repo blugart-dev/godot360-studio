@@ -1,5 +1,26 @@
 # Godot360 Studio development handoff
 
+## Private RC1 validated on the Windows launch matrix — 2026-09-13
+
+**1.0.0-rc.1** at `b323a92` is pushed privately. The packager now supports numbered
+RC identifiers and correct development/candidate/stable installation labels,
+with six drift/invalid-version regression tests. Product release strings identify
+RC1; capture/rendering behavior is unchanged.
+
+The exact 243-member ZIP passes **5,930 checks across all five Windows lanes**
+and **44 native editor checks** across export/playback/restart/cancel/recovery.
+Both distributions rebuild identically; repository CI passes and builds the same
+addon bytes. [The validation record](validation.md#private-windows-rc1-acceptance-evidence--2026-09-13)
+maps the commit, hashes, immutable packages, native reports and CI evidence.
+
+Use `.godot360/rc1-review-20260913/owner-walkthrough/` for the remaining human
+review of this exact candidate. Its plugin starts disabled; human acceptance is
+pending. After feedback, fix findings and prepare the stable version/artifact.
+The repository remains private. Public-history choice and final authorization
+remain open; enable GitHub private vulnerability reporting during authorized
+publication, since the feature is scoped to public repositories. The older
+0.8.0 preparation below retains its historical package identities.
+
 ## Windows release content and distributions prepared — 2026-09-13
 
 Commit `da96a39` adds the [Windows support contract](../addons/godot360/SUPPORT.md),
