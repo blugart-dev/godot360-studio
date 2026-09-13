@@ -10,8 +10,26 @@ RC2 adds native offline help, clearer installation and quality/support guidance,
 storage/source-retention explanations, and correct handling of cancellation
 before coordinator startup. It keeps the existing Windows launch matrix and
 capture/encoding settings. Current guides distinguish historical 0.x/RC1 evidence
-from the new candidate. The exact artifact identity, native reviews and CI
-results are recorded in [validation](validation.md) as they complete.
+from the new candidate.
+
+Candidate source: **`f1329c1c6478ccc942eacddd35247b4e9bf318f2`**, on the private
+`codex/windows-1.0-stabilization` branch. Evidence and distributions are retained
+under `.godot360/rc2-review-20260913/`:
+
+- `godot360-studio-1.0.0-rc.2.zip`: **245 members, 884,186 bytes**; SHA-256
+  `d2693cf7d1f3c785868b7ed7d5f3f7d4e40ec5604477d0db0f9060e82c12d940`.
+- `godot360-studio-1.0.0-rc.2-source.zip`: **497 members, 75,862,666 bytes**;
+  SHA-256 `43e0745704a2de7777b6df4ea0b9a95d5cafb1633fa932a49468f8ff1a20442e`.
+  It includes a source manifest and no Git history.
+
+Both archives rebuild identically. The addon passes **6,070 native Windows
+package checks** and **52 native editor checks** against that exact ZIP.
+Repository CI builds the same addon bytes. The source archive freezes the
+candidate commit; later root documentation records its acceptance evidence.
+The experimental Linux Mobile temporal job repeats the known opening-history
+mismatch and remains failed. See [validation](validation.md) for the full result
+and the separate Windows evidence. The clean `owner-walkthrough/` uses RC2;
+human navigation, listening and delivery acceptance remain pending.
 
 ## Frozen private RC1 artifact
 
@@ -88,11 +106,11 @@ active exports, back up recipes/settings and follow
 ## Final acceptance record
 
 - [ ] Record the completed human walkthrough and itemized delivery review.
-- [ ] Resolve any supported-workflow blocker; retain the unexplained historical
-  Linux Mobile observation and its fresh passing evidence.
+- [ ] Resolve any supported-workflow blocker; retain the unexplained recurring
+  Linux Mobile observation and its separate platform evidence.
 - [ ] Set consistent stable version labels in plugin, panel, metadata, guides and
-  generated package README; replace this draft's candidate status and refresh
-  legacy compatibility-guide intros while retaining their historical evidence.
+  generated package README; replace this draft's candidate status while retaining
+  the separately identified historical evidence.
 - [ ] Record the final commit, exact addon/source ZIP names, SHA-256 values,
   manifests, native Windows acceptance and required CI results.
 - [ ] Complete the public-history choice and verify issue/security settings.

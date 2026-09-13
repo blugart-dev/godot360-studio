@@ -82,15 +82,16 @@ Open this repository's `project.godot` to try them; the plugin is already enable
 
 **1.0.0-rc.2 — private Windows release candidate.**
 Onboarding, rendering, playback and recent-export improvements are implemented.
-The [1.0 completion criteria](docs/release-readiness.md) describe the remaining
-engineering and validation work. This source snapshot is not a stable 1.0 release.
+The exact candidate passes all five Windows package lanes and the native editor
+restart review. The [1.0 completion criteria](docs/release-readiness.md) track the
+remaining human walkthrough, stable artifact and publication work.
 The agreed 1.0 launch scope is **supported Windows, experimental Linux/macOS**.
 
 - **Windows:** tested exports and review on Godot 4.5.1, 4.6.3 and 4.7.2;
   Forward+/Mobile also have Windows Vulkan and Direct3D 12 visual evidence.
-- **Linux (experimental):** the completed stabilization export/review and software
-  OpenGL/Vulkan checks pass. An earlier software-Mobile history mismatch remains
-  unexplained and recorded; native hardware GPU validation remains open.
+- **Linux (experimental):** export/review and software-rendering evidence is
+  recorded separately. RC2 reproduces an unresolved software-Mobile opening-history
+  mismatch; native hardware GPU validation remains open.
 - **macOS (experimental):** Apple Silicon headless CI passes, including playback and recovery
   checks. Graphical export and Mac GPU validation remain open.
 - Optional [capture borders with before/after examples](docs/capture-borders.md)

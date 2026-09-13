@@ -31,22 +31,31 @@ the five launch combinations, tested scene setups, production envelope and
 explicit exclusions. [Upgrade instructions](../addons/godot360/MIGRATION.md)
 cover existing 0.x installations, and [the 1.0 release draft](release-1.0.md)
 provides the description and final acceptance record. Stable labels and the final
-stable artifact remain pending. RC1 passed its automated matrix; the later
-usability and early-cancellation fixes are being checked as the distinct RC2.
+stable artifact remain pending. RC2 includes the later usability and
+early-cancellation fixes and passes the complete Windows package/editor matrix.
 
-## Current RC2 preparation — 2026-09-13
+## Current RC2 checkpoint — 2026-09-13
 
-RC2 includes the native help/setup/support/storage improvements and the
-coordinator startup-cancellation fix. The pre-versioned follow-up passed 582
-focused checks across all three Windows engine versions, 43 panel checks, and
-52 native editor checks. These results motivated RC2; the exact RC2 ZIP must
-have its own package, full Windows matrix, native editor and CI evidence.
+RC2 at `f1329c1c6478ccc942eacddd35247b4e9bf318f2` includes native offline help,
+clearer setup/support/storage guidance and the coordinator startup-cancellation
+fix. Its exact addon ZIP passes **6,070 package checks across all five Windows
+lanes** and **52 native editor checks across first launch and restart**. Both
+distributions rebuild identically; repository CI builds the same addon bytes.
+The extracted source imports/starts cleanly and passes its scene checks. Current
+guides and migration instructions are refreshed. See [RC2 validation](validation.md).
 
-The remaining engineering work is to finish those checks, correct any supported
-workflow regressions, and align the current guides and source distribution.
-The actual private walkthrough and subjective delivery review remain pending.
-Stable versioning/final artifact acceptance and the public-history/publication
-decisions follow. Linux/macOS remain experimental throughout.
+The experimental Linux Mobile temporal test reproduces its earlier first-five-
+frame history mismatch. Its thresholds remain unchanged and its cause is still
+unresolved; the [temporal record](temporal-capture.md) retains the exact evidence.
+A fresh exact-RC2 Windows Mobile temporal review passes with unchanged limits.
+Desktop and Forward+ temporal CI pass. Linux/macOS remain experimental under the
+agreed Windows launch scope.
+
+The remaining stable-release gates are the actual private walkthrough and
+subjective delivery review, resolving applicable findings, then stable versioning
+and final artifact acceptance. The public-history choice and final publication
+authorization follow. A fresh RC2 walkthrough is prepared locally; automated
+checks do not mark the human steps accepted.
 
 ## Frozen RC1 checkpoint — 2026-09-13
 
@@ -97,10 +106,10 @@ evidence remains valid for its recorded snapshot.
 | Capture appearance | The [combined moving-light/material review](combined-appearance.md) establishes authored exposure and capture borders. Residual halo-shape and view-dependent effects are documented in [the support contract](../addons/godot360/SUPPORT.md); shared automatic exposure is outside 1.0. Preserve this bounded evidence and include edges/poles/cuts in the final delivery review. | Before/after fixtures, unchanged projection/color/geometry and measured cost are retained. The known residual limits are explicit; human delivery acceptance remains open. |
 | Complex animated scenes | [Keyed skin/cameras](skeletal-capture.md), [imported GLB](imported-characters.md), [head look/nested skeletons](modifier-capture.md), [particles](particle-capture.md), [smoke](smoke-capture.md), [trails](trail-capture.md), [temporal effects](temporal-capture.md), [saved LightmapGI](lightmap-capture.md) and [combined effects](combined-effects.md) now have a consolidated [support boundary](../addons/godot360/SUPPORT.md). Preserve the tested setups and resolve applicable regressions; further GI, stateful IK and import pipelines remain extensions. | Deterministic fixture results and negative controls are retained, with explicit setup requirements and exclusions. |
 | Production performance | [Four one-minute Forward+/Mobile 4K/8K workloads](production-performance.md) now pass on native Windows / 4.7.2 / RTX 3060 Ti, with sampled process/GPU/system memory, timing, storage, frame/audio checks and controlled capacity failures. Forward+ 8K uses disabled MSAA; other profiles use 4×. Broader hardware, longer durations and heavier GI remain unmeasured. | Preserve the measured budgets and explicit limits; extend only the profiles selected for the final supported matrix. Short probes do not certify full-job RAM needs. |
-| Regression follow-up | The obsolete panel tests are repaired and all affected hosted workflows now pass. The earlier Linux Mobile history mismatch remains unexplained despite fresh passing Windows and hosted runs. Preserve the failure and opening-frame evidence; account for the uncertainty in candidate review and investigate if it recurs. | Source-matched passing affected tests and current Windows evidence are retained. Record the historical failure's observed scope without claiming a root cause or renderer fix. Keep the original thresholds and negative controls. |
-| Windows candidate matrix | All five [target combinations](../addons/godot360/SUPPORT.md) now pass against the exact RC1 artifact, together with native editor integration. Preserve those results and validate the eventual stable artifact as required by its changes. Linux/macOS remain experimental. | RC1 has 5,930 native package checks and 44 editor checks, reproducible package identity and unchanged sources. Native Linux/Mac hardware checks do not block Windows launch. |
+| Regression follow-up | The obsolete panel tests and startup-cancellation defect are repaired. The experimental Linux Mobile history mismatch recurs in RC2, with the same first-five-frame measurements. Preserve the failure and opening-frame evidence; the cause remains unresolved. | Current Windows acceptance is recorded separately. Keep original thresholds and negative controls; do not report all hosted checks green or claim a renderer fix. Linux support remains experimental. |
+| Windows candidate matrix | All five [target combinations](../addons/godot360/SUPPORT.md) pass against the exact RC2 artifact, together with native editor integration. Preserve those results and validate the eventual stable artifact as required by its changes. Linux/macOS remain experimental. | RC2 has 6,070 native package checks and 52 editor checks, reproducible package identity and unchanged sources. Native Linux/Mac hardware checks do not block Windows launch. |
 | Private end-to-end usability and delivery | [Clean native editor integration](editor-workflow.md) now covers authored-scene saving, 4K test/export, stereo playback/seek, editor restart, cancellation and recovery. It fixes progress JSON errors and unwanted import of retained captures. Remaining: actual UI navigation and subjective delivery review from the published instructions. | Completed private walkthrough and itemized delivery review against the final candidate, with blocking findings resolved. Automated editor evidence does not close the click-through requirement. Independent feedback can help but is not a prerequisite for continuing implementation. |
-| Final package | RC1 addon/source distributions, [migration notes](../addons/godot360/MIGRATION.md) and [release draft](release-1.0.md) are prepared and validated. After human feedback, update stable labels and remaining legacy guide intros, build the final artifact and run checks appropriate to its changes. | Reproducible ZIP/manifest, green required checks and native Windows reviews, explicitly accounted-for experimental results, no known supported-workflow blockers, and accurate release notes. |
+| Final package | RC2 addon/source distributions, refreshed current guides, [migration notes](../addons/godot360/MIGRATION.md) and [release draft](release-1.0.md) are prepared. After human feedback, update stable labels, build the final artifact and run checks appropriate to its changes. | Reproducible ZIP/manifest, green required checks and native Windows reviews, explicitly accounted-for experimental results, no known supported-workflow blockers, and accurate release notes. |
 | Public repository preparation | Source/all-ref credential scans pass; six historical brief blobs retain personal paths. A reviewed source-only ZIP is prepared. Choose the public-history approach and approve the exact artifacts. GitHub private vulnerability reporting is a public-repository feature; enable and verify it during authorized publication. | Follow the [publication checklist](publishing.md), retain licenses/notices, and obtain final publication authorization after candidate acceptance. Reporting activation is not a private RC prerequisite. |
 
 ## Already working

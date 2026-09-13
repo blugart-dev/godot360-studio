@@ -4,14 +4,44 @@ Updated on 2026-09-13. This is a development recap; the
 [publication preparation review](publication-review.md) records repository cleanup.
 The canonical completion criteria remain in [release readiness](release-readiness.md).
 
-## Current work: private RC2 preparation — 2026-09-13
+## Current checkpoint: private RC2 — 2026-09-13
 
 The owner asked to audit every remaining 1.0 gate and continue autonomously.
-The usability follow-up below is being frozen as **1.0.0-rc.2**, with consistent
-release strings, refreshed current guides and separately identified historical
-evidence. Finish exact-package Windows/CI and source-distribution checks, resolve
-applicable failures, and prepare a fresh walkthrough. Keep human delivery
-acceptance and public-history/publication decisions pending until provided.
+**1.0.0-rc.2** is frozen at `f1329c1c6478ccc942eacddd35247b4e9bf318f2` on the private
+stabilization branch, with consistent release strings and refreshed current
+guides. Exact-package Windows acceptance passes **6,070 package checks** across
+five lanes and **52 native editor checks** across two processes. Repository CI
+builds identical addon bytes. Both distributions rebuild identically; source
+import/startup and scene checks pass and all 101 protected files are unchanged.
+
+Desktop CI passes (Linux 1,217 checks plus rendered reviews; Mac 1,073 headless
+checks). Forward+ temporal CI passes. **Linux Mobile temporal CI fails again**:
+both history cases reproduce all per-frame measurements of the original failed
+run, with frames 0–4 exceeding 0.15 face MAE and a maximum of 0.796318. Capture,
+projection, fixture and comparison hashes match the passing stabilization
+snapshot. The cause remains unresolved; preserve the failure and unchanged
+thresholds. Linux/macOS remain experimental, as the owner explicitly selected.
+
+The separate exact-RC2 Windows Mobile temporal follow-up passes all five cases
+with 288 decoded frames including the deliberate control; valid history face
+MAE is 0.048301. The source-only download passes 247 scene/rendered-workflow
+checks. `audit.json` and `native-followups.json` retain the mappings. Windows
+success does not close the Linux issue.
+
+Evidence lives in `.godot360/rc2-review-20260913/`; exact hashes, hosted links and
+scope are in [RC2 validation](validation.md#private-windows-rc2-acceptance-evidence--2026-09-13).
+The fresh `owner-walkthrough/WALKTHROUGH.md` uses the RC2 ZIP, with no capture hooks
+and the plugin initially disabled. The source archive freezes the candidate
+commit; later root documentation records the completed evidence.
+
+Next: the owner's actual walkthrough and itemized delivery review; resolve any
+applicable findings, set stable labels and validate the stable artifact according
+to its changes. Then complete the public-history choice and obtain publication
+authorization. Credential scans pass, but six historical brief blobs still contain
+workstation paths; the verified source-only archive provides a clean alternative.
+No main merge, stable tag, release upload or visibility change has occurred.
+Do not expand the scene/hardware scope or repeat unchanged large matrices without
+new findings. Automated checks do not accept the human walkthrough.
 
 ## Usability follow-up after RC1 — 2026-09-13
 

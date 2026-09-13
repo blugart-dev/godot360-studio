@@ -5,6 +5,25 @@ camera cut through the actual PNG/MP4 export pipeline. It compares every deliver
 frame with simultaneous native perspective references. The references share the
 scene simulation, but own their cameras, viewports and compositor resources.
 
+## RC2 experimental Linux recurrence — 2026-09-13
+
+The [RC2 Mobile software-Vulkan job](https://github.com/blugart-dev/godot360-studio/actions/runs/34774789965/job/103770817902)
+reproduces the earlier failure in both camera-owned and world-owned history.
+Delivered frames 0–4 exceed the unchanged 0.15 native-face mean-error limit;
+the maximum is 0.796318 RGB levels, concentrated in the right face at startup.
+All 72 per-frame measurements in each history case match the original failed
+run. Camera poses/settings, 80 draw/history samples, panorama assembly, decoded
+delivery and the intentional negative controls still pass their checks.
+
+The capture, projection, temporal fixture and comparison code match the passing
+stabilization snapshot. The cause remains unresolved; earlier passing runs do
+not close this recurrence. Opening-frame PNGs, logs and source hashes are retained
+under `.godot360/rc2-review-20260913/hosted/temporal-mobile/`, with the comparison
+in `temporal-recurrence.json`. Linux remains experimental. Windows evidence is
+recorded separately in [validation](validation.md): all five exact-RC2 Mobile
+cases pass, including negative controls and 288 decoded frames, with valid
+history face MAE 0.048301. No threshold or warmup was changed to accept a result.
+
 ## Native results — 2026-09-10
 
 Windows 11 / RTX 3060 Ti / Godot 4.7.2 / Vulkan passes:

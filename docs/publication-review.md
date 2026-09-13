@@ -4,8 +4,17 @@
 
 The current source is **1.0.0-rc.2**, following the native-help and startup-cancel
 fixes. A read-only GitHub check confirms the repository remains private, with
-`main` as its default branch. RC1's repository checks pass; RC2 requires its own
-source/archive scans and CI evidence. See the latest [validation](validation.md).
+`main` as its default branch and no open issues or pull requests. RC2 repository
+CI passes and reproduces the local addon bytes. Gitleaks finds no credentials
+in the exact extracted source or **45 commits across all local refs**. The path
+review covers **977 unique text blobs** and still finds personal workstation
+paths in **six older versions of `docs/next-session.md`**. All author/committer
+identities use GitHub noreply addresses; no history or refs were rewritten.
+
+The RC2 source archive contains **497 members**, including its manifest and no
+Git history. It rebuilds identically, imports/starts cleanly, passes scene checks
+and preserves all **101 protected creative/project/fixture files**. Artifact
+hashes and native Windows evidence are in [validation](validation.md).
 The dated sections below retain their original versions and counts.
 
 Human candidate acceptance, the public-history choice and final publication

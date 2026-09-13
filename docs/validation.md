@@ -1,5 +1,83 @@
 # Validation record — updated 2026-09-13
 
+## Private Windows RC2 acceptance evidence — 2026-09-13
+
+Candidate source **`f1329c1c6478ccc942eacddd35247b4e9bf318f2`**, version
+**1.0.0-rc.2**, is pushed on the private `codex/windows-1.0-stabilization` branch.
+It freezes native offline help, clearer setup/support/storage guidance and the
+startup-cancellation fix. Root documentation added afterward records these
+results; the candidate source/archive identity remains fixed.
+
+Evidence root: `.godot360/rc2-review-20260913/`.
+
+| Distribution | Identity |
+| --- | --- |
+| `godot360-studio-1.0.0-rc.2.zip` | 245 members; 884,186 bytes; SHA-256 `d2693cf7d1f3c785868b7ed7d5f3f7d4e40ec5604477d0db0f9060e82c12d940` |
+| `godot360-studio-1.0.0-rc.2-source.zip` | 497 members, including its manifest and no Git history; 75,862,666 bytes; SHA-256 `43e0745704a2de7777b6df4ea0b9a95d5cafb1633fa932a49468f8ff1a20442e` |
+
+Both rebuild identically with Python 3.12.14 / zlib 1.3.2. Every manifest member
+is checked and extracted sources remain unchanged after testing. Relative to the
+previous tested usability snapshot, normalized runtime differences are only RC2
+release strings; the other changes refresh current documentation. Test sources
+are unchanged. The 43 native panel checks recorded below remain mapped to that
+usability snapshot, without being counted again as exact-RC2 checks.
+
+| Native Windows review of the exact RC2 ZIP | Result |
+| --- | --- |
+| Godot 4.7.2 Compatibility / OpenGL 3 | 1,214 checks pass |
+| Godot 4.6.3 Compatibility / OpenGL 3 | 1,214 checks pass |
+| Godot 4.5.1 Compatibility / OpenGL 3 | 1,214 checks pass |
+| Godot 4.7.2 Forward+ / Vulkan | 1,214 checks pass |
+| Godot 4.7.2 Mobile / Vulkan | 1,214 checks pass |
+| Native editor first launch and restart | 26 + 26 = 52 checks pass |
+
+The **6,070 package checks** cover clean installation, contracts, actual exports,
+stereo playback/seek, startup and mid-job cancellation, capacity failures,
+recovery and re-encoding. Each lane independently verifies archive identity,
+identical rebuilding and unchanged payloads. Editor checks include native help,
+Escape dismissal, ordinary-scene 4K delivery and persistence across processes.
+All fifteen workflow deliveries carry the matching RC2 spherical metadata.
+
+A fresh **Windows Mobile/Vulkan temporal review** of the exact unpacked RC2
+also passes its five cases: baseline, camera/world history, rejected shared
+history and the diagnosed unsupported-buffer failure. It decodes **288 frames**
+including the intentional shared-history control. Both valid history cases have
+maximum native-face MAE **0.048301**, below the unchanged 0.15 limit. This is
+separate Windows evidence; it does not resolve the hosted Linux recurrence.
+
+The source-only download imports and starts cleanly on Godot 4.7.2. UMBRAL runtime
+checks pass 48, THRESHOLD 60 and AFTERGLOW 107. The extracted project's rendered
+release workflow passes another 32 checks: **247 source-project checks total**.
+All **101 protected creative,
+project and fixture files** remain unchanged. Six package-identity and seven
+repository-guard unit tests pass. The candidate inventory checks **496 source
+files, 684 local links and 46 provenance hashes**. Gitleaks finds no credentials
+in the exact source or 45 commits across all local refs; the separate path review
+still identifies six historical brief blobs for the public-history decision.
+
+Hosted evidence at the same candidate commit:
+
+- [Repository hygiene](https://github.com/blugart-dev/godot360-studio/actions/runs/34774786334)
+  passes, including both unit suites and two builds with the exact local addon hash.
+- [Desktop platforms](https://github.com/blugart-dev/godot360-studio/actions/runs/34774788214)
+  passes: Linux has **1,217** package checks plus software-rendered reviews;
+  macOS has **1,073** headless checks. Neither establishes native GPU support.
+- [Temporal rendering](https://github.com/blugart-dev/godot360-studio/actions/runs/34774789965)
+  has a passing Forward+ lane (**648 decoded frames**, including the rejected
+  shared-history control) and a **failed Mobile lane**. Both Mobile history cases
+  reproduce the original failed run's complete per-frame measurements, with
+  face MAE up to **0.796318** against the unchanged **0.15** limit at frames 0–4.
+  Baseline, processing/history counts, assembly/decode and deliberate failure
+  controls pass. The [recurrence analysis](temporal-capture.md#rc2-experimental-linux-recurrence--2026-09-13)
+  retains the opening frames and unresolved cause; no rerun replaces this failure.
+
+The clean `owner-walkthrough/` installs this exact ZIP with the plugin disabled
+and a normal authored scene. Its `WALKTHROUGH.md` is ready, and human navigation,
+listening and delivery acceptance remain pending. `audit.json` binds the archive,
+native reviews, source mapping, metadata and hosted results. Stable versioning/final artifact
+review and the public-history/publication decisions remain open. No stable tag,
+release upload, merge to `main` or public visibility change was performed.
+
 ## Unreleased usability follow-up after RC1 — 2026-09-13
 
 The owner authorized changes that simplify using the addon. This working-tree
