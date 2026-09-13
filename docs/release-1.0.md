@@ -25,6 +25,14 @@ The manifest records each archive's source commit and exact checksum; final sour
 import/startup and rendered-workflow results accompany it. Root documentation
 recording acceptance follows the frozen addon commit. See [validation](validation.md).
 
+Final source snapshot: **`e4385b02c7ecb39a8e115393ae3940eeaa1cf8ce`**.
+`godot360-studio-1.0.0-source.zip` has **497 members / 75,869,646 bytes**;
+SHA-256 **`3abcbf64d393de29fc8c22975486ca559b9fc451f91dedcfdb97d7cc4ff450c4`**.
+It rebuilds identically and passes clean import/startup plus **247 scene and
+rendered-workflow checks**, with all source payloads unchanged and no credentials
+found. Its manifest/archive identity is frozen; this completion entry follows
+that snapshot. The local `release/READY.md` and manifest summarize the handoff.
+
 The unresolved experimental Linux Mobile history result remains open. The fresh
 RC2 Windows temporal review and other bounded rendering evidence remain mapped
 to unchanged rendering code. Public visibility, default-branch/tag decisions,
@@ -141,7 +149,7 @@ active exports, back up recipes/settings and follow
   the separately identified historical evidence.
 - [x] Record the exact addon commit/hash, manifest, native Windows acceptance and
   passing repository CI.
-- [ ] Complete the final source archive verification and local release manifest.
+- [x] Complete the final source archive verification and local release manifest.
 - [ ] Complete the public-history choice and verify issue/security settings.
 - [ ] Obtain final publication authorization for the exact source and artifacts.
 

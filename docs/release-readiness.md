@@ -48,8 +48,9 @@ passes all five Windows lanes, native editor restart, manifests, metadata,
 reproducibility and repository CI. Source/download and credential evidence are
 recorded in [validation](validation.md); final archive identities accompany the
 local `release/` folder. Preserve source-matched RC2 advanced-renderer evidence
-and the failed experimental Linux Mobile result. Further work concerns final
-source packaging and the deliberately withheld public-release steps.
+and the failed experimental Linux Mobile result. The final source download also
+passes 247 scene/rendered-workflow checks and rebuilds identically. Remaining
+work concerns the deliberately withheld public-release steps and any new findings.
 
 ## Frozen RC2 checkpoint — 2026-09-13
 
@@ -153,8 +154,8 @@ time, memory and disk budgets, including the reduced-AA tradeoff for Forward+
 8K on the tested 8 GiB GPU. These bounded milestones do not need an ever-growing
 scene matrix before 1.0; changes and failures determine which checks to repeat.
 
-1. Preserve the accepted Windows source/package identity and owner feedback.
-   Verify the final source snapshot and record both archive checksums. Fix any
+1. Preserve the accepted Windows source/package identity, final source snapshot,
+   both recorded archive checksums and owner feedback. Fix any
    newly reported reproducible supported-workflow blocker before distributing.
 2. Keep publication on hold. When authorized, choose the public history, align
    the default branch/tag and public status text, and verify security reporting

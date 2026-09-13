@@ -6,7 +6,10 @@ The owner authorized preparation of **1.0.0** after reporting no errors with RC2
 and explicitly instructed that the repository remain private until told otherwise.
 The exact addon now passes 6,070 native package and 52 editor checks; repository
 CI reproduces it. The final source snapshot includes current release/security
-guidance and receives its own archive review. Results are in [validation](validation.md). No
+guidance, passes 247 scene/rendered-workflow checks and rebuilds identically.
+Its source scan and the 48-commit all-ref credential scan pass. Both archive
+checksums and source commits are recorded in the local release manifest and
+[validation](validation.md). No
 visibility change, public upload, release publication or historical rewrite is
 authorized by that preparation request. The public-history choice and activation
 of the public security-reporting route remain publication work.

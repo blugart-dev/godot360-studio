@@ -17,9 +17,12 @@ checks** and **52 native editor checks**; repository CI builds identical bytes.
 `windows-audit.json` and `source-mapping.json` retain the proof in
 `.godot360/stable-1.0-review-20260913/`. The addon SHA-256 is
 `5ab5ea3589d4c32347890cd33daf5925b3c728eb385442d2f71ecbe3c38a9dde`.
-The final `release/` source snapshot includes acceptance documentation and is
-verified separately; its checksum/commit and full source workflow results belong
-in the adjacent release manifest. Preserve RC2's unchanged rendering evidence and unresolved
+The final `release/` source snapshot at `e4385b02c7ecb39a8e115393ae3940eeaa1cf8ce`
+passes 247 scene/rendered-workflow checks and rebuilds identically. Its SHA-256 is
+`3abcbf64d393de29fc8c22975486ca559b9fc451f91dedcfdb97d7cc4ff450c4`.
+`release/READY.md`, `SHA256SUMS.txt` and `release-manifest.json` are ready for the
+owner; the latter binds both source commits and archives. No further engineering
+gate is known for the agreed Windows scope. Preserve RC2's unchanged rendering evidence and unresolved
 experimental Linux Mobile failure. Do not repeat unrelated production matrices
 without a source change or new failure. No itemized YouTube/headset review was
 provided; record only the owner's actual no-error feedback. Public-history choice,

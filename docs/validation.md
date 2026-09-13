@@ -2,6 +2,20 @@
 
 ## Private 1.0.0 Windows acceptance — 2026-09-13
 
+**Final distribution completion:** the `release/` handoff contains the exact
+validated addon and source ZIPs, checksums and release manifest. The final source
+is frozen at **`e4385b02c7ecb39a8e115393ae3940eeaa1cf8ce`**, with **497 members /
+75,869,646 bytes** and SHA-256
+**`3abcbf64d393de29fc8c22975486ca559b9fc451f91dedcfdb97d7cc4ff450c4`**.
+It rebuilds identically, imports/starts cleanly, and passes **247 source-project
+checks** (48 runtime, 60 THRESHOLD, 107 AFTERGLOW, 32 rendered release workflow).
+Every archived source file remains unchanged after testing and its addon/test
+payload matches the validated addon ZIP. Source and **48-commit all-ref**
+credential scans pass. [Final-source repository CI](https://github.com/blugart-dev/godot360-studio/actions/runs/34777280077)
+also passes and produces the unchanged addon hash. This completion record follows
+the frozen source snapshot; `release/release-manifest.json`, `SHA256SUMS.txt` and
+`source-final-review.json` retain exact identity and acceptance details.
+
 The owner reported **"I did not get any errors"** after RC2 and authorized final
 1.0 preparation while explicitly withholding publication approval. This records
 the feedback supplied; no itemized YouTube, headset or other device acceptance
