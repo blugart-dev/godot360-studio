@@ -32,8 +32,10 @@ requires applicable fresh acceptance checks.
 ## Follow-up work and continuing limits
 
 - Investigate the recurring experimental Linux software-Mobile first-five-frame
-  history mismatch. Keep its original limits and negative controls; no renderer
-  fix or all-green hosted matrix is claimed. Windows Mobile passes separately.
+  history mismatch. Keep its original limits and negative controls. Tagged-source
+  Mobile/Forward+ hosted runs subsequently passed, as recorded in the
+  [2026-09-14 follow-up](publication-review.md#public-films-and-completed-ci--2026-09-14),
+  but no cause or renderer fix has been established. Windows Mobile passes separately.
 - Test native Linux GPUs and Mac graphical exports before offering platform support.
 - Gather broader Windows/GPU and real-project feedback. Measured production
   budgets cover four one-minute 4K/8K workloads on the reference machine.

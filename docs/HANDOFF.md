@@ -1,5 +1,27 @@
 # Godot360 Studio development handoff
 
+## README screenshot coverage — 2026-09-14
+
+The README now illustrates every major panel workflow, all four films and twelve
+rendering-feature fixtures. Twenty-five panel/editor PNG copies were refreshed
+from passing native reviews (44 panel checks, 52 editor checks), including the
+packaged screenshot. `tools/build_ui_media.py` validates the source before copying
+and updating provenance. [Validation and exact scope](validation.md#readme-screenshot-refresh--2026-09-14).
+Historical comparison imagery remains dated; the four film masters match their
+recorded hashes. Public release assets remain unchanged.
+
+## Documentation and public films — 2026-09-14
+
+The owner published all four films and provided the watch URLs. Signed-out access
+and YouTube spherical controls are verified; [public film links](youtube-publication.md#public-films)
+now appear in the README, documentation index, showcase and individual guides.
+A new [FAQ](faq.md) explains download choices, quality, interaction and recovery.
+The local documentation sweep passes 1,214 fresh native Windows package checks;
+[validation](validation.md#documentation-and-public-film-sweep--2026-09-14) records
+the exact candidate and unchanged runtime. Latest release CI has completed
+successfully; the historical Linux Mobile mismatch still needs explanation.
+Continue with real-project feedback and platform follow-up in the [roadmap](roadmap.md).
+
 ## Public 1.0.0 release — 2026-09-13
 
 **Published and public.** `v1.0.0` identifies the tested source `d2a687d`;

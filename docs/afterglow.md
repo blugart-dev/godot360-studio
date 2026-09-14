@@ -2,9 +2,11 @@
 
 **A one-minute disco ritual: the bass wakes the floor, then the whole room joins in.**
 
-[![AFTERGLOW's mirror crown, glass dance floor and moving beams.](media/afterglow.jpg)](media/afterglow-tour.mp4)
+[![Watch AFTERGLOW's mirror crown and dancing glass floor in 360° on YouTube.](media/afterglow.jpg)](https://www.youtube.com/watch?v=TK2PuQ3n_XU)
 
-**[Watch the complete flat preview with sound](media/afterglow-tour.mp4)**
+**[Watch in 360° on YouTube · 60 s ↗](https://www.youtube.com/watch?v=TK2PuQ3n_XU)**
+· [All four films](https://www.youtube.com/playlist?list=PLUjBgihWYNpQ)
+· [Complete flat preview with sound](media/afterglow-tour.mp4)
 
 The full spherical film is generated locally at
 `renders/afterglow-clearance-4k/film/video-360.mp4`; follow [Reproduce the film](#reproduce-the-film).

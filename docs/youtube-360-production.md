@@ -97,11 +97,16 @@ for potential seams. A green technical report does not replace visual/audio revi
 Upload a short private or unlisted calibration clip manually, allow YouTube's 360
 processing to finish, and check navigation, orientation, resolution, sound, seam
 continuity, and duration on the intended devices. The local tool does not upload
-anything. A user has confirmed basic 360 playback for the initial 2K UMBRAL clip,
-but reported blurry/pixelated imagery. Broader device and quality checks remain.
+anything. The [four public example films](youtube-publication.md#public-films)
+now open with 360° controls in a signed-out browser. The earlier 2K UMBRAL clip
+received feedback about soft imagery; source resolution spans the whole sphere,
+so select a suitable delivery resolution and check the processed upload.
+Broader device and quality checks remain separate from public-access verification.
 
 Follow [YouTube's spherical upload instructions](https://support.google.com/youtube/answer/6178631?hl=en)
 and [encoding guidance](https://support.google.com/youtube/answer/1722171?hl=en).
+For the finished example films, use the [publication copy and checklist](youtube-publication.md)
+for titles, descriptions, repository links and music credits.
 
 ## Community scope
 
@@ -109,10 +114,11 @@ The contribution is an integrated, reproducible workflow with a small original
 addon, rather than a new projection standard. It includes calibration, portable
 recipes, a documented scene hook, retained evidence, and explicit validation limits.
 
-Before an Asset Library release: validate installation in a clean project, test
-more machines and Godot versions, include the license and examples, and report
-the actual tested compatibility. The present work creates a local prototype and
-documentation; no community announcement or publication has been made.
+Godot360 Studio 1.0.0 is [public on GitHub with addon and source downloads](publication-review.md).
+Windows is supported; Linux/macOS remain experimental. Before a separate Asset
+Library submission, review its requirements, retain the license and examples,
+and report the [actual tested compatibility](../addons/godot360/SUPPORT.md).
+YouTube publication and an Asset Library entry have their own completion records.
 
 Stereo 360 is a separate milestone. Two offset ordinary cubemaps are not sufficient
 for correct omnidirectional stereo. Spatial audio likewise needs an ambisonic capture

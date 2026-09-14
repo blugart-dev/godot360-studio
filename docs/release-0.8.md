@@ -2,7 +2,8 @@
 
 **Historical snapshot.** The owner clarified on 2026-09-08 that development stays
 private until 1.0 is tested and ready. The beta gates below no longer define the
-current work order; use the [private 1.0 checklist](release-readiness.md).
+current work order; use the [1.0 release acceptance](release-readiness.md).
+Version 1.0.0 is now public; the dated candidate observations below remain historical.
 
 Prepared locally on 2026-09-07 for Windows, Godot 4.5.1/4.6.3/4.7.2 and
 Compatibility. THRESHOLD later received positive user-reported YouTube visual

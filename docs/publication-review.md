@@ -1,5 +1,24 @@
 # Publication review
 
+## Public films and completed CI — 2026-09-14
+
+The owner published **THRESHOLD, AFTERGLOW, LUMEN and UMBRAL** on YouTube.
+All four watch pages and the [playlist](https://www.youtube.com/playlist?list=PLUjBgihWYNpQ)
+open in a signed-out browser, with matching film titles and spherical navigation
+controls. [Public links and viewing-check scope](youtube-publication.md#public-films)
+are now linked from the README, showcase and film guides. No YouTube edits were
+performed by the project sweep.
+
+All seven tagged-source workflows in the publication table below have now
+completed successfully. This includes both **Mobile and Forward+** in
+[Temporal rendering](https://github.com/blugart-dev/godot360-studio/actions/runs/34780801707),
+and the Linux rendered/Mac headless jobs in
+[Desktop platforms](https://github.com/blugart-dev/godot360-studio/actions/runs/34780801683).
+The later [main documentation check](https://github.com/blugart-dev/godot360-studio/actions/runs/34781126364)
+also passes. These results do not explain or erase the recurring earlier Linux
+Mobile history mismatch, or establish native Linux/Mac GPU support.
+The original publication-time table below retains its dated in-progress states.
+
 ## Published 1.0.0 — 2026-09-13
 
 **[Repository](https://github.com/blugart-dev/godot360-studio) public; [1.0.0 release](https://github.com/blugart-dev/godot360-studio/releases/tag/v1.0.0) published.**

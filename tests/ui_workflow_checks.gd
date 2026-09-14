@@ -103,6 +103,9 @@ func _run() -> void:
 	await process_frame
 	panel._show_export_details()
 	await _shot("details-1100")
+	# Native dialogs have their own viewport, outside the root screenshot.
+	var details: Window = panel.get_child(panel.get_child_count() - 1)
+	details.get_texture().get_image().save_png(evidence.path_join("export-details.png"))
 	panel.get_child(panel.get_child_count() - 1).queue_free()
 	await _shot("completed-1100")
 	panel.preview.grab_focus()
@@ -141,6 +144,7 @@ func _run() -> void:
 	await _shot("scaled-125-percent")
 	check(panel.get_global_rect().end.x <= root.size.x / 1.25 + 1 and panel.get_global_rect().end.y <= root.size.y / 1.25 + 1, "125% window scaling keeps the panel within its usable viewport")
 	root.content_scale_factor = 1.0
+	await _documentation_views(source)
 	root.size = Vector2i(1100, 600)
 	root.content_scale_size = root.size
 	panel.recipe_fields.duration.text = "90"
@@ -167,6 +171,48 @@ func _run() -> void:
 	print("UI WORKFLOW CHECKS: %d checks, %d failures" % [checks, failures])
 	panel.free()
 	quit(0 if failures == 0 else 1)
+
+
+func _documentation_views(source: String) -> void:
+	# Photograph real controls without changing the recipe used by the checks.
+	var saved: Dictionary = panel.profile.to_dictionary()
+	root.size = Vector2i(1440, 1000)
+	root.content_scale_size = root.size
+	panel.workspace_tabs.current_tab = 0
+	panel.audio_mode_control.select(2)
+	panel.audio_mode_control.item_selected.emit(2)
+	panel._selected("soundtrack", source.path_join("frames/frame.wav"))
+	panel.sections.audio.toggle.button_pressed = true
+	await process_frame
+	await process_frame
+	panel.audio_controls.scene_audio_gain_db.get_line_edit().grab_focus()
+	await _shot("audio-1440")
+	panel.sections.audio.toggle.button_pressed = false
+	panel.audio_mode_control.select(0)
+	panel.audio_mode_control.item_selected.emit(0)
+	panel.soundtrack_field.text = str(saved.soundtrack_path)
+	panel._refresh_plan()
+	panel.sections.advanced.toggle.button_pressed = true
+	await process_frame
+	await process_frame
+	panel.workspace_tabs.get_child(0).scroll_vertical = int(panel.sections.advanced.toggle.position.y)
+	panel.crf_control.get_line_edit().grab_focus()
+	await _shot("encoding-1440")
+	panel.sections.advanced.toggle.button_pressed = false
+	panel.workspace_tabs.current_tab = 2
+	panel.sections.recipes.toggle.button_pressed = true
+	await _shot("library-1440")
+	panel.sections.recipes.toggle.button_pressed = false
+	panel.workspace_tabs.current_tab = 0
+	panel.workspace_tabs.get_child(0).scroll_vertical = 0
+	panel.playback.toggle()
+	while not panel.playback.phase.is_empty():
+		await create_timer(0.1).timeout
+	await create_timer(0.25).timeout
+	panel.playback.player.paused = true
+	await _shot("playback-1440")
+	panel._review_still()
+	check(panel.profile.to_dictionary() == saved, "Documentation views preserve the editable recipe")
 
 
 func _check_help() -> void:

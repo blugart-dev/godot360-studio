@@ -7,7 +7,14 @@ the results, then follow the walkthrough using your own scene or an included exa
 
 **[See what it can do →](showcase.md)**
 · **[Export your first scene →](../addons/godot360/QUICKSTART.md)**
-· [Watch / download the example with sound](media/threshold-tour.mp4)
+· **[Watch the 360° playlist ↗](https://www.youtube.com/playlist?list=PLUjBgihWYNpQ)**
+· [Common questions](faq.md)
+· [Current screenshot tour](../README.md#screenshot-tour)
+· [Rendering feature gallery](../README.md#rendering-feature-gallery)
+
+New here? Watch a film, install the [addon ZIP](https://github.com/blugart-dev/godot360-studio/releases/download/v1.0.0/godot360-studio-1.0.0.zip)
+in your project, then follow the quick start. To edit the films themselves, open
+the [source and examples download](https://github.com/blugart-dev/godot360-studio/releases/download/v1.0.0/godot360-studio-1.0.0-source.zip).
 
 ## Make a 360° video
 
@@ -22,21 +29,22 @@ the results, then follow the walkthrough using your own scene or an included exa
 | Play, seek and listen inside Godot | [Playback](../addons/godot360/PLAYBACK.md) |
 | Reopen work, re-encode or reclaim space | [Recovery](../addons/godot360/RECOVERY.md) · [Storage](../addons/godot360/STORAGE.md) |
 | Plan a larger render and final delivery | [Job planning](job-planning.md) · [Measured production budgets](production-performance.md) · [YouTube production](youtube-360-production.md) |
+| Publish the example films with source links and credits | [YouTube titles, descriptions and checklist](youtube-publication.md) |
 | Report a reproducible problem | [Contributing and issue reports](../CONTRIBUTING.md) · [Diagnostics](../addons/godot360/DIAGNOSTICS.md) |
 
 ## Explore the examples
 
-- **[AFTERGLOW](afterglow.md):** one minute of original disco-funk, dancing glass
-  tiles, swaying architecture and orbiting lights; a Forward+ 4K film and 360° player.
+| Example | Watch in 360° | Open or export it |
+| --- | --- | --- |
+| **THRESHOLD** · four worlds and an original score | [YouTube · 60 s](https://www.youtube.com/watch?v=zntHEAhrnWQ) | `scenes/films/Threshold.tscn` → F6; load `export_profiles/threshold-8k.tres`. [Film guide](threshold.md). |
+| **AFTERGLOW** · a room dancing to disco-funk | [YouTube · 60 s](https://www.youtube.com/watch?v=TK2PuQ3n_XU) | Load `export_profiles/afterglow-4k.tres` for Forward+. [Film and music guide](afterglow.md). |
+| **LUMEN** · an orbital observatory | [YouTube · 24 s](https://www.youtube.com/watch?v=Xy5PmSpqY7s) | Load `export_profiles/lumen-4k.tres` for Forward+. [Film guide](lumen.md). |
+| **UMBRAL** · a gaze-driven installation | [YouTube · 12 s, silent](https://www.youtube.com/watch?v=zWUyKH0Q31I) | F5 to explore; load `export_profiles/umbral-film.tres` for its authored film. [Scene guide](umbral.md). |
+| **Motion lab** · editable camera path and timeline | — | **Library → Recipes and examples → Motion lab**. [Authoring guide](../addons/godot360/AUTHORING.md). |
+| **Calibration** · six labeled directions and a tone | — | **Library → Recipes and examples → Calibration defaults**. [Quick start](../addons/godot360/QUICKSTART.md). |
 
-- **[LUMEN](lumen.md):** an orbital observatory with native light trails, soft
-  vapor and an original score; a complete Forward+ 4K film and local 360° player.
-
-- **[THRESHOLD](threshold.md):** four procedural worlds, sixty seconds, an original
-  score and a complete 8K film recipe.
-- **[UMBRAL](umbral.md):** a gaze-driven installation and its authored film sequence.
-- **[Motion lab](../addons/godot360/AUTHORING.md):** an editable camera path and timeline.
-- **Calibration:** choose **Calibration defaults** in the panel to test six directions and a tone.
+The film guides include local previews and reproduction steps. Source resolution
+describes the render; YouTube's available playback quality depends on processing and device.
 
 ## Development and project status
 

@@ -1,5 +1,15 @@
 # Godot360 Studio UI/UX review
 
+## Screenshot refresh — 2026-09-14
+
+The current-state images below were recaptured from the current 1.0.0 runtime:
+44 native panel checks and 52 native editor checks passed. The historical
+`ui-before-*` images retain their original 2026-09-13 provenance. The
+[README screenshot tour](../README.md#screenshot-tour) now includes audio,
+advanced settings, actual video review, the separate export-details dialog,
+all four help topics and the expanded Library. [Regeneration](media/README.md#refresh-the-panel-screenshots).
+The following design findings remain a dated record of the earlier work.
+
 ## Usability follow-up after RC1 — 2026-09-13
 
 The owner requested improvements that simplify the tool without expanding the

@@ -72,13 +72,21 @@ compares it byte-for-byte with the original candidate.
 
 ## Platform verification and CI
 
+### Documentation screenshots
+
+Run the native panel and editor reviewers, inspect the images, then use
+`tools/build_ui_media.py` to copy them and record provenance. It checks both
+passing reports and current runtime/capture-driver hashes before replacing media.
+The [media guide](media/README.md#refresh-the-panel-screenshots) gives the complete
+commands, neutral-path capture guidance and package rebuild order.
+
 ### Native editor integration
 
 `tests/editor_review.py` installs an exact package in a clean project and drives
 the actual plugin through two native editor processes. It covers saving an
 ordinary authored scene, 4K sample/export, stereo playback and seeking, restart,
 history, cancellation and recovery. [Editor workflow](editor-workflow.md) records
-commands and the distinction from the remaining private UI click-through.
+commands and distinguishes the automated checks from the owner's release feedback.
 
 ### Renderer appearance and motion
 

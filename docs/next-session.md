@@ -1,4 +1,26 @@
-# Engineering brief — development toward 1.0
+# Engineering brief
+
+## README screenshot refresh — 2026-09-14
+
+The current screenshot tour covers setup, recipe/audio/quality, native playback,
+Library, help, export details, cancellation, recovery and scaling. The main README
+also includes four film links and twelve rendering-feature comparisons. Native
+reviews pass 44 panel and 52 editor checks; runtime and creative source are unchanged.
+Use [the media refresh commands](media/README.md#refresh-the-panel-screenshots)
+after future UI changes. [Validation](validation.md#readme-screenshot-refresh--2026-09-14)
+records the latest local package and distinguishes it from published 1.0.0 assets.
+
+## Documentation and public films — 2026-09-14
+
+The README and film guides use [four verified public YouTube links](youtube-publication.md#public-films).
+The documentation index and [FAQ](faq.md) guide readers from watching to installation
+and export. A local package passes 1,214 fresh native Windows checks; its test-report
+wording is updated without addon runtime or creative-source changes. See
+[the sweep record](validation.md#documentation-and-public-film-sweep--2026-09-14).
+Public 1.0.0 tags/assets remain frozen. All listed release CI runs now pass, including
+Mobile temporal, but the earlier recurring Linux mismatch has no established cause.
+Next work is supported-Windows feedback and the documented platform/effect limits,
+not another unchanged release matrix or a repeat publication.
 
 ## Public 1.0.0 release — 2026-09-13
 

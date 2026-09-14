@@ -51,11 +51,11 @@ continuous camera motion, a cut and rejected lighting/history controls on native
 Forward+/Mobile. The [production workload review](production-performance.md)
 now adds four one-minute 4K/8K exports with 7,200 source and decoded frames,
 sampled process/GPU/system memory, disk/time forecasts and capacity-failure
-recovery. Its profiles and hardware limits remain explicit. Next: a clean private
-installation-to-delivery walkthrough; [automated native editor integration](editor-workflow.md)
-now passes and fixes progress-read errors and capture-folder imports. Actual
-UI navigation remains open, followed by freezing and validating the Windows 1.0
-package. Native Linux/Mac testing can proceed separately as hardware is available.
+recovery. Its profiles and hardware limits remain explicit. The subsequent
+[native editor integration](editor-workflow.md), owner RC2 feedback and exact
+Windows 1.0 package acceptance are recorded in the [release checklist](release-readiness.md).
+Version 1.0.0 is now public. Native Linux/Mac testing continues separately as
+hardware is available.
 
 ## Completed first-export and review increments
 
@@ -155,19 +155,19 @@ native backend are outside the first release's support claim.
 | 0.7 — Storage and production runs | Check writable job files and operating headroom; stop on low space/write failures with no unverified final output; preserve reusable sources; pass injected failure and engine regressions | Passed locally: 1,161 checks across three engines |
 | 0.7 — Production resolution | Inspect every source/decoded frame and beginning/middle/end audio cues in a 60-second 4096×2048/30 FPS run and a 30-second 7680×3840/30 FPS run; record storage, timings and limitations | Passed locally: all 1,800/900 frames and audio cues; see [validation](validation.md) |
 | 0.8 — Local candidate | Install the exact packaged addon in a clean project, complete the documented workflow, establish versioned source history and provide useful diagnostics bundles | Passed locally: 1,332 checks on the exact ZIP across three engines; reproducible build and Git history; see [candidate record](release-0.8.md) |
-| 0.8 — Independent beta (historical gate) | Gather independent Windows/GPU feedback | Superseded as a development prerequisite on 2026-09-08; private workflow review remains in the [1.0 checklist](release-readiness.md) |
+| 0.8 — Independent beta (historical gate) | Gather independent Windows/GPU feedback | Superseded as a development prerequisite on 2026-09-08; subsequent Windows acceptance is recorded in the [1.0 checklist](release-readiness.md) |
 | 1.0 — Windows workflow review | Owner feedback on the prepared candidate and separately recorded automated delivery checks | Owner reported no errors with RC2 and authorized final preparation on 2026-09-13; no itemized subjective/device results were supplied |
-| External-service delivery review | User-reviewed navigation, orientation, detail, seams and audio after service processing; required for service-specific acceptance claims | Positive user visual review of THRESHOLD on YouTube, 2026-09-07; individual current-version playback checks remain unrecorded and uploads need authorization |
-| 1.0 — Release | Final reproducible package/manifest, accurate supported limits and release notes; explicit approval before public publication | Version 1.0.0 prepared privately; exact artifact acceptance is in the [release checklist](release-readiness.md). Publication is explicitly on hold |
+| External-service delivery review | User-reviewed navigation, orientation, detail, seams and audio after service processing; required for service-specific acceptance claims | Four owner-published films are accessible with 360° controls on 2026-09-14; [public links and verification scope](youtube-publication.md). Detailed device/quality review remains separate from this access check and the positive 2026-09-07 THRESHOLD visual feedback. |
+| 1.0 — Release | Final reproducible package/manifest, accurate supported limits and release notes; explicit approval before public publication | Published 2026-09-13 after owner authorization; public repository and verified downloads are recorded in the [publication receipt](publication-review.md) |
 
 The original 12-second candidate film at `renders/delivery-080-8k/video-360.mp4`
 remains local evidence, described in the [candidate record](release-0.8.md).
 The subsequent [THRESHOLD film](threshold.md),
 produced with the unchanged 0.8 addon, adds 60 seconds at 8K and positive user
 feedback on its appearance in YouTube. See its guide for the exact report and
-scope; no playback device/resolution or itemized checklist was supplied. Native
-hardware coverage and a current private delivery review remain open in the
-[1.0 checklist](release-readiness.md).
+scope; no playback device/resolution or itemized checklist was supplied. Broader
+native hardware coverage and upload-specific playback review remain follow-up
+work in the [release checklist](release-readiness.md).
 
 The 4K/8K runs establish these durations/settings on the measured machine. They do
 not certify one-hour exports, arbitrary scene complexity, or every GPU. The existing

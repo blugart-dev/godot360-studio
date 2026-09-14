@@ -17,7 +17,9 @@ Original capture files and the authored scene are hashed around recovery.
 This is an **automated native editor integration review**, using panel signals
 and editor APIs. It does not certify mouse navigation, tool installation by a
 new user, subjective listening, headset comfort or native Linux/Mac operation.
-The private click-through walkthrough remains a separate release requirement.
+The owner subsequently reported no errors with RC2 and authorized the 1.0 release;
+the [release acceptance](release-readiness.md) records that feedback without
+inferring an itemized device or listening review.
 
 ## Findings from the 2026-09-11 review
 
@@ -63,7 +65,7 @@ A native graphical session is required. The headless package checks do not run
 this driver. Retain `editor-review.json`, both editor logs, the prepared project,
 the exact package and the reviewer snapshots together. A nonzero exit or any
 unexpected engine error fails acceptance; merely preparing the project is not a
-passing walkthrough. Reports distinguish automated checks from pending UI work.
+passing walkthrough. Reports distinguish automated checks from human feedback.
 
 To prepare the same scene for a manual walkthrough, without the integration
 driver or an enabled plugin:

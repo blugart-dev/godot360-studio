@@ -1,14 +1,14 @@
 {
-  "date": "2026-09-13",
-  "engine": "Godot 4.7.2, native Forward+ Vulkan, RTX 3060 Ti, Windows",
+  "date": "2026-09-14",
+  "engine": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org; Vulkan 1.4.341 - Forward+ - Using Device #0: NVIDIA - NVIDIA GeForce RTX 3060 Ti",
   "capture": "Unmodified native viewport PNGs; programmatic controls, no human click-through.",
   "before": ".godot360/ui-ux-review/before",
-  "after": ".godot360/ui-ux-review/final-ui-verified",
+  "after": ".godot360/readme-refresh-20260914/ui-public",
   "controlled_states": [
     "playback-failed-1100",
     "export-failed-1100"
   ],
-  "source_delivery_sha256": "ba73f3ef1a506e86fa39946ff132e115de87bf64916c2047c62654875fd46a69",
+  "source_delivery_sha256": "8d980a17ed964be77871cfad8b7d3f6a2aba3e30ba275724a7b63cca263f1c53",
   "runtime_hashes": {
     "addons/godot360/audio_plan.gd": "685ceba9270847ffee0b60e606ff37c729b573361c29b8457ab3454f99ff6b27",
     "addons/godot360/capture.gd": "0c75a0ee6bf08bfa01e16caf69318079b6d59dc27fa05b265d37f53b63d82d5a",
@@ -23,78 +23,39 @@
     "addons/godot360/job_planner.gd": "50f7964b8b57f0b081d60bd567e254b7a2cddf2bf426810fd8e06fd1a854f680",
     "addons/godot360/job_session.gd": "03d6e17181591ca81112f4a6b5eca4a5b24c8d06cd99269604781c6d2cb0ee65",
     "addons/godot360/particle_notes.gd": "c64970dde5dab8cc82915aec53ee28760034ae247454a4c278806c4020d0dcae",
-    "addons/godot360/pipeline.gd": "42d9b075742dc3c1281b40e630dcd40001ded8b911508890d63f701988eba436",
+    "addons/godot360/pipeline.gd": "11123c1d94d9047cfbdb5d3557995b2da94c2d6220d6eb4f5966508aa88fc67c",
     "addons/godot360/playback_review.gd": "97c6210fbc50977c0c57207fb5492b2e8349fc2807926b4d167e01a6abca236d",
-    "addons/godot360/plugin.cfg": "235b39fbe59ec5fe84bec94d7cab7c90da5d04c5e53a4afbca739a07bb70aed6",
+    "addons/godot360/plugin.cfg": "f52e7cbe02f2d38c597216490719b38b03d048da97811f44a0d2aa3cb1eabe58",
     "addons/godot360/plugin.gd": "44d6aa7c47dc16570cea9df36115e3035219eaf06ddb992b8d1e946ba0ea1448",
     "addons/godot360/preview.gdshader": "65c52e359f492d9be20d0919de30b1b056d045b321106c761dca3fc1dc8b28e4",
     "addons/godot360/process_runner.gd": "3f027da571a7df4ed86bdd1e695708b600a6eb4012d3e9e2898cb33e01daebd7",
     "addons/godot360/recent_exports.gd": "1992278657c816685cd57afd8dcc0b10d68ebdc0a0c53909ded34206c2d08aa9",
-    "addons/godot360/renderer_policy.gd": "0701ca6ac14f8d57474111f4406aec23253b01ae3395bb6dc568f61bedb59139",
+    "addons/godot360/renderer_policy.gd": "42781fbd1c674079810562b55ec7ad7af3c4e829e55ec145dc266581ee1a5009",
     "addons/godot360/scene_inspector.gd": "07c0e8b6e20fcb01a520863182070befe8c1a0bbc86e4420bea6ad48b265d72d",
-    "addons/godot360/setup_check.gd": "17d0946d653f144e3e0f01524e986b5f2ea7221ea77c67bc8ea3c800a484cc22",
-    "addons/godot360/spherical_metadata.gd": "d24de9199a39ca840971fbf69cda417a8ac59600f592d961d29c3c5e47a9600c",
+    "addons/godot360/setup_check.gd": "089cd6179af812cbed15e5fe19a15b058ee706d59de1295258ad0f01fa1c4369",
+    "addons/godot360/spherical_metadata.gd": "1a918c43917cb5f1bafd48c5d2c3e822f25a3984fa434808ee78da16e0e2036a",
     "addons/godot360/storage_guard.gd": "9cf4acdab4107848165c7f85855fffab6ab7c642a0f7e1fdc74052d9e9ee6a45",
-    "addons/godot360/studio_layout.gd": "3b85100250abf656f37617d798d637137b34c35f2d06c055fe684662086a16cd",
-    "addons/godot360/studio_panel.gd": "c98399188f1c2ff03a4ff4d4afc6e8fe5540c565df36fbcb7aa0604410d17ddc",
+    "addons/godot360/studio_help.gd": "dc8880f38d3ef53f4bd9ce91ea531393c04a73a5dab8be8dc3c2416a3040736d",
+    "addons/godot360/studio_layout.gd": "d512f65f5d26b6e5ca7032b9968815cc2d7cec7ffa53244c6eea3b1dc65cce8c",
+    "addons/godot360/studio_panel.gd": "18a7643da456b8be8a33dc4882b716827ee9d84c222dd2d3eab32b05ad49ebf9",
     "addons/godot360/timeline_scene.gd": "8ee1d395cb80c78c4f77b70c42ad8832052322aff2f5b0bc78dd82964e203690",
-    "addons/godot360/tool_paths.gd": "8049ba4d43832aa465c2f7ef10eb86f9fda9cad0972a6bb18198b28802c4e9ab",
+    "addons/godot360/tool_paths.gd": "22f63ef186321df6c814c9deadd65bdc3eeae4b3cbed6b90af892834ceda49e4",
     "addons/godot360/examples/calibration.gd": "f80a25973c2665e9f541ada4e9bda714f9f786ff6faa0056135ab3902b2cdc9f",
+    "addons/godot360/examples/calibration.tres": "43ce2136b0d7b58cc95b17cb6377d56081627c20ea7241561931562d9e525a7d",
+    "addons/godot360/examples/calibration.tscn": "e794af5b62c4fe5c88390d3ea3fb9eb23fc8847824a62c996e5058372bc82f75",
     "addons/godot360/examples/spherical_smoke.gdshader": "de609ffd9de6406a5b7a81a9f1df286f2a77620b4b718e4be2b4cc7e54aba0e5",
-    "addons/godot360/examples/timeline.gd": "3f9d654dea0bda354d2f5c29864577bf8fde9a08d0cd8eb59297932d689f65da"
+    "addons/godot360/examples/timeline.gd": "3f9d654dea0bda354d2f5c29864577bf8fde9a08d0cd8eb59297932d689f65da",
+    "addons/godot360/examples/timeline.tres": "fb60df73a6ce28bd8a14c70739cfefdbaa580cb95e79c14c811ee7da803682ab",
+    "addons/godot360/examples/timeline.tscn": "b75287a5f32cc29644f65a9a38d7f1923bc3be0e0f7ff0bdec07ad394b6cf390"
   },
   "outputs": {
-    "ui-cancelled-1100.png": {
-      "bytes": 130392,
-      "sha256": "e629ee7d19332a7f58d6826cfbfbe11c4f31aaca2043836213224960de79da8c"
+    "ui-advanced-1100.png": {
+      "bytes": 113443,
+      "sha256": "9a16f43255cddb7f3367c48bf588c38699090dbb41e2819e3025bb6fdcdb3a0c"
     },
-    "ui-cancelling-1100.png": {
-      "bytes": 127804,
-      "sha256": "72cd88eb262153e8fbba28cdf57fa9ae6f9d429f681840cbd39b026e0ba1eadc"
-    },
-    "ui-completed-1100.png": {
-      "bytes": 137084,
-      "sha256": "6d3ef2ab5780081b9aa3169e761e586cb2497935d36c183f5dbd4799445fa433"
-    },
-    "ui-completed-1440.png": {
-      "bytes": 194071,
-      "sha256": "6ccf67d171e748bf6595e430e38892ad4e9df024a0d504101ddd56e774ff3432"
-    },
-    "ui-details-1100.png": {
-      "bytes": 137151,
-      "sha256": "fc7b2c6677e20fba03122928662a46957bc39eeefb75c6bc6336bc850df9a15e"
-    },
-    "ui-empty-1100.png": {
-      "bytes": 111839,
-      "sha256": "4ec06bfc5120d240f9dc91fbaec267db0028de380f570dd9b9a3cde3988c21b6"
-    },
-    "ui-export-failed-1100.png": {
-      "bytes": 129865,
-      "sha256": "dd079a06be7fc7becc0844d6c021d4900820ebb58f71da0accc24cd6357d410b"
-    },
-    "ui-library-1100.png": {
-      "bytes": 172066,
-      "sha256": "f8fc95a3f18ce68f308a68d209a7106e09e806112d6182473725193a462db824"
-    },
-    "ui-playback-failed-1100.png": {
-      "bytes": 171919,
-      "sha256": "8745c3e7ebdd05578f70ffc911684e0661407a8892afbe7ec7d2a84500dc7475"
-    },
-    "ui-ready-1100.png": {
-      "bytes": 113168,
-      "sha256": "f4cfa44a07a270884ad21d486b8ea217fe8ded97935a713a96284bf7d4fb2b59"
-    },
-    "ui-running-1100.png": {
-      "bytes": 117238,
-      "sha256": "da8f1e6888d35e700d58472c08a8d51fa032819d4c7a329282e18e39c28fa891"
-    },
-    "ui-scaled-125-percent.png": {
-      "bytes": 164433,
-      "sha256": "300badac1d79993afdb26be80bcb4675824ae3f23f1ddf6a76d1e37d147a897f"
-    },
-    "ui-tools-1100.png": {
-      "bytes": 122356,
-      "sha256": "f41246f4bb3e9c14cd7089eb150ff4ef621c48bbd30eb965b930809d4dc8cc5d"
+    "ui-audio-1440.png": {
+      "bytes": 228933,
+      "sha256": "4f09e3c0b157810114430ec080c195971fc6a6971dd680a10f68347a6e70fc94"
     },
     "ui-before-completed.png": {
       "bytes": 153811,
@@ -104,14 +65,112 @@
       "bytes": 140447,
       "sha256": "bf03d118656138b16f1990911d7e47222f5a339620d5187f0c31d694f984638b"
     },
+    "ui-cancelled-1100.png": {
+      "bytes": 131167,
+      "sha256": "d9c75c03070520e0affba8325327c5e4c460922181d9360807925ef38710332a"
+    },
+    "ui-cancelling-1100.png": {
+      "bytes": 128534,
+      "sha256": "c860833894de0d7427b1f5dc141cf6e0bb4f246ee7d9354433a2bea3c266614a"
+    },
+    "ui-completed-1100.png": {
+      "bytes": 137754,
+      "sha256": "c9e68934004c1bffba3baeeba14734ccca46a99c531452dd83309e38148bbd9b"
+    },
+    "ui-completed-1440.png": {
+      "bytes": 194266,
+      "sha256": "162ef36513f1ca4b33fa80f0f25b4ced401b9c049a1d57d61b1c36c549a0f9cb"
+    },
+    "ui-details-1100.png": {
+      "bytes": 133665,
+      "sha256": "69fb042cc182beb3b7f2b5cc136bf71062138e9559774cd838308be7a3c29e7f"
+    },
+    "ui-empty-1100.png": {
+      "bytes": 112586,
+      "sha256": "27a1bdbab3e65fdb5a5d309adc3329947fa1703a6e7fdb31df625cb2f094bd17"
+    },
+    "ui-encoding-1440.png": {
+      "bytes": 252092,
+      "sha256": "8022f291999e4ef58175e15624dab44e51dd3639a1e6231bf0970df56a5f0ded"
+    },
+    "ui-export-details.png": {
+      "bytes": 47803,
+      "sha256": "696425cb8c8c5f17707d51f26d0f33d022b8dfdbd9123d5663ae82b527046eef"
+    },
+    "ui-export-failed-1100.png": {
+      "bytes": 130643,
+      "sha256": "85966c2e967b73bff4d564fb25f3a76ab30cbb40071bffb018c0f28b4d4a3b8c"
+    },
+    "ui-help-files.png": {
+      "bytes": 90932,
+      "sha256": "90bb72bc47d0d5ef8838164bd89d8037ff86eb5dd4d6fe18f95c68b50b2e80bc"
+    },
+    "ui-help-quality.png": {
+      "bytes": 94890,
+      "sha256": "a7968c948aa737c278858f28e438d5ed44a2932e2418987c4b801ae622fbbc40"
+    },
+    "ui-help-setup.png": {
+      "bytes": 90604,
+      "sha256": "6d6da8bd5dfc6a319a3e83f26c727c3315434d50b917844b29472f23b0c8aba1"
+    },
+    "ui-help-start.png": {
+      "bytes": 92892,
+      "sha256": "eff0a1af9b18035ab9c3454f532ccda07dd7250121f9c82bcb2e0f7ea531ef2b"
+    },
+    "ui-library-1100.png": {
+      "bytes": 173057,
+      "sha256": "e8cdeac77466116cc04c4f2a5560a897f86104f38087185cdf920fa4eed1953e"
+    },
+    "ui-library-1440.png": {
+      "bytes": 208908,
+      "sha256": "99e8431d2cc650814dd3e2d6d67db8f2c3a60df26fd94fb760ff8be373645170"
+    },
     "ui-native-editor.png": {
       "bytes": 250918,
       "sha256": "7c2465fd01088b042836f9b1ca0193dd92e697659ed9fa5322eee56b40f61372"
+    },
+    "ui-playback-1440.png": {
+      "bytes": 305021,
+      "sha256": "596f2d4006f709f41984d70634ffea247bb6b47c27d92357ae810d6f16fd6a57"
+    },
+    "ui-playback-failed-1100.png": {
+      "bytes": 172671,
+      "sha256": "7168ec912e54b6577b6fce536a9050534a898231abccca631c56768083bc8f91"
+    },
+    "ui-ready-1100.png": {
+      "bytes": 113442,
+      "sha256": "d1a913eb0fbe00880bbf7a611fb055b70182701f9707ca80b89a0ce5e4c16fa8"
+    },
+    "ui-running-1100.png": {
+      "bytes": 117581,
+      "sha256": "a02a35e398b6b30a7e0607994acf3d151ca8ae8b1ae6acfc2c97d5c56cdae124"
+    },
+    "ui-scaled-125-percent.png": {
+      "bytes": 165160,
+      "sha256": "055a90a289938e87e5fe3d5a4843225706adc8de7f5fcee502e495b59bba2618"
+    },
+    "ui-tools-1100.png": {
+      "bytes": 122364,
+      "sha256": "cd9f1954c8ca167a10991a047acb1d60e2f6cb5bd2d9a3bd84d5442b1c2443ae"
     }
   },
   "native_editor": {
-    "source": ".godot360/ui-ux-review/delivery-native",
-    "kind": "Unmodified native editor viewport; programmatically driven panel.",
-    "addon_matches_final_candidate": true
+    "source": ".godot360/readme-refresh-20260914/editor",
+    "kind": "native editor integration; UI navigation not assessed",
+    "runtime_matches_current_source": true,
+    "package_sha256": "2be0d92c33c92f7b352e032f63a0e1c6c5446ac3e1d2e0940b13bd9ff44a7c20",
+    "report_sha256": "1636359319120252c6bcaa6a6604398c32fd21ed0185fbf9e1f9f8b3ae4cc97b",
+    "checks": 52
+  },
+  "driver_hashes": {
+    "tests/ui_workflow_checks.gd": "b0e473b5ec67a901d014ee14ba850c1bb7e58329f8a2ac1861093db3f2b0f7bc",
+    "tests/fixtures/editor_workflow.gd": "c20de1045afe1ebd9cb1fdee94bdc231f147a5cd7fd6db3714c747cf89897798"
+  },
+  "checks": 44,
+  "historical_before_date": "2026-09-13",
+  "report_sha256": "72efccb4f6bb8bc62d09b948c1802c6df7f589955179d2fd07402709aef5a823",
+  "packaged_screenshot": {
+    "path": "addons/godot360/media/studio.png",
+    "sha256": "162ef36513f1ca4b33fa80f0f25b4ced401b9c049a1d57d61b1c36c549a0f9cb"
   }
 }

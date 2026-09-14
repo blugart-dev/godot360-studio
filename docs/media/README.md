@@ -40,6 +40,11 @@ These curated previews are part of the documentation. Full render jobs, source
 frames and delivery masters stay in the ignored `renders/` directory. No remote
 video service is needed to read the illustrated guides.
 
+The [public 360° playlist](https://www.youtube.com/playlist?list=PLUjBgihWYNpQ)
+provides spherical playback of all four examples. The README and film guides
+link the existing local stills to their verified watch pages; no remotely hosted
+thumbnail or new binary asset is required. [Video link record](../youtube-publication.md#public-films).
+
 ## What each asset shows
 
 | Asset | Content | Approximate size |
@@ -86,19 +91,37 @@ It reads the untagged encoded source so spherical side data does not leak into
 the flat previews. It resizes and projects the existing frames, preserving their
 scene content. See [THRESHOLD's guide](../threshold.md) to reproduce that source film.
 
-## Refresh the panel screenshot
+## Refresh the panel screenshots
 
-The current screenshot and state series come from `tests/ui_review.py`, using
-native Godot in a disposable project with no owner settings. Run:
+The **2026-09-14** screenshot series comes from `tests/ui_review.py` and
+`tests/editor_review.py`, using native Godot in disposable projects with no owner
+settings. **44 panel checks and 52 editor checks pass.** The README covers setup,
+recipes, audio, advanced quality, playback, details, all help topics, Library,
+cancellation, recovery and scaling. Run from the repository root:
 
 ```powershell
 python tests/ui_review.py --godot GODOT --ffmpeg FFMPEG --ffprobe FFPROBE --output .godot360/ui-review-new
+python tools/package_addon.py --output .godot360/ui-editor-candidate.zip
+python tests/editor_review.py --package .godot360/ui-editor-candidate.zip --godot GODOT --ffmpeg FFMPEG --ffprobe FFPROBE --output .godot360/ui-editor-new
+python tools/build_ui_media.py --review .godot360/ui-review-new --editor-review .godot360/ui-editor-new --date YYYY-MM-DD
 ```
 
 Quote executable paths containing spaces. Inspect the generated state PNGs and
-`ui-review.json`; use `project/.godot360/ui-evidence/completed-1440.png` as
-`addons/godot360/media/studio.png`. Update [UI provenance](ui-provenance.json)
-when copying refreshed images. This is actual native panel rendering and
+the passing reports **before** running the copy command. Use fresh destinations.
+`build_ui_media.py` rejects unsuccessful reviews, changed runtime/driver sources
+and missing views; it copies the PNGs byte-for-byte, updates [UI provenance](ui-provenance.json)
+and uses `completed-1440.png` for the packaged `studio.png`. It preserves the
+dated `ui-before-*` design-history images. Rebuild the final package after copying.
+
+Use a neutral local capture directory if personal usernames would appear in
+the panel, Library or details window. The accepted panel review ran under
+`C:/Windows/Temp/Godot360-readme-20260914/`; its completed evidence was copied to
+`.godot360/readme-refresh-20260914/ui-public/` before recording provenance.
+Native editor evidence is in `.godot360/readme-refresh-20260914/editor/`.
+The copy command takes evidence directories inside the repository so recorded
+provenance contains only repository-relative locations.
+
+This is actual native panel rendering and
 automated integration, not a human click-through. The default Godot theme is
 used, with editor chrome outside the image. Use current scene is disabled in
 standalone captures; the separate native editor test exercises that callback.
@@ -107,6 +130,10 @@ The UI audit includes unmodified before/after images of the calibration sample,
 and empty, ready, running, completed, cancelled, failed, details and scaled states.
 The playback-error and failed-export presentation images are explicitly controlled
 states; actual corrupt packet rejection is verified separately by playback tests.
+`ui-export-details.png` captures the dialog's own viewport; `ui-details-1100.png`
+is the underlying panel and does not include that separate native window.
+Audio, encoding, playback and expanded Library views use 1440×1000; the main
+panel image remains 1440×900. `ui-native-editor.png` shows the actual dark editor.
 The older `tools/capture_docs_panel.gd` THRESHOLD capture helper is retained as
 a film-specific alternative, not the generator of the current screenshot.
 

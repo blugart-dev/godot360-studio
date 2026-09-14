@@ -8,11 +8,14 @@ No stock models, recordings, external music or network assets are required.
 
 ![The four worlds of THRESHOLD: underwater archive, glass desert, sky garden and star engine.](media/threshold-worlds.jpg)
 
-**[Watch / download the film with sound · 60 s, 6 MB](media/threshold-tour.mp4)**
+**[Watch in 360° on YouTube · 60 s ↗](https://www.youtube.com/watch?v=zntHEAhrnWQ)**
+· [All four films](https://www.youtube.com/playlist?list=PLUjBgihWYNpQ)
+· [Flat preview with sound · 6 MB](media/threshold-tour.mp4)
 · [Animated excerpt](media/threshold-tour.gif) · [Visual tour](showcase.md)
 
 *These are perspective views extracted from the rendered 8K film. The small video
-is a flat preview; export the recipe below for the full 360° delivery.*
+is a flat preview. The YouTube link opens the spherical film; the recipe below
+reproduces the full 360° delivery.*
 
 ## Experience
 

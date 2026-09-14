@@ -1,4 +1,97 @@
-# Validation record — updated 2026-09-13
+# Validation record — updated 2026-09-14
+
+## README screenshot refresh — 2026-09-14
+
+The [README](../README.md#screenshot-tour) now has expandable galleries for all
+major panel workflows, four example films and twelve rendering-feature fixtures.
+**25 PNG copies** were refreshed from native Godot (24 documentation images plus
+the packaged `studio.png`). Newly covered views include all audio fields, advanced
+capture/encoding, actual playback, expanded Library, four help topics and the
+export-details window's own viewport. Error-state images remain explicitly
+controlled; historical before images and rendering comparison sheets retain
+their original dates and scope.
+
+- **44 native panel checks pass**, Windows / Godot 4.7.2 / Forward+ Vulkan /
+  RTX 3060 Ti / FFmpeg and FFprobe 9.0.1. The screenshot driver additionally
+  verifies that inspecting the documentation views preserves the editable recipe.
+- **52 native editor checks pass** across first-open and restart processes,
+  including real 4K export, stereo playback/seek, cancellation and recovery.
+  Both reviews preserve their addon source. Only the capture drivers and
+  documentation/media changed; addon runtime and film source remain unchanged.
+- **1,214 package checks pass** on Windows / Godot 4.7.2 Compatibility / OpenGL 3
+  against the final 245-member local addon archive, including real exports,
+  playback, audio, cancellation, recovery and storage/capture failures. Its
+  manifest verifies, its rebuild is byte-identical, and extracted payloads remain
+  unchanged. SHA-256:
+  `76e1fc6ec2407abda0bb978498ef41b10507cc3c2e561db35024bd2b0117af96`.
+- **13 repository/package regression tests pass**. Source inventory, local links,
+  Python syntax, media budgets and **56 recorded media hashes** pass the repository
+  guard. The rendered README loads all **39 images**, including those inside its
+  five expandable galleries, without broken images.
+- All **four film source hashes** match the existing provenance (THRESHOLD,
+  UMBRAL, LUMEN and AFTERGLOW). Their stills/previews are retained from those
+  verified deliveries; this is not a rerender of the films or feature matrix.
+- The public GitHub API confirms `main` is still `639e9a4`, matching local HEAD,
+  and `v1.0.0` remains the latest release. The latest seven hosted workflows pass;
+  their commit-specific scope is unchanged from the publication follow-up below.
+  [Godot's official download page](https://godotengine.org/download/archive/4.7.2-stable/)
+  continues to provide the recommended 4.7.2 Standard build.
+
+`tools/build_ui_media.py` checks both reports, current runtime and driver hashes,
+and required images before copying. [UI provenance](media/ui-provenance.json)
+records the exact capture sources, checks and output hashes. The panel was
+rendered in a disposable neutral Windows Temp path to avoid personal usernames
+in published images; its retained review copy lives inside the local evidence folder.
+
+Evidence is under `.godot360/readme-refresh-20260914/`. The editor check used
+`editor-candidate.zip`; the final screenshot/documentation package is a subsequent
+local build with the same runtime. The public tag and downloadable archives are
+unchanged. Linux/macOS remain experimental, and the recurring historical Linux
+Mobile history mismatch remains unexplained.
+
+## Documentation and public-film sweep — 2026-09-14
+
+The README now links the four YouTube films through their existing local images,
+separates addon installation from the complete examples download, and summarizes
+support with links to the detailed evidence. The documentation index, showcase,
+film guides and new [FAQ](faq.md) connect watching, editing and exporting.
+Pre-release wording in current contributor/editor/production guidance is corrected.
+Historical acceptance records retain their dates and scope.
+
+All four owner-supplied video URLs and the playlist open in a signed-out browser;
+each film has YouTube spherical navigation controls and the expected player
+duration. [The link record](youtube-publication.md#public-films) defines the check's
+limits. AFTERGLOW's expanded description exposes the repository, latest-release,
+film-guide and third-party-credit links. No YouTube metadata or visibility was changed.
+
+Fresh verification of the local candidate:
+
+- **1,214 checks pass** on Windows, Godot 4.7.2 Standard,
+  Compatibility/OpenGL 3, FFmpeg/FFprobe 9.0.1. This includes real exports,
+  playback, audio, capture failures, job recovery, storage failures and the
+  release workflow in isolated projects. Runtime and source settings are preserved.
+- The **245-member** addon archive has a verified manifest, reproduces identical
+  bytes and retains unchanged extracted payloads. SHA-256:
+  `9de2ac7eabce6becc4009d3c485f710c81c75097e8b7502244cef051e7257c20`.
+  Its only intended packaged-source edit is neutral wording in the test report's
+  human-feedback/YouTube fields. No addon runtime, scene, fixture or media change
+  is part of this sweep. This is a local check archive; public 1.0.0 assets stay frozen.
+  Compared with the published ZIP, the checkout already has CRLF instead of LF in
+  `PLAYBACK.md`, `media/README.md` and `tests/playback_checks.gd`; these three members
+  are identical after newline normalization. The local source mapping records
+  those byte differences separately from the report-wording edit and manifest.
+- All **13** repository/package regression tests pass. The repository guard
+  checks all tracked/non-ignored source, local links, syntax and **46** recorded
+  media hashes. The README's rendered introduction and four-film gallery were
+  visually reviewed using a local GFM preview.
+- The release's seven previously listed hosted workflows have completed
+  successfully, including both Mobile/Forward+ temporal jobs. See the
+  [dated publication follow-up](publication-review.md#public-films-and-completed-ci--2026-09-14).
+
+Local reports and the isolated candidate are in `.godot360/project-sweep-20260914/`.
+No new five-lane GPU matrix, headset listening review or native Linux/Mac GPU
+acceptance is inferred. The earlier recurring Linux software-Mobile mismatch
+remains unexplained despite the latest passing run. Published tags/assets remain unchanged.
 
 ## Public 1.0.0 release — 2026-09-13
 

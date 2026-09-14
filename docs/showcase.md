@@ -6,15 +6,19 @@ MP4 with sound. During playback, viewers choose where to look.
 
 ![Four worlds rendered with Godot360: an underwater archive, desert, floating garden and celestial engine.](media/threshold-worlds.jpg)
 
-**[Watch / download THRESHOLD with sound · 60 seconds, 6 MB](media/threshold-tour.mp4)**
+**[Watch all four films in 360° on YouTube ↗](https://www.youtube.com/playlist?list=PLUjBgihWYNpQ)**
+· [THRESHOLD flat preview with sound](media/threshold-tour.mp4)
 · [Animated excerpt](media/threshold-tour.gif)
 · **[Make your first export →](../addons/godot360/QUICKSTART.md)**
 
-The previews on this page are actual output from the included scenes. The MP4
-above is a small, ordinary perspective video for easy viewing; it cannot be
-dragged to look around. The full 360° delivery is created by the export recipe.
+The YouTube films let you drag to look around on desktop or swipe in the mobile
+app. Choose the highest available playback quality. The local MP4 previews are
+ordinary perspective views of the same scenes; they cannot be dragged to look
+around. Export recipes reproduce the full spherical deliveries.
 
 ## Four worlds, one film
+
+**[Watch THRESHOLD in 360° ↗](https://www.youtube.com/watch?v=zntHEAhrnWQ)**
 
 **THRESHOLD** is a finished 60-second example rendered at **7680×3840, 30 FPS**
 with an original stereo score. It demonstrates animated geometry, camera movement,
@@ -37,13 +41,24 @@ to measure cost before a full 8K render. [Film, music and authoring details](thr
 
 ## An orbital observatory for immersive music
 
-[![LUMEN's artificial star inside a mechanical observatory.](media/lumen.jpg)](media/lumen-tour.mp4)
+[![Watch LUMEN's artificial star inside a mechanical observatory in 360°.](media/lumen.jpg)](https://www.youtube.com/watch?v=Xy5PmSpqY7s)
 
 **LUMEN** is a 24-second 4K film with an original stereo score. Native particle
 trails circle the room, vapor rises around a gyroscope and luminous rings cross
 the open roof. It demonstrates a scene for an immersive music film, installation
-or planetarium sequence. [Watch the flat tour](media/lumen-tour.mp4) or
+or planetarium sequence. [Watch in 360° on YouTube](https://www.youtube.com/watch?v=Xy5PmSpqY7s),
+[watch the flat tour](media/lumen-tour.mp4) or
 [open the scene, recipe and spherical player](lumen.md).
+
+## A room that dances to the music
+
+[![Watch AFTERGLOW's mirror crown above a glass dance floor in 360°.](media/afterglow.jpg)](https://www.youtube.com/watch?v=TK2PuQ3n_XU)
+
+**AFTERGLOW** is a one-minute 4K film with an original 116 BPM disco-funk score.
+Glass tiles lift with the bass, columns sway, lights orbit and a mirror crown
+unfolds above the viewer. [Watch in 360° on YouTube](https://www.youtube.com/watch?v=TK2PuQ3n_XU),
+[watch the complete flat preview with sound](media/afterglow-tour.mp4)
+or [explore the scene, export recipe and music credits](afterglow.md).
 
 ## What makes it 360°?
 
@@ -84,12 +99,15 @@ Video playback uses a separate native copy limited to 2K / 30 FPS.*
    be re-encoded with different audio or compression settings.
 
 [Start the walkthrough](../addons/godot360/QUICKSTART.md)
+· [Every panel and workflow state in screenshots](../README.md#screenshot-tour)
 · [Playback and review quality](../addons/godot360/PLAYBACK.md)
 · [Recovery](../addons/godot360/RECOVERY.md)
 
 ## An interactive scene prepared for film
 
-![UMBRAL's central golden core, orbiting rings and decorative cutouts in a dark installation.](media/umbral.jpg)
+[![Watch UMBRAL's central golden core and orbiting rings in 360°.](media/umbral.jpg)](https://www.youtube.com/watch?v=zWUyKH0Q31I)
+
+**[Watch UMBRAL in 360° · 12 s, silent ↗](https://www.youtube.com/watch?v=zWUyKH0Q31I)**
 
 **UMBRAL** begins as an interactive installation: look toward objects to discover
 their reactions. Its export recipe prepares an authored **12-second sequence**

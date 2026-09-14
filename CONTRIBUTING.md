@@ -1,7 +1,7 @@
 # Contributing to Godot360 Studio
 
-Godot360 is preparing for its first stable release. Start with the
-[release criteria](docs/release-readiness.md), [renderer limits](addons/godot360/RENDERERS.md)
+Godot360 Studio 1.0.0 is released, with Windows supported and Linux/macOS
+experimental. Start with [release acceptance and follow-up work](docs/release-readiness.md), [renderer limits](addons/godot360/RENDERERS.md)
 and [developer setup](docs/testing.md). Discuss broad features before implementing
 them so the supported scene and platform scope stays clear.
 

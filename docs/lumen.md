@@ -4,9 +4,11 @@
 star turns inside a mechanical observatory while light trails circle the viewer
 and vapor rises around the instrument.
 
-[![LUMEN's artificial star, gyroscope and luminous observatory.](media/lumen.jpg)](media/lumen-tour.mp4)
+[![Watch LUMEN's artificial star and luminous observatory in 360° on YouTube.](media/lumen.jpg)](https://www.youtube.com/watch?v=Xy5PmSpqY7s)
 
-**[Watch the flat tour with sound](media/lumen-tour.mp4)**
+**[Watch in 360° on YouTube · 24 s ↗](https://www.youtube.com/watch?v=Xy5PmSpqY7s)**
+· [All four films](https://www.youtube.com/playlist?list=PLUjBgihWYNpQ)
+· [Flat tour with sound](media/lumen-tour.mp4)
 
 The full spherical film is generated locally at
 `renders/lumen-4k-final/film/video-360.mp4`; follow [Reproduce the delivery and previews](#reproduce-the-delivery-and-previews).
@@ -106,9 +108,9 @@ Earlier experimental renders are retained separately. THRESHOLD's sources and
 masters are unchanged.
 
 Capture borders reduce tested glow cuts but do not guarantee seamless arbitrary
-screen-space effects. General transparent sorting, lit smoke and long/stateful
-effect histories remain separate validation work. This demo does not close the
-heavy 4K/8K endurance or native Linux/Mac release gates.
+screen-space effects. Broader rendering evidence is recorded separately in the
+[combined-effects review](combined-effects.md) and [4K/8K production budgets](production-performance.md).
+This demo does not establish arbitrary-effect or native Linux/Mac GPU support.
 
 [Smoke setup](smoke-capture.md) · [Native trails](trail-capture.md) ·
 [Validation record](validation.md) · [Other examples](showcase.md)

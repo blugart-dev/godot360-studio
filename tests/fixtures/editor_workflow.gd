@@ -120,6 +120,9 @@ func _first() -> void:
 	check(panel.preview_material != null, "Full export loads the spherical still preview")
 	if not _delivered(panel.folder):
 		return
+	panel.queue_redraw()
+	await RenderingServer.frame_post_draw
+	EditorInterface.get_base_control().get_viewport().get_texture().get_image().save_png("res://.godot360/editor-review/studio-native-editor.png")
 	await _views("still")
 	var capture := AudioEffectCapture.new()
 	capture.buffer_length = 2.0

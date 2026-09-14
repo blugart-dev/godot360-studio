@@ -3,7 +3,10 @@
 A small world of gaze-driven discoveries, with an authored **12-second film**
 recipe for 360° export.
 
-![UMBRAL's golden central core with orbiting rings, shown in the rendered film at three seconds.](media/umbral.jpg)
+[![Watch UMBRAL's golden core and orbiting rings in 360° on YouTube.](media/umbral.jpg)](https://www.youtube.com/watch?v=zWUyKH0Q31I)
+
+**[Watch in 360° on YouTube · 12 s, silent ↗](https://www.youtube.com/watch?v=zWUyKH0Q31I)**
+· [All four films](https://www.youtube.com/playlist?list=PLUjBgihWYNpQ)
 
 *A perspective view from the exported film. In Godot, looking at objects triggers
 their reactions; the video follows a prepared sequence.*
